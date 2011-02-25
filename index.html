@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>WaveDrom</title>
+<!-- css begins -->
+		<style type="text/css">
+body       { background: #d0d0d0; margin: 0px; }
+table      { border-spacing: 0px 0px; cellspacing: 0; border: 0; cellpadding: 0; table-layout: fixed; height: 100%; width: 100%; }
+td         { width: 7px }
+#PanelA    { height: 200px; border: 1px solid; border-color: #777; }
+#PanelB    { height: 400px; }
+#InputXML  { width: 100%; height: 100%; border: 0px; padding: 0px; overflow: auto; }
+#OutputSVG { background:#f0f0d0; width:100%; height:100%; }
+		</style>
+<!-- css ends -->
+<!-- javascript begins -->
+		<script>
+var WAVEDROM = {
+	version: "0.1",
+	lane: {},
+	genBrick:          function (texts, extra, times) {
+		"use strict";
+		var i, j, R = [];
+
+		if (texts.length === 4) {
+			for (j = 0; j < times; j += 1) {
+				R.push(texts[0]);
+				for (i = 0; i < extra; i += 1) {
+					R.push(texts[1]);
+				}
+				R.push(texts[2]);
+				for (i = 0; i < extra; i += 1) {
+					R.push(texts[3]);
+				}
+			}
+			return R;
+		}
+		if (texts.length === 1) {
+			texts.push(texts[0]);
+		}
+		R.push(texts[0]);
+		for (i = 0; i < (times * (2 * (extra + 1)) - 1); i += 1) {
+			R.push(texts[1]);
+		}
+		return R;
+	},
+	genFirstWaveBrick: function (text,  extra, times) {
+		switch (text) {
+			case 'p': return this.genBrick(['pclk', 'ooo', 'nclk', 'zzz'], extra, times);
+			case 'n': return this.genBrick(['nclk', 'zzz', 'pclk', 'ooo'], extra, times);
+			case '=': return this.genBrick(['vvv'], extra, times);
+			case '0': return this.genBrick(['zzz'], extra, times);
+			case '1': return this.genBrick(['ooo'], extra, times);
+			default:  return this.genBrick(['xxx'], extra, times);
+		}
+	},
+	genWaveBrick:      function (text,  extra, times) {
+		var v, H = {
+			'00': ['zmz', 'zzz'], '01': ['zmo', 'ooo'], '0=': ['zmv', 'vvv'], '0x': ['zmx', 'xxx'],
+			'10': ['omz', 'zzz'], '11': ['omo', 'ooo'], '1=': ['omv', 'vvv'], '1x': ['omx', 'xxx'],
+			'=0': ['vmz', 'zzz'], '=1': ['vmo', 'ooo'], '==': ['vmv', 'vvv'], '=x': ['vmx', 'xxx'],
+			'x0': ['xmz', 'zzz'], 'x1': ['xmo', 'ooo'], 'x=': ['xmv', 'vvv'], 'xx': ['xmx', 'xxx']
+		};
+
+		for (v in H) {
+			if (text === v) {
+				return this.genBrick( H[v], extra, times );
+			}
+		}
+		return this.genBrick( ['xxx'], extra, times );
+	},
+	parseWaveLane:     function ( text,  extra        ) {
+		var Repeats, Top, Next, Stack = [], R = [];
+
+		Stack = text.split('');
+		Next  = Stack.shift();
+		if ( Next === 'p' || Next === 'n' ) {
+			return this.genFirstWaveBrick( Next, extra, Stack.length+1 );
+		};
+
+		Repeats = 1;
+		while ( Stack[0] === '.' ) { // repeaters parser
+			Stack.shift();
+			Repeats += 1;
+		};
+		R = R.concat( this.genFirstWaveBrick( Next, extra, Repeats ));
+
+		while ( Stack.length ) {
+			Top  = Next;
+			Next = Stack.shift();
+			Repeats = 1;
+			while ( Stack[0] === '.' ) { // repeaters parser
+				Stack.shift();
+				Repeats += 1;
+			};
+			R = R.concat( this.genWaveBrick( ( Top + Next ), extra, Repeats ));
+		};
+		return R;
+	}
+};
+
+WAVEDROM.parseWaveLanes = function ( source ) {
+	var content = [];
+
+	for ( var x in source ) {
+		content.push([]);
+		content[content.length-1][0] = x;
+		content[content.length-1][1] = WAVEDROM.parseWaveLane(source[x].wave, 1);
+	};
+	return content;
+};
+
+WAVEDROM.CleanGroupTransforms = function ( root ) { // clean translate attribute of defines
+	var nodes = document.getElementById(root).childNodes;
+	for ( var i = 0; i < nodes.length; i += 1 ) {
+		if ( nodes[i].nodeName === 'g' ) {
+			nodes[i].setAttributeNS( null, 'transform', 'translate(0,0)' );
+		};
+	};
+};
+
+WAVEDROM.CleanNode = function ( root ) { // clean output SVG to before adding stuff
+	while ( root.childNodes.length ) {
+		root.removeChild(root.childNodes[0]);
+	};
+};
+
+WAVEDROM.RenderWaveForm = function (  ) {
+	var SVGNS = 'http://www.w3.org/2000/svg',
+	  XLINKNS = 'http://www.w3.org/1999/xlink',
+	g, title, b, i, j;
+
+	var root          = document.getElementById("lanes");
+	var svgcontent    = document.getElementById("svgcontent");
+	var TheTextBox    = document.getElementById("InputXML");
+	var tmpgraphlane0 = document.getElementById("tmpgraphlane0");
+	var tmpgraphlane1 = document.getElementById("tmpgraphlane1");
+	var tmptextlane0  = document.getElementById("tmptextlane0");
+
+	var content = WAVEDROM.parseWaveLanes( eval('(' + TheTextBox.value + ')') );
+
+	WAVEDROM.CleanNode(root);
+
+	this.lane.xs  = parseFloat(tmpgraphlane0.getAttributeNS( null, "width" ));
+	this.lane.ys  = parseFloat(tmpgraphlane0.getAttributeNS( null, "height" ));
+	this.lane.xg  = parseFloat(tmpgraphlane0.getAttributeNS( null, "x" ));
+	this.lane.y0  = parseFloat(tmpgraphlane0.getAttributeNS( null, "y" ));
+	this.lane.yo  = parseFloat(tmpgraphlane1.getAttributeNS( null, "y" )) - this.lane.y0;
+	this.lane.tgo = this.lane.xg - parseFloat(tmptextlane0.getAttributeNS( null, "x" ));
+	this.lane.ym  = parseFloat(tmptextlane0.getAttributeNS( null, "y" )) - this.lane.y0;
+
+	var xmax = 0;
+
+	for ( j = 0; j < content.length; j += 1 ) {
+		g = document.createElementNS( SVGNS, "g" );
+		g.id = "wavelane_" + j;
+		g.setAttributeNS( null, 'transform', 'translate(0,' + ( this.lane.y0 + j * this.lane.yo) + ')' );
+		root.insertBefore( g, root.firstChild );
+
+		if ( content[j][0] ) {
+			var lanetext = document.createTextNode( content[j][0] );
+			title = document.createElementNS( SVGNS, "text" );
+			title.setAttributeNS(null, "x", ( this.lane.xg - this.lane.tgo ) );
+			title.setAttributeNS(null, "y", this.lane.ym );
+			title.setAttributeNS(null, "fill", "blue");
+			title.setAttributeNS(null, "text-anchor", "end");
+			title.appendChild( lanetext );
+			g.insertBefore( title, g.firstChild );
+
+			if ( content[j][1].length > xmax ) {
+				xmax = content[j][1].length;
+			};
+			for ( i = 0; i < content[j][1].length; i += 1 ) {
+				b    = document.createElementNS( SVGNS, "use" );
+				b.id = "use_" + i + "_" + j;
+				b.setAttributeNS( XLINKNS, 'xlink:href', '#' + content[j][1][i] );
+				b.setAttributeNS( null, 'transform', 'translate(' + ( this.lane.xg + i * this.lane.xs ) + ',0)' );
+				g.insertBefore( b, g.firstChild );
+			};
+		};
+	};
+	svgcontent.setAttributeNS( null, 'viewBox', "0 0 " + ( this.lane.xg + ( this.lane.xs * ( xmax + 1 ) ) ) + " " + ( content.length * this.lane.yo + this.lane.y0 + this.lane.ys ) );
+};
+
+WAVEDROM.Init = function () {
+	var TheInputText = '{\n    "clk": { wave: "p........." },\n"t_0_dat": { wave: "x.=x.=.x.." },\n"t_0_req": { wave: "=.==.=.=.=" },\n"t_0_ack": { wave: "=....==..=" }\n}';
+	document.getElementById("InputXML").value = TheInputText;
+
+	WAVEDROM.CleanGroupTransforms("wavetemps");
+	WAVEDROM.RenderWaveForm();
+};
+		</script>
+<!-- javascript ends -->
+	</head>
+	<body onload="WAVEDROM.Init();">
+		<div id="content">
+			<table>
+				<tbody>
+					<tr>
+						<td></td>
+						<td style="width: 100%;">
+							<table>
+								<tbody>
+									<tr><td></td></tr>
+									<tr><td style="height:16px"><button>Open..</button><button>Save..</button><a href="http://google.com">Powered by WaveDrom v0.1</a></td></tr>
+									<tr><td></td></tr>
+									<tr><td><div id="PanelA"><textarea id="InputXML" onkeyup="WAVEDROM.RenderWaveForm()">MData</textarea></div></td></tr>
+									<tr><td></td></tr>
+									<tr><td style="height:16px"><button>Copy</button><button>Save..</button></td></tr>
+									<tr><td></td></tr>
+									<tr>
+										<td style="width: 0;">
+											<div id="PanelB">
+												<svg id="svgcontent" width="100%" height="100%" x="0" y="0" overflow="visible" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 10 10">
+													<defs>
+														<g id="wavetemps">
+<!-- SVG template begins -->
+  <g
+     id="waveframe"
+     transform="translate(30,20)">
+    <rect
+       style="fill:#ffff7f;fill-opacity:1"
+       y="0"
+       x="0"
+       height="90"
+       width="140"
+       id="tmpview" />
+    <rect
+       style="fill:#c8c8c8;fill-opacity:1"
+       y="10"
+       x="110"
+       height="20"
+       width="20"
+       id="tmpgraphlane0" />
+    <rect
+       id="tmpgraphlane1"
+       width="20"
+       height="20"
+       x="110"
+       y="45"
+       style="fill:#c8c8c8;fill-opacity:1" />
+    <text
+       id="tmptextlane0"
+       xml:space="preserve"
+       x="100"
+       y="25"><tspan
+         id="sig_tspan_17.5"
+         style="font-size:12px;font-style:oblique;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;text-anchor:end;font-family:Sans;-inkscape-font-specification:Sans Oblique">Signal 0</tspan></text>
+    <text
+       id="tmptexttime"
+       xml:space="preserve"
+       x="110"
+       y="85"><tspan
+         id="mark_tspan_40-7"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;font-family:Sans;-inkscape-font-specification:Sans">time</tspan></text>
+    <text
+       y="25"
+       x="116"
+       xml:space="preserve"
+       id="tmptextlabel"><tspan
+         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;font-family:Sans;-inkscape-font-specification:Sans"
+         id="tspan3927">L</tspan></text>
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       d="m 110,5 0,65"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:2, 2"
+       id="tmpmark" />
+  </g>
+  <g
+     id="pclk"
+     transform="translate(30,140)">
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,20 0,0 20,0"
+       id="pclk20_2.5"
+       sodipodi:nodetypes="ccc"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+  </g>
+  <g
+     id="nclk"
+     transform="translate(60,140)">
+    <path
+       inkscape:connector-curvature="0"
+       d="m 0,0 0,20 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="pclk25_2.5"
+       sodipodi:nodetypes="ccc" />
+  </g>
+  <g
+     id="zzz"
+     transform="translate(30,175)">
+    <path
+       inkscape:connector-curvature="0"
+       d="m 0,20 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="zzz_25_25" />
+  </g>
+  <g
+     id="zmz"
+     transform="translate(60,175)">
+    <path
+       sodipodi:nodetypes="ccccc"
+       inkscape:connector-curvature="0"
+       d="m 0,20 3,0 3,-10 3,10 11,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="oo_120_17.5_1-6" />
+  </g>
+  <g
+     id="zmo"
+     transform="translate(90,175)">
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,20 3,20 9,0 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="zmo_30_25"
+       sodipodi:nodetypes="cccc" />
+  </g>
+  <g
+     id="zmv"
+     transform="translate(120,175)">
+    <path
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       d="M 3,20 9,0 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="zmo_120_40-2" />
+    <path
+       inkscape:connector-curvature="0"
+       d="m 0,20 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="zzz_25_25-48" />
+  </g>
+  <g
+     id="zmx"
+     transform="translate(150,175)">
+    <path
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       d="M 3,20 9,0 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="zmo_40_40-0" />
+    <path
+       inkscape:connector-curvature="0"
+       d="m 20,15 -5,5"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rgm_40_1.25-8"
+       sodipodi:nodetypes="cc" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       d="M 20,10 10,20"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rgm_40_2.5-9" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       d="M 20,5 5,20"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rgm_40_3.75-6" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 20,0 4,16"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rgm_40_5-6"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 15,0 6,9"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path399-5"
+       sodipodi:nodetypes="cc" />
+    <path
+       sodipodi:nodetypes="cc"
+       id="path3115"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="M 10,0 9,1"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       d="m 0,20 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="zzz_25_25-48-3" />
+  </g>
+  <g
+     id="ooo"
+     transform="translate(30,205)">
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,0 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="or_35_25_1"
+       sodipodi:nodetypes="cc" />
+  </g>
+  <g
+     id="omz"
+     transform="translate(60,205)">
+    <path
+       inkscape:connector-curvature="0"
+       d="m 0,0 3,0 6,20 11,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="oz_40_25_1"
+       sodipodi:nodetypes="cccc" />
+  </g>
+  <g
+     id="omo"
+     transform="translate(90,205)">
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,0 3,0 6,10 9,0 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="oo_120_17.5_1"
+       sodipodi:nodetypes="ccccc" />
+  </g>
+  <g
+     id="omv"
+     transform="translate(120,205)">
+    <path
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       d="m 3,0 6,20 11,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="oz_40_32.5_1" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,0 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="or_40_32.5_1" />
+  </g>
+  <g
+     id="omx"
+     transform="translate(150,205)">
+    <path
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       d="m 3,0 6,20 11,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="oz_40_32.5_1-9" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,0 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="or_40_32.5_1-3" />
+    <path
+       inkscape:connector-curvature="0"
+       d="m 20,15 -5,5"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rgo_40_1.25-7"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 20,10 10,20"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rgo_40_2.5-8"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 20,5 8,17"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rgo_40_3.75-7"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 20,0 7,13"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rgo_40_5-0"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 15,0 6,9"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path154-5"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 10,0 5,5"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path156-2"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 3.5,1.5 5,0"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path156-2-7"
+       sodipodi:nodetypes="cc" />
+  </g>
+  <g
+     id="vvv"
+     transform="translate(30,235)">
+    <path
+       inkscape:connector-curvature="0"
+       d="m 0,20 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="zzz_35_40" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,0 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="or_35_40_1" />
+  </g>
+  <g
+     id="vmz"
+     transform="translate(60,235)">
+    <path
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       d="M 0,0 3,0 9,20"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="oz_100_32.5_1-7" />
+    <path
+       inkscape:connector-curvature="0"
+       d="m 0,20 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="zzz_100_32.5-2" />
+  </g>
+  <g
+     id="vmo"
+     transform="translate(90,235)">
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,0 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="or_30_32.5_1-4" />
+    <path
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       d="M 0,20 3,20 9,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="zmo_30_32.5-6" />
+  </g>
+  <g
+     id="vmv"
+     transform="translate(120,235)">
+    <path
+       inkscape:connector-curvature="0"
+       d="m 0,0 3,0 6,20 11,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path5370"
+       sodipodi:nodetypes="cccc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,20 3,20 9,0 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="zmo_120_40"
+       sodipodi:nodetypes="cccc" />
+  </g>
+  <g
+     id="vmx"
+     transform="translate(150,235)">
+    <path
+       inkscape:connector-curvature="0"
+       d="m 0,0 3,0 6,20 11,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="oz_40_40_1"
+       sodipodi:nodetypes="cccc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,20 3,20 9,0 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="zmo_40_40"
+       sodipodi:nodetypes="cccc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="m 20,15 -5,5"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rgm_40_1.25"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 20,10 10,20"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rgm_40_2.5"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 20,5 8,17"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rgm_40_3.75"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 20,0 7,13"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rgm_40_5"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 15,0 7,8"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path399"
+       sodipodi:nodetypes="cc" />
+    <path
+       sodipodi:nodetypes="cc"
+       id="path3117"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="M 10,0 9,1"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     id="xxx"
+     transform="translate(30,265)">
+    <path
+       inkscape:connector-curvature="0"
+       d="m 0,20 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="zzz_20_32.5" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,0 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="or_20_32.5_1" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,5 5,0"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="lgo_20_1.25"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,10 10,0"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="lgo_20_2.5"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,15 15,0"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="lgo_20_3.75"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,20 20,0"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="lgo_20_5"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 5,20 20,5"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path121"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 10,20 20,10"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path123"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="m 15,20 5,-5"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path125"
+       sodipodi:nodetypes="cc" />
+  </g>
+  <g
+     id="xmz"
+     transform="translate(60,265)">
+    <path
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       d="M 0,0 4,0 9,20"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="oz_100_32.5_1" />
+    <path
+       inkscape:connector-curvature="0"
+       d="m 0,20 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="zzz_100_32.5" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,5 4,1"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="lgz_100_1.25"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,10 5,5"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="lgz_100_2.5"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,15 6,9"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="lgz_100_3.75"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,20 7,13"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="lgz_100_5"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 5,20 8,17"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path242"
+       sodipodi:nodetypes="cc" />
+  </g>
+  <g
+     id="xmo"
+     transform="translate(90,265)">
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,0 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="or_30_32.5_1" />
+    <path
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       d="M 0,20 4,20 9,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="zmo_30_32.5" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,5 5,0"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="lgo_30_1.25"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,10 9,1"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="lgo_30_2.5"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,15 7,8"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="lgo_30_3.75"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,20 5,15"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="lgo_30_5"
+       sodipodi:nodetypes="cc" />
+  </g>
+  <g
+     id="xmv"
+     transform="translate(120,265)">
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,20 3,20 9,0 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="oz_30_40_1"
+       sodipodi:nodetypes="cccc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="m 0,0 3,0 6,20 11,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="zmo_30_40"
+       sodipodi:nodetypes="cccc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,5 3.5,1.5"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="lgm_30_1.25"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,10 4.5,5.5"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="lgm_30_2.5"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,15 6,9"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="lgm_30_3.75"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,20 4,16"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="lgm_30_5"
+       sodipodi:nodetypes="cc" />
+  </g>
+  <g
+     id="xmx"
+     transform="translate(150,265)">
+    <path
+       inkscape:connector-curvature="0"
+       d="m 0,20 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="zzz_20_32.5-0-7" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,0 20,0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="or_20_32.5_1-6-6" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,5 5,0"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="lgo_20_1.25-2-4"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,10 10,0"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="lgo_20_2.5-8-4"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,15 15,0"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="lgo_20_3.75-3-0"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 0,20 20,0"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="lgo_20_5-1-5"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 5,20 20,5"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path121-4-1"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="M 10,20 20,10"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path123-7-1"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       d="m 15,20 5,-5"
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path125-0-3"
+       sodipodi:nodetypes="cc" />
+  </g>
+<!-- SVG template ends -->
+														</g>
+													</defs>
+													<g id="lanes"></g>
+												</svg>
+											</div>
+										</td>
+									</tr>
+									<tr><td></td></tr>
+								</tbody>
+							</table>
+						</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>
