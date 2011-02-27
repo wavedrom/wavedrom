@@ -148,29 +148,12 @@ WAVEDROM.CleanNode = function (root) { // clean output SVG to before adding stuf
 	}
 };
 
-WAVEDROM.RenderWaveForm = function () {
+WAVEDROM.RenderWaveLane = function (root, content) {
 	"use strict";
-	var g, title, b, i, j, lanetext,
-		xmax = 0,
-		svgns = 'http://www.w3.org/2000/svg',
-		XLINKNS = 'http://www.w3.org/1999/xlink',
-		root          = document.getElementById("lanes"),
-		svgcontent    = document.getElementById("svgcontent"),
-		TheTextBox    = document.getElementById("InputXML"),
-		tmpgraphlane0 = document.getElementById("tmpgraphlane0"),
-		tmpgraphlane1 = document.getElementById("tmpgraphlane1"),
-		tmptextlane0  = document.getElementById("tmptextlane0"),
-		content       = WAVEDROM.parseWaveLanes(eval('(' + TheTextBox.value + ')'));
-
-	WAVEDROM.CleanNode(root);
-
-	this.lane.xs  = parseFloat(tmpgraphlane0.getAttribute("width"));
-	this.lane.ys  = parseFloat(tmpgraphlane0.getAttribute("height"));
-	this.lane.xg  = parseFloat(tmpgraphlane0.getAttribute("x"));
-	this.lane.y0  = parseFloat(tmpgraphlane0.getAttribute("y"));
-	this.lane.yo  = parseFloat(tmpgraphlane1.getAttribute("y")) - this.lane.y0;
-	this.lane.tgo = this.lane.xg - parseFloat(tmptextlane0.getAttribute("x"));
-	this.lane.ym  = parseFloat(tmptextlane0.getAttribute("y")) - this.lane.y0;
+	var i, j, g, title, b, lanetext,
+		xmax    = 0,
+		svgns   = 'http://www.w3.org/2000/svg',
+		xlinkns = 'http://www.w3.org/1999/xlink';
 
 	for (j = 0; j < content.length; j += 1) {
 		g = document.createElementNS(svgns, 'g');
@@ -197,13 +180,39 @@ WAVEDROM.RenderWaveForm = function () {
 				b    = document.createElementNS(svgns, "use");
 // IE				b    = document.createElement("use");
 				b.id = "use_" + i + "_" + j;
-				b.setAttributeNS(XLINKNS, 'xlink:href', '#' + content[j][1][i]);
+				b.setAttributeNS(xlinkns, 'xlink:href', '#' + content[j][1][i]);
 // IE				b.setAttribute( 'xlink:href', '#' + content[j][1][i] );
 				b.setAttribute('transform', 'translate(' + (this.lane.xg + i * this.lane.xs) + ',0)');
 				g.insertBefore(b, g.firstChild);
 			}
 		}
 	}
+	return xmax;
+};
+
+WAVEDROM.RenderWaveForm = function () {
+	"use strict";
+	var xmax,
+		root          = document.getElementById("lanes"),
+		svgcontent    = document.getElementById("svgcontent"),
+		TheTextBox    = document.getElementById("InputXML"),
+		tmpgraphlane0 = document.getElementById("tmpgraphlane0"),
+		tmpgraphlane1 = document.getElementById("tmpgraphlane1"),
+		tmptextlane0  = document.getElementById("tmptextlane0"),
+		content       = WAVEDROM.parseWaveLanes(eval('(' + TheTextBox.value + ')'));
+
+	WAVEDROM.CleanNode(root);
+
+	this.lane.xs  = parseFloat(tmpgraphlane0.getAttribute("width"));
+	this.lane.ys  = parseFloat(tmpgraphlane0.getAttribute("height"));
+	this.lane.xg  = parseFloat(tmpgraphlane0.getAttribute("x"));
+	this.lane.y0  = parseFloat(tmpgraphlane0.getAttribute("y"));
+	this.lane.yo  = parseFloat(tmpgraphlane1.getAttribute("y")) - this.lane.y0;
+	this.lane.tgo = this.lane.xg - parseFloat(tmptextlane0.getAttribute("x"));
+	this.lane.ym  = parseFloat(tmptextlane0.getAttribute("y")) - this.lane.y0;
+
+	xmax = WAVEDROM.RenderWaveLane(root, content);
+
 	svgcontent.setAttribute('viewBox', "0 0 " + (this.lane.xg + (this.lane.xs * (xmax + 1))) + " " + (content.length * this.lane.yo + this.lane.y0 + this.lane.ys));
 };
 
