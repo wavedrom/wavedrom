@@ -5,7 +5,7 @@
 <!-- css begins -->
 		<style type="text/css">
 body       { background: #d0d0d0; margin: 0px; }
-table      { border-spacing: 0px 0px; cellspacing: 0; border: 0; cellpadding: 0; table-layout: fixed; height: 100%; width: 100%; }
+table      { border-spacing: 0px 0px; border-spacing: 0; border: 0; padding: 0; table-layout: fixed; height: 100%; width: 100%; }
 td         { width: 7px }
 #PanelA    { height: 200px; border: 1px solid; border-color: #777; }
 #PanelB    { height: 400px; }
@@ -16,9 +16,9 @@ td         { width: 7px }
 <!-- javascript begins -->
 		<script>
 var WAVEDROM = {
-	version: "0.1",
+	version: "0.2",
 	lane: {},
-	genBrick:          function (texts, extra, times) {
+	genBrick: function (texts, extra, times) {
 		"use strict";
 		var i, j, R = [];
 
@@ -114,7 +114,7 @@ WAVEDROM.CleanGroupTransforms = function ( root ) { // clean translate attribute
 	var nodes = document.getElementById(root).childNodes;
 	for ( var i = 0; i < nodes.length; i += 1 ) {
 		if ( nodes[i].nodeName === 'g' ) {
-			nodes[i].setAttributeNS( null, 'transform', 'translate(0,0)' );
+			nodes[i].setAttribute( 'transform', 'translate(0,0)' );
 		};
 	};
 };
@@ -126,7 +126,7 @@ WAVEDROM.CleanNode = function ( root ) { // clean output SVG to before adding st
 };
 
 WAVEDROM.RenderWaveForm = function (  ) {
-	var SVGNS = 'http://www.w3.org/2000/svg',
+	var svgns = 'http://www.w3.org/2000/svg',
 	  XLINKNS = 'http://www.w3.org/1999/xlink',
 	g, title, b, i, j;
 
@@ -141,29 +141,31 @@ WAVEDROM.RenderWaveForm = function (  ) {
 
 	WAVEDROM.CleanNode(root);
 
-	this.lane.xs  = parseFloat(tmpgraphlane0.getAttributeNS( null, "width" ));
-	this.lane.ys  = parseFloat(tmpgraphlane0.getAttributeNS( null, "height" ));
-	this.lane.xg  = parseFloat(tmpgraphlane0.getAttributeNS( null, "x" ));
-	this.lane.y0  = parseFloat(tmpgraphlane0.getAttributeNS( null, "y" ));
-	this.lane.yo  = parseFloat(tmpgraphlane1.getAttributeNS( null, "y" )) - this.lane.y0;
-	this.lane.tgo = this.lane.xg - parseFloat(tmptextlane0.getAttributeNS( null, "x" ));
-	this.lane.ym  = parseFloat(tmptextlane0.getAttributeNS( null, "y" )) - this.lane.y0;
+	this.lane.xs  = parseFloat(tmpgraphlane0.getAttribute( "width" ));
+	this.lane.ys  = parseFloat(tmpgraphlane0.getAttribute( "height" ));
+	this.lane.xg  = parseFloat(tmpgraphlane0.getAttribute( "x" ));
+	this.lane.y0  = parseFloat(tmpgraphlane0.getAttribute( "y" ));
+	this.lane.yo  = parseFloat(tmpgraphlane1.getAttribute( "y" )) - this.lane.y0;
+	this.lane.tgo = this.lane.xg - parseFloat(tmptextlane0.getAttribute( "x" ));
+	this.lane.ym  = parseFloat(tmptextlane0.getAttribute( "y" )) - this.lane.y0;
 
 	var xmax = 0;
 
 	for ( j = 0; j < content.length; j += 1 ) {
-		g = document.createElementNS( SVGNS, "g" );
+		g = document.createElementNS(svgns, 'g');
+// IE		g = document.createElement('g');
 		g.id = "wavelane_" + j;
-		g.setAttributeNS( null, 'transform', 'translate(0,' + ( this.lane.y0 + j * this.lane.yo) + ')' );
+		g.setAttribute('transform', 'translate(0,' + ( this.lane.y0 + j * this.lane.yo) + ')' );
 		root.insertBefore( g, root.firstChild );
 
 		if ( content[j][0] ) {
 			var lanetext = document.createTextNode( content[j][0] );
-			title = document.createElementNS( SVGNS, "text" );
-			title.setAttributeNS(null, "x", ( this.lane.xg - this.lane.tgo ) );
-			title.setAttributeNS(null, "y", this.lane.ym );
-			title.setAttributeNS(null, "fill", "blue");
-			title.setAttributeNS(null, "text-anchor", "end");
+			title = document.createElementNS( svgns, "text" );
+// IE			title = document.createElement("text");
+			title.setAttribute("x", ( this.lane.xg - this.lane.tgo ) );
+			title.setAttribute("y", this.lane.ym );
+			title.setAttribute("fill", "blue");
+			title.setAttribute("text-anchor", "end");
 			title.appendChild( lanetext );
 			g.insertBefore( title, g.firstChild );
 
@@ -171,20 +173,27 @@ WAVEDROM.RenderWaveForm = function (  ) {
 				xmax = content[j][1].length;
 			};
 			for ( i = 0; i < content[j][1].length; i += 1 ) {
-				b    = document.createElementNS( SVGNS, "use" );
+				b    = document.createElementNS( svgns, "use" );
+// IE				b    = document.createElement("use");
 				b.id = "use_" + i + "_" + j;
 				b.setAttributeNS( XLINKNS, 'xlink:href', '#' + content[j][1][i] );
-				b.setAttributeNS( null, 'transform', 'translate(' + ( this.lane.xg + i * this.lane.xs ) + ',0)' );
+// IE				b.setAttribute( 'xlink:href', '#' + content[j][1][i] );
+				b.setAttribute( 'transform', 'translate(' + ( this.lane.xg + i * this.lane.xs ) + ',0)' );
 				g.insertBefore( b, g.firstChild );
 			};
 		};
 	};
-	svgcontent.setAttributeNS( null, 'viewBox', "0 0 " + ( this.lane.xg + ( this.lane.xs * ( xmax + 1 ) ) ) + " " + ( content.length * this.lane.yo + this.lane.y0 + this.lane.ys ) );
+	svgcontent.setAttribute( 'viewBox', "0 0 " + ( this.lane.xg + ( this.lane.xs * ( xmax + 1 ) ) ) + " " + ( content.length * this.lane.yo + this.lane.y0 + this.lane.ys ) );
 };
 
 WAVEDROM.Init = function () {
 	var TheInputText = '{\n    "clk": { wave: "p........." },\n"t_0_dat": { wave: "x.=x.=.x.." },\n"t_0_req": { wave: "=.==.=.=.=" },\n"t_0_ack": { wave: "=....==..=" }\n}';
 	document.getElementById("InputXML").value = TheInputText;
+
+	if ( navigator.appName === 'Microsoft Internet Explorer') {
+		alert("Don't work with Microsoft Internet Explorer\nSorry :(\nUse Chrome or Firefox 4 instead.");
+	}
+// alert(navigator.appCodeName + "\n" + navigator.appName + "\n" + navigator.appVersion + "\n" + navigator.cookieEnabled + "\n" + navigator.platform + "\n" + navigator.userAgent);
 
 	WAVEDROM.CleanGroupTransforms("wavetemps");
 	WAVEDROM.RenderWaveForm();
@@ -209,11 +218,11 @@ WAVEDROM.Init = function () {
 									<tr><td style="height:16px"><button>Copy</button><button>Save..</button></td></tr>
 									<tr><td></td></tr>
 									<tr>
-										<td style="width: 0;">
+										<td style="width: 0">
 											<div id="PanelB">
-												<svg id="svgcontent" width="100%" height="100%" x="0" y="0" overflow="visible" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 10 10">
+												<svg id="svgcontent" width="100%" height="100%" x="0" y="0" overflow="visible" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 													<defs>
-														<g id="wavetemps">
+														<g id="wavetemps" style="display:none">
 <!-- SVG template begins -->
   <g
      id="waveframe"
@@ -289,7 +298,7 @@ WAVEDROM.Init = function () {
   </g>
   <g
      id="zzz"
-     transform="translate(30,175)">
+>
     <path
        inkscape:connector-curvature="0"
        d="m 0,20 20,0"
@@ -597,8 +606,7 @@ WAVEDROM.Init = function () {
        inkscape:connector-curvature="0" />
   </g>
   <g
-     id="xxx"
-     transform="translate(30,265)">
+     id="xxx">
     <path
        inkscape:connector-curvature="0"
        d="m 0,20 20,0"
@@ -835,7 +843,13 @@ WAVEDROM.Init = function () {
 <!-- SVG template ends -->
 														</g>
 													</defs>
-													<g id="lanes"></g>
+
+													<g id="lanes">
+														<g id="wavelane_0" transform="translate(0,10)">
+															<use id="use_39_0" xlink:href="#xxx" transform="translate(890,0)"></use>
+
+														</g>
+													</g>
 												</svg>
 											</div>
 										</td>
