@@ -272,7 +272,7 @@ WAVEDROM.RenderWaveForm = function () {
 
 WAVEDROM.Init = function () {
 	"use strict";
-	var TheInputText = '{\n    "clk": { wave: "p........." },\n"t_0_dat": { wave: "x.=x.=.x..", data: ["data1", "data2"] },\n"t_0_req": { wave: "=.==.=.=.=" },\n"t_0_ack": { wave: "=....==..=" }\n}';
+	var TheInputText = '{\n        "clk": { wave: "p........." },\n       "Data": { wave: "x.=x.=.x..", data: ["data1", "data2"] },\n    "Request": { wave: "0.10.1.0.." },\n"Acknowledge": { wave: "1....01..." }\n}';
 	document.getElementById("InputXML").value = TheInputText;
 
 	if (navigator.appName === 'Microsoft Internet Explorer') {
