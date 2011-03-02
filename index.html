@@ -127,7 +127,7 @@ WAVEDROM.parseWaveLanes = function (source) {
 		content.push([]);
 		content[content.length - 1][0] = x;
 		if (source[x].wave) {
-			content[content.length - 1][1] = WAVEDROM.parseWaveLane(source[x].wave, 1);
+			content[content.length - 1][1] = WAVEDROM.parseWaveLane(source[x].wave, this.lane.hscale);
 		} else {
 			content[content.length - 1][1] = null;
 		}
@@ -248,13 +248,30 @@ WAVEDROM.RenderWaveForm = function () {
 		root          = document.getElementById("lanes"),
 		svgcontent    = document.getElementById("svgcontent"),
 		TheTextBox    = document.getElementById("InputXML"),
+		content       = WAVEDROM.parseWaveLanes(eval('(' + TheTextBox.value + ')'));
+
+	WAVEDROM.CleanNode(root);
+
+	xmax = WAVEDROM.RenderWaveLane(root, content);
+
+	svgcontent.setAttribute('viewBox', "0 0 " + (this.lane.xg + (this.lane.xs * (xmax + 1))) + " " + (content.length * this.lane.yo + this.lane.y0 + this.lane.ys));
+};
+
+WAVEDROM.SetHScale = function (hscale) {
+	WAVEDROM.lane.hscale = parseFloat(hscale);
+	WAVEDROM.RenderWaveForm();
+};
+
+WAVEDROM.Init = function () {
+	"use strict";
+	var i,
 		tmpgraphlane0 = document.getElementById("tmpgraphlane0"),
 		tmpgraphlane1 = document.getElementById("tmpgraphlane1"),
 		tmptextlane0  = document.getElementById("tmptextlane0"),
 		tmptextlabel  = document.getElementById("tmptextlabel"),
-		content       = WAVEDROM.parseWaveLanes(eval('(' + TheTextBox.value + ')'));
+		TheInputText  = '{\n        "clk": { wave: "p........." },\n       "Data": { wave: "x.=x.=.x..", data: ["data1", "data2"] },\n    "Request": { wave: "0.10.1.0.." },\n"Acknowledge": { wave: "1....01..." }\n}';
 
-	WAVEDROM.CleanNode(root);
+	document.getElementById("InputXML").value = TheInputText;
 
 	this.lane.xs     = parseFloat(tmpgraphlane0.getAttribute("width"));
 	this.lane.ys     = parseFloat(tmpgraphlane0.getAttribute("height"));
@@ -265,21 +282,12 @@ WAVEDROM.RenderWaveForm = function () {
 	this.lane.ym     = parseFloat(tmptextlane0.getAttribute("y")) - this.lane.y0;
 	this.lane.xlabel = parseFloat(tmptextlabel.getAttribute("x"));
 
-	xmax = WAVEDROM.RenderWaveLane(root, content);
-
-	svgcontent.setAttribute('viewBox', "0 0 " + (this.lane.xg + (this.lane.xs * (xmax + 1))) + " " + (content.length * this.lane.yo + this.lane.y0 + this.lane.ys));
-};
-
-WAVEDROM.Init = function () {
-	"use strict";
-	var TheInputText = '{\n        "clk": { wave: "p........." },\n       "Data": { wave: "x.=x.=.x..", data: ["data1", "data2"] },\n    "Request": { wave: "0.10.1.0.." },\n"Acknowledge": { wave: "1....01..." }\n}';
-	document.getElementById("InputXML").value = TheInputText;
-
 	if (navigator.appName === 'Microsoft Internet Explorer') {
 		alert("Don't work with Microsoft Internet Explorer\nSorry :(\nUse Chrome or Firefox 4 instead.");
 	}
 // alert(navigator.appCodeName + "\n" + navigator.appName + "\n" + navigator.appVersion + "\n" + navigator.cookieEnabled + "\n" + navigator.platform + "\n" + navigator.userAgent);
 
+	WAVEDROM.SetHScale('1');
 	WAVEDROM.CleanGroupTransforms("wavetemps");
 	WAVEDROM.RenderWaveForm();
 };
@@ -300,7 +308,7 @@ WAVEDROM.Init = function () {
 									<tr><td></td></tr>
 									<tr><td><div id="PanelA"><textarea id="InputXML" onkeyup="WAVEDROM.RenderWaveForm()">MData</textarea></div></td></tr>
 									<tr><td></td></tr>
-									<tr><td style="height:16px"><button>Copy</button><button>Save..</button></td></tr>
+									<tr><td style="height:16px"><button>Copy</button><button>Save..</button> Horizontal Scale: <input type="range" min="0" max="5" value="1" step="1" onchange="WAVEDROM.SetHScale(this.value)"/></td></tr>
 									<tr><td></td></tr>
 									<tr>
 										<td style="width: 0">
