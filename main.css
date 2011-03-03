@@ -2,6 +2,8 @@
 body {
 	background: #d0d0d0;
 	margin: 0px;
+	font-size: 11pt;
+	font-family:"Helvetica";
 }
 table {
 	border-spacing: 0px 0px;
