@@ -17,7 +17,14 @@
 									<tr><td></td></tr>
 									<tr><td style="height:24px; text-align: right;">Powered by <a href="http://code.google.com/p/wavedrom">WaveDrom</a></td></tr>
 									<tr><td></td></tr>
-									<tr><td><div id="PanelA"><textarea id="InputXML" onkeyup="WAVEDROM.RenderWaveForm()">MData</textarea></div></td></tr>
+									<tr><td><div id="PanelA"><textarea id="InputJSON" onkeyup="WAVEDROM.RenderWaveForm()">
+{
+         "clk": { wave: "p........." },
+        "Data": { wave: "x.=x.=.x..", data: ["data1", "data2"] },
+     "Request": { wave: "0.10.1.0.." },
+ "Acknowledge": { wave: "1....01..." }
+}
+									</textarea></div></td></tr>
 									<tr><td></td></tr>
 									<tr><td style="height:32px">Clock period: <input type="range" min="0" max="5" value="1" step="1" onchange="WAVEDROM.SetHScale(this.value)"/></td></tr>
 									<tr><td></td></tr>
@@ -27,16 +34,7 @@
 												<svg id="svgcontent" width="100%" height="100%" x="0" y="0" overflow="visible" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 													<style type="text/css" >
 														<![CDATA[
-															text {
-																font-size:11pt;
-																font-style:normal;
-																font-variant:normal;
-																font-weight:normal;
-																font-stretch:normal;
-																text-align:center;
-																fill-opacity:1;
-																font-family:"Helvetica";
-															}
+															text { font-size:11pt; font-style:normal; font-variant:normal; font-weight:normal; font-stretch:normal; text-align:center; fill-opacity:1; font-family:"Helvetica"; }
 														]]>
 													</style>
 													<defs>

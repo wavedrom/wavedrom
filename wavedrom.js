@@ -262,7 +262,7 @@ WAVEDROM.RenderWaveForm = function () {
 	var xmax,
 		root          = document.getElementById("lanes"),
 		svgcontent    = document.getElementById("svgcontent"),
-		TheTextBox    = document.getElementById("InputXML"),
+		TheTextBox    = document.getElementById("InputJSON"),
 		content       = WAVEDROM.parseWaveLanes(eval('(' + TheTextBox.value + ')'));
 
 	WAVEDROM.CleanNode(root);
@@ -289,10 +289,7 @@ WAVEDROM.Init = function () {
 		tmpgraphlane1 = document.getElementById("tmpgraphlane1"),
 		tmptextlane0  = document.getElementById("tmptextlane0"),
 		tmptextlabel  = document.getElementById("tmptextlabel"),
-		tmpview       = document.getElementById("tmpview"),
-		TheInputText  = '{\n        "clk": { wave: "p........." },\n       "Data": { wave: "x.=x.=.x..", data: ["data1", "data2"] },\n    "Request": { wave: "0.10.1.0.." },\n"Acknowledge": { wave: "1....01..." }\n}';
-
-	document.getElementById("InputXML").value = TheInputText;
+		tmpview       = document.getElementById("tmpview");
 
 	this.lane.xs       = parseFloat(tmpgraphlane0.getAttribute("width"));
 	this.lane.ys       = parseFloat(tmpgraphlane0.getAttribute("height"));
