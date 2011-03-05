@@ -2,6 +2,7 @@
 var WAVEDROM = {
 	version: "0.3",
 	lane: {},
+	canvas: {},
 	genBrick: function (texts, extra, times) {
 		"use strict";
 		var i, j, R = [];
@@ -188,16 +189,6 @@ WAVEDROM.RenderWaveLane = function (root, content) {
 			g.insertBefore(title, g.firstChild);
 
 			if (content[j][1]) {
-				for (i = 0; i < content[j][1].length; i += 1) {
-					b    = document.createElementNS(svgns, "use");
-	// IE				b    = document.createElement("use");
-					b.id = "use_" + i + "_" + j;
-					b.setAttributeNS(xlinkns, 'xlink:href', '#' + content[j][1][i]);
-	// IE				b.setAttribute( 'xlink:href', '#' + content[j][1][i] );
-					b.setAttribute('transform', 'translate(' + (this.lane.xg + i * this.lane.xs) + ',0)');
-					g.insertBefore(b, g.firstChild);
-				}
-
 				if (content[j][2] && content[j][2].length) {
 					labels = WAVEDROM.FindLaneMarkers(content[j][1]);
 
@@ -216,7 +207,16 @@ WAVEDROM.RenderWaveLane = function (root, content) {
 						}
 					}
 				}
-				if (content[j][1].length > xmax) {
+				for (i = 0; i < content[j][1].length; i += 1) {
+					b    = document.createElementNS(svgns, "use");
+	// IE				b    = document.createElement("use");
+					b.id = "use_" + i + "_" + j;
+					b.setAttributeNS(xlinkns, 'xlink:href', '#' + content[j][1][i]);
+	// IE				b.setAttribute( 'xlink:href', '#' + content[j][1][i] );
+					b.setAttribute('transform', 'translate(' + (this.lane.xg + i * this.lane.xs) + ',0)');
+					g.insertBefore(b, g.firstChild);
+				}
+					if (content[j][1].length > xmax) {
 					xmax = content[j][1].length;
 				}
 			}
@@ -224,6 +224,38 @@ WAVEDROM.RenderWaveLane = function (root, content) {
 	}
 	return xmax;
 };
+
+WAVEDROM.RenderMarks = function (root, content, xmax) {
+	"use strict";
+	var i, marks, mstep, mmstep, gmark, tmark, labeltext, gy, ty, margin,
+			svgns   = 'http://www.w3.org/2000/svg',
+		xlinkns = 'http://www.w3.org/1999/xlink';
+
+	mstep  = 2 * (this.lane.hscale + 1);
+	mmstep = mstep * this.lane.xs;
+	marks  = xmax / mstep + 1;
+	margin = 5;
+	gy     = content.length * this.lane.yo + this.lane.y0 + this.lane.ys;
+
+	for (i = 0; i < marks; i += 1) {
+		gmark = document.createElementNS(svgns, "path");
+		gmark.id = ("gmark_" + i);
+		gmark.setAttribute('d', 'm ' + (this.lane.xg + i * mmstep) +',5 0,' + (gy - 2 * margin));
+		gmark.setAttribute('style', 'fill:none;stroke:#888888;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:2, 2');
+		root.insertBefore(gmark, root.firstChild);
+	}
+	for (i = 1; i < marks; i += 1) {
+		labeltext = document.createTextNode(i);
+		tmark = document.createElementNS(svgns, "text");
+		tmark.setAttribute("x", (this.lane.xg + (i * mmstep) - mmstep/2));
+		tmark.setAttribute("y", gy - margin);
+		tmark.setAttribute("text-anchor", "middle");
+		tmark.setAttribute("fill", "#AAAAAA");
+		tmark.appendChild(labeltext);
+		root.insertBefore(tmark, root.firstChild);
+	}
+};
+
 
 WAVEDROM.RenderWaveForm = function () {
 	"use strict";
@@ -236,6 +268,7 @@ WAVEDROM.RenderWaveForm = function () {
 	WAVEDROM.CleanNode(root);
 
 	xmax = WAVEDROM.RenderWaveLane(root, content);
+	WAVEDROM.RenderMarks(root, content, xmax);
 
 	svgcontent.setAttribute('viewBox', "0 0 " + (this.lane.xg + (this.lane.xs * (xmax + 1))) + " " + (content.length * this.lane.yo + this.lane.y0 + this.lane.ys));
 };
@@ -256,18 +289,20 @@ WAVEDROM.Init = function () {
 		tmpgraphlane1 = document.getElementById("tmpgraphlane1"),
 		tmptextlane0  = document.getElementById("tmptextlane0"),
 		tmptextlabel  = document.getElementById("tmptextlabel"),
+		tmpview       = document.getElementById("tmpview"),
 		TheInputText  = '{\n        "clk": { wave: "p........." },\n       "Data": { wave: "x.=x.=.x..", data: ["data1", "data2"] },\n    "Request": { wave: "0.10.1.0.." },\n"Acknowledge": { wave: "1....01..." }\n}';
 
 	document.getElementById("InputXML").value = TheInputText;
 
-	this.lane.xs     = parseFloat(tmpgraphlane0.getAttribute("width"));
-	this.lane.ys     = parseFloat(tmpgraphlane0.getAttribute("height"));
-	this.lane.xg     = parseFloat(tmpgraphlane0.getAttribute("x"));
-	this.lane.y0     = parseFloat(tmpgraphlane0.getAttribute("y"));
-	this.lane.yo     = parseFloat(tmpgraphlane1.getAttribute("y")) - this.lane.y0;
-	this.lane.tgo    = this.lane.xg - parseFloat(tmptextlane0.getAttribute("x"));
-	this.lane.ym     = parseFloat(tmptextlane0.getAttribute("y")) - this.lane.y0;
-	this.lane.xlabel = parseFloat(tmptextlabel.getAttribute("x"));
+	this.lane.xs       = parseFloat(tmpgraphlane0.getAttribute("width"));
+	this.lane.ys       = parseFloat(tmpgraphlane0.getAttribute("height"));
+	this.lane.xg       = parseFloat(tmpgraphlane0.getAttribute("x"));
+	this.lane.y0       = parseFloat(tmpgraphlane0.getAttribute("y"));
+	this.lane.yo       = parseFloat(tmpgraphlane1.getAttribute("y")) - this.lane.y0;
+	this.lane.tgo      = this.lane.xg - parseFloat(tmptextlane0.getAttribute("x"));
+	this.lane.ym       = parseFloat(tmptextlane0.getAttribute("y")) - this.lane.y0;
+	this.lane.xlabel   = parseFloat(tmptextlabel.getAttribute("x"));
+	this.canvas.heigth = parseFloat(tmpview.getAttribute("height"));
 
 	if (navigator.appName === 'Microsoft Internet Explorer') {
 		alert("Don't work with Microsoft Internet Explorer\nSorry :(\nUse Chrome or Firefox 4 instead.");
