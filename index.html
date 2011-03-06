@@ -18,13 +18,14 @@
 									<tr><td style="height:24px; text-align: right;">Powered by <a href="http://code.google.com/p/wavedrom">WaveDrom</a></td></tr>
 									<tr><td></td></tr>
 									<tr><td><div id="PanelA"><textarea id="InputJSON" onkeyup="WAVEDROM.RenderWaveForm()">
-{
-         "clk": { wave: "p........." },
-        "Data": { wave: "x.=x.=.x..", data: ["data1", "data2"] },
-     "Request": { wave: "0.10.1.0.." },
- "Acknowledge": { wave: "1....01..." }
-}
-									</textarea></div></td></tr>
+{ "signal" : [
+  { "name": "clk",         "wave": "p........." },
+  { "name": "Data",        "wave": "x.=x.=.x..", "data": ["data1", "data2"] },
+  { "name": "Request",     "wave": "0.10.1.0.." },
+  {},
+  { "name": "Acknowledge", "wave": "1....01..." }
+]}
+</textarea></div></td></tr>
 									<tr><td></td></tr>
 									<tr><td style="height:32px">Clock period: <input type="range" min="0" max="5" value="1" step="1" onchange="WAVEDROM.SetHScale(this.value)"/></td></tr>
 									<tr><td></td></tr>

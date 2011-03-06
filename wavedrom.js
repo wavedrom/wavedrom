@@ -105,20 +105,22 @@ var WAVEDROM = {
 
 WAVEDROM.parseWaveLanes = function (source) {
 	"use strict";
-	var x, content = [];
+	var x, content = [];	
 
-	for (x in source) {
-		content.push([]);
-		content[content.length - 1][0] = x;
-		if (source[x].wave) {
-			content[content.length - 1][1] = WAVEDROM.parseWaveLane(source[x].wave, this.lane.hscale);
-		} else {
-			content[content.length - 1][1] = null;
-		}
-		if (source[x].data) {
-			content[content.length - 1][2] = source[x].data;
-		} else {
-			content[content.length - 1][2] = null;
+	if (source.signal) {
+		for (x in source.signal) {
+			content.push([]);
+			content[content.length - 1][0] = source.signal[x].name;
+			if (source.signal[x].wave) {
+				content[content.length - 1][1] = WAVEDROM.parseWaveLane(source.signal[x].wave, this.lane.hscale);
+			} else {
+				content[content.length - 1][1] = null;
+			}
+			if (source.signal[x].data) {
+				content[content.length - 1][2] = source.signal[x].data;
+			} else {
+				content[content.length - 1][2] = null;
+			}
 		}
 	}
 	return content;
