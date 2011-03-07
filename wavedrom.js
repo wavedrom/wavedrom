@@ -1,6 +1,6 @@
 /*jslint white: true, onevar: true, undef: true, newcap: true, nomen: true, regexp: true, plusplus: true, bitwise: true, browser: true, strict: true, evil: true, maxerr: 50, indent: 4 */
 var WAVEDROM = {
-	version: "0.3",
+	version: "0.4",
 	lane: {},
 	canvas: {},
 	genBrick: function (texts, extra, times) {
@@ -32,37 +32,34 @@ var WAVEDROM = {
 	genFirstWaveBrick: function (text,  extra, times) {
 		"use strict";
 		switch (text) {
-		case 'p': return this.genBrick(['pclk', 'ooo', 'nclk', 'zzz'], extra, times);
-		case 'n': return this.genBrick(['nclk', 'zzz', 'pclk', 'ooo'], extra, times);
+		case 'p': return this.genBrick(['pclk', '111', 'nclk', '000'], extra, times);
+		case 'n': return this.genBrick(['nclk', '000', 'pclk', '111'], extra, times);
 		case '=': return this.genBrick(['vvv'], extra, times);
-		case '0': return this.genBrick(['zzz'], extra, times);
-		case '1': return this.genBrick(['ooo'], extra, times);
+		case '0': return this.genBrick(['000'], extra, times);
+		case '1': return this.genBrick(['111'], extra, times);
+		case 'd': return this.genBrick(['ddd'], extra, times);
+		case 'u': return this.genBrick(['uuu'], extra, times);
+		case 'z': return this.genBrick(['zzz'], extra, times);
 		default:  return this.genBrick(['xxx'], extra, times);
 		}
 	},
 	genWaveBrick:      function (text,  extra, times) {
 		"use strict";
 		var v, H = {
-			'00': ['zmz', 'zzz'],
-			'01': ['zmo', 'ooo'],
-			'0=': ['zmv', 'vvv'],
-			'0x': ['zmx', 'xxx'],
-			'10': ['omz', 'zzz'],
-			'11': ['omo', 'ooo'],
-			'1=': ['omv', 'vvv'],
-			'1x': ['omx', 'xxx'],
-			'=0': ['vmz', 'zzz'],
-			'=1': ['vmo', 'ooo'],
-			'==': ['vmv', 'vvv'],
-			'=x': ['vmx', 'xxx'],
-			'x0': ['xmz', 'zzz'],
-			'x1': ['xmo', 'ooo'],
-			'x=': ['xmv', 'vvv'],
-			'xx': ['xmx', 'xxx'],
-			'.0': ['xmz', 'zzz'],
-			'.1': ['xmo', 'ooo'],
-			'.=': ['xmv', 'vvv'],
-			'.x': ['xmx', 'xxx']
+			'00': ['0m0', '000'], '01': ['0m1', '111'], '0=': ['0mv', 'vvv'], '0x': ['0mx', 'xxx'],
+			'0d': ['0md', 'ddd'], '0u': ['0mu', 'uuu'], '0z': ['0mz', 'zzz'], '10': ['1m0', '000'],
+			'11': ['1m1', '111'], '1=': ['1mv', 'vvv'], '1x': ['1mx', 'xxx'], '1d': ['1md', 'ddd'],
+			'1u': ['1mu', 'uuu'], '1z': ['1mz', 'zzz'], '=0': ['vm0', '000'], '=1': ['vm1', '111'],
+			'==': ['vmv', 'vvv'], '=x': ['vmx', 'xxx'], '=d': ['vmd', 'ddd'], '=u': ['vmu', 'uuu'],
+			'=z': ['vmz', 'zzz'], 'x0': ['xm0', '000'], 'x1': ['xm1', '111'], 'x=': ['xmv', 'vvv'],
+			'xx': ['xmx', 'xxx'], 'xd': ['xmd', 'ddd'], 'xu': ['xmu', 'uuu'], 'xz': ['xmz', 'zzz'],
+			'.0': ['xm0', '000'], '.1': ['xm1', '111'], '.=': ['xmv', 'vvv'], '.x': ['xmx', 'xxx'],
+			'.d': ['xmd', 'ddd'], '.u': ['xmu', 'uuu'], '.z': ['xmz', 'zzz'], 'd0': ['dm0', '000'],
+			'd1': ['dm1', '111'], 'd=': ['dmv', 'vvv'], 'dx': ['dmx', 'xxx'], 'dd': ['dmd', 'ddd'],
+			'du': ['dmu', 'uuu'], 'dz': ['dmz', 'zzz'], 'u0': ['um0', '000'], 'u1': ['um1', '111'],
+			'u=': ['umv', 'vvv'], 'ux': ['umx', 'xxx'], 'ud': ['umd', 'ddd'], 'uu': ['umu', 'uuu'],
+			'uz': ['umz', 'zzz'], 'z0': ['zm0', '000'], 'z1': ['zm1', '111'], 'z=': ['zmv', 'vvv'],
+			'zx': ['zmx', 'xxx'], 'zd': ['zmd', 'ddd'], 'zu': ['zmu', 'uuu'], 'zz': ['zmz', 'zzz']
 		};
 
 		for (v in H) {
@@ -163,7 +160,7 @@ WAVEDROM.FindLaneMarkers = function (lanetext) {
 	}
 	
 	return ret;
-}
+};
 
 WAVEDROM.RenderWaveLane = function (root, content) {
 	"use strict";
@@ -242,14 +239,14 @@ WAVEDROM.RenderMarks = function (root, content, xmax) {
 	for (i = 0; i < marks; i += 1) {
 		gmark = document.createElementNS(svgns, "path");
 		gmark.id = ("gmark_" + i);
-		gmark.setAttribute('d', 'm ' + (this.lane.xg + i * mmstep) +',5 0,' + (gy - 2 * margin));
+		gmark.setAttribute('d', 'm ' + (this.lane.xg + i * mmstep) + ',5 0,' + (gy - 2 * margin));
 		gmark.setAttribute('style', 'fill:none;stroke:#888888;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:2, 2');
 		root.insertBefore(gmark, root.firstChild);
 	}
 	for (i = 1; i < marks; i += 1) {
 		labeltext = document.createTextNode(i);
 		tmark = document.createElementNS(svgns, "text");
-		tmark.setAttribute("x", (this.lane.xg + (i * mmstep) - mmstep/2));
+		tmark.setAttribute("x", (this.lane.xg + (i * mmstep) - mmstep / 2));
 		tmark.setAttribute("y", gy - margin);
 		tmark.setAttribute("text-anchor", "middle");
 		tmark.setAttribute("fill", "#AAAAAA");
