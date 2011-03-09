@@ -258,22 +258,41 @@ WAVEDROM.RenderMarks = function (root, content, xmax) {
 
 WAVEDROM.RenderWaveForm = function () {
 	"use strict";
-	var xmax,
-		root          = document.getElementById("lanes"),
-		svgcontent    = document.getElementById("svgcontent"),
-		TheTextBox    = document.getElementById("InputJSON"),
-		content       = WAVEDROM.parseWaveLanes(eval('(' + TheTextBox.value + ')'));
+	var xmax, root, svgcontent, TheTextBox, content, width, height, uwidth, uheight;
+
+	root          = document.getElementById("lanes");
+	svgcontent    = document.getElementById("svgcontent");
+	TheTextBox    = document.getElementById("InputJSON");
+	content       = WAVEDROM.parseWaveLanes(eval('(' + TheTextBox.value + ')'));
 
 	WAVEDROM.CleanNode(root);
 
 	xmax = WAVEDROM.RenderWaveLane(root, content);
 	WAVEDROM.RenderMarks(root, content, xmax);
 
-	svgcontent.setAttribute('viewBox', "0 0 " + (this.lane.xg + (this.lane.xs * (xmax + 1))) + " " + (content.length * this.lane.yo + this.lane.y0 + this.lane.ys));
+	width  = (this.lane.xg + (this.lane.xs * (xmax + 1)));
+	height = (content.length * this.lane.yo + this.lane.y0 + this.lane.ys);
+
+	if (this.lane.scale === 3) {
+		uwidth  = '100%';
+		uheight = '100%';
+	} else {
+		uwidth  = this.lane.scale * width;
+		uheight = this.lane.scale * height;
+	}
+	
+	svgcontent.setAttribute('viewBox', "0 0 " + width + " " + height);
+	svgcontent.setAttribute('width', uwidth);
+	svgcontent.setAttribute('height', uheight);
 };
 
 WAVEDROM.SetHScale = function (hscale) {
 	WAVEDROM.lane.hscale = parseFloat(hscale);
+	WAVEDROM.RenderWaveForm();
+};
+
+WAVEDROM.SetScale = function (scale) {
+	WAVEDROM.lane.scale = parseFloat(scale);
 	WAVEDROM.RenderWaveForm();
 };
 
@@ -306,6 +325,7 @@ WAVEDROM.Init = function () {
 // alert(navigator.appCodeName + "\n" + navigator.appName + "\n" + navigator.appVersion + "\n" + navigator.cookieEnabled + "\n" + navigator.platform + "\n" + navigator.userAgent);
 
 	WAVEDROM.SetHScale('1');
+	WAVEDROM.SetScale('3');
 	WAVEDROM.CleanGroupTransforms("wavetemps");
 	WAVEDROM.RenderWaveForm();
 	WAVEDROM.resize();
