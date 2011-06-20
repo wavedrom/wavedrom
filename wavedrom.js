@@ -3,6 +3,7 @@ var WAVEDROM = {
 	version: "0.4",
 	lane: {},
 	canvas: {},
+	panela: {},
 	genBrick: function (texts, extra, times) {
 		"use strict";
 		var i, j, R = [];
@@ -286,6 +287,22 @@ WAVEDROM.RenderWaveForm = function () {
 	svgcontent.setAttribute('height', uheight);
 };
 
+WAVEDROM.ExpandInputWindow = function () {
+	if (WAVEDROM.panela.ys < (0.707 * window.innerHeight)) {
+		WAVEDROM.panela.ys += 50;
+		WAVEDROM.resize();
+		WAVEDROM.resizea();
+	}
+};
+
+WAVEDROM.CollapseInputWindow = function () {
+	if (WAVEDROM.panela.ys > 100) {
+		WAVEDROM.panela.ys -= 50;
+		WAVEDROM.resize();
+		WAVEDROM.resizea();
+	}
+};
+
 WAVEDROM.SetHScale = function (hscale) {
 	WAVEDROM.lane.hscale = parseFloat(hscale);
 	WAVEDROM.RenderWaveForm();
@@ -296,8 +313,12 @@ WAVEDROM.SetScale = function (scale) {
 	WAVEDROM.RenderWaveForm();
 };
 
+WAVEDROM.resizea = function () {
+	document.getElementById('PanelA').style.height = WAVEDROM.panela.ys + 'px';
+};
+
 WAVEDROM.resize = function () {
-	document.getElementById('PanelB').style.height = (window.innerHeight - (7+16+7+200+7+16+7+16+7)) + 'px';
+	document.getElementById('PanelB').style.height = (window.innerHeight - (7+16+7+(WAVEDROM.panela.ys)+7+16+7+16+7)) + 'px';
 };
 
 WAVEDROM.Init = function () {
@@ -318,6 +339,7 @@ WAVEDROM.Init = function () {
 	this.lane.ym       = parseFloat(tmptextlane0.getAttribute("y")) - this.lane.y0;
 	this.lane.xlabel   = parseFloat(tmptextlabel.getAttribute("x"));
 	this.canvas.heigth = parseFloat(tmpview.getAttribute("height"));
+	this.panela.ys     = 250;
 
 	if (navigator.appName === 'Microsoft Internet Explorer') {
 		alert("Don't work with Microsoft Internet Explorer\nSorry :(\nUse Chrome or Firefox 4 instead.");
@@ -329,6 +351,7 @@ WAVEDROM.Init = function () {
 	WAVEDROM.CleanGroupTransforms("wavetemps");
 	WAVEDROM.RenderWaveForm();
 	WAVEDROM.resize();
+	WAVEDROM.resizea();
 };
 
 window.onresize = WAVEDROM.resize;
