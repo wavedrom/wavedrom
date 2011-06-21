@@ -95,6 +95,38 @@ var WAVEDROM = {
 	}
 };
 
+WAVEDROM.RenderGaps = function (root, source) {
+	"use strict";
+	var i, j, g, b, pos, Stack = [], text,
+		svgns   = 'http://www.w3.org/2000/svg',
+		xlinkns = 'http://www.w3.org/1999/xlink';
+
+	if (source.signal) {
+		for (i in source.signal) {
+			g = document.createElementNS(svgns, 'g');
+			g.id = "wavegap_" + j;
+			g.setAttribute('transform', 'translate(0,' + (this.lane.y0 + i * this.lane.yo) + ')');
+			root.insertBefore(g, root.firstChild);
+
+			text = source.signal[i].wave;
+			if (text) {
+				Stack = text.split('');
+				pos = 0;
+				while (Stack.length) {
+					if (Stack.shift() === '|') {
+						b    = document.createElementNS(svgns, "use");
+						b.id = "guse_" + pos + "_" + i;
+						b.setAttributeNS(xlinkns, 'xlink:href', '#gap');
+						b.setAttribute('transform', 'translate(' + (this.lane.xg +  ((2 * pos + 1) * (this.lane.hscale + 1) * this.lane.xs)) + ',0)');
+						g.insertBefore(b, g.firstChild);
+					}
+					pos += 1;
+				}
+			}
+		}
+	}	
+};
+
 WAVEDROM.parseWaveLanes = function (source) {
 	"use strict";
 	var x, content = [];
@@ -250,18 +282,19 @@ WAVEDROM.RenderMarks = function (root, content, xmax) {
 	}
 };
 
-
 WAVEDROM.RenderWaveForm = function () {
 	"use strict";
-	var xmax, root, svgcontent, TheTextBox, content, width, height, uwidth, uheight;
+	var xmax, root, svgcontent, TheTextBox, content, source, width, height, uwidth, uheight;
 
 	root          = document.getElementById("lanes");
 	svgcontent    = document.getElementById("svgcontent");
 	TheTextBox    = document.getElementById("InputJSON");
-	content       = WAVEDROM.parseWaveLanes(eval('(' + TheTextBox.value + ')'));
+	source        = eval('(' + TheTextBox.value + ')');
+	content       = WAVEDROM.parseWaveLanes(source);
 
 	WAVEDROM.CleanNode(root);
 
+	WAVEDROM.RenderGaps(root, source);
 	xmax = WAVEDROM.RenderWaveLane(root, content);
 	WAVEDROM.RenderMarks(root, content, xmax);
 
