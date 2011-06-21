@@ -47,20 +47,14 @@ var WAVEDROM = {
 	genWaveBrick:      function (text,  extra, times) {
 		"use strict";
 		var v, H = {
-			'00': ['0m0', '000'], '01': ['0m1', '111'], '0=': ['0mv', 'vvv'], '0x': ['0mx', 'xxx'],
-			'0d': ['0md', 'ddd'], '0u': ['0mu', 'uuu'], '0z': ['0mz', 'zzz'], '10': ['1m0', '000'],
-			'11': ['1m1', '111'], '1=': ['1mv', 'vvv'], '1x': ['1mx', 'xxx'], '1d': ['1md', 'ddd'],
-			'1u': ['1mu', 'uuu'], '1z': ['1mz', 'zzz'], '=0': ['vm0', '000'], '=1': ['vm1', '111'],
-			'==': ['vmv', 'vvv'], '=x': ['vmx', 'xxx'], '=d': ['vmd', 'ddd'], '=u': ['vmu', 'uuu'],
-			'=z': ['vmz', 'zzz'], 'x0': ['xm0', '000'], 'x1': ['xm1', '111'], 'x=': ['xmv', 'vvv'],
-			'xx': ['xmx', 'xxx'], 'xd': ['xmd', 'ddd'], 'xu': ['xmu', 'uuu'], 'xz': ['xmz', 'zzz'],
-			'.0': ['xm0', '000'], '.1': ['xm1', '111'], '.=': ['xmv', 'vvv'], '.x': ['xmx', 'xxx'],
-			'.d': ['xmd', 'ddd'], '.u': ['xmu', 'uuu'], '.z': ['xmz', 'zzz'], 'd0': ['dm0', '000'],
-			'd1': ['dm1', '111'], 'd=': ['dmv', 'vvv'], 'dx': ['dmx', 'xxx'], 'dd': ['dmd', 'ddd'],
-			'du': ['dmu', 'uuu'], 'dz': ['dmz', 'zzz'], 'u0': ['um0', '000'], 'u1': ['um1', '111'],
-			'u=': ['umv', 'vvv'], 'ux': ['umx', 'xxx'], 'ud': ['umd', 'ddd'], 'uu': ['umu', 'uuu'],
-			'uz': ['umz', 'zzz'], 'z0': ['zm0', '000'], 'z1': ['zm1', '111'], 'z=': ['zmv', 'vvv'],
-			'zx': ['zmx', 'xxx'], 'zd': ['zmd', 'ddd'], 'zu': ['zmu', 'uuu'], 'zz': ['zmz', 'zzz']
+			'00': ['0m0', '000'], '01': ['0m1', '111'], '0=': ['0mv', 'vvv'], '0x': ['0mx', 'xxx'], '0d': ['0md', 'ddd'], '0u': ['0mu', 'uuu'], '0z': ['0mz', 'zzz'],
+			'10': ['1m0', '000'], '11': ['1m1', '111'], '1=': ['1mv', 'vvv'], '1x': ['1mx', 'xxx'], '1d': ['1md', 'ddd'], '1u': ['1mu', 'uuu'], '1z': ['1mz', 'zzz'],
+			'=0': ['vm0', '000'], '=1': ['vm1', '111'], '==': ['vmv', 'vvv'], '=x': ['vmx', 'xxx'], '=d': ['vmd', 'ddd'], '=u': ['vmu', 'uuu'], '=z': ['vmz', 'zzz'],
+			'x0': ['xm0', '000'], 'x1': ['xm1', '111'], 'x=': ['xmv', 'vvv'], 'xx': ['xmx', 'xxx'], 'xd': ['xmd', 'ddd'], 'xu': ['xmu', 'uuu'], 'xz': ['xmz', 'zzz'],
+			'.0': ['xm0', '000'], '.1': ['xm1', '111'], '.=': ['xmv', 'vvv'], '.x': ['xmx', 'xxx'], '.d': ['xmd', 'ddd'], '.u': ['xmu', 'uuu'], '.z': ['xmz', 'zzz'],
+			'd0': ['dm0', '000'], 'd1': ['dm1', '111'], 'd=': ['dmv', 'vvv'], 'dx': ['dmx', 'xxx'], 'dd': ['dmd', 'ddd'], 'du': ['dmu', 'uuu'], 'dz': ['dmz', 'zzz'],
+			'u0': ['um0', '000'], 'u1': ['um1', '111'], 'u=': ['umv', 'vvv'], 'ux': ['umx', 'xxx'], 'ud': ['umd', 'ddd'], 'uu': ['umu', 'uuu'], 'uz': ['umz', 'zzz'],
+			'z0': ['zm0', '000'], 'z1': ['zm1', '111'], 'z=': ['zmv', 'vvv'], 'zx': ['zmx', 'xxx'], 'zd': ['zmd', 'ddd'], 'zu': ['zmu', 'uuu'], 'zz': ['zmz', 'zzz']
 		};
 
 		for (v in H) {
@@ -81,7 +75,7 @@ var WAVEDROM = {
 		}
 
 		Repeats = 1;
-		while (Stack[0] === '.') { // repeaters parser
+		while (Stack[0] === '.' || Stack[0] === '|' ) { // repeaters parser
 			Stack.shift();
 			Repeats += 1;
 		}
@@ -91,7 +85,7 @@ var WAVEDROM = {
 			Top  = Next;
 			Next = Stack.shift();
 			Repeats = 1;
-			while (Stack[0] === '.') { // repeaters parser
+			while (Stack[0] === '.' || Stack[0] === '|') { // repeaters parser
 				Stack.shift();
 				Repeats += 1;
 			}
@@ -103,7 +97,7 @@ var WAVEDROM = {
 
 WAVEDROM.parseWaveLanes = function (source) {
 	"use strict";
-	var x, content = [];	
+	var x, content = [];
 
 	if (source.signal) {
 		for (x in source.signal) {

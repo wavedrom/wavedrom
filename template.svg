@@ -43,9 +43,9 @@
      showgrid="true"
      inkscape:document-units="px"
      units="px"
-     inkscape:zoom="3.9262673"
-     inkscape:cx="129.25"
-     inkscape:cy="172.25"
+     inkscape:zoom="3.6514286"
+     inkscape:cx="150"
+     inkscape:cy="175"
      inkscape:window-x="10"
      inkscape:window-y="6"
      inkscape:window-maximized="0"
@@ -1328,6 +1328,28 @@
        d="m 0,10 20,0"
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="oz_40_25_1-7-2-3-4"
+       sodipodi:nodetypes="cc" />
+  </g>
+  <g
+     id="gap"
+     transform="translate(105,110)">
+    <path
+       inkscape:connector-curvature="0"
+       d="m 7,-5 -4,0 c -5,0 -5,30 -10,30 l 4,0 C 2,25 2,-5 7,-5 z"
+       style="fill:#ffffff;stroke:none"
+       id="zmo_120_40-2-7-7-6-7"
+       sodipodi:nodetypes="csccc" />
+    <path
+       id="zmo_120_40-2-7-7"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="M -7,25 C -2,25 -2,-5 3,-5"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       id="zmo_120_40-2-7-7-6"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="M -3,25 C 2,25 2,-5 7,-5"
+       inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
   </g>
 </svg>
