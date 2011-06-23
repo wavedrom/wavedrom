@@ -302,8 +302,10 @@ WAVEDROM.RenderWaveForm = function () {
 	height = (content.length * this.lane.yo + this.lane.y0 + this.lane.ys);
 
 	if (this.lane.scale === 3) {
-		uwidth  = '100%';
-		uheight = '100%';
+//		uwidth  = '100%';
+		uwidth  = (window.innerWidth - 10) + 'px';
+//		uheight = '100%';
+		uheight = (window.innerHeight - (10+7+16+7+(WAVEDROM.panela.ys)+7+16+7+16+7)) + 'px';
 	} else {
 		uwidth  = this.lane.scale * width;
 		uheight = this.lane.scale * height;
@@ -346,6 +348,7 @@ WAVEDROM.resizea = function () {
 
 WAVEDROM.resize = function () {
 	document.getElementById('PanelB').style.height = (window.innerHeight - (7+16+7+(WAVEDROM.panela.ys)+7+16+7+16+7)) + 'px';
+	WAVEDROM.RenderWaveForm();
 };
 
 WAVEDROM.Init = function () {
@@ -366,7 +369,7 @@ WAVEDROM.Init = function () {
 	this.lane.ym       = parseFloat(tmptextlane0.getAttribute("y")) - this.lane.y0;
 	this.lane.xlabel   = parseFloat(tmptextlabel.getAttribute("x"));
 	this.canvas.heigth = parseFloat(tmpview.getAttribute("height"));
-	this.panela.ys     = 250;
+	this.panela.ys     = 200;
 
 	if (navigator.appName === 'Microsoft Internet Explorer') {
 		alert("Don't work with Microsoft Internet Explorer\nSorry :(\nUse Chrome or Firefox 4 instead.");
