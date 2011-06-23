@@ -347,7 +347,7 @@ WAVEDROM.resizea = function () {
 };
 
 WAVEDROM.resize = function () {
-	document.getElementById('PanelB').style.height = (window.innerHeight - (7+16+7+(WAVEDROM.panela.ys)+7+16+7+16+7)) + 'px';
+	document.getElementById('PanelB').style.height = (window.innerHeight - (10+7+16+7+(WAVEDROM.panela.ys)+7+16+7+16+7)) + 'px';
 	WAVEDROM.RenderWaveForm();
 };
 
