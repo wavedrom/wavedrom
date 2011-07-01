@@ -312,7 +312,7 @@ WAVEDROM.RenderWaveForm = function () {
 
 	if (this.lane.scale === 3) {
 //		uwidth  = '100%';
-		uwidth  = (window.innerWidth - 10) + 'px';
+		uwidth  = (window.innerWidth - 15) + 'px';
 //		uheight = '100%';
 		uheight = (window.innerHeight - (10+7+16+7+(WAVEDROM.panela.ys)+7+16+7+16+7)) + 'px';
 	} else {
