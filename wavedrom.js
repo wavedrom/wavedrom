@@ -1,6 +1,6 @@
-/*jslint white: true, onevar: true, undef: true, newcap: true, nomen: true, regexp: true, plusplus: true, bitwise: true, browser: true, strict: true, evil: true, maxerr: 50, indent: 4 */
+/*jslint white: true, onevar: true, undef: true, newcap: true, nomen: true, regexp: true, plusplus: true, bitwise: true, browser: true, strict: true, evil: true, maxerr: 500, indent: 4 */
 var WAVEDROM = {
-	version: "0.4",
+	version: "0.5",
 	lane: {},
 	canvas: {},
 	panela: {},
@@ -48,24 +48,23 @@ var WAVEDROM = {
 		default:  return this.genBrick(['xxx'], extra, times);
 		}
 	},
-	genWaveBrick:      function (text,  extra, times) {
+	genWaveBrick: function (text, extra, times) {
 		"use strict";
 		var v, H = {
-			'00': ['0m0',   '000'], '01': ['0m1',   '111'], '0x': ['0mx',   'xxx'], '0d': ['0md',   'ddd'], '0u': ['0mu',   'uuu'], '0z': ['0mz',   'zzz'],     '0=': ['0mv-2',   'vvv-2'], '02': ['0mv-2',   'vvv-2'], '03': ['0mv-3',   'vvv-3'], '04': ['0mv-4',   'vvv-4'], '05': ['0mv-5',   'vvv-5'], 
-			'10': ['1m0',   '000'], '11': ['1m1',   '111'], '1x': ['1mx',   'xxx'], '1d': ['1md',   'ddd'], '1u': ['1mu',   'uuu'], '1z': ['1mz',   'zzz'],     '1=': ['1mv-2',   'vvv-2'], '12': ['1mv-2',   'vvv-2'], '13': ['1mv-3',   'vvv-3'], '14': ['1mv-4',   'vvv-4'], '15': ['1mv-5',   'vvv-5'], 
-			'x0': ['xm0',   '000'], 'x1': ['xm1',   '111'], 'xx': ['xmx',   'xxx'], 'xd': ['xmd',   'ddd'], 'xu': ['xmu',   'uuu'], 'xz': ['xmz',   'zzz'],     'x=': ['xmv-2',   'vvv-2'], 'x2': ['xmv-2',   'vvv-2'], 'x3': ['xmv-3',   'vvv-3'], 'x4': ['xmv-4',   'vvv-4'], 'x5': ['xmv-5',   'vvv-5'], 
-			'.0': ['xm0',   '000'], '.1': ['xm1',   '111'], '.x': ['xmx',   'xxx'], '.d': ['xmd',   'ddd'], '.u': ['xmu',   'uuu'], '.z': ['xmz',   'zzz'],     '.=': ['xmv-2',   'vvv-2'], '.2': ['xmv-2',   'vvv-2'], '.3': ['xmv-3',   'vvv-3'], '.4': ['xmv-4',   'vvv-4'], '.5': ['xmv-5',   'vvv-5'], 
-			'd0': ['dm0',   '000'], 'd1': ['dm1',   '111'], 'dx': ['dmx',   'xxx'], 'dd': ['dmd',   'ddd'], 'du': ['dmu',   'uuu'], 'dz': ['dmz',   'zzz'],     'd=': ['dmv-2',   'vvv-2'], 'd2': ['dmv-2',   'vvv-2'], 'd3': ['dmv-3',   'vvv-3'], 'd4': ['dmv-4',   'vvv-4'], 'd5': ['dmv-5',   'vvv-5'], 
-			'u0': ['um0',   '000'], 'u1': ['um1',   '111'], 'ux': ['umx',   'xxx'], 'ud': ['umd',   'ddd'], 'uu': ['umu',   'uuu'], 'uz': ['umz',   'zzz'],     'u=': ['umv-2',   'vvv-2'], 'u2': ['umv-2',   'vvv-2'], 'u3': ['umv-3',   'vvv-3'], 'u4': ['umv-4',   'vvv-4'], 'u5': ['umv-5',   'vvv-5'], 
-			'z0': ['zm0',   '000'], 'z1': ['zm1',   '111'], 'zx': ['zmx',   'xxx'], 'zd': ['zmd',   'ddd'], 'zu': ['zmu',   'uuu'], 'zz': ['zmz',   'zzz'],     'z=': ['zmv-2',   'vvv-2'], 'z2': ['zmv-2',   'vvv-2'], 'z3': ['zmv-3',   'vvv-3'], 'z4': ['zmv-4',   'vvv-4'], 'z5': ['zmv-5',   'vvv-5'], 
+			'00': ['0m0',   '000'], '01': ['0m1',   '111'], '0x': ['0mx',   'xxx'], '0d': ['0md',   'ddd'], '0u': ['0mu',   'uuu'], '0z': ['0mz',   'zzz'],     '0=': ['0mv-2',   'vvv-2'], '02': ['0mv-2',   'vvv-2'], '03': ['0mv-3',   'vvv-3'], '04': ['0mv-4',   'vvv-4'], '05': ['0mv-5',   'vvv-5'],
+			'10': ['1m0',   '000'], '11': ['1m1',   '111'], '1x': ['1mx',   'xxx'], '1d': ['1md',   'ddd'], '1u': ['1mu',   'uuu'], '1z': ['1mz',   'zzz'],     '1=': ['1mv-2',   'vvv-2'], '12': ['1mv-2',   'vvv-2'], '13': ['1mv-3',   'vvv-3'], '14': ['1mv-4',   'vvv-4'], '15': ['1mv-5',   'vvv-5'],
+			'x0': ['xm0',   '000'], 'x1': ['xm1',   '111'], 'xx': ['xmx',   'xxx'], 'xd': ['xmd',   'ddd'], 'xu': ['xmu',   'uuu'], 'xz': ['xmz',   'zzz'],     'x=': ['xmv-2',   'vvv-2'], 'x2': ['xmv-2',   'vvv-2'], 'x3': ['xmv-3',   'vvv-3'], 'x4': ['xmv-4',   'vvv-4'], 'x5': ['xmv-5',   'vvv-5'],
+			'.0': ['xm0',   '000'], '.1': ['xm1',   '111'], '.x': ['xmx',   'xxx'], '.d': ['xmd',   'ddd'], '.u': ['xmu',   'uuu'], '.z': ['xmz',   'zzz'],     '.=': ['xmv-2',   'vvv-2'], '.2': ['xmv-2',   'vvv-2'], '.3': ['xmv-3',   'vvv-3'], '.4': ['xmv-4',   'vvv-4'], '.5': ['xmv-5',   'vvv-5'],
+			'd0': ['dm0',   '000'], 'd1': ['dm1',   '111'], 'dx': ['dmx',   'xxx'], 'dd': ['dmd',   'ddd'], 'du': ['dmu',   'uuu'], 'dz': ['dmz',   'zzz'],     'd=': ['dmv-2',   'vvv-2'], 'd2': ['dmv-2',   'vvv-2'], 'd3': ['dmv-3',   'vvv-3'], 'd4': ['dmv-4',   'vvv-4'], 'd5': ['dmv-5',   'vvv-5'],
+			'u0': ['um0',   '000'], 'u1': ['um1',   '111'], 'ux': ['umx',   'xxx'], 'ud': ['umd',   'ddd'], 'uu': ['umu',   'uuu'], 'uz': ['umz',   'zzz'],     'u=': ['umv-2',   'vvv-2'], 'u2': ['umv-2',   'vvv-2'], 'u3': ['umv-3',   'vvv-3'], 'u4': ['umv-4',   'vvv-4'], 'u5': ['umv-5',   'vvv-5'],
+			'z0': ['zm0',   '000'], 'z1': ['zm1',   '111'], 'zx': ['zmx',   'xxx'], 'zd': ['zmd',   'ddd'], 'zu': ['zmu',   'uuu'], 'zz': ['zmz',   'zzz'],     'z=': ['zmv-2',   'vvv-2'], 'z2': ['zmv-2',   'vvv-2'], 'z3': ['zmv-3',   'vvv-3'], 'z4': ['zmv-4',   'vvv-4'], 'z5': ['zmv-5',   'vvv-5'],
 			                                                                                                                                                                                                                                                                                      
-			'=0': ['vm0-2', '000'], '=1': ['vm1-2', '111'], '=x': ['vmx-2', 'xxx'], '=d': ['vmd-2', 'ddd'], '=u': ['vmu-2', 'uuu'], '=z': ['vmz-2', 'zzz'],     '==': ['vmv-2-2', 'vvv-2'], '=2': ['vmv-2-2', 'vvv-2'], '=3': ['vmv-2-3', 'vvv-3'], '=4': ['vmv-2-4', 'vvv-4'], '=5': ['vmv-2-5', 'vvv-5'], 
-			'20': ['vm0-2', '000'], '21': ['vm1-2', '111'], '2x': ['vmx-2', 'xxx'], '2d': ['vmd-2', 'ddd'], '2u': ['vmu-2', 'uuu'], '2z': ['vmz-2', 'zzz'],     '2=': ['vmv-2-2', 'vvv-2'], '22': ['vmv-2-2', 'vvv-2'], '23': ['vmv-2-3', 'vvv-3'], '24': ['vmv-2-4', 'vvv-4'], '25': ['vmv-2-5', 'vvv-5'], 
-			'30': ['vm0-3', '000'], '31': ['vm1-3', '111'], '3x': ['vmx-3', 'xxx'], '3d': ['vmd-3', 'ddd'], '3u': ['vmu-3', 'uuu'], '3z': ['vmz-3', 'zzz'],     '3=': ['vmv-3-2', 'vvv-2'], '32': ['vmv-3-2', 'vvv-2'], '33': ['vmv-3-3', 'vvv-3'], '34': ['vmv-3-4', 'vvv-4'], '35': ['vmv-3-5', 'vvv-5'], 
-			'40': ['vm0-4', '000'], '41': ['vm1-4', '111'], '4x': ['vmx-4', 'xxx'], '4d': ['vmd-4', 'ddd'], '4u': ['vmu-4', 'uuu'], '4z': ['vmz-4', 'zzz'],     '4=': ['vmv-4-2', 'vvv-2'], '42': ['vmv-4-2', 'vvv-2'], '43': ['vmv-4-3', 'vvv-3'], '44': ['vmv-4-4', 'vvv-4'], '45': ['vmv-4-5', 'vvv-5'], 
-			'50': ['vm0-5', '000'], '51': ['vm1-5', '111'], '5x': ['vmx-5', 'xxx'], '5d': ['vmd-5', 'ddd'], '5u': ['vmu-5', 'uuu'], '5z': ['vmz-5', 'zzz'],     '5=': ['vmv-5-2', 'vvv-2'], '52': ['vmv-5-2', 'vvv-2'], '53': ['vmv-5-3', 'vvv-3'], '54': ['vmv-5-4', 'vvv-4'], '55': ['vmv-5-5', 'vvv-5'], 
+			'=0': ['vm0-2', '000'], '=1': ['vm1-2', '111'], '=x': ['vmx-2', 'xxx'], '=d': ['vmd-2', 'ddd'], '=u': ['vmu-2', 'uuu'], '=z': ['vmz-2', 'zzz'],     '==': ['vmv-2-2', 'vvv-2'], '=2': ['vmv-2-2', 'vvv-2'], '=3': ['vmv-2-3', 'vvv-3'], '=4': ['vmv-2-4', 'vvv-4'], '=5': ['vmv-2-5', 'vvv-5'],
+			'20': ['vm0-2', '000'], '21': ['vm1-2', '111'], '2x': ['vmx-2', 'xxx'], '2d': ['vmd-2', 'ddd'], '2u': ['vmu-2', 'uuu'], '2z': ['vmz-2', 'zzz'],     '2=': ['vmv-2-2', 'vvv-2'], '22': ['vmv-2-2', 'vvv-2'], '23': ['vmv-2-3', 'vvv-3'], '24': ['vmv-2-4', 'vvv-4'], '25': ['vmv-2-5', 'vvv-5'],
+			'30': ['vm0-3', '000'], '31': ['vm1-3', '111'], '3x': ['vmx-3', 'xxx'], '3d': ['vmd-3', 'ddd'], '3u': ['vmu-3', 'uuu'], '3z': ['vmz-3', 'zzz'],     '3=': ['vmv-3-2', 'vvv-2'], '32': ['vmv-3-2', 'vvv-2'], '33': ['vmv-3-3', 'vvv-3'], '34': ['vmv-3-4', 'vvv-4'], '35': ['vmv-3-5', 'vvv-5'],
+			'40': ['vm0-4', '000'], '41': ['vm1-4', '111'], '4x': ['vmx-4', 'xxx'], '4d': ['vmd-4', 'ddd'], '4u': ['vmu-4', 'uuu'], '4z': ['vmz-4', 'zzz'],     '4=': ['vmv-4-2', 'vvv-2'], '42': ['vmv-4-2', 'vvv-2'], '43': ['vmv-4-3', 'vvv-3'], '44': ['vmv-4-4', 'vvv-4'], '45': ['vmv-4-5', 'vvv-5'],
+			'50': ['vm0-5', '000'], '51': ['vm1-5', '111'], '5x': ['vmx-5', 'xxx'], '5d': ['vmd-5', 'ddd'], '5u': ['vmu-5', 'uuu'], '5z': ['vmz-5', 'zzz'],     '5=': ['vmv-5-2', 'vvv-2'], '52': ['vmv-5-2', 'vvv-2'], '53': ['vmv-5-3', 'vvv-3'], '54': ['vmv-5-4', 'vvv-4'], '55': ['vmv-5-5', 'vvv-5']
 		};
-		
 		for (v in H) {
 			if (text === v) {
 				return this.genBrick(H[v], extra, times);
@@ -73,7 +72,7 @@ var WAVEDROM = {
 		}
 		return this.genBrick(['xxx'], extra, times);
 	},
-	parseWaveLane:     function (text, extra) {
+	parseWaveLane: function (text, extra) {
 		"use strict";
 		var Repeats, Top, Next, Stack = [], R = [];
 
@@ -106,34 +105,40 @@ var WAVEDROM = {
 
 WAVEDROM.RenderGaps = function (root, source) {
 	"use strict";
-	var i, j, g, b, pos, Stack = [], text,
+	var i, gg, g, b, pos, Stack = [], text,
 		svgns   = 'http://www.w3.org/2000/svg',
 		xlinkns = 'http://www.w3.org/1999/xlink';
 
 	if (source.signal) {
+
+		gg = document.createElementNS (svgns, 'g');
+		gg.id = "wavegaps";
+		//gg.setAttribute ('transform', 'translate(' + this.lane.xg + ',0)');
+		root.insertBefore (gg, root.firstChild);
+
 		for (i in source.signal) {
-			g = document.createElementNS(svgns, 'g');
-			g.id = "wavegap_" + j;
-			g.setAttribute('transform', 'translate(0,' + (this.lane.y0 + i * this.lane.yo) + ')');
-			root.insertBefore(g, root.firstChild);
+			g = document.createElementNS (svgns, 'g');
+			g.id = "wavegap_" + i;
+			g.setAttribute ('transform', 'translate(0,' + (this.lane.y0 + i * this.lane.yo) + ')');
+			gg.insertBefore (g, gg.firstChild);
 
 			text = source.signal[i].wave;
 			if (text) {
-				Stack = text.split('');
+				Stack = text.split ('');
 				pos = 0;
 				while (Stack.length) {
 					if (Stack.shift() === '|') {
-						b    = document.createElementNS(svgns, "use");
+						b    = document.createElementNS (svgns, "use");
 						b.id = "guse_" + pos + "_" + i;
-						b.setAttributeNS(xlinkns, 'xlink:href', '#gap');
-						b.setAttribute('transform', 'translate(' + (this.lane.xg +  ((2 * pos + 1) * (this.lane.hscale + 1) * this.lane.xs)) + ',0)');
-						g.insertBefore(b, g.firstChild);
+						b.setAttributeNS (xlinkns, 'xlink:href', '#gap');
+						b.setAttribute ('transform', 'translate(' + ((2 * pos + 1) * (this.lane.hscale + 1) * this.lane.xs) + ',0)');
+						g.insertBefore (b, g.firstChild);
 					}
 					pos += 1;
 				}
 			}
 		}
-	}	
+	}
 };
 
 WAVEDROM.parseWaveLanes = function (source) {
@@ -200,56 +205,61 @@ WAVEDROM.FindLaneMarkers = function (lanetext) {
 
 WAVEDROM.RenderWaveLane = function (root, content) {
 	"use strict";
-	var i, j, g, title, b, lanetext, labeltext, labels = [1],
-		xmax    = 0,
-		svgns   = 'http://www.w3.org/2000/svg',
-		xlinkns = 'http://www.w3.org/1999/xlink';
+	var i, j, k, g, gg, title, b, lanetext, labeltext, labels = [1],
+	xmax    = 0,
+	xgmax   = 0,
+	svgns   = 'http://www.w3.org/2000/svg',
+	xlinkns = 'http://www.w3.org/1999/xlink';
 
 	for (j = 0; j < content.length; j += 1) {
-		g = document.createElementNS(svgns, 'g');
-// IE		g = document.createElement('g');
-		g.id = "wavelane_" + j;
-		g.setAttribute('transform', 'translate(0,' + (this.lane.y0 + j * this.lane.yo) + ')');
-		root.insertBefore(g, root.firstChild);
-
 		if (content[j][0]) {
-			lanetext = document.createTextNode(content[j][0]);
-			title = document.createElementNS(svgns, "text");
-// IE			title = document.createElement("text");
-			title.setAttribute("x", (this.lane.xg - this.lane.tgo));
-			title.setAttribute("y", this.lane.ym);
-			title.setAttribute("fill", "blue");
-			title.setAttribute("text-anchor", "end");
-			title.appendChild(lanetext);
-			g.insertBefore(title, g.firstChild);
+			g    = document.createElementNS (svgns, 'g');
+			g.id = "wavelane_" + j;
+			g.setAttribute ('transform', 'translate(0,' + (this.lane.y0 + j * this.lane.yo) + ')');
+			root.insertBefore (g, root.firstChild);
+
+			lanetext = document.createTextNode (content[j][0]);
+			title = document.createElementNS (svgns, "text");
+			title.setAttribute ("x", this.lane.tgo);
+			title.setAttribute ("y", this.lane.ym);
+			title.setAttribute ("fill", "blue");
+			title.setAttribute ("text-anchor", "end");
+			title.appendChild (lanetext);
+			g.insertBefore (title, g.firstChild);
+			
+			if (title.getBBox().width > xgmax) {
+				xgmax = title.getBBox().width;
+			}
+
+			gg = document.createElementNS(svgns, 'g');
+			gg.id = "wavelane_draw_" + j;
+			//gg.setAttribute('transform', 'translate(' + this.lane.xg + ',0)');
+			g.insertBefore(gg, g.firstChild);
 
 			if (content[j][1]) {
 				if (content[j][2] && content[j][2].length) {
-					labels = WAVEDROM.FindLaneMarkers(content[j][1]);
+					labels = WAVEDROM.FindLaneMarkers (content[j][1]);
 
 					if (labels.length !== 0) {
-						for (i in labels) {
-							if (content[j][2] && content[j][2][i]) {
-								labeltext = document.createTextNode(content[j][2][i]);
-								title = document.createElementNS(svgns, "text");
-				// IE			title = document.createElement("text");
-								title.setAttribute("x", ((labels[i] * this.lane.xs) + this.lane.xlabel));
-								title.setAttribute("y", this.lane.ym);
-								title.setAttribute("text-anchor", "middle");
-								title.appendChild(labeltext);
-								g.insertBefore(title, g.firstChild);
+						for (k in labels) {
+							if (content[j][2] && content[j][2][k]) {
+								labeltext = document.createTextNode (content[j][2][k]);
+								title = document.createElementNS (svgns, "text");
+								title.setAttribute ("x", ((labels[k] * this.lane.xs) + this.lane.xlabel));
+								title.setAttribute ("y", this.lane.ym);
+								title.setAttribute ("text-anchor", "middle");
+								title.appendChild (labeltext);
+								gg.insertBefore (title, gg.firstChild);
 							}
 						}
 					}
 				}
 				for (i = 0; i < content[j][1].length; i += 1) {
 					b    = document.createElementNS(svgns, "use");
-	// IE				b    = document.createElement("use");
 					b.id = "use_" + i + "_" + j;
 					b.setAttributeNS(xlinkns, 'xlink:href', '#' + content[j][1][i]);
-	// IE				b.setAttribute( 'xlink:href', '#' + content[j][1][i] );
-					b.setAttribute('transform', 'translate(' + (this.lane.xg + i * this.lane.xs) + ',0)');
-					g.insertBefore(b, g.firstChild);
+					b.setAttribute('transform', 'translate(' + (i * this.lane.xs) + ',0)');
+					gg.insertBefore(b, gg.firstChild);
 				}
 					if (content[j][1].length > xmax) {
 					xmax = content[j][1].length;
@@ -257,43 +267,47 @@ WAVEDROM.RenderWaveLane = function (root, content) {
 			}
 		}
 	}
-	return xmax;
+	this.lane.xmax = xmax;
+	this.lane.xg = xgmax + 20;
 };
 
-WAVEDROM.RenderMarks = function (root, content, xmax) {
+WAVEDROM.RenderMarks = function (root, content) {
 	"use strict";
-	var i, marks, mstep, mmstep, gmark, tmark, labeltext, gy, ty, margin,
-			svgns   = 'http://www.w3.org/2000/svg',
-		xlinkns = 'http://www.w3.org/1999/xlink';
+	var i, g, marks, mstep, mmstep, gmark, tmark, labeltext, gy, margin,
+	svgns   = 'http://www.w3.org/2000/svg';
 
 	mstep  = 2 * (this.lane.hscale + 1);
 	mmstep = mstep * this.lane.xs;
-	marks  = xmax / mstep + 1;
+	marks  = this.lane.xmax / mstep + 1;
 	margin = 5;
 	gy     = content.length * this.lane.yo + this.lane.y0 + this.lane.ys;
 
+	g = document.createElementNS (svgns, 'g');
+	g.id = "gmarks";
+	root.insertBefore (g, root.firstChild);
+
 	for (i = 0; i < marks; i += 1) {
-		gmark = document.createElementNS(svgns, "path");
+		gmark = document.createElementNS (svgns, "path");
 		gmark.id = ("gmark_" + i);
-		gmark.setAttribute('d', 'm ' + (this.lane.xg + i * mmstep) + ',5 0,' + (gy - 2 * margin));
-		gmark.setAttribute('style', 'fill:none;stroke:#888888;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:2, 2');
-		root.insertBefore(gmark, root.firstChild);
+		gmark.setAttribute ('d', 'm ' + (i * mmstep) + ',5 0,' + (gy - 2 * margin));
+		gmark.setAttribute ('style', 'stroke:#888888;stroke-width:0.5;stroke-dasharray:2, 2');
+		g.insertBefore (gmark, g.firstChild);
 	}
 	for (i = 1; i < marks; i += 1) {
-		labeltext = document.createTextNode(i);
-		tmark = document.createElementNS(svgns, "text");
-		tmark.setAttribute("x", (this.lane.xg + (i * mmstep) - mmstep / 2));
-		tmark.setAttribute("y", gy - margin);
-		tmark.setAttribute("text-anchor", "middle");
-		tmark.setAttribute("fill", "#AAAAAA");
-		tmark.appendChild(labeltext);
-		root.insertBefore(tmark, root.firstChild);
+		labeltext = document.createTextNode (i);
+		tmark = document.createElementNS (svgns, "text");
+		tmark.setAttribute ("x", i * mmstep - mmstep / 2);
+		tmark.setAttribute ("y", gy - margin);
+		tmark.setAttribute ("text-anchor", "middle");
+		tmark.setAttribute ("fill", "#AAAAAA");
+		tmark.appendChild (labeltext);
+		g.insertBefore (tmark, g.firstChild);
 	}
 };
 
 WAVEDROM.RenderWaveForm = function () {
 	"use strict";
-	var xmax, root, svgcontent, TheTextBox, content, source, width, height, uwidth, uheight;
+	var root, svgcontent, TheTextBox, content, source, width, height, uwidth, uheight;
 
 	root          = document.getElementById("lanes");
 	svgcontent    = document.getElementById("svgcontent");
@@ -304,10 +318,10 @@ WAVEDROM.RenderWaveForm = function () {
 	WAVEDROM.CleanNode(root);
 
 	WAVEDROM.RenderGaps(root, source);
-	xmax = WAVEDROM.RenderWaveLane(root, content);
-	WAVEDROM.RenderMarks(root, content, xmax);
+	WAVEDROM.RenderWaveLane(root, content);
+	WAVEDROM.RenderMarks(root, content);
 
-	width  = (this.lane.xg + (this.lane.xs * (xmax + 1)));
+	width  = (this.lane.xg + (this.lane.xs * (this.lane.xmax + 1)));
 	height = (content.length * this.lane.yo + this.lane.y0 + this.lane.ys);
 
 	if (this.lane.scale === 3) {
@@ -323,9 +337,12 @@ WAVEDROM.RenderWaveForm = function () {
 	svgcontent.setAttribute('viewBox', "0 0 " + width + " " + height);
 	svgcontent.setAttribute('width', uwidth);
 	svgcontent.setAttribute('height', uheight);
+
+	root.setAttribute ('transform', 'translate(' + this.lane.xg + ',0)');
 };
 
 WAVEDROM.ExpandInputWindow = function () {
+	"use strict";
 	if (WAVEDROM.panela.ys < (0.707 * window.innerHeight)) {
 		WAVEDROM.panela.ys += 50;
 		WAVEDROM.resize();
@@ -334,6 +351,7 @@ WAVEDROM.ExpandInputWindow = function () {
 };
 
 WAVEDROM.CollapseInputWindow = function () {
+	"use strict";
 	if (WAVEDROM.panela.ys > 100) {
 		WAVEDROM.panela.ys -= 50;
 		WAVEDROM.resize();
@@ -342,28 +360,31 @@ WAVEDROM.CollapseInputWindow = function () {
 };
 
 WAVEDROM.SetHScale = function (hscale) {
+	"use strict";
 	WAVEDROM.lane.hscale = parseFloat(hscale);
 	WAVEDROM.RenderWaveForm();
 };
 
 WAVEDROM.SetScale = function (scale) {
+	"use strict";
 	WAVEDROM.lane.scale = parseFloat(scale);
 	WAVEDROM.RenderWaveForm();
 };
 
 WAVEDROM.resizea = function () {
+	"use strict";
 	document.getElementById('PanelA').style.height = WAVEDROM.panela.ys + 'px';
 };
 
 WAVEDROM.resize = function () {
+	"use strict";
 	document.getElementById('PanelB').style.height = (window.innerHeight - (10+7+16+7+(WAVEDROM.panela.ys)+7+16+7+16+7)) + 'px';
 	WAVEDROM.RenderWaveForm();
 };
 
 WAVEDROM.Init = function () {
 	"use strict";
-	var i,
-		tmpgraphlane0 = document.getElementById("tmpgraphlane0"),
+	var tmpgraphlane0 = document.getElementById("tmpgraphlane0"),
 		tmpgraphlane1 = document.getElementById("tmpgraphlane1"),
 		tmptextlane0  = document.getElementById("tmptextlane0"),
 		tmptextlabel  = document.getElementById("tmptextlabel"),
@@ -374,20 +395,21 @@ WAVEDROM.Init = function () {
 	this.lane.xg       = parseFloat(tmpgraphlane0.getAttribute("x"));
 	this.lane.y0       = parseFloat(tmpgraphlane0.getAttribute("y"));
 	this.lane.yo       = parseFloat(tmpgraphlane1.getAttribute("y")) - this.lane.y0;
-	this.lane.tgo      = this.lane.xg - parseFloat(tmptextlane0.getAttribute("x"));
+	this.lane.tgo      = parseFloat(tmptextlane0.getAttribute("x")) - this.lane.xg;
 	this.lane.ym       = parseFloat(tmptextlane0.getAttribute("y")) - this.lane.y0;
-	this.lane.xlabel   = parseFloat(tmptextlabel.getAttribute("x"));
+	this.lane.xlabel   = parseFloat(tmptextlabel.getAttribute("x")) - this.lane.xg;
 	this.canvas.heigth = parseFloat(tmpview.getAttribute("height"));
 	this.panela.ys     = 200;
+	this.lane.xmax     = 3;
 
 	if (navigator.appName === 'Microsoft Internet Explorer') {
-		alert("Don't work with Microsoft Internet Explorer\nSorry :(\nUse Chrome or Firefox 4 instead.");
+		alert("Don't work with Microsoft Internet Explorer\nSorry :(\nUse Chrome or Firefox 4+ instead.");
 	}
 // alert(navigator.appCodeName + "\n" + navigator.appName + "\n" + navigator.appVersion + "\n" + navigator.cookieEnabled + "\n" + navigator.platform + "\n" + navigator.userAgent);
 
-	WAVEDROM.SetHScale('1');
-	WAVEDROM.SetScale('3');
-	WAVEDROM.CleanGroupTransforms("wavetemps");
+	WAVEDROM.SetHScale ('1');
+	WAVEDROM.SetScale ('3');
+	WAVEDROM.CleanGroupTransforms ("wavetemps");
 	WAVEDROM.RenderWaveForm();
 	WAVEDROM.resize();
 	WAVEDROM.resizea();
