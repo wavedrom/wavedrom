@@ -1,6 +1,6 @@
 /*jslint white: true, onevar: true, undef: true, newcap: true, nomen: true, regexp: true, plusplus: true, bitwise: true, browser: true, strict: true, evil: true, maxerr: 500, indent: 4 */
 var WAVEDROM = {
-	version: "0.5",
+	version: "0.5.1",
 	lane: {},
 	canvas: {},
 	panela: {},
@@ -139,6 +139,40 @@ WAVEDROM.RenderGaps = function (root, source) {
 			}
 		}
 	}
+};
+
+WAVEDROM.SaveSVG = function (label) {
+	"use strict";
+	var w, f, d, name;
+
+	f = document.getElementById (label),
+	w = window.frames.w;
+	if (!w) {
+		w = document.createElement ('iframe');
+		w.id = 'w';
+		w.style.display = 'none';
+		document.body.insertBefore (w, null);
+		w = window.frames.w;
+		if (!w) {
+			w = window.open ('', '_temp', 'width=500, height=300');
+			if (!w) {
+				window.alert( 'Sorry, the file could not be created.' );
+				return false;
+			}
+		}
+	}
+	d = w.document;
+	name = "foo.svg";
+	d.open ('text/plain', 'replace');
+	d.close();
+	d.body.textContent = new XMLSerializer().serializeToString(f);
+	if (d.execCommand ('SaveAs', true, name)) {
+		window.alert (name + ' has been saved.');
+	} else {
+		window.alert ( 'The file has not been saved.\nIs there a problem?');
+	}
+	w.close();
+	return false;  //  don't submit the form
 };
 
 WAVEDROM.parseWaveLanes = function (source) {
