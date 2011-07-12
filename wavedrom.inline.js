@@ -236,32 +236,6 @@ WAVEDROM.base64_encode = function (data) {
     return enc;
 };
 
-WAVEDROM.ViewSVG = function (label) {
-	"use strict";
-	var f, ser, str;
-
-	f   = document.getElementById (label);
-	ser = new XMLSerializer();
-	str = '<?xml version="1.0" standalone="no"?>\n' +
-	'<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n' +
-	'<!-- Created with WaveDrom -->\n' +
-	ser.serializeToString (f);
-	window.open ('data:image/svg+xml;base64,' + this.base64_encode(str), '_blank');
-};
-
-WAVEDROM.ViewSourceSVG = function (label) {
-	"use strict";
-	var f, ser, str;
-
-	f   = document.getElementById (label);
-	ser = new XMLSerializer();
-	str = '<?xml version="1.0" standalone="no"?>\n' +
-	'<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n' +
-	'<!-- Created with WaveDrom -->\n' +
-	ser.serializeToString (f);
-	window.open ('view-source:data:image/svg+xml;base64,' + this.base64_encode(str), '_blank');
-};
-
 WAVEDROM.parseWaveLanes = function (source) {
 	"use strict";
 	var x, content = [];
@@ -283,32 +257,6 @@ WAVEDROM.parseWaveLanes = function (source) {
 		}
 	}
 	return content;
-};
-
-WAVEDROM.CleanGroupTransforms = function (root) { // clean translate attribute of defines
-	"use strict";
-	var i, j, nodes, subnodes;
-	nodes = document.getElementById(root).childNodes;
-	for (i = 0; i < nodes.length; i += 1) {
-		if (nodes[i].nodeName === 'g') {
-			nodes[i].removeAttribute('transform');
-			subnodes = nodes[i].childNodes;
-			if (subnodes) {
-				for (j = 0; j < subnodes.length; j += 1) {
-					if (subnodes[j].nodeName === 'path') {
-						subnodes[j].removeAttribute('id');
-					}
-				}
-			}
-		}
-	}
-};
-
-WAVEDROM.CleanNode = function (root) { // clean output SVG to before adding stuff
-	"use strict";
-	while (root.childNodes.length) {
-		root.removeChild(root.childNodes[0]);
-	}
 };
 
 WAVEDROM.FindLaneMarkers = function (lanetext) {
@@ -435,80 +383,6 @@ WAVEDROM.RenderMarks = function (root, content, index) {
 	}
 };
 
-WAVEDROM.CollapseInputWindow = function () {
-	"use strict";
-	if (WAVEDROM.panela.ys > 100) {
-		WAVEDROM.panela.ys -= 50;
-		WAVEDROM.resize();
-		WAVEDROM.resizea();
-	}
-};
-
-WAVEDROM.SetHScale = function (hscale) {
-	"use strict";
-	WAVEDROM.lane.hscale = parseFloat(hscale);
-	WAVEDROM.RenderWaveForm();
-};
-
-WAVEDROM.SetScale = function (scale) {
-	"use strict";
-	WAVEDROM.lane.scale = parseFloat(scale);
-	WAVEDROM.RenderWaveForm();
-};
-
-WAVEDROM.resizea = function () {
-	"use strict";
-	document.getElementById('PanelA').style.height = WAVEDROM.panela.ys + 'px';
-};
-
-WAVEDROM.resize = function () {
-	"use strict";
-	document.getElementById('PanelB').style.height = (window.innerHeight - (10+7+16+7+(WAVEDROM.panela.ys)+7+16+7+16+7)) + 'px';
-	WAVEDROM.RenderWaveForm();
-};
-
-WAVEDROM.Init = function () {
-	"use strict";
-	var tmpgraphlane0 = document.getElementById("tmpgraphlane0"),
-		tmpgraphlane1 = document.getElementById("tmpgraphlane1"),
-		tmptextlane0  = document.getElementById("tmptextlane0"),
-		tmptextlabel  = document.getElementById("tmptextlabel"),
-		tmpview       = document.getElementById("tmpview");
-
-	this.lane.xs       = parseFloat(tmpgraphlane0.getAttribute("width"));
-	this.lane.ys       = parseFloat(tmpgraphlane0.getAttribute("height"));
-	this.lane.xg       = parseFloat(tmpgraphlane0.getAttribute("x"));
-	this.lane.y0       = parseFloat(tmpgraphlane0.getAttribute("y"));
-	this.lane.yo       = parseFloat(tmpgraphlane1.getAttribute("y")) - this.lane.y0;
-	this.lane.tgo      = parseFloat(tmptextlane0.getAttribute("x")) - this.lane.xg;
-	this.lane.ym       = parseFloat(tmptextlane0.getAttribute("y")) - this.lane.y0;
-	this.lane.xlabel   = parseFloat(tmptextlabel.getAttribute("x")) - this.lane.xg;
-	this.canvas.heigth = parseFloat(tmpview.getAttribute("height"));
-	this.panela.ys     = 200;
-	this.lane.xmax     = 3;
-
-	if (navigator.appName === 'Microsoft Internet Explorer') {
-		alert("Don't work with Microsoft Internet Explorer\nSorry :(\nUse Chrome or Firefox 4+ instead.");
-	}
-// alert(navigator.appCodeName + "\n" + navigator.appName + "\n" + navigator.appVersion + "\n" + navigator.cookieEnabled + "\n" + navigator.platform + "\n" + navigator.userAgent);
-
-	WAVEDROM.SetHScale ('1');
-	WAVEDROM.SetScale ('3');
-	WAVEDROM.CleanGroupTransforms ("wavetemps");
-	WAVEDROM.RenderWaveForm();
-	WAVEDROM.resize();
-	WAVEDROM.resizea();
-};
-
-WAVEDROM.ExpandInputWindow = function () {
-	"use strict";
-	if (WAVEDROM.panela.ys < (0.707 * window.innerHeight)) {
-		WAVEDROM.panela.ys += 50;
-		WAVEDROM.resize();
-		WAVEDROM.resizea();
-	}
-};
-
 WAVEDROM.RenderGaps = function (root, source, index) {
 	"use strict";
 	var i, gg, g, b, pos, Stack = [], text,
@@ -558,8 +432,6 @@ WAVEDROM.RenderWaveForm = function (index) {
 
 	content       = this.parseWaveLanes(source);
 
-//	WAVEDROM.CleanNode(root);
-
 	this.RenderGaps(root, source, index);
 	this.RenderWaveLane(root, content, index);
 	this.RenderMarks(root, content, index);
@@ -567,7 +439,6 @@ WAVEDROM.RenderWaveForm = function (index) {
 	width  = (this.lane.xg + (this.lane.xs * (this.lane.xmax + 1)));
 	height = (content.length * this.lane.yo + this.lane.y0 + this.lane.ys);
 
-//	svgcontent.setAttribute('viewBox', "0 0 " + width + " " + height);
 	svgcontent.setAttribute('width', width);
 	svgcontent.setAttribute('height', height);
 
@@ -615,5 +486,4 @@ WAVEDROM.FixAllWaveDroms = function (template) {
 		this.RenderWaveForm(i);
 	}
 };
-
 
