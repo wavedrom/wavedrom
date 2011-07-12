@@ -1,26 +1,6 @@
-<!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>WaveDrom Tutorial</title>
-
-	<script type="text/javascript" src="scripts/shCore.js"></script>
-	<script type="text/javascript" src="scripts/shBrushJScript.js"></script>
-	<link   href="styles/shCore.css" rel="stylesheet" type="text/css" />
-	<link   href="styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
-
-	<link   href='http://fonts.googleapis.com/css?family=IM+Fell+DW+Pica' rel='stylesheet' type='text/css'>
-	<style>
-		body { font-family: 'IM Fell DW Pica', arial, serif;},
-		div.content {
-			display: block;
-			padding: 20px;
-			padding-left: 2%;
-			width: 660px;
-			margin-left: auto;
-			margin-right: auto;
-		}
-	</style>
-
 	<script type="text/javascript" src="wavedrom.inline.js"></script>
 </head>
 
@@ -29,9 +9,7 @@
 <h1>WaveDrom Tutorial</h1>
 
 WaveDrom is an JavaScript application and WaveJSON format allows describtion of Digital Timing Diagrams and its rendering them directly inside the browser.
-
 Timing digram described as JSON data structure. Element "signal" is an array of wavelanes.
-
 Each wavelane has two mandatory fileds: "name" and "wave".
 
 <h2>Step 1. The clock</h2>
@@ -39,7 +17,7 @@ Each wavelane has two mandatory fileds: "name" and "wave".
 Clock is the special signal. It changes twice per cycle and can have positive or negative polarity.
 The following WaveJSON represent two clock signals.
 
-<pre class="brush: js;">
+<pre>
 { "signal" : [
   { "name": "pclk", "wave": "p....." },
   { "name": "nclk", "wave": "n....." }
@@ -56,7 +34,7 @@ The following WaveJSON represent two clock signals.
 
 <h2>Step 2. Wires</h2>
 
-<pre class="brush: js;">
+<pre>
 { "signal" : [
   { "name": "clk",  "wave": "p......" },
   { "name": "bus",  "wave": "x.==.=x",   "data": ["head", "body", "tail", "data"] },
@@ -74,7 +52,7 @@ The following WaveJSON represent two clock signals.
 
 <h2>Step 3. Spacers and Gaps</h2>
 
-<pre class="brush: js;">
+<pre>
 { "signal" : [
   { "name": "clk",         "wave": "p.....|..." },
   { "name": "Data",        "wave": "x.345x|=.x",   "data": ["head", "body", "tail", "data"] },
@@ -94,6 +72,5 @@ The following WaveJSON represent two clock signals.
 ]}
 </script>
 
-<script type="text/javascript">SyntaxHighlighter.all()</script>
 </body>
 </html>
