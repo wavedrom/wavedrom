@@ -1,0 +1,98 @@
+<html>
+<head>
+	<title>WaveDrom Tutorial</title>
+
+	<script type="text/javascript" src="scripts/shCore.js"></script>
+	<script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+	<link   href="styles/shCore.css" rel="stylesheet" type="text/css" />
+	<link   href="styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+
+	<link   href='http://fonts.googleapis.com/css?family=IM+Fell+DW+Pica' rel='stylesheet' type='text/css'>
+	<style>
+		body { font-family: 'IM Fell DW Pica', arial, serif;},
+		div.content {
+			display: block;
+			padding: 20px;
+			padding-left: 2%;
+			width: 660px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+	</style>
+
+	<script type="text/javascript" src="wavedrom.inline.js"></script>
+</head>
+
+<body onload="WAVEDROM.FixAllWaveDroms('template.min.svg')">
+
+<h1>WaveDrom Tutorial</h1>
+
+WaveDrom is an JavaScript application and WaveJSON format allows describtion of Digital Timing Diagrams and its rendering them directly inside the browser.
+
+Timing digram described as JSON data structure. Element "signal" is an array of wavelanes.
+
+Each wavelane has two mandatory fileds: "name" and "wave".
+
+<h2>Step 1. The clock</h2>
+
+Clock is the special signal. It changes twice per cycle and can have positive or negative polarity.
+The following WaveJSON represent two clock signals.
+
+<pre class="brush: js;">
+{ "signal" : [
+  { "name": "pclk", "wave": "p....." },
+  { "name": "nclk", "wave": "n....." }
+]}
+</pre>
+
+<script type="wavedrom">
+{ "signal" : [
+  { "name": "pclk", "wave": "p....." },
+  { "name": "nclk", "wave": "n....." }
+]}
+</script>
+
+
+<h2>Step 2. Wires</h2>
+
+<pre class="brush: js;">
+{ "signal" : [
+  { "name": "clk",  "wave": "p......" },
+  { "name": "bus",  "wave": "x.==.=x",   "data": ["head", "body", "tail", "data"] },
+  { "name": "wire", "wave": "0.1..0." },
+]}
+</pre>
+
+<script type="wavedrom">
+{ "signal" : [
+  { "name": "clk",  "wave": "p......" },
+  { "name": "bus",  "wave": "x.==.=x",   "data": ["head", "body", "tail", "data"] },
+  { "name": "wire", "wave": "0.1..0." },
+]}
+</script>
+
+<h2>Step 3. Spacers and Gaps</h2>
+
+<pre class="brush: js;">
+{ "signal" : [
+  { "name": "clk",         "wave": "p.....|..." },
+  { "name": "Data",        "wave": "x.345x|=.x",   "data": ["head", "body", "tail", "data"] },
+  { "name": "Request",     "wave": "0.1..0|1.0" },
+  {},
+  { "name": "Acknowledge", "wave": "1.....|01." }
+]}
+</pre>
+
+<script type="wavedrom">
+{ "signal" : [
+  { "name": "clk",         "wave": "p.....|..." },
+  { "name": "Data",        "wave": "x.345x|=.x",   "data": ["head", "body", "tail", "data"] },
+  { "name": "Request",     "wave": "0.1..0|1.0" },
+  {},
+  { "name": "Acknowledge", "wave": "1.....|01." }
+]}
+</script>
+
+<script type="text/javascript">SyntaxHighlighter.all()</script>
+</body>
+</html>

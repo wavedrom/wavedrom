@@ -113,7 +113,7 @@ WAVEDROM.RenderGaps = function (root, source) {
 
 		gg = document.createElementNS (svgns, 'g');
 		gg.id = "wavegaps";
-		//gg.setAttribute ('transform', 'translate(' + this.lane.xg + ',0)');
+		//gg.setAttribute ('transform', 'translate(' + this.lane.xg + ')');
 		root.insertBefore (gg, root.firstChild);
 
 		for (i in source.signal) {
@@ -131,7 +131,7 @@ WAVEDROM.RenderGaps = function (root, source) {
 						b    = document.createElementNS (svgns, "use");
 						b.id = "guse_" + pos + "_" + i;
 						b.setAttributeNS (xlinkns, 'xlink:href', '#gap');
-						b.setAttribute ('transform', 'translate(' + ((2 * pos + 1) * (this.lane.hscale + 1) * this.lane.xs) + ',0)');
+						b.setAttribute ('transform', 'translate(' + ((2 * pos + 1) * (this.lane.hscale + 1) * this.lane.xs) + ')');
 						g.insertBefore (b, g.firstChild);
 					}
 					pos += 1;
@@ -193,6 +193,7 @@ WAVEDROM.utf8_encode = function (argString) {
 };
 
 WAVEDROM.base64_encode = function (data) {
+/*
     // http://kevin.vanzonneveld.net
     // +   original by: Tyler Akins (http://rumkin.com)
     // +   improved by: Bayron Guevara
@@ -208,6 +209,7 @@ WAVEDROM.base64_encode = function (data) {
     //if (typeof this.window['atob'] == 'function') {
     //    return atob(data);
     //}
+*/
     var b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
     var o1, o2, o3, h1, h2, h3, h4, bits, i = 0,
         ac = 0,
@@ -256,7 +258,10 @@ WAVEDROM.ViewSVG = function (label) {
 
 	f   = document.getElementById (label);
 	ser = new XMLSerializer();
-	str = '<!-- Created with WaveDrom -->\n' + ser.serializeToString (f);
+	str = '<?xml version="1.0" standalone="no"?>\n' +
+	'<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n' +
+	'<!-- Created with WaveDrom -->\n' +
+	ser.serializeToString (f);
 	window.open ('data:image/svg+xml;base64,' + this.base64_encode(str), '_blank');
 };
 
@@ -266,7 +271,10 @@ WAVEDROM.ViewSourceSVG = function (label) {
 
 	f   = document.getElementById (label);
 	ser = new XMLSerializer();
-	str = '<!-- Created with WaveDrom -->\n' + ser.serializeToString (f);
+	str = '<?xml version="1.0" standalone="no"?>\n' +
+	'<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n' +
+	'<!-- Created with WaveDrom -->\n' +
+	ser.serializeToString (f);
 	window.open ('view-source:data:image/svg+xml;base64,' + this.base64_encode(str), '_blank');
 };
 
@@ -295,10 +303,19 @@ WAVEDROM.parseWaveLanes = function (source) {
 
 WAVEDROM.CleanGroupTransforms = function (root) { // clean translate attribute of defines
 	"use strict";
-	var i, nodes = document.getElementById(root).childNodes;
+	var i, j, nodes, subnodes;
+	nodes = document.getElementById(root).childNodes;
 	for (i = 0; i < nodes.length; i += 1) {
 		if (nodes[i].nodeName === 'g') {
-			nodes[i].setAttribute('transform', 'translate(0,0)');
+			nodes[i].removeAttribute('transform');
+			subnodes = nodes[i].childNodes;
+			if (subnodes) {
+				for (j = 0; j < subnodes.length; j += 1) {
+					if (subnodes[j].nodeName === 'path') {
+						subnodes[j].removeAttribute('id');
+					}
+				}
+			}
 		}
 	}
 };
@@ -361,7 +378,7 @@ WAVEDROM.RenderWaveLane = function (root, content) {
 
 			gg = document.createElementNS(svgns, 'g');
 			gg.id = "wavelane_draw_" + j;
-			//gg.setAttribute('transform', 'translate(' + this.lane.xg + ',0)');
+			//gg.setAttribute('transform', 'translate(' + this.lane.xg + ')');
 			g.insertBefore(gg, g.firstChild);
 
 			if (content[j][1]) {
@@ -386,7 +403,7 @@ WAVEDROM.RenderWaveLane = function (root, content) {
 					b    = document.createElementNS(svgns, "use");
 					b.id = "use_" + i + "_" + j;
 					b.setAttributeNS(xlinkns, 'xlink:href', '#' + content[j][1][i]);
-					b.setAttribute('transform', 'translate(' + (i * this.lane.xs) + ',0)');
+					b.setAttribute('transform', 'translate(' + (i * this.lane.xs) + ')');
 					gg.insertBefore(b, gg.firstChild);
 				}
 					if (content[j][1].length > xmax) {
@@ -454,9 +471,9 @@ WAVEDROM.RenderWaveForm = function () {
 
 	if (this.lane.scale === 3) {
 //		uwidth  = '100%';
-		uwidth  = (window.innerWidth - 15) + 'px';
+		uwidth  = (window.innerWidth - 15);
 //		uheight = '100%';
-		uheight = (window.innerHeight - (10+7+16+7+(WAVEDROM.panela.ys)+7+16+7+16+7)) + 'px';
+		uheight = (window.innerHeight - (10+7+16+7+(WAVEDROM.panela.ys)+7+16+7+16+7));
 	} else {
 		uwidth  = this.lane.scale * width;
 		uheight = this.lane.scale * height;
@@ -466,7 +483,7 @@ WAVEDROM.RenderWaveForm = function () {
 	svgcontent.setAttribute('width', uwidth);
 	svgcontent.setAttribute('height', uheight);
 
-	root.setAttribute ('transform', 'translate(' + this.lane.xg + ',0)');
+	root.setAttribute ('transform', 'translate(' + this.lane.xg + ')');
 };
 
 WAVEDROM.ExpandInputWindow = function () {

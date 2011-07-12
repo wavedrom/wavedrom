@@ -41,18 +41,19 @@ Scale: <input type="range" min="1" max="3" value="3" step="0.25" onchange="WAVED
 <tr><td>
 <div id="PanelB">
 
-<svg id="svgcontent" overflow="visible" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-	<style type="text/css" ><![CDATA[
-		text { font-size:11pt; font-style:normal; font-variant:normal; font-weight:normal; font-stretch:normal; text-align:center; fill-opacity:1; font-family:"Helvetica"; }
-		path.l1 { fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none; }
-		path.l2 { fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none; }
-		path.l3 { color:#000000;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:1, 3;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate; }
-		path.f3 { color:#000000;fill:#ffffc0;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate; }
-		path.f4 { color:#000000;fill:#ffe0c0;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate; }
-		path.f5 { color:#000000;fill:#c0e0ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate; }
-		]]>
-	</style>
-	<defs>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="svgcontent" overflow="visible">
+
+<style type="text/css" ><![CDATA[
+text { font-size:11pt; font-style:normal; font-variant:normal; font-weight:normal; font-stretch:normal; text-align:center; fill-opacity:1; font-family:"Helvetica"; }
+path.l1 { fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none; }
+path.l2 { fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none; }
+path.l3 { color:#000000;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:1, 3;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible; }
+path.f3 { color:#000000;fill:#ffffc0;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible; }
+path.f4 { color:#000000;fill:#ffe0c0;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible; }
+path.f5 { color:#000000;fill:#c0e0ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible; }
+]]></style>
+
+<defs>
 <g id="wavetemps" style="display:none">
 <!-- SVG template begins -->
 <g id="waveframe" > <rect style="fill:#ffff7f;fill-opacity:1" y="0" x="0" height="85" width="150" id="tmpview" /> <rect style="fill:#c8c8c8;fill-opacity:1" y="10" x="120" height="20" width="20" id="tmpgraphlane0" /> <rect id="tmpgraphlane1" width="20" height="20" x="120" y="45" style="fill:#c8c8c8;fill-opacity:1" /> <text id="tmptextlane0" xml:space="preserve" x="110" y="25"><tspan id="sig_tspan_17.5" style="font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;text-anchor:end;font-family:Sans;-inkscape-font-specification:Sans">Signal 0</tspan></text> <text id="tmptexttime" xml:space="preserve" x="120" y="80"><tspan id="mark_tspan_40-7" style="font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;font-family:Sans;-inkscape-font-specification:Sans">time</tspan></text> <text y="25" x="126" xml:space="preserve" id="tmptextlabel"><tspan style="font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;font-family:Sans;-inkscape-font-specification:Sans" id="tspan3927">L</tspan></text> <path d="m 120,5 0,65" style="fill:none;stroke:#646464;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:2, 2" id="tmpmark" /> </g> 
@@ -92,7 +93,7 @@ Scale: <input type="range" min="1" max="3" value="3" step="0.25" onchange="WAVED
 <g id="umx" > <path d="m 3,0 6,20 11,0" class="l1" id="oz_40_32.5_1-9-1" /> <path d="M 0,0 20,0" class="l1" id="or_40_32.5_1-3-2" /> <path d="m 20,15 -5,5" class="l2" id="rgo_40_1.25-7-8" /> <path d="M 20,10 10,20" class="l2" id="rgo_40_2.5-8-6" /> <path d="M 20,5 8,17" class="l2" id="rgo_40_3.75-7-8" /> <path d="M 20,0 7,13" class="l2" id="rgo_40_5-0-5" /> <path d="M 15,0 6,9" class="l2" id="path154-5-2" /> <path d="M 10,0 5,5" class="l2" id="path156-2-3" /> <path d="M 3.5,1.5 5,0" class="l2" id="path156-2-7-4" /> </g> 
 <g id="umd" > <path d="m 0,0 3,0 c 4,10 7,20 17,20" class="l1" id="oz_40_25_1-7-8" /> </g> 
 <g id="umu" > <path id="path4156-5" class="l3" d="M 0,0 20,0" /> </g> 
-<g id="umz" > <path id="path4156-5-7" style="color:#000000;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" d="m 0,0 3,0 c 7,10 12,10 17,10" /> </g> 
+<g id="umz" > <path id="path4156-5-7" style="color:#000000;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;" d="m 0,0 3,0 c 7,10 12,10 17,10" /> </g> 
 <g id="zzz" > <path d="m 0,10 20,0" class="l1" id="or_35_25_1-0" /> </g> 
 <g id="zm0" > <path d="m 0,10 6,0 3,10 11,0" class="l1" id="oz_40_25_1-4" /> </g> 
 <g id="zm1" > <path d="M 0,10 6,10 9,0 20,0" class="l1" id="oo_120_17.5_1-8" /> </g> 
