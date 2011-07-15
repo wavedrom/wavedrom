@@ -51,6 +51,8 @@ var WaveDrom = {
 		switch (text) {
 		case 'p': return this.genBrick(['pclk', '111', 'nclk', '000'], extra, times);
 		case 'n': return this.genBrick(['nclk', '000', 'pclk', '111'], extra, times);
+		case 'P': return this.genBrick(['Pclk', '111', 'nclk', '000'], extra, times);
+		case 'N': return this.genBrick(['Nclk', '000', 'pclk', '111'], extra, times);
 		case '0': return this.genBrick(['000'], extra, times);
 		case '1': return this.genBrick(['111'], extra, times);
 		case '=': return this.genBrick(['vvv-2'], extra, times);

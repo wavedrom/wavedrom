@@ -127,6 +127,8 @@ path.f5 { color:#000000;fill:#c0e0ff;fill-opacity:1;fill-rule:nonzero;stroke:non
 <g id="vmd-5"><path class="f5" d="m 0,0 0,20 20,0 C 10,20 7,10 3,0"/><path d="m 0,0 3,0 c 4,10 7,20 17,20" class="l1"/><path d="m 0,20 20,0" class="l1"/></g>
 <g id="vmu-5"><path class="f5" d="m 0,0 0,20 3,0 C 7,10 10,0 20,0"/><path d="m 0,20 3,0 C 7,10 10,0 20,0" class="l1"/><path d="M 0,0 20,0" class="l1"/></g>
 <g id="vmz-5"><path class="f5" d="M 0,0 3,0 C 10,10 15,10 20,10 15,10 10,10 3,20 L 0,20"/><path d="m 0,0 3,0 c 7,10 12,10 17,10" class="l1"/><path d="m 0,20 3,0 C 10,10 15,10 20,10" class="l1"/></g>
+<g id="Pclk"><path d="M -2,11 0,5 2,11 C 1,10.5 -1,10.5 -2,11 z" style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"/><path d="M 0,20 0,0 20,0" class="l1"/></g>
+<g id="Nclk"><path d="M -2,9 0,15 2,9 C 1,9.5 -1,9.5 -2,9 z" style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"/><path d="m 0,0 0,20 20,0" class="l1"/></g>
 <!-- SVG template ends -->
 
 </g></defs>
