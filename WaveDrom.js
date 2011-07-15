@@ -1,12 +1,6 @@
-/*
-if (document.getElementById && document.childNodes && document.createElement) {
-if (!window.WaveDrom) {window.WaveDrom= {}}
-if (!WaveDrom.Hub) {  // skip if already loaded
-}}
-*/
-
-var WAVEDROM = {
-	version: "0.5.2",
+/*jslint white: true, onevar: true, undef: true, newcap: true, nomen: true, regexp: true, plusplus: true, bitwise: true, browser: true, strict: true, evil: true, maxerr: 500, indent: 4 */
+var WaveDrom = {
+	version: "0.5.3",
 	lane: {
 	xs     : 20,    // tmpgraphlane0.width
 	ys     : 20,    // tmpgraphlane0.height
@@ -125,7 +119,7 @@ var WAVEDROM = {
 	}
 };
 
-WAVEDROM.utf8_encode = function (argString) {
+WaveDrom.utf8_encode = function (argString) {
     // http://kevin.vanzonneveld.net
     // +   original by: Webtoolkit.info (http://www.webtoolkit.info/)
     // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
@@ -176,7 +170,7 @@ WAVEDROM.utf8_encode = function (argString) {
     return utftext;
 };
 
-WAVEDROM.base64_encode = function (data) {
+WaveDrom.base64_encode = function (data) {
 /*
     // http://kevin.vanzonneveld.net
     // +   original by: Tyler Akins (http://rumkin.com)
@@ -236,7 +230,7 @@ WAVEDROM.base64_encode = function (data) {
     return enc;
 };
 
-WAVEDROM.parseWaveLanes = function (source) {
+WaveDrom.parseWaveLanes = function (source) {
 	"use strict";
 	var x, content = [];
 
@@ -245,7 +239,7 @@ WAVEDROM.parseWaveLanes = function (source) {
 			content.push([]);
 			content[content.length - 1][0] = source.signal[x].name;
 			if (source.signal[x].wave) {
-				content[content.length - 1][1] = WAVEDROM.parseWaveLane(source.signal[x].wave, this.lane.hscale);
+				content[content.length - 1][1] = this.parseWaveLane(source.signal[x].wave, this.lane.hscale);
 			} else {
 				content[content.length - 1][1] = null;
 			}
@@ -259,7 +253,7 @@ WAVEDROM.parseWaveLanes = function (source) {
 	return content;
 };
 
-WAVEDROM.FindLaneMarkers = function (lanetext) {
+WaveDrom.FindLaneMarkers = function (lanetext) {
 	"use strict";
 	var i, gcount = 0, lcount = 0, ret = [];
 
@@ -281,7 +275,7 @@ WAVEDROM.FindLaneMarkers = function (lanetext) {
 	return ret;
 };
 
-WAVEDROM.RenderWaveLane = function (root, content, index) {
+WaveDrom.RenderWaveLane = function (root, content, index) {
 	"use strict";
 	var i, j, k, g, gg, title, b, lanetext, labeltext, labels = [1], nxt_xgmax, scale,
 	xmax    = 0,
@@ -316,7 +310,7 @@ WAVEDROM.RenderWaveLane = function (root, content, index) {
 
 			if (content[j][1]) {
 				if (content[j][2] && content[j][2].length) {
-					labels = WAVEDROM.FindLaneMarkers (content[j][1]);
+					labels = this.FindLaneMarkers (content[j][1]);
 
 					if (labels.length !== 0) {
 						for (k in labels) {
@@ -349,7 +343,7 @@ WAVEDROM.RenderWaveLane = function (root, content, index) {
 	this.lane.xg = xgmax + 20;
 };
 
-WAVEDROM.RenderMarks = function (root, content, index) {
+WaveDrom.RenderMarks = function (root, content, index) {
 	"use strict";
 	var i, g, marks, mstep, mmstep, gmark, tmark, labeltext, gy, margin,
 	svgns   = 'http://www.w3.org/2000/svg';
@@ -383,7 +377,7 @@ WAVEDROM.RenderMarks = function (root, content, index) {
 	}
 };
 
-WAVEDROM.RenderGaps = function (root, source, index) {
+WaveDrom.RenderGaps = function (root, source, index) {
 	"use strict";
 	var i, gg, g, b, pos, Stack = [], text,
 		svgns   = 'http://www.w3.org/2000/svg',
@@ -421,7 +415,7 @@ WAVEDROM.RenderGaps = function (root, source, index) {
 	}
 };
 
-WAVEDROM.RenderWaveForm = function (index) {
+WaveDrom.RenderWaveForm = function (index) {
 	"use strict";
 	var root, svgcontent, TheTextBox, content, source, width, height, uwidth, uheight;
 
@@ -445,7 +439,7 @@ WAVEDROM.RenderWaveForm = function (index) {
 	root.setAttribute ('transform', 'translate(' + this.lane.xg + ')');
 };
 
-WAVEDROM.FixAllWaveDroms = function (template) {
+WaveDrom.ProcessAll = function (template) {
 	var xhttp, xmlDoc, temp, root, i, tag, node, node1, node2, node3, index,
 	svgns   = 'http://www.w3.org/2000/svg',
 	xlinkns = 'http://www.w3.org/1999/xlink';
@@ -462,7 +456,7 @@ WAVEDROM.FixAllWaveDroms = function (template) {
 	// backward markup
 	for (i = document.all.length-1; i > 0; i -= 1) {
 		tag = document.all(i).tagName;
-		if (document.all(i).type && document.all(i).type == 'wavedrom') {
+		if (document.all(i).type && document.all(i).type == 'WaveDrom') {
 
 			document.all(i).setAttribute ('id', 'InputJSON_' + index);
 		

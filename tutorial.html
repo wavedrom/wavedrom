@@ -1,10 +1,10 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
 	<title>WaveDrom Tutorial</title>
-	<script type="text/javascript" src="wavedrom.inline.js"></script>
+	<script type="text/javascript" src="WaveDrom.js"></script>
 </head>
 
-<body onload="WAVEDROM.FixAllWaveDroms('template.min.svg')">
+<body onload="WaveDrom.ProcessAll('skins/default.svg')">
 
 <h1>WaveDrom Tutorial</h1>
 
@@ -17,14 +17,14 @@ Each wavelane has two mandatory fileds: "name" and "wave".
 Clock is the special signal. It changes twice per cycle and can have positive or negative polarity.
 The following WaveJSON represent two clock signals.
 
-<pre>
+<pre class="WaveDrom">
 { "signal" : [
   { "name": "pclk", "wave": "p....." },
   { "name": "nclk", "wave": "n....." }
 ]}
 </pre>
 
-<script type="wavedrom">
+<script type="WaveDrom">
 { "signal" : [
   { "name": "pclk", "wave": "p....." },
   { "name": "nclk", "wave": "n....." }
@@ -42,7 +42,7 @@ The following WaveJSON represent two clock signals.
 ]}
 </pre>
 
-<script type="wavedrom">
+<script type="WaveDrom">
 { "signal" : [
   { "name": "clk",  "wave": "p......" },
   { "name": "bus",  "wave": "x.==.=x",   "data": ["head", "body", "tail", "data"] },
@@ -62,7 +62,7 @@ The following WaveJSON represent two clock signals.
 ]}
 </pre>
 
-<script type="wavedrom">
+<script type="WaveDrom">
 { "signal" : [
   { "name": "clk",         "wave": "p.....|..." },
   { "name": "Data",        "wave": "x.345x|=.x",   "data": ["head", "body", "tail", "data"] },
@@ -72,5 +72,52 @@ The following WaveJSON represent two clock signals.
 ]}
 </script>
 
+<h2>Step 4. DDR Examples</h2>
+
+DDR Read transaction
+
+<pre>
+{ "signal" : [
+  { "name": "CK",  "wave": "0.1.0.1.0.1.0.1.0.1.0.1.0.1."},
+  { "name": "CMD", "wave": "x3.x.=.x.4.x.=.x.=.x.=.x.=.x", "data" : ["RAS", "NOP", "CAS", "NOP", "NOP", "NOP", "NOP"]},
+  { "name": "ADDR","wave": "x=.x.....=.x................", "data" : ["Bank ROW", "Bank COL"] },
+  { "name": "DQS", "wave": "z.............0...1.0.1.0.z." },
+  { "name": "DQ",  "wave": "z.................5.5.5.5.z.", "data" : ["D0","D1","D2","D3"] }
+]}
+</pre>
+
+<script type="WaveDrom">
+{ "signal" : [
+  { "name": "CK",  "wave": "0.1.0.1.0.1.0.1.0.1.0.1.0.1."},
+  { "name": "CMD", "wave": "x3.x.=.x.4.x.=.x.=.x.=.x.=.x", "data" : ["RAS", "NOP", "CAS", "NOP", "NOP", "NOP", "NOP"]},
+  { "name": "ADDR","wave": "x=.x.....=.x................", "data" : ["Bank ROW", "Bank COL"] },
+  { "name": "DQS", "wave": "z.............0...1.0.1.0.z." },
+  { "name": "DQ",  "wave": "z.................5.5.5.5.z.", "data" : ["D0","D1","D2","D3"] }
+]}
+</script>
+
+DDR Latency digram
+
+<pre>
+{ "signal" : [
+  { "name": "CK",           "wave": "0.1.0.1.0.1.0.1.0.1.0.1.0.1.0.1.0"},
+  { "name": "CMD",          "wave": "x4.x.............................", "data" : ["CAS"]},
+  { "name": "DQ Latency=2", "wave": "z.........5.5.5.5.z..............", "data" : ["D0", "D1", "D2", "D3"] },
+  { "name": "DQ Latency=3", "wave": "z.............5.5.5.5.z..........", "data" : ["D0", "D1", "D2", "D3"] },
+  { "name": "DQ Latency=4", "wave": "z.................5.5.5.5.z......", "data" : ["D0", "D1", "D2", "D3"] },
+  { "name": "DQ Latency=5", "wave": "z.....................5.5.5.5.z..", "data" : ["D0", "D1", "D2", "D3"] },
+]}
+</pre>
+
+<script type="WaveDrom">
+{ "signal" : [
+  { "name": "CK",           "wave": "0.1.0.1.0.1.0.1.0.1.0.1.0.1.0.1.0"},
+  { "name": "CMD",          "wave": "x4.x.............................", "data" : ["CAS"]},
+  { "name": "DQ Latency=2", "wave": "z.........5.5.5.5.z..............", "data" : ["D0", "D1", "D2", "D3"] },
+  { "name": "DQ Latency=3", "wave": "z.............5.5.5.5.z..........", "data" : ["D0", "D1", "D2", "D3"] },
+  { "name": "DQ Latency=4", "wave": "z.................5.5.5.5.z......", "data" : ["D0", "D1", "D2", "D3"] },
+  { "name": "DQ Latency=5", "wave": "z.....................5.5.5.5.z..", "data" : ["D0", "D1", "D2", "D3"] },
+]}
+</script>
 </body>
 </html>
