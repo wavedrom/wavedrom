@@ -1,6 +1,6 @@
 /*jslint white: true, onevar: true, undef: true, newcap: true, nomen: true, regexp: true, plusplus: true, bitwise: true, browser: true, strict: true, evil: true, maxerr: 500, indent: 4 */
 var WaveDrom = {
-	version: "0.5.3",
+	version: "0.5.4",
 	lane: {
 	xs     : 20,    // tmpgraphlane0.width
 	ys     : 20,    // tmpgraphlane0.height
@@ -11,7 +11,7 @@ var WaveDrom = {
 	ym     : 15,    // tmptextlane0.y - y0
 	xlabel : 6,     // tmptextlabel.x - xg;
 	xmax   : 1,
-	hscale : 0,
+	hscale : 1,
 	scale  : 1
 	},
 	canvas: {
@@ -241,7 +241,7 @@ WaveDrom.parseWaveLanes = function (source) {
 			content.push([]);
 			content[content.length - 1][0] = source.signal[x].name;
 			if (source.signal[x].wave) {
-				content[content.length - 1][1] = this.parseWaveLane(source.signal[x].wave, this.lane.hscale);
+				content[content.length - 1][1] = this.parseWaveLane(source.signal[x].wave, this.lane.hscale-1);
 			} else {
 				content[content.length - 1][1] = null;
 			}
@@ -301,8 +301,8 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 			title.appendChild (lanetext);
 			g.insertBefore (title, g.firstChild);
 
-			scale = this.lane.xs*(this.lane.hscale + 1) * 2;
-			nxt_xgmax = Math.ceil((title.getBBox().width)/scale) * scale;
+			scale = this.lane.xs * (this.lane.hscale) * 2;
+			nxt_xgmax = Math.ceil((title.getBBox().width) / scale) * scale;
 			if (nxt_xgmax > xgmax) { xgmax = nxt_xgmax; }
 
 			gg = document.createElementNS(svgns, 'g');
@@ -350,7 +350,7 @@ WaveDrom.RenderMarks = function (root, content, index) {
 	var i, g, marks, mstep, mmstep, gmark, tmark, labeltext, gy, margin,
 	svgns   = 'http://www.w3.org/2000/svg';
 
-	mstep  = 2 * (this.lane.hscale + 1);
+	mstep  = 2 * (this.lane.hscale);
 	mmstep = mstep * this.lane.xs;
 	marks  = this.lane.xmax / mstep + 1;
 	margin = 5;
@@ -407,12 +407,24 @@ WaveDrom.RenderGaps = function (root, source, index) {
 						b    = document.createElementNS (svgns, "use");
 						b.id = "guse_" + pos + "_" + i + "_" + index;
 						b.setAttributeNS (xlinkns, 'xlink:href', '#gap');
-						b.setAttribute ('transform', 'translate(' + ((2 * pos + 1) * (this.lane.hscale + 1) * this.lane.xs) + ')');
+						b.setAttribute ('transform', 'translate(' + ((2 * pos + 1) * (this.lane.hscale) * this.lane.xs) + ')');
 						g.insertBefore (b, g.firstChild);
 					}
 					pos += 1;
 				}
 			}
+		}
+	}
+};
+
+WaveDrom.parseConfig = function (source) {
+	"use strict";
+	var x, content = [];
+
+	this.lane.hscale = 1;
+	if (source.config) {
+		if (source.config.hscale) {
+			this.lane.hscale = source.config.hscale;
 		}
 	}
 };
@@ -426,11 +438,13 @@ WaveDrom.RenderWaveForm = function (index) {
 	TheTextBox    = document.getElementById("InputJSON_" + index);
 	source        = eval('(' + TheTextBox.innerHTML + ')');
 
-	content       = this.parseWaveLanes(source);
+	this.parseConfig (source);
 
-	this.RenderGaps(root, source, index);
-	this.RenderWaveLane(root, content, index);
-	this.RenderMarks(root, content, index);
+	content       = this.parseWaveLanes (source);
+
+	this.RenderGaps (root, source, index);
+	this.RenderWaveLane (root, content, index);
+	this.RenderMarks (root, content, index);
 
 	width  = (this.lane.xg + (this.lane.xs * (this.lane.xmax + 1)));
 	height = (content.length * this.lane.yo + this.lane.y0 + this.lane.ys);

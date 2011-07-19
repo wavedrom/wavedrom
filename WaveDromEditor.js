@@ -1,6 +1,6 @@
 /*jslint white: true, onevar: true, undef: true, newcap: true, nomen: true, regexp: true, plusplus: true, bitwise: true, browser: true, strict: true, evil: true, maxerr: 500, indent: 4 */
 var WAVEDROM = {
-	version: "0.5.2",
+	version: "0.5.4",
 	lane: {},
 	canvas: {},
 	panela: {},
@@ -133,7 +133,7 @@ WAVEDROM.RenderGaps = function (root, source) {
 						b    = document.createElementNS (svgns, "use");
 						b.id = "guse_" + pos + "_" + i;
 						b.setAttributeNS (xlinkns, 'xlink:href', '#gap');
-						b.setAttribute ('transform', 'translate(' + ((2 * pos + 1) * (this.lane.hscale + 1) * this.lane.xs) + ')');
+						b.setAttribute ('transform', 'translate(' + ((2 * pos + 1) * (this.lane.hscale) * this.lane.xs) + ')');
 						g.insertBefore (b, g.firstChild);
 					}
 					pos += 1;
@@ -289,7 +289,7 @@ WAVEDROM.parseWaveLanes = function (source) {
 			content.push([]);
 			content[content.length - 1][0] = source.signal[x].name;
 			if (source.signal[x].wave) {
-				content[content.length - 1][1] = WAVEDROM.parseWaveLane(source.signal[x].wave, this.lane.hscale);
+				content[content.length - 1][1] = WAVEDROM.parseWaveLane(source.signal[x].wave, this.lane.hscale - 1);
 			} else {
 				content[content.length - 1][1] = null;
 			}
@@ -423,7 +423,7 @@ WAVEDROM.RenderMarks = function (root, content) {
 	var i, g, marks, mstep, mmstep, gmark, tmark, labeltext, gy, margin,
 	svgns   = 'http://www.w3.org/2000/svg';
 
-	mstep  = 2 * (this.lane.hscale + 1);
+	mstep  = 2 * (this.lane.hscale);
 	mmstep = mstep * this.lane.xs;
 	marks  = this.lane.xmax / mstep + 1;
 	margin = 5;
@@ -452,6 +452,18 @@ WAVEDROM.RenderMarks = function (root, content) {
 	}
 };
 
+WAVEDROM.parseConfig = function (source) {
+	"use strict";
+	var x, content = [];
+
+//	this.lane.hscale = 1;
+	if (source.config) {
+		if (source.config.hscale) {
+			this.lane.hscale = source.config.hscale;
+		}
+	}
+};
+
 WAVEDROM.RenderWaveForm = function () {
 	"use strict";
 	var root, svgcontent, TheTextBox, content, source, width, height, uwidth, uheight;
@@ -460,6 +472,9 @@ WAVEDROM.RenderWaveForm = function () {
 	svgcontent    = document.getElementById("svgcontent");
 	TheTextBox    = document.getElementById("InputJSON");
 	source        = eval('(' + TheTextBox.value + ')');
+
+	this.parseConfig (source);
+
 	content       = WAVEDROM.parseWaveLanes(source);
 
 	WAVEDROM.CleanNode(root);
@@ -554,7 +569,7 @@ WAVEDROM.Init = function () {
 	}
 // alert(navigator.appCodeName + "\n" + navigator.appName + "\n" + navigator.appVersion + "\n" + navigator.cookieEnabled + "\n" + navigator.platform + "\n" + navigator.userAgent);
 
-	WAVEDROM.SetHScale ('1');
+	WAVEDROM.SetHScale ('2');
 	WAVEDROM.SetScale ('3');
 	WAVEDROM.CleanGroupTransforms ("wavetemps");
 	WAVEDROM.RenderWaveForm();
