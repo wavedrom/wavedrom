@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="55"
+   height="55"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="logo.svg"
+   inkscape:export-filename="/home/alex_drom/work/wavedrom/trunk/images/logo.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1"
+     inkscape:cx="31.308009"
+     inkscape:cy="30.052467"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="1855"
+     inkscape:window-height="1178"
+     inkscape:window-x="-4"
+     inkscape:window-y="-1"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2985"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-997.3622)">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2.5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 13,1022.3622 7,0 0,-20 20,0"
+       id="path4879"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="/home/alex_drom/work/wavedrom/trunk/images/favicon.gif.png"
+       inkscape:export-xdpi="35.650627"
+       inkscape:export-ydpi="35.650627" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2.5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 13,1027.3622 17,0 3,10"
+       id="path4881"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="/home/alex_drom/work/wavedrom/trunk/images/favicon.gif.png"
+       inkscape:export-xdpi="35.650627"
+       inkscape:export-ydpi="35.650627" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2.5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 16,1047.3622 14,0 6,-20 9,0"
+       id="path4883"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="/home/alex_drom/work/wavedrom/trunk/images/favicon.gif.png"
+       inkscape:export-xdpi="35.650627"
+       inkscape:export-ydpi="35.650627" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#004855;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="0"
+       y="1039.3622"
+       id="text4927"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/alex_drom/work/wavedrom/trunk/images/favicon.gif.png"
+       inkscape:export-xdpi="35.650627"
+       inkscape:export-ydpi="35.650627"><tspan
+         sodipodi:role="line"
+         id="tspan4929"
+         x="0"
+         y="1039.3622"
+         style="font-size:56px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Nimbus Sans L Condensed;-inkscape-font-specification:'Nimbus Sans L Condensed,';fill:#004855;fill-opacity:1">{  }</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 25,1047.3622 7,-7"
+       id="path4879-3"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/alex_drom/work/wavedrom/trunk/images/favicon.gif.png"
+       inkscape:export-xdpi="35.650627"
+       inkscape:export-ydpi="35.650627" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 20,1047.3622 12,-12"
+       id="path4879-3-3"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/alex_drom/work/wavedrom/trunk/images/favicon.gif.png"
+       inkscape:export-xdpi="35.650627"
+       inkscape:export-ydpi="35.650627" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 17,1045.3622 14,-14"
+       id="path4879-3-3-0"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/alex_drom/work/wavedrom/trunk/images/favicon.gif.png"
+       inkscape:export-xdpi="35.650627"
+       inkscape:export-ydpi="35.650627" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 16,1041.3622 14,-14"
+       id="path4879-3-3-0-0-4"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/alex_drom/work/wavedrom/trunk/images/favicon.gif.png"
+       inkscape:export-xdpi="35.650627"
+       inkscape:export-ydpi="35.650627" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 15,1037.3622 10,-10"
+       id="path4879-3-3-0-0-8"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/alex_drom/work/wavedrom/trunk/images/favicon.gif.png"
+       inkscape:export-xdpi="35.650627"
+       inkscape:export-ydpi="35.650627" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 14,1033.3622 6,-6"
+       id="path4879-3-3-0-0-20"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/alex_drom/work/wavedrom/trunk/images/favicon.gif.png"
+       inkscape:export-xdpi="35.650627"
+       inkscape:export-ydpi="35.650627" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2.50000000000000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 23,1016.3622 -3,-9 -3,9 z"
+       id="path4879-30"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="/home/alex_drom/work/wavedrom/trunk/images/favicon.gif.png"
+       inkscape:export-xdpi="35.650627"
+       inkscape:export-ydpi="35.650627" />
+  </g>
+</svg>
