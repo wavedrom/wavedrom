@@ -1,6 +1,6 @@
 /*jslint white: true, onevar: true, undef: true, newcap: true, nomen: true, regexp: true, plusplus: true, bitwise: true, browser: true, strict: true, evil: true, maxerr: 500, indent: 4 */
 var WaveDrom = {
-	version: "0.5.4",
+	version: "0.5.5",
 	lane: {
 	xs     : 20,    // tmpgraphlane0.width
 	ys     : 20,    // tmpgraphlane0.height
@@ -76,7 +76,7 @@ var WaveDrom = {
 			'd0': ['dm0',   '000'], 'd1': ['dm1',   '111'], 'dx': ['dmx',   'xxx'], 'dd': ['dmd',   'ddd'], 'du': ['dmu',   'uuu'], 'dz': ['dmz',   'zzz'],     'd=': ['dmv-2',   'vvv-2'], 'd2': ['dmv-2',   'vvv-2'], 'd3': ['dmv-3',   'vvv-3'], 'd4': ['dmv-4',   'vvv-4'], 'd5': ['dmv-5',   'vvv-5'],
 			'u0': ['um0',   '000'], 'u1': ['um1',   '111'], 'ux': ['umx',   'xxx'], 'ud': ['umd',   'ddd'], 'uu': ['umu',   'uuu'], 'uz': ['umz',   'zzz'],     'u=': ['umv-2',   'vvv-2'], 'u2': ['umv-2',   'vvv-2'], 'u3': ['umv-3',   'vvv-3'], 'u4': ['umv-4',   'vvv-4'], 'u5': ['umv-5',   'vvv-5'],
 			'z0': ['zm0',   '000'], 'z1': ['zm1',   '111'], 'zx': ['zmx',   'xxx'], 'zd': ['zmd',   'ddd'], 'zu': ['zmu',   'uuu'], 'zz': ['zmz',   'zzz'],     'z=': ['zmv-2',   'vvv-2'], 'z2': ['zmv-2',   'vvv-2'], 'z3': ['zmv-3',   'vvv-3'], 'z4': ['zmv-4',   'vvv-4'], 'z5': ['zmv-5',   'vvv-5'],
-			                                                                                                                                                                                                                                                                                      
+
 			'=0': ['vm0-2', '000'], '=1': ['vm1-2', '111'], '=x': ['vmx-2', 'xxx'], '=d': ['vmd-2', 'ddd'], '=u': ['vmu-2', 'uuu'], '=z': ['vmz-2', 'zzz'],     '==': ['vmv-2-2', 'vvv-2'], '=2': ['vmv-2-2', 'vvv-2'], '=3': ['vmv-2-3', 'vvv-3'], '=4': ['vmv-2-4', 'vvv-4'], '=5': ['vmv-2-5', 'vvv-5'],
 			'20': ['vm0-2', '000'], '21': ['vm1-2', '111'], '2x': ['vmx-2', 'xxx'], '2d': ['vmd-2', 'ddd'], '2u': ['vmu-2', 'uuu'], '2z': ['vmz-2', 'zzz'],     '2=': ['vmv-2-2', 'vvv-2'], '22': ['vmv-2-2', 'vvv-2'], '23': ['vmv-2-3', 'vvv-3'], '24': ['vmv-2-4', 'vvv-4'], '25': ['vmv-2-5', 'vvv-5'],
 			'30': ['vm0-3', '000'], '31': ['vm1-3', '111'], '3x': ['vmx-3', 'xxx'], '3d': ['vmd-3', 'ddd'], '3u': ['vmu-3', 'uuu'], '3z': ['vmz-3', 'zzz'],     '3=': ['vmv-3-2', 'vvv-2'], '32': ['vmv-3-2', 'vvv-2'], '33': ['vmv-3-3', 'vvv-3'], '34': ['vmv-3-4', 'vvv-4'], '35': ['vmv-3-5', 'vvv-5'],
@@ -456,37 +456,32 @@ WaveDrom.RenderWaveForm = function (index) {
 };
 
 WaveDrom.ProcessAll = function (template) {
-	var xhttp, xmlDoc, temp, root, i, tag, node, node1, node2, node3, index,
-	svgns   = 'http://www.w3.org/2000/svg',
-	xlinkns = 'http://www.w3.org/1999/xlink';
-
-	xhttp = new XMLHttpRequest();
+	"use strict";
+	var xhttp, xmlDoc, temp, index, points, i, node0, node1;
+	xhttp   = new XMLHttpRequest();
 	xhttp.open("GET", template, false);
 	xhttp.send();
 	xmlDoc = xhttp.responseXML;
 	temp = xmlDoc.getElementById('svg');
 
-	root = document.getElementsByTagName('BODY')[0];
-
-	index = 0;
 	// backward markup
-	for (i = document.all.length-1; i > 0; i -= 1) {
-		tag = document.all(i).tagName;
-		if (document.all(i).type && document.all(i).type == 'WaveDrom') {
+	index = 0;
+	points = document.getElementsByTagName ('SCRIPT');
+	for (i = points.length-1; i > 0; i -= 1) {
+		if (points.item(i).type && points.item(i).type == 'WaveDrom') {
+			points.item(i).setAttribute ('id', 'InputJSON_' + index);
 
-			document.all(i).setAttribute ('id', 'InputJSON_' + index);
-		
-			node = document.createElement('div');
-			node.className += "WaveDrom_Display_" + index;
-			root.insertBefore(node, document.all(i));
+			node0 = document.createElement('div');
+			node0.className += "WaveDrom_Display_" + index;
+			points.item(i).parentNode.insertBefore (node0, points.item(i));
 
 			node1 = temp.cloneNode(true);
 			node1.id = "svgcontent_" + index;
 			node1.setAttribute ('height', '0');
-			node.insertBefore (node1, node.firstChild);
+			node0.insertBefore (node1, node0.firstChild);
 
-			node2 = document.getElementById('lanes');
-			node2.id = "lanes_" + index;
+			node0 = document.getElementById('lanes');
+			node0.id = "lanes_" + index;
 
 			index += 1;
 		}
