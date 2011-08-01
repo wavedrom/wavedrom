@@ -2,17 +2,17 @@
 var WaveDrom = {
 	version: "0.5.5",
 	lane: {
-	xs     : 20,    // tmpgraphlane0.width
-	ys     : 20,    // tmpgraphlane0.height
-	xg     : 120,   // tmpgraphlane0.x
-	y0     : 10,    // tmpgraphlane0.y
-	yo     : 35,    // tmpgraphlane1.y - y0;
-	tgo    : -10,   // tmptextlane0.x - xg;
-	ym     : 15,    // tmptextlane0.y - y0
-	xlabel : 6,     // tmptextlabel.x - xg;
-	xmax   : 1,
-	hscale : 1,
-	scale  : 1
+		xs     : 20,    // tmpgraphlane0.width
+		ys     : 20,    // tmpgraphlane0.height
+		xg     : 120,   // tmpgraphlane0.x
+		y0     : 10,    // tmpgraphlane0.y
+		yo     : 35,    // tmpgraphlane1.y - y0;
+		tgo    : -10,   // tmptextlane0.x - xg;
+		ym     : 15,    // tmptextlane0.y - y0
+		xlabel : 6,     // tmptextlabel.x - xg;
+		xmax   : 1,
+		hscale : 1,
+		scale  : 1
 	},
 	canvas: {
 		heigth : 85 // tmpview.height;
@@ -232,6 +232,32 @@ WaveDrom.base64_encode = function (data) {
     return enc;
 };
 
+WaveDrom.ViewSVG = function (label) {
+	"use strict";
+	var f, ser, str;
+
+	f   = document.getElementById (label);
+	ser = new XMLSerializer();
+	str = '<?xml version="1.0" standalone="no"?>\n' +
+	'<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n' +
+	'<!-- Created with WaveDrom -->\n' +
+	ser.serializeToString (f);
+	window.open ('data:image/svg+xml;base64,' + this.base64_encode(str), '_blank');
+};
+
+WaveDrom.ViewSourceSVG = function (label) {
+	"use strict";
+	var f, ser, str;
+
+	f   = document.getElementById (label);
+	ser = new XMLSerializer();
+	str = '<?xml version="1.0" standalone="no"?>\n' +
+	'<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n' +
+	'<!-- Created with WaveDrom -->\n' +
+	ser.serializeToString (f);
+	window.open ('view-source:data:image/svg+xml;base64,' + this.base64_encode(str), '_blank');
+};
+
 WaveDrom.parseWaveLanes = function (source) {
 	"use strict";
 	var x, content = [];
@@ -421,7 +447,7 @@ WaveDrom.parseConfig = function (source) {
 	"use strict";
 	var x, content = [];
 
-	this.lane.hscale = 1;
+//	this.lane.hscale = 1;
 	if (source.config) {
 		if (source.config.hscale) {
 			this.lane.hscale = source.config.hscale;
@@ -436,7 +462,11 @@ WaveDrom.RenderWaveForm = function (index) {
 	root          = document.getElementById("lanes_" + index);
 	svgcontent    = document.getElementById("svgcontent_" + index);
 	TheTextBox    = document.getElementById("InputJSON_" + index);
-	source        = eval('(' + TheTextBox.innerHTML + ')');
+	if (TheTextBox.type && TheTextBox.type == 'textarea') {
+		source = eval('(' + TheTextBox.value + ')');
+	} else {
+		source = eval('(' + TheTextBox.innerHTML + ')');
+	}
 
 	this.parseConfig (source);
 
@@ -453,6 +483,18 @@ WaveDrom.RenderWaveForm = function (index) {
 	svgcontent.setAttribute('height', height);
 
 	root.setAttribute ('transform', 'translate(' + this.lane.xg + ')');
+};
+
+WaveDrom.InsertSVGTemplate = function (index, svg, parent) {
+	var node0, node1;
+
+	node1 = svg.cloneNode(true);
+	node1.id = "svgcontent_" + index;
+	node1.setAttribute ('height', '0');
+	parent.insertBefore (node1, parent.firstChild);
+
+	node0 = document.getElementById('lanes');
+	node0.id = "lanes_" + index;
 };
 
 WaveDrom.ProcessAll = function (template) {
@@ -475,20 +517,81 @@ WaveDrom.ProcessAll = function (template) {
 			node0.className += "WaveDrom_Display_" + index;
 			points.item(i).parentNode.insertBefore (node0, points.item(i));
 
-			node1 = temp.cloneNode(true);
-			node1.id = "svgcontent_" + index;
-			node1.setAttribute ('height', '0');
-			node0.insertBefore (node1, node0.firstChild);
-
-			node0 = document.getElementById('lanes');
-			node0.id = "lanes_" + index;
+			this.InsertSVGTemplate (index, temp, node0);
 
 			index += 1;
 		}
 	}
 	// forward markup
 	for (i = 0; i < index; i += 1) {
-		this.RenderWaveForm(i);
+		this.RenderWaveForm (i);
 	}
 };
 
+WaveDrom.resize = function () {
+	"use strict";
+	document.getElementById('PanelB').style.height = (window.innerHeight - (10+7+16+7+(WaveDrom.panela.ys)+7+16+7+16+7)) + 'px';
+	document.getElementById('PanelA').style.height = WaveDrom.panela.ys + 'px';
+};
+
+WaveDrom.ClearWaveLane = function (index) {
+	root = document.getElementById ('lanes_' + index);
+	while (root.childNodes.length) {
+		root.removeChild (root.childNodes[0]);
+	}
+};
+
+WaveDrom.EditorRefrech = function () {
+	"use strict";
+	WaveDrom.ClearWaveLane (0);
+	WaveDrom.RenderWaveForm (0);
+	WaveDrom.resize ();
+};
+
+WaveDrom.EditorInit = function (template) {
+	"use strict";
+	var xhttp, xmlDoc, temp, index, points, i, node0, node1;
+
+	xhttp = new XMLHttpRequest();
+	xhttp.open("GET", template, false);
+	xhttp.send();
+	xmlDoc = xhttp.responseXML;
+	temp = xmlDoc.getElementById('svg');
+
+	index = 0;
+	this.InsertSVGTemplate(index, temp, document.getElementById('WaveDrom_Display_' + index));
+	WaveDrom.ClearWaveLane (0);
+	this.RenderWaveForm (index);
+	this.resize();
+	window.onresize = WaveDrom.resize;
+};
+
+WaveDrom.ExpandInputWindow = function () {
+	"use strict";
+	if (WaveDrom.panela.ys < (0.707 * window.innerHeight)) {
+		WaveDrom.panela.ys += 50;
+		WaveDrom.resize();
+	}
+};
+
+WaveDrom.CollapseInputWindow = function () {
+	"use strict";
+	if (WaveDrom.panela.ys > 100) {
+		WaveDrom.panela.ys -= 50;
+		WaveDrom.resize();
+	}
+};
+
+WaveDrom.SetHScale = function (hscale) {
+	"use strict";
+	WaveDrom.lane.hscale = parseFloat(hscale);
+	WaveDrom.ClearWaveLane (0);
+	WaveDrom.RenderWaveForm (0);
+};
+
+WaveDrom.SetScale = function (scale) {
+	"use strict";
+	WaveDrom.lane.scale = parseFloat(scale);
+	WaveDrom.ClearWaveLane (0);
+	WaveDrom.RenderWaveForm (0);
+};
