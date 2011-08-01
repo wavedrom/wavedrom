@@ -479,8 +479,19 @@ WaveDrom.RenderWaveForm = function (index) {
 	width  = (this.lane.xg + (this.lane.xs * (this.lane.xmax + 1)));
 	height = (content.length * this.lane.yo + this.lane.y0 + this.lane.ys);
 
-	svgcontent.setAttribute('width', width);
-	svgcontent.setAttribute('height', height);
+	if (this.lane.scale === 3) {
+//		uwidth  = '100%';
+		uwidth  = (window.innerWidth - 15);
+//		uheight = '100%';
+		uheight = (window.innerHeight - (10+7+16+7+(WaveDrom.panela.ys)+7+16+7+16+7));
+	} else {
+		uwidth  = this.lane.scale * width;
+		uheight = this.lane.scale * height;
+	}
+	
+	svgcontent.setAttribute('viewBox', "0 0 " + width + " " + height);
+	svgcontent.setAttribute('width', uwidth);
+	svgcontent.setAttribute('height', uheight);
 
 	root.setAttribute ('transform', 'translate(' + this.lane.xg + ')');
 };
@@ -541,16 +552,20 @@ WaveDrom.ClearWaveLane = function (index) {
 	}
 };
 
+
+
 WaveDrom.EditorRefrech = function () {
 	"use strict";
 	WaveDrom.ClearWaveLane (0);
-	WaveDrom.RenderWaveForm (0);
 	WaveDrom.resize ();
+	WaveDrom.RenderWaveForm (0);
 };
 
 WaveDrom.EditorInit = function (template) {
 	"use strict";
 	var xhttp, xmlDoc, temp, index, points, i, node0, node1;
+
+	this.lane.scale = 3;
 
 	xhttp = new XMLHttpRequest();
 	xhttp.open("GET", template, false);
@@ -560,17 +575,15 @@ WaveDrom.EditorInit = function (template) {
 
 	index = 0;
 	this.InsertSVGTemplate(index, temp, document.getElementById('WaveDrom_Display_' + index));
-	WaveDrom.ClearWaveLane (0);
-	this.RenderWaveForm (index);
-	this.resize();
-	window.onresize = WaveDrom.resize;
+	WaveDrom.EditorRefrech();
+	window.onresize = WaveDrom.EditorRefrech;
 };
 
 WaveDrom.ExpandInputWindow = function () {
 	"use strict";
 	if (WaveDrom.panela.ys < (0.707 * window.innerHeight)) {
 		WaveDrom.panela.ys += 50;
-		WaveDrom.resize();
+		WaveDrom.EditorRefrech();
 	}
 };
 
@@ -578,20 +591,18 @@ WaveDrom.CollapseInputWindow = function () {
 	"use strict";
 	if (WaveDrom.panela.ys > 100) {
 		WaveDrom.panela.ys -= 50;
-		WaveDrom.resize();
+		WaveDrom.EditorRefrech();
 	}
 };
 
 WaveDrom.SetHScale = function (hscale) {
 	"use strict";
 	WaveDrom.lane.hscale = parseFloat(hscale);
-	WaveDrom.ClearWaveLane (0);
-	WaveDrom.RenderWaveForm (0);
+	WaveDrom.EditorRefrech();
 };
 
 WaveDrom.SetScale = function (scale) {
 	"use strict";
 	WaveDrom.lane.scale = parseFloat(scale);
-	WaveDrom.ClearWaveLane (0);
-	WaveDrom.RenderWaveForm (0);
+	WaveDrom.EditorRefrech();
 };
