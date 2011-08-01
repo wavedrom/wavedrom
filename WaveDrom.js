@@ -11,7 +11,6 @@ var WaveDrom = {
 		ym     : 15,    // tmptextlane0.y - y0
 		xlabel : 6,     // tmptextlabel.x - xg;
 		xmax   : 1,
-		hscale : 1,
 		scale  : 1
 	},
 	canvas: {
@@ -447,7 +446,10 @@ WaveDrom.parseConfig = function (source) {
 	"use strict";
 	var x, content = [];
 
-//	this.lane.hscale = 1;
+	this.lane.hscale = 1;
+	if (this.lane.hscale0) {
+		this.lane.hscale = this.lane.hscale0;
+	}
 	if (source.config) {
 		if (source.config.hscale) {
 			this.lane.hscale = source.config.hscale;
@@ -552,8 +554,6 @@ WaveDrom.ClearWaveLane = function (index) {
 	}
 };
 
-
-
 WaveDrom.EditorRefrech = function () {
 	"use strict";
 	WaveDrom.ClearWaveLane (0);
@@ -597,7 +597,7 @@ WaveDrom.CollapseInputWindow = function () {
 
 WaveDrom.SetHScale = function (hscale) {
 	"use strict";
-	WaveDrom.lane.hscale = parseFloat(hscale);
+	WaveDrom.lane.hscale0 = parseFloat(hscale);
 	WaveDrom.EditorRefrech();
 };
 
