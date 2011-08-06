@@ -842,7 +842,7 @@ WaveDrom.EditorRefrech = function () {
 	WaveDrom.RenderWaveForm (0);
 };
 
-WaveDrom.EditorInit = function (template) {
+WaveDrom.EditorInit = function () {
 	"use strict";
 	var index, points, i, node0, node1;
 	this.lane.scale = 3;
