@@ -1,6 +1,402 @@
 /*jslint white: true, onevar: true, undef: true, newcap: true, nomen: true, regexp: true, plusplus: true, bitwise: true, browser: true, strict: true, evil: true, maxerr: 500, indent: 4 */
+
+function utf8_encode (argString) {
+    // http://kevin.vanzonneveld.net
+    // +   original by: Webtoolkit.info (http://www.webtoolkit.info/)
+    // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   improved by: sowberry
+    // +    tweaked by: Jack
+    // +   bugfixed by: Onno Marsman
+    // +   improved by: Yves Sucaet
+    // +   bugfixed by: Onno Marsman
+    // +   bugfixed by: Ulrich
+    // +   bugfixed by: Rafal Kukawski
+    // *     example 1: utf8_encode('Kevin van Zonneveld');
+    // *     returns 1: 'Kevin van Zonneveld'
+
+    if (argString === null || typeof argString === "undefined") {
+        return "";
+    }
+
+    var string = (argString + ''); // .replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+    var utftext = "",
+        start, end, stringl = 0;
+
+    start = end = 0;
+    stringl = string.length;
+    for (var n = 0; n < stringl; n++) {
+        var c1 = string.charCodeAt(n);
+        var enc = null;
+
+        if (c1 < 128) {
+            end++;
+        } else if (c1 > 127 && c1 < 2048) {
+            enc = String.fromCharCode((c1 >> 6) | 192) + String.fromCharCode((c1 & 63) | 128);
+        } else {
+            enc = String.fromCharCode((c1 >> 12) | 224) + String.fromCharCode(((c1 >> 6) & 63) | 128) + String.fromCharCode((c1 & 63) | 128);
+        }
+        if (enc !== null) {
+            if (end > start) {
+                utftext += string.slice(start, end);
+            }
+            utftext += enc;
+            start = end = n + 1;
+        }
+    }
+
+    if (end > start) {
+        utftext += string.slice(start, stringl);
+    }
+
+    return utftext;
+}
+
+function base64_encode (data) {
+/*
+    // http://kevin.vanzonneveld.net
+    // +   original by: Tyler Akins (http://rumkin.com)
+    // +   improved by: Bayron Guevara
+    // +   improved by: Thunder.m
+    // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   bugfixed by: Pellentesque Malesuada
+    // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   improved by: Rafal Kukawski (http://kukawski.pl)
+    // -    depends on: utf8_encode
+    // *     example 1: base64_encode('Kevin van Zonneveld');
+    // *     returns 1: 'S2V2aW4gdmFuIFpvbm5ldmVsZA=='
+    // mozilla has this native
+    // - but breaks in 2.0.0.12!
+    //if (typeof this.window['atob'] == 'function') {
+    //    return atob(data);
+    //}
+*/
+    var b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+    var o1, o2, o3, h1, h2, h3, h4, bits, i = 0,
+        ac = 0,
+        enc = "",
+        tmp_arr = [];
+
+    if (!data) {
+        return data;
+    }
+
+    data = this.utf8_encode(data + '');
+
+    do { // pack three octets into four hexets
+        o1 = data.charCodeAt(i++);
+        o2 = data.charCodeAt(i++);
+        o3 = data.charCodeAt(i++);
+
+        bits = o1 << 16 | o2 << 8 | o3;
+
+        h1 = bits >> 18 & 0x3f;
+        h2 = bits >> 12 & 0x3f;
+        h3 = bits >> 6 & 0x3f;
+        h4 = bits & 0x3f;
+
+        // use hexets to index into b64, and append result to encoded string
+        tmp_arr[ac++] = b64.charAt(h1) + b64.charAt(h2) + b64.charAt(h3) + b64.charAt(h4);
+    } while (i < data.length);
+
+    enc = tmp_arr.join('');
+    
+    var r = data.length % 3;
+    
+    return (r ? enc.slice(0, r - 3) : enc) + '==='.slice(r || 3);
+
+}
+
+var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
+
+(function() {
+	//attribute name mapping
+	var ATTRMAP = {
+			rowspan : "rowSpan",
+			colspan : "colSpan",
+			cellpadding : "cellPadding",
+			cellspacing : "cellSpacing",
+			tabindex : "tabIndex",
+			accesskey : "accessKey",
+			hidefocus : "hideFocus",
+			usemap : "useMap",
+			maxlength : "maxLength",
+			readonly : "readOnly",
+			contenteditable : "contentEditable"
+			// can add more attributes here as needed
+		},
+		// attribute duplicates
+		ATTRDUP = {
+			enctype : "encoding",
+			onscroll : "DOMMouseScroll"
+			// can add more attributes here as needed
+		},
+		// event names
+		EVTS = (function(/*string[]*/ names) {
+			var evts = {};
+			while (names.length) {
+				var evt = names.shift();
+				evts["on"+evt.toLowerCase()] = evt;
+			}
+			return evts;
+		})("blur,change,click,dblclick,error,focus,keydown,keypress,keyup,load,mousedown,mouseenter,mouseleave,mousemove,mouseout,mouseover,mouseup,resize,scroll,select,submit,unload".split(','));
+
+	/*void*/ function addHandler(/*DOM*/ elem, /*string*/ name, /*function*/ handler) {
+		if ("string" === typeof handler) {
+			/*jslint evil:true */
+			handler = new Function("event", handler);
+			/*jslint evil:false */
+		}
+
+		if ("function" !== typeof handler) {
+			return;
+		}
+
+		elem[name] = handler;
+	}
+
+	/*DOM*/ function addAttributes(/*DOM*/ elem, /*object*/ attr) {
+		if (attr.name && document.attachEvent) {
+			try {
+				// IE fix for not being able to programatically change the name attribute
+				var alt = document.createElement("<"+elem.tagName+" name='"+attr.name+"'>");
+				// fix for Opera 8.5 and Netscape 7.1 creating malformed elements
+				if (elem.tagName === alt.tagName) {
+					elem = alt;
+				}
+			} catch (ex) { }
+		}
+
+		// for each attributeName
+		for (var name in attr) {
+			if (attr.hasOwnProperty(name)) {
+				// attributeValue
+				var value = attr[name];
+				if (name && value !== null && "undefined" !== typeof value) {
+					name = ATTRMAP[name.toLowerCase()] || name;
+					if (name === "style") {
+						if ("undefined" !== typeof elem.style.cssText) {
+							elem.style.cssText = value;
+						} else {
+							elem.style = value;
+						}
+					} else if (name === "class") {
+						elem.className = value;
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+						elem.setAttribute (name, value);
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+					} else if (EVTS[name]) {
+						addHandler(elem, name, value);
+
+						// also set duplicated events
+						if (ATTRDUP[name]) {
+							addHandler(elem, ATTRDUP[name], value);
+						}
+					} else if ("string" === typeof value || "number" === typeof value || "boolean" === typeof value) {
+						elem.setAttribute(name, value);
+
+						// also set duplicated attributes
+						if (ATTRDUP[name]) {
+							elem.setAttribute(ATTRDUP[name], value);
+						}
+					} else {
+
+						// allow direct setting of complex properties
+						elem[name] = value;
+
+						// also set duplicated attributes
+						if (ATTRDUP[name]) {
+							elem[ATTRDUP[name]] = value;
+						}
+					}
+				}
+			}
+		}
+		return elem;
+	}
+
+	/*void*/ function appendChild(/*DOM*/ elem, /*DOM*/ child) {
+		if (child) {
+			if (elem.tagName && elem.tagName.toLowerCase() === "table" && elem.tBodies) {
+				if (!child.tagName) {
+					// must unwrap documentFragment for tables
+					if (child.nodeType === 11) {
+						while (child.firstChild) {
+							appendChild(elem, child.removeChild(child.firstChild));
+						}
+					}
+					return;
+				}
+				// in IE must explicitly nest TRs in TBODY
+				var childTag = child.tagName.toLowerCase();// child tagName
+				if (childTag && childTag !== "tbody" && childTag !== "thead") {
+					// insert in last tbody
+					var tBody = elem.tBodies.length > 0 ? elem.tBodies[elem.tBodies.length-1] : null;
+					if (!tBody) {
+						tBody = document.createElement(childTag === "th" ? "thead" : "tbody");
+						elem.appendChild(tBody);
+					}
+					tBody.appendChild(child);
+				} else if (elem.canHaveChildren !== false) {
+					elem.appendChild(child);
+				}
+			} else if (elem.tagName && elem.tagName.toLowerCase() === "style" && document.createStyleSheet) {
+				// IE requires this interface for styles
+				elem.cssText = child;
+			} else if (elem.canHaveChildren !== false) {
+				elem.appendChild(child);
+			} else if (elem.tagName && elem.tagName.toLowerCase() === "object" &&
+				child.tagName && child.tagName.toLowerCase() === "param") {
+					// IE-only path
+					try {
+						elem.appendChild(child);
+					} catch (ex1) {}
+					try {
+						if (elem.object) {
+							elem.object[child.name] = child.value;
+						}
+					} catch (ex2) {}
+			}
+		}
+	}
+
+	/*bool*/ function isWhitespace(/*DOM*/ node) {
+		return node && (node.nodeType === 3) && (!node.nodeValue || !/\S/.exec(node.nodeValue));
+	}
+
+	/*void*/ function trimWhitespace(/*DOM*/ elem) {
+		if (elem) {
+			while (isWhitespace(elem.firstChild)) {
+				// trim leading whitespace text nodes
+				elem.removeChild(elem.firstChild);
+			}
+			while (isWhitespace(elem.lastChild)) {
+				// trim trailing whitespace text nodes
+				elem.removeChild(elem.lastChild);
+			}
+		}
+	}
+
+	/*DOM*/ function hydrate(/*string*/ value) {
+		var wrapper = document.createElement("div");
+		wrapper.innerHTML = value;
+
+		// trim extraneous whitespace
+		trimWhitespace(wrapper);
+
+		// eliminate wrapper for single nodes
+		if (wrapper.childNodes.length === 1) {
+			return wrapper.firstChild;
+		}
+
+		// create a document fragment to hold elements
+		var frag = document.createDocumentFragment ?
+			document.createDocumentFragment() :
+			document.createElement("");
+
+		while (wrapper.firstChild) {
+			frag.appendChild(wrapper.firstChild);
+		}
+		return frag;
+	}
+
+	function Unparsed(/*string*/ value) {
+		this.value = value;
+	}
+	// default error handler
+	/*DOM*/ function onError(/*Error*/ ex, /*JsonML*/ jml, /*function*/ filter) {
+		return document.createTextNode("["+ex+"]");
+	}
+
+	/* override this to perform custom error handling during binding */
+	JsonML.onerror = null;
+
+	/*DOM*/ function patch(/*DOM*/ elem, /*JsonML*/ jml, /*function*/ filter) {
+
+	for (var i=1; i<jml.length; i++) {
+			if (jml[i] instanceof Array || "string" === typeof jml[i]) {
+				// append children
+				appendChild(elem, JsonML.parse(jml[i], filter));
+			} else if (jml[i] instanceof Unparsed) {
+				appendChild(elem, hydrate(jml[i].value));
+			} else if ("object" === typeof jml[i] && jml[i] !== null && elem.nodeType === 1) {
+				// add attributes
+				elem = addAttributes(elem, jml[i]);
+			}
+		}
+
+		return elem;
+	}
+
+	/*DOM*/ JsonML.parse = function(/*JsonML*/ jml, /*function*/ filter) {
+		try {
+			if (!jml) {
+				return null;
+			}
+			if ("string" === typeof jml) {
+				return document.createTextNode(jml);
+			}
+			if (jml instanceof Unparsed) {
+				return hydrate(jml.value);
+			}
+			if (!JsonML.isElement(jml)) {
+				throw new SyntaxError("invalid JsonML");
+			}
+
+			var tagName = jml[0]; // tagName
+			if (!tagName) {
+				// correctly handle a list of JsonML trees
+				// create a document fragment to hold elements
+				var frag = document.createDocumentFragment ?
+					document.createDocumentFragment() :
+					document.createElement("");
+				for (var i=1; i<jml.length; i++) {
+					appendChild(frag, JsonML.parse(jml[i], filter));
+				}
+
+				// trim extraneous whitespace
+				trimWhitespace(frag);
+
+				// eliminate wrapper for single nodes
+				if (frag.childNodes.length === 1) {
+					return frag.firstChild;
+				}
+				return frag;
+			}
+
+			if (tagName.toLowerCase() === "style" && document.createStyleSheet) {
+				// IE requires this interface for styles
+				JsonML.patch(document.createStyleSheet(), jml, filter);
+				// in IE styles are effective immediately
+				return null;
+			}
+//!!!!!!!!!!!!!!
+			svgns   = 'http://www.w3.org/2000/svg';
+			var elem;
+//			elem = patch(document.createElement(tagName), jml, filter);
+			elem = patch(document.createElementNS(svgns, tagName), jml, filter);
+//!!!!!!!!!!!!!!
+			// trim extraneous whitespace
+			trimWhitespace(elem);
+			return (elem && "function" === typeof filter) ? filter(elem) : elem;
+		} catch (ex) {
+			try {
+				// handle error with complete context
+				var err = ("function" === typeof JsonML.onerror) ? JsonML.onerror : onError;
+				return err(ex, jml, filter);
+			} catch (ex2) {
+				return document.createTextNode("["+ex2+"]");
+			}
+		}
+	};
+
+	/*bool*/ JsonML.isElement = function(/*JsonML*/ jml) {
+		return (jml instanceof Array) && ("string" === typeof jml[0]);
+	};
+
+})();
+
 var WaveDrom = {
-	version: "0.5.5",
+	version: "0.5.6",
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
 		ys     : 20,    // tmpgraphlane0.height
@@ -120,117 +516,6 @@ var WaveDrom = {
 	}
 };
 
-WaveDrom.utf8_encode = function (argString) {
-    // http://kevin.vanzonneveld.net
-    // +   original by: Webtoolkit.info (http://www.webtoolkit.info/)
-    // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    // +   improved by: sowberry
-    // +    tweaked by: Jack
-    // +   bugfixed by: Onno Marsman
-    // +   improved by: Yves Sucaet
-    // +   bugfixed by: Onno Marsman
-    // +   bugfixed by: Ulrich
-    // +   bugfixed by: Rafal Kukawski
-    // *     example 1: utf8_encode('Kevin van Zonneveld');
-    // *     returns 1: 'Kevin van Zonneveld'
-
-    if (argString === null || typeof argString === "undefined") {
-        return "";
-    }
-
-    var string = (argString + ''); // .replace(/\r\n/g, "\n").replace(/\r/g, "\n");
-    var utftext = "",
-        start, end, stringl = 0;
-
-    start = end = 0;
-    stringl = string.length;
-    for (var n = 0; n < stringl; n++) {
-        var c1 = string.charCodeAt(n);
-        var enc = null;
-
-        if (c1 < 128) {
-            end++;
-        } else if (c1 > 127 && c1 < 2048) {
-            enc = String.fromCharCode((c1 >> 6) | 192) + String.fromCharCode((c1 & 63) | 128);
-        } else {
-            enc = String.fromCharCode((c1 >> 12) | 224) + String.fromCharCode(((c1 >> 6) & 63) | 128) + String.fromCharCode((c1 & 63) | 128);
-        }
-        if (enc !== null) {
-            if (end > start) {
-                utftext += string.slice(start, end);
-            }
-            utftext += enc;
-            start = end = n + 1;
-        }
-    }
-
-    if (end > start) {
-        utftext += string.slice(start, stringl);
-    }
-
-    return utftext;
-};
-
-WaveDrom.base64_encode = function (data) {
-/*
-    // http://kevin.vanzonneveld.net
-    // +   original by: Tyler Akins (http://rumkin.com)
-    // +   improved by: Bayron Guevara
-    // +   improved by: Thunder.m
-    // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    // +   bugfixed by: Pellentesque Malesuada
-    // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    // -    depends on: utf8_encode
-    // *     example 1: base64_encode('Kevin van Zonneveld');
-    // *     returns 1: 'S2V2aW4gdmFuIFpvbm5ldmVsZA=='
-    // mozilla has this native
-    // - but breaks in 2.0.0.12!
-    //if (typeof this.window['atob'] == 'function') {
-    //    return atob(data);
-    //}
-*/
-    var b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-    var o1, o2, o3, h1, h2, h3, h4, bits, i = 0,
-        ac = 0,
-        enc = "",
-        tmp_arr = [];
-
-    if (!data) {
-        return data;
-    }
-
-    data = this.utf8_encode(data + '');
-
-    do { // pack three octets into four hexets
-        o1 = data.charCodeAt(i++);
-        o2 = data.charCodeAt(i++);
-        o3 = data.charCodeAt(i++);
-
-        bits = o1 << 16 | o2 << 8 | o3;
-
-        h1 = bits >> 18 & 0x3f;
-        h2 = bits >> 12 & 0x3f;
-        h3 = bits >> 6 & 0x3f;
-        h4 = bits & 0x3f;
-
-        // use hexets to index into b64, and append result to encoded string
-        tmp_arr[ac++] = b64.charAt(h1) + b64.charAt(h2) + b64.charAt(h3) + b64.charAt(h4);
-    } while (i < data.length);
-
-    enc = tmp_arr.join('');
-
-    switch (data.length % 3) {
-    case 1:
-        enc = enc.slice(0, -2) + '==';
-        break;
-    case 2:
-        enc = enc.slice(0, -1) + '=';
-        break;
-    }
-
-    return enc;
-};
-
 WaveDrom.ViewSVG = function (label) {
 	"use strict";
 	var f, ser, str;
@@ -241,7 +526,7 @@ WaveDrom.ViewSVG = function (label) {
 	'<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n' +
 	'<!-- Created with WaveDrom -->\n' +
 	ser.serializeToString (f);
-	window.open ('data:image/svg+xml;base64,' + this.base64_encode(str), '_blank');
+	window.open ('data:image/svg+xml;base64,' + base64_encode(str), '_blank');
 };
 
 WaveDrom.ViewSourceSVG = function (label) {
@@ -254,7 +539,7 @@ WaveDrom.ViewSourceSVG = function (label) {
 	'<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n' +
 	'<!-- Created with WaveDrom -->\n' +
 	ser.serializeToString (f);
-	window.open ('view-source:data:image/svg+xml;base64,' + this.base64_encode(str), '_blank');
+	window.open ('view-source:data:image/svg+xml;base64,' + base64_encode(str), '_blank');
 };
 
 WaveDrom.parseWaveLanes = function (source) {
@@ -498,10 +783,10 @@ WaveDrom.RenderWaveForm = function (index) {
 	root.setAttribute ('transform', 'translate(' + this.lane.xg + ')');
 };
 
-WaveDrom.InsertSVGTemplate = function (index, svg, parent) {
+WaveDrom.InsertSVGTemplate = function (index, parent) {
 	var node0, node1;
 
-	node1 = svg.cloneNode(true);
+	node1 = JsonML.parse(WaveSkin);
 	node1.id = "svgcontent_" + index;
 	node1.setAttribute ('height', '0');
 	parent.insertBefore (node1, parent.firstChild);
@@ -510,14 +795,9 @@ WaveDrom.InsertSVGTemplate = function (index, svg, parent) {
 	node0.id = "lanes_" + index;
 };
 
-WaveDrom.ProcessAll = function (template) {
+WaveDrom.ProcessAll = function () {
 	"use strict";
-	var xhttp, xmlDoc, temp, index, points, i, node0, node1;
-	xhttp   = new XMLHttpRequest();
-	xhttp.open("GET", template, false);
-	xhttp.send();
-	xmlDoc = xhttp.responseXML;
-	temp = xmlDoc.getElementById('svg');
+	var index, points, i, node0, node1;
 
 	// backward markup
 	index = 0;
@@ -530,14 +810,14 @@ WaveDrom.ProcessAll = function (template) {
 			node0.className += "WaveDrom_Display_" + index;
 			points.item(i).parentNode.insertBefore (node0, points.item(i));
 
-			this.InsertSVGTemplate (index, temp, node0);
+			WaveDrom.InsertSVGTemplate (index, node0);
 
 			index += 1;
 		}
 	}
 	// forward markup
 	for (i = 0; i < index; i += 1) {
-		this.RenderWaveForm (i);
+		WaveDrom.RenderWaveForm (i);
 	}
 };
 
@@ -548,7 +828,8 @@ WaveDrom.resize = function () {
 };
 
 WaveDrom.ClearWaveLane = function (index) {
-	root = document.getElementById ('lanes_' + index);
+	"use strict";
+	var root = document.getElementById ('lanes_' + index);
 	while (root.childNodes.length) {
 		root.removeChild (root.childNodes[0]);
 	}
@@ -563,19 +844,11 @@ WaveDrom.EditorRefrech = function () {
 
 WaveDrom.EditorInit = function (template) {
 	"use strict";
-	var xhttp, xmlDoc, temp, index, points, i, node0, node1;
-
+	var index, points, i, node0, node1;
 	this.lane.scale = 3;
-
-	xhttp = new XMLHttpRequest();
-	xhttp.open("GET", template, false);
-	xhttp.send();
-	xmlDoc = xhttp.responseXML;
-	temp = xmlDoc.getElementById('svg');
-
 	index = 0;
-	this.InsertSVGTemplate(index, temp, document.getElementById('WaveDrom_Display_' + index));
-	WaveDrom.EditorRefrech();
+	WaveDrom.InsertSVGTemplate (index, document.getElementById ('WaveDrom_Display_' + index));
+	WaveDrom.EditorRefrech ();
 	window.onresize = WaveDrom.EditorRefrech;
 };
 
@@ -583,7 +856,7 @@ WaveDrom.ExpandInputWindow = function () {
 	"use strict";
 	if (WaveDrom.panela.ys < (0.707 * window.innerHeight)) {
 		WaveDrom.panela.ys += 50;
-		WaveDrom.EditorRefrech();
+		WaveDrom.EditorRefrech ();
 	}
 };
 
@@ -591,18 +864,20 @@ WaveDrom.CollapseInputWindow = function () {
 	"use strict";
 	if (WaveDrom.panela.ys > 100) {
 		WaveDrom.panela.ys -= 50;
-		WaveDrom.EditorRefrech();
+		WaveDrom.EditorRefrech ();
 	}
 };
 
 WaveDrom.SetHScale = function (hscale) {
 	"use strict";
 	WaveDrom.lane.hscale0 = parseFloat(hscale);
-	WaveDrom.EditorRefrech();
+	WaveDrom.EditorRefrech ();
 };
 
 WaveDrom.SetScale = function (scale) {
 	"use strict";
 	WaveDrom.lane.scale = parseFloat(scale);
-	WaveDrom.EditorRefrech();
+	WaveDrom.EditorRefrech ();
 };
+
+window.onload = WaveDrom.ProcessAll;
