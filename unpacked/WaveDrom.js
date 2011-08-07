@@ -396,7 +396,7 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "0.5.6",
+	version: "0.6.0",
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
 		ys     : 20,    // tmpgraphlane0.height
