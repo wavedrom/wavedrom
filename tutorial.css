@@ -1,0 +1,32 @@
+body {
+  padding: 20px;
+  font-family: 'Varela Round', Arial, sans-serif;
+  font-size: 16px;
+  margin: 0px;
+}
+
+div.content {
+  padding: 20px;
+  padding-left: 2%;
+  width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+pre {
+  background: #efe;
+  border: 10px solid #efe;
+  font-family: Inconsolata, Consolas, "Courier New", monospace;
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fixed {
+  white-space:nowrap;
+  font-family: Inconsolata, Consolas, "Courier New", monospace;
+  background-color:#eee;
+  font-weight:normal;
+  padding:0px 3px;
+  font-weight:bold;
+}

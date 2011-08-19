@@ -4,41 +4,74 @@
   <link rel="shortcut icon" href="images/favicon.ico"/>
   <script type="text/javascript" src="skins/default.js"></script>
   <script type="text/javascript" src="WaveDrom.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Inconsolata|Varela+Round' rel='stylesheet' type='text/css'>
+  <link href="tutorial.css" media="screen" rel="Stylesheet" type="text/css" /> 
 </head>
 
 <body onload="WaveDrom.ProcessAll('skins/default.svg')">
 
+<div class="content">
+
 <h1>WaveDrom Tutorial</h1>
 
-WaveDrom is an JavaScript application and WaveJSON format allows describtion of Digital Timing Diagrams and its rendering them directly inside the browser.
-Timing digram described as JSON data structure. Element "signal" is an array of wavelanes.
-Each wavelane has two mandatory fileds: "name" and "wave".
+WaveDrom is an JavaScript application and WaveJSON format allows describtion of
+Digital Timing Diagrams and its rendering them directly inside the browser.
+Timing digram described as JSON data structure.
+Element <span class="fixed">"signal"</span> is an array of wavelanes.
+Each wavelane has two mandatory fileds: <span class="fixed">"name"</span>
+ and <span class="fixed">"wave"</span>.
 
-<h2>Step 1. The clock</h2>
+<h2>Step 1. The Signal</h2>
 
-Clock is the special signal. It changes twice per cycle and can have positive or negative polarity.
-The following WaveJSON represent two clock signals.
+Lets start with the quick example.
+Following code will create 1-bit signal named <span class="fixed">"Alfa"</span>
+ that changes it's state over time.
+
+<pre>
+{ "signal" : [{ "name": "Alfa", "wave": "01.zx=ud.23.45" }] }
+</pre>
+
+Every character in the <span class="fixed">"wave"</span> string represents single time period.
+Symbol <span class="fixed">"."</span> extends previous state for one more period.
+Here is how it looks like:
+
+<script type="WaveDrom">
+{ "signal" : [{ "name": "Alfa", "wave": "01.zx=ud.23.45" }] }
+</script>
+
+
+<h2>Step 2. Adding Clock</h2>
+
+Digital clock is the special type of signal.
+It changes twice per time period and can have positive or negative polarity.
+It also can have optional marker on the working edge.
+Here is the code:
 
 <pre class="WaveDrom">
 { "signal" : [
   { "name": "pclk", "wave": "p....." },
-  { "name": "nclk", "wave": "n....." },
   { "name": "Pclk", "wave": "P....." },
+  { "name": "nclk", "wave": "n....." },
   { "name": "Nclk", "wave": "N....." }
 ]}
 </pre>
+
+And the rendered diagram:
 
 <script type="WaveDrom">
 { "signal" : [
   { "name": "pclk", "wave": "p....." },
-  { "name": "nclk", "wave": "n....." },
   { "name": "Pclk", "wave": "P....." },
+  { "name": "nclk", "wave": "n....." },
   { "name": "Nclk", "wave": "N....." }
 ]}
 </script>
 
 
-<h2>Step 2. Wires</h2>
+<h2>Step 3. Putting all together</h2>
+
+Typical timing diagram would have clock and signals (wires).
+Multi-bit signals will try grabbing labels from <span class="fixed">"data"</span> array.
 
 <pre>
 { "signal" : [
@@ -56,7 +89,7 @@ The following WaveJSON represent two clock signals.
 ]}
 </script>
 
-<h2>Step 3. Spacers and Gaps</h2>
+<h2>Step 4. Spacers and Gaps</h2>
 
 <pre>
 { "signal" : [
@@ -78,7 +111,7 @@ The following WaveJSON represent two clock signals.
 ]}
 </script>
 
-<h2>Step 4. DDR Examples</h2>
+<h2>Step 5. DDR Examples</h2>
 
 <h3>DDR Read transaction</h3>
 
@@ -106,31 +139,29 @@ The following WaveJSON represent two clock signals.
 
 <pre>
 { "signal" : [
-  { "name": "CK",        "wave": "0.1.0.1.0.1.0.1.0.1.0.1.0.1.0.1.0"},
-  { "name": "CMD",       "wave": "x4.x.............................", "data" : ["CAS"]},
+  { "name": "CK",    "wave": "0.1.0.1.0.1.0.1.0.1.0.1.0.1"},
+  { "name": "CMD",   "wave": "x4.x.......................", "data" : ["CAS"]},
   [ "DQ",
-  { "name": "Latency=2", "wave": "z.........5.5.5.5.z..............", "data" : ["D0", "D1", "D2", "D3"] },
-  { "name": "Latency=3", "wave": "z.............5.5.5.5.z..........", "data" : ["D0", "D1", "D2", "D3"] },
-  { "name": "Latency=4", "wave": "z.................5.5.5.5.z......", "data" : ["D0", "D1", "D2", "D3"] },
-  { "name": "Latency=5", "wave": "z.....................5.5.5.5.z..", "data" : ["D0", "D1", "D2", "D3"] }
+    { "name": "L=2", "wave": "z.........5.5.5.5.z........", "data" : ["D0", "D1", "D2", "D3"] },
+    { "name": "L=3", "wave": "z.............5.5.5.5.z....", "data" : ["D0", "D1", "D2", "D3"] },
+    { "name": "L=4", "wave": "z.................5.5.5.5.z", "data" : ["D0", "D1", "D2", "D3"] }
   ]
 ]}
 </pre>
 
 <script type="WaveDrom">
 { "signal" : [
-  { "name": "CK",        "wave": "0.1.0.1.0.1.0.1.0.1.0.1.0.1.0.1.0"},
-  { "name": "CMD",       "wave": "x4.x.............................", "data" : ["CAS"]},
+  { "name": "CK",    "wave": "0.1.0.1.0.1.0.1.0.1.0.1.0.1"},
+  { "name": "CMD",   "wave": "x4.x.......................", "data" : ["CAS"]},
   [ "DQ",
-  { "name": "Latency=2", "wave": "z.........5.5.5.5.z..............", "data" : ["D0", "D1", "D2", "D3"] },
-  { "name": "Latency=3", "wave": "z.............5.5.5.5.z..........", "data" : ["D0", "D1", "D2", "D3"] },
-  { "name": "Latency=4", "wave": "z.................5.5.5.5.z......", "data" : ["D0", "D1", "D2", "D3"] },
-  { "name": "Latency=5", "wave": "z.....................5.5.5.5.z..", "data" : ["D0", "D1", "D2", "D3"] }
+    { "name": "L=2", "wave": "z.........5.5.5.5.z........", "data" : ["D0", "D1", "D2", "D3"] },
+    { "name": "L=3", "wave": "z.............5.5.5.5.z....", "data" : ["D0", "D1", "D2", "D3"] },
+    { "name": "L=4", "wave": "z.................5.5.5.5.z", "data" : ["D0", "D1", "D2", "D3"] }
   ]
 ]}
 </script>
 
-<h2>Step 5. Config</h2>
+<h2>Step 6. Config</h2>
 
 <h3>hscale</h3>
 
@@ -146,7 +177,6 @@ The following WaveJSON represent two clock signals.
 
 <h3>hscale = 1 (default)</h3>
 
-<div>
 <script type="WaveDrom">
 { "signal" : [
   { "name": "clk",         "wave": "p...." },
@@ -154,11 +184,9 @@ The following WaveJSON represent two clock signals.
   { "name": "Request",     "wave": "01..0" }
 ]}
 </script>
-</div>
 
 <h3>hscale = 2</h3>
 
-<div><div>
 <script type="WaveDrom">
 { "signal" : [
   { "name": "clk",         "wave": "p...." },
@@ -168,11 +196,9 @@ The following WaveJSON represent two clock signals.
   "config" : { "hscale" : 2 }
 }
 </script>
-</div></div>
 
 <h3>hscale = 3</h3>
 
-<div><div><div>
 <script type="WaveDrom">
 { "signal" : [
   { "name": "clk",         "wave": "p...." },
@@ -182,6 +208,7 @@ The following WaveJSON represent two clock signals.
   "config" : { "hscale" : 3 }
 }
 </script>
-</div></div></div>
+
+</div>
 </body>
 </html>
