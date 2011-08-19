@@ -396,13 +396,13 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "0.6.0",
+	version: "0.6.2",
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
 		ys     : 20,    // tmpgraphlane0.height
 		xg     : 120,   // tmpgraphlane0.x
 		y0     : 10,    // tmpgraphlane0.y
-		yo     : 35,    // tmpgraphlane1.y - y0;
+		yo     : 30,    // tmpgraphlane1.y - y0;
 		tgo    : -10,   // tmptextlane0.x - xg;
 		ym     : 15,    // tmptextlane0.y - y0
 		xlabel : 6,     // tmptextlabel.x - xg;
@@ -542,24 +542,21 @@ WaveDrom.ViewSourceSVG = function (label) {
 	window.open ('view-source:data:image/svg+xml;base64,' + base64_encode(str), '_blank');
 };
 
-WaveDrom.parseWaveLanes = function (source) {
+WaveDrom.parseWaveLanes = function (sig) {
 	"use strict";
 	var x, content = [];
-
-	if (source.signal) {
-		for (x in source.signal) {
-			content.push([]);
-			content[content.length - 1][0] = source.signal[x].name;
-			if (source.signal[x].wave) {
-				content[content.length - 1][1] = this.parseWaveLane(source.signal[x].wave, this.lane.hscale-1);
-			} else {
-				content[content.length - 1][1] = null;
-			}
-			if (source.signal[x].data) {
-				content[content.length - 1][2] = source.signal[x].data;
-			} else {
-				content[content.length - 1][2] = null;
-			}
+	for (x in sig) {
+		content.push([]);
+		content[content.length - 1][0] = sig[x].name;
+		if (sig[x].wave) {
+			content[content.length - 1][1] = this.parseWaveLane(sig[x].wave, this.lane.hscale-1);
+		} else {
+			content[content.length - 1][1] = null;
+		}
+		if (sig[x].data) {
+			content[content.length - 1][2] = sig[x].data;
+		} else {
+			content[content.length - 1][2] = null;
 		}
 	}
 	return content;
@@ -592,6 +589,7 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 	var i, j, k, g, gg, title, b, lanetext, labeltext, labels = [1], nxt_xgmax, scale,
 	xmax    = 0,
 	xgmax   = 0,
+	glengths = [],
 	svgns   = 'http://www.w3.org/2000/svg',
 	xlinkns = 'http://www.w3.org/1999/xlink';
 
@@ -606,14 +604,13 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 			title = document.createElementNS (svgns, "text");
 			title.setAttribute ("x", this.lane.tgo);
 			title.setAttribute ("y", this.lane.ym);
-			title.setAttribute ("fill", "blue");
+			title.setAttribute ("fill", "#0041c4"); // Pantone 288C
 			title.setAttribute ("text-anchor", "end");
 			title.appendChild (lanetext);
 			g.insertBefore (title, g.firstChild);
 
 			scale = this.lane.xs * (this.lane.hscale) * 2;
-			nxt_xgmax = Math.ceil((title.getBBox().width) / scale) * scale;
-			if (nxt_xgmax > xgmax) { xgmax = nxt_xgmax; }
+			glengths.push (title.getBBox().width);
 
 			gg = document.createElementNS(svgns, 'g');
 			gg.id = "wavelane_draw_" + j + "_" + index;
@@ -653,6 +650,7 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 	}
 	this.lane.xmax = xmax;
 	this.lane.xg = xgmax + 20;
+	return glengths;
 };
 
 WaveDrom.RenderMarks = function (root, content, index) {
@@ -689,26 +687,55 @@ WaveDrom.RenderMarks = function (root, content, index) {
 	}
 };
 
+WaveDrom.RenderGroups = function (root, groups, index) {
+	"use strict";
+	var svgns, g, i, group, grouplabel, label, x, y;
+	
+	svgns = 'http://www.w3.org/2000/svg';
+	
+	for (i in groups) {
+		group = document.createElementNS (svgns, "path");
+		group.id = ("group_" + i + "_" + index);
+		group.setAttribute ('d', 'm '+(groups[i].x)+','+(groups[i].y * this.lane.yo + 8)+' c -3,0 -5,2 -5,5 l 0,'+(groups[i].height * this.lane.yo - 16)+' c 0,3 2,5 5,5');
+		group.setAttribute ('style', 'stroke:#0041c4;stroke-width:1;fill:none');
+		root.insertBefore (group, root.firstChild);
+
+		if (typeof groups[i].name === 'string') {
+			grouplabel = document.createTextNode (groups[i].name);
+			label = document.createElementNS (svgns, "text");
+			x = (groups[i].x - 10);
+			y = (this.lane.yo * (groups[i].y + (groups[i].height / 2)) + 5);
+			label.setAttribute ("x", x);
+			label.setAttribute ("y", y);
+			label.setAttribute ("text-anchor", "middle");
+			label.setAttribute ("fill", "#0041c4");
+			label.setAttribute ("transform", "rotate(270,"+x+","+y+")");
+			label.appendChild (grouplabel);
+			root.insertBefore (label, root.firstChild);
+		}
+	}
+}
+
 WaveDrom.RenderGaps = function (root, source, index) {
 	"use strict";
 	var i, gg, g, b, pos, Stack = [], text,
 		svgns   = 'http://www.w3.org/2000/svg',
 		xlinkns = 'http://www.w3.org/1999/xlink';
 
-	if (source.signal) {
+	if (source) {
 
 		gg = document.createElementNS (svgns, 'g');
 		gg.id = "wavegaps_" + index;
 		//gg.setAttribute ('transform', 'translate(' + this.lane.xg + ')');
 		root.insertBefore (gg, root.firstChild);
 
-		for (i in source.signal) {
+		for (i in source) {
 			g = document.createElementNS (svgns, 'g');
 			g.id = "wavegap_" + i + "_" + index;
 			g.setAttribute ('transform', 'translate(0,' + (this.lane.y0 + i * this.lane.yo) + ')');
 			gg.insertBefore (g, gg.firstChild);
 
-			text = source.signal[i].wave;
+			text = source[i].wave;
 			if (text) {
 				Stack = text.split ('');
 				pos = 0;
@@ -742,26 +769,61 @@ WaveDrom.parseConfig = function (source) {
 	}
 };
 
+WaveDrom.rec = function (tmp, state) {
+	"use strict";
+	var i, name, old = {}, delta = {"x":10};
+	if (typeof tmp[0] === 'string') {
+		name = tmp[0];
+		delta.x = 25;
+	}
+	state.x += delta.x;
+	for (i in tmp) {
+		if (typeof tmp[i] === 'object') {
+			if (Object.prototype.toString.call (tmp[i]) === '[object Array]') {
+				old.y = state.y;
+				state = this.rec (tmp[i], state);
+				state.groups.push ({"x":state.xx, "y":old.y, "height":(state.y - old.y), "name":state.name});
+			} else {
+				state.lanes.push (tmp[i]);
+				state.width.push (state.x);
+				state.y += 1;
+			}
+		}
+	}
+	state.xx = state.x;
+	state.x -= delta.x;
+	state.name = name;
+	return state;
+};
+
 WaveDrom.RenderWaveForm = function (index) {
 	"use strict";
-	var root, svgcontent, TheTextBox, content, source, width, height, uwidth, uheight;
+	var root, groups, svgcontent, TheTextBox, content, source, width, height, uwidth, uheight, ret, glengths, xmax = 0, i;
 
-	root          = document.getElementById("lanes_" + index);
-	svgcontent    = document.getElementById("svgcontent_" + index);
-	TheTextBox    = document.getElementById("InputJSON_" + index);
+	root          = document.getElementById ("lanes_" + index);
+	groups        = document.getElementById ("groups_" + index);
+	svgcontent    = document.getElementById ("svgcontent_" + index);
+	TheTextBox    = document.getElementById ("InputJSON_" + index);
 	if (TheTextBox.type && TheTextBox.type == 'textarea') {
-		source = eval('(' + TheTextBox.value + ')');
+		source = eval ('(' + TheTextBox.value + ')');
 	} else {
-		source = eval('(' + TheTextBox.innerHTML + ')');
+		source = eval ('(' + TheTextBox.innerHTML + ')');
 	}
 
 	this.parseConfig (source);
 
-	content       = this.parseWaveLanes (source);
-
-	this.RenderGaps (root, source, index);
-	this.RenderWaveLane (root, content, index);
-	this.RenderMarks (root, content, index);
+	if (source.signal) {
+		ret = this.rec (source.signal, {'x':0, 'y':0, 'xmax':0, 'width':[], 'lanes':[], 'groups':[]});
+		this.RenderGaps (root, ret.lanes, index);
+		this.RenderGroups (groups, ret.groups, index);
+		content  = this.parseWaveLanes (ret.lanes);
+		glengths = this.RenderWaveLane (root, content, index);
+		for (i in glengths) {
+			xmax = Math.max (xmax, (glengths[i] + ret.width[i]));
+		}
+		this.RenderMarks (root, content, index);
+		this.lane.xg = Math.ceil ((xmax - this.lane.tgo) / this.lane.xs) * this.lane.xs;
+	}
 
 	width  = (this.lane.xg + (this.lane.xs * (this.lane.xmax + 1)));
 	height = (content.length * this.lane.yo + this.lane.y0 + this.lane.ys);
@@ -784,12 +846,19 @@ WaveDrom.RenderWaveForm = function (index) {
 };
 
 WaveDrom.InsertSVGTemplate = function (index, parent) {
+	"use strict";
 	var node0, node1;
 
 	node1 = JsonML.parse(WaveSkin);
 	node1.id = "svgcontent_" + index;
 	node1.setAttribute ('height', '0');
 	parent.insertBefore (node1, parent.firstChild);
+
+	node0 = document.getElementById('waves');
+	node0.id = "waves_" + index;
+
+	node0 = document.getElementById('groups');
+	node0.id = "groups_" + index;
 
 	node0 = document.getElementById('lanes');
 	node0.id = "lanes_" + index;
@@ -830,6 +899,10 @@ WaveDrom.resize = function () {
 WaveDrom.ClearWaveLane = function (index) {
 	"use strict";
 	var root = document.getElementById ('lanes_' + index);
+	while (root.childNodes.length) {
+		root.removeChild (root.childNodes[0]);
+	}
+	var root = document.getElementById ('groups_' + index);
 	while (root.childNodes.length) {
 		root.removeChild (root.childNodes[0]);
 	}

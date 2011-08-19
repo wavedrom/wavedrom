@@ -107,7 +107,7 @@ var WaveSkin = ["svg",{"id":"svg","xmlns":"http://www.w3.org/2000/svg","xmlns:xl
 ,["style",{"type":"text/css"},"text{font-size:11pt;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;fill-opacity:1;font-family:Helvetica}$css"]
 ,["defs",["g",{"id":"wavetemps","style":"display:none"}
 $message
-]],["g",{"id":"lanes"}]]
+]],["g",{"id":"waves"},["g",{"id":"lanes"}],["g",{"id":"groups"}]]]
 EOM
 
 }

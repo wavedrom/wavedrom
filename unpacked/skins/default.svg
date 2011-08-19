@@ -43,8 +43,8 @@
      showgrid="true"
      inkscape:document-units="px"
      units="px"
-     inkscape:zoom="2.4605263"
-     inkscape:cx="185"
+     inkscape:zoom="2.3375"
+     inkscape:cx="200"
      inkscape:cy="200"
      inkscape:window-x="-9"
      inkscape:window-y="-9"
@@ -1002,20 +1002,20 @@
      transform="translate(110,30)">
     <path
        inkscape:connector-curvature="0"
-       d="m 7,-5 -4,0 c -5,0 -5,30 -10,30 l 4,0 C 2,25 2,-5 7,-5 z"
+       d="m 7,-2 -4,0 c -5,0 -5,24 -10,24 l 4,0 C 2,22 2,-2 7,-2 z"
        style="fill:#ffffff;stroke:none"
        id="zmo_120_40-2-7-7-6-7"
        sodipodi:nodetypes="csccc" />
     <path
        id="zmo_120_40-2-7-7"
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="M -7,25 C -2,25 -2,-5 3,-5"
+       d="M -7,22 C -2,22 -2,-2 3,-2"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <path
        id="zmo_120_40-2-7-7-6"
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="M -3,25 C 2,25 2,-5 7,-5"
+       d="M -3,22 C 2,22 2,-2 7,-2"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
   </g>
