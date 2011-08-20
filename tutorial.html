@@ -111,7 +111,51 @@ Multi-bit signals will try grabbing labels from <span class="fixed">"data"</span
 ]}
 </script>
 
-<h2>Step 5. DDR Examples</h2>
+<h2>Step 5. Groups</h2>
+
+<pre>
+{ "signal" : [
+ {   "name": "clk",    "wave": "P......." },
+ [ "Master",
+  [ "control",
+   { "name": "write",  "wave": "01.0...." },
+   { "name": "read",   "wave": "0...1..0" },
+  ],
+  {  "name": "addr",   "wave": "x3.x4..x", "data": ["A1","A2"] },
+  {  "name": "byteen", "wave": "x3.x4..x", "data": ["BE1","BE2"] },
+  {  "name": "wdata",  "wave": "x3.x....", "data": ["D1"] },
+ ],
+ [ "Slave",
+  [ "control",
+   { "name": "accept", "wave": "x01x0.1x" },
+  ],
+  {  "name": "rdata",  "wave": "x.....4x", "data": ["D2"] },
+ ]
+]}
+</pre>
+
+<script type="WaveDrom">
+{ "signal" : [
+ {   "name": "clk",    "wave": "P......." },
+ [ "Master",
+  [ "control",
+   { "name": "write",  "wave": "01.0...." },
+   { "name": "read",   "wave": "0...1..0" },
+  ],
+  {  "name": "addr",   "wave": "x3.x4..x", "data": ["A1","A2"] },
+  {  "name": "byteen", "wave": "x3.x4..x", "data": ["BE1","BE2"] },
+  {  "name": "wdata",  "wave": "x3.x....", "data": ["D1"] },
+ ],
+ [ "Slave",
+  [ "control",
+   { "name": "accept", "wave": "x01x0.1x" },
+  ],
+  {  "name": "rdata",  "wave": "x.....4x", "data": ["D2"] },
+ ]
+]}
+</script>
+
+<h2>Step 6. DDR Examples</h2>
 
 <h3>DDR Read transaction</h3>
 
