@@ -10,7 +10,7 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="250"
-   height="1500"
+   height="1750"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.0 r9654"
@@ -24,9 +24,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.49497475"
-     inkscape:cx="114.79354"
-     inkscape:cy="872.53674"
+     inkscape:zoom="0.77542857"
+     inkscape:cx="125"
+     inkscape:cy="875"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -51,7 +51,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -59,21 +59,21 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,447.63783)">
+     transform="translate(0,697.63783)">
     <rect
        style="color:#000000;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.77165353;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="rect2987"
        width="250"
        height="250"
        x="0"
-       y="-447.63782" />
+       y="-697.63782" />
     <rect
        style="color:#000000;fill:#00ff00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.77165353;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="rect2987-1"
        width="250"
        height="250"
        x="0"
-       y="-197.63783" />
+       y="-447.63782" />
     <rect
        style="color:#000000;fill:#ffff00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.77165353;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="rect2987-1-1"
@@ -87,17 +87,24 @@
        width="250"
        height="250"
        x="0"
-       y="302.36218" />
+       y="-197.63783" />
     <rect
        style="color:#000000;fill:#ff00ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.77165353;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="rect2987-1-1-9-9"
        width="250"
        height="250"
        x="0"
-       y="552.36218" />
+       y="302.36218" />
     <rect
        style="color:#000000;fill:#00ffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.77165353;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="rect2987-1-1-9-9-6"
+       width="250"
+       height="250"
+       x="0"
+       y="552.36218" />
+    <rect
+       style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.77165353;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect2987-17"
        width="250"
        height="250"
        x="0"
