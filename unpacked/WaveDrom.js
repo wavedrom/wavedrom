@@ -397,6 +397,7 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 
 var WaveDrom = {
 	version: "0.6.2",
+	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
 		ys     : 20,    // tmpgraphlane0.height
@@ -906,6 +907,41 @@ WaveDrom.ClearWaveLane = function (index) {
 	while (root.childNodes.length) {
 		root.removeChild (root.childNodes[0]);
 	}
+};
+
+WaveDrom.EditorKeyUp = function (event) {
+	"use strict";
+	if (event) {
+		switch (event.keyCode) {
+			case 16: break; // Shift
+			case 17: break; // Ctrl
+			case 18: break; // Alt
+
+			case 33: break; // Page Up
+			case 34: break; // Page Down
+			case 35: break; // End
+			case 36: break; // Home
+			case 37: break; // Arrow Left
+			case 38: break; // Arrow Up
+			case 39: break; // Arrow Right
+			case 40: break; // Arrow Down
+
+			case 91: break; // Windows
+			case 93: break; // Right Click
+			default: {
+				if (WaveDrom.timer) {
+					clearTimeout (WaveDrom.timer);
+				}
+				WaveDrom.timer = setTimeout ("WaveDrom.EditorRefrech()", 750);
+				return;
+			}
+		}
+		if (WaveDrom.timer) {
+			clearTimeout (WaveDrom.timer);
+			WaveDrom.timer = setTimeout ("WaveDrom.EditorRefrech()", 750);
+		}
+	}
+//	WaveDrom.EditorRefrech();
 };
 
 WaveDrom.EditorRefrech = function () {
