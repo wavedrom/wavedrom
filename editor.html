@@ -5,7 +5,7 @@
   <link rel="stylesheet" href="main.css" type="text/css"/>
   <script type="text/javascript" src="scripts/html5slider.js"></script>
   <script type="text/javascript" src="skins/default.js"></script>
-  <script type="text/javascript" src="WaveDrom.js"></script>
+  <script type="text/javascript" src="unpacked/WaveDrom.js"></script>
  </head>
 
  <body onload="WaveDrom.EditorInit()">
@@ -46,6 +46,7 @@ Clock period: <input type="range" min="1" max="6" value="1" step="1" onchange="W
 Scale: <input type="range" min="1" max="3" value="3" step="0.25"     onchange="WaveDrom.SetScale(this.value)"/>
 <img src="images/expand_small.png"      onclick="WaveDrom.ExpandInputWindow()"/>
 <img src="images/collapse_small.png"    onclick="WaveDrom.CollapseInputWindow()"/>
+<input type="button" value="Save"       onclick="WaveDrom.WaveformSave()"/>
 <input type="button" value="SVG"        onclick="WaveDrom.ViewSVG('svgcontent_0')"/>
 <input type="button" value="SVG Source" onclick="WaveDrom.ViewSourceSVG('svgcontent_0')"/>
 

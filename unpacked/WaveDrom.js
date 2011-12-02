@@ -932,19 +932,19 @@ WaveDrom.EditorKeyUp = function (event) {
 				if (WaveDrom.timer) {
 					clearTimeout (WaveDrom.timer);
 				}
-				WaveDrom.timer = setTimeout ("WaveDrom.EditorRefrech()", 750);
+				WaveDrom.timer = setTimeout ("WaveDrom.EditorRefresh()", 750);
 				return;
 			}
 		}
 		if (WaveDrom.timer) {
 			clearTimeout (WaveDrom.timer);
-			WaveDrom.timer = setTimeout ("WaveDrom.EditorRefrech()", 750);
+			WaveDrom.timer = setTimeout ("WaveDrom.EditorRefresh()", 750);
 		}
 	}
-//	WaveDrom.EditorRefrech();
+//	WaveDrom.EditorRefresh();
 };
 
-WaveDrom.EditorRefrech = function () {
+WaveDrom.EditorRefresh = function () {
 	"use strict";
 	WaveDrom.ClearWaveLane (0);
 	WaveDrom.resize ();
@@ -957,36 +957,97 @@ WaveDrom.EditorInit = function () {
 	this.lane.scale = 3;
 	index = 0;
 	WaveDrom.InsertSVGTemplate (index, document.getElementById ('WaveDrom_Display_' + index));
-	WaveDrom.EditorRefrech ();
-	window.onresize = WaveDrom.EditorRefrech;
+	WaveDrom.EditorRefresh ();
+	WaveDrom.ConfigurationLoad ();
+	WaveDrom.WaveformLoad ();
+	window.onresize = WaveDrom.EditorRefresh;
 };
 
 WaveDrom.ExpandInputWindow = function () {
 	"use strict";
 	if (WaveDrom.panela.ys < (0.707 * window.innerHeight)) {
 		WaveDrom.panela.ys += 50;
-		WaveDrom.EditorRefrech ();
+		WaveDrom.EditorRefresh ();
 	}
 };
+
+WaveDrom.ConfigurationLoad = function () {
+
+  var favorite = localStorage["color"];
+  if (!favorite) {
+    return;
+  }
+  var select = document.getElementById("color");
+  if(!select) {
+	return;
+  }
+  for (var i = 0; i < select.children.length; i++) {
+    var child = select.children[i];
+    if (child.value == favorite) {
+      child.selected = "true";
+      break;
+    }
+  }
+
+  //document.getElementById("InputJSON_0").value = localStorage["input"];
+  //document.getElementById("color").firstChild.nodeValue = localStorage["color"];
+};
+
+WaveDrom.ConfigurationSave = function () {
+
+  var select = document.getElementById("color");
+  var color = select.children[select.selectedIndex].value;
+  localStorage["color"] = color;
+
+  // Update status to let user know options were saved.
+  var status = document.getElementById("status");
+  status.innerHTML = "Options Saved.";
+  setTimeout(function() {
+    status.innerHTML = "";
+  }, 750);
+}
+
+WaveDrom.WaveformLoad = function() {
+	var waveform = localStorage["waveform"];
+
+	if(!waveform)
+	{
+		waveform = "TODO";
+		WaveDrom.ConfigurationSaveWaveform(waveform);
+	} 
+
+	document.getElementById("InputJSON_0").firstChild.nodeValue = waveform;
+}
+
+WaveDrom.WaveformSave = function() {
+	var waveform = document.getElementById("InputJSON_0").innerHTML;
+	if(!waveform)
+		return;
+	WaveDrom.ConfigurationSaveWaveform(waveform);
+}
+
+WaveDrom.ConfigurationSaveWaveform = function(waveform) {
+	localStorage["waveform"] = waveform;
+}
 
 WaveDrom.CollapseInputWindow = function () {
 	"use strict";
 	if (WaveDrom.panela.ys > 100) {
 		WaveDrom.panela.ys -= 50;
-		WaveDrom.EditorRefrech ();
+		WaveDrom.EditorRefresh ();
 	}
 };
 
 WaveDrom.SetHScale = function (hscale) {
 	"use strict";
 	WaveDrom.lane.hscale0 = parseFloat(hscale);
-	WaveDrom.EditorRefrech ();
+	WaveDrom.EditorRefresh ();
 };
 
 WaveDrom.SetScale = function (scale) {
 	"use strict";
 	WaveDrom.lane.scale = parseFloat(scale);
-	WaveDrom.EditorRefrech ();
+	WaveDrom.EditorRefresh ();
 };
 
 window.onload = WaveDrom.ProcessAll;
