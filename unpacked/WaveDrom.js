@@ -956,10 +956,10 @@ WaveDrom.EditorInit = function () {
 	var index, points, i, node0, node1;
 	this.lane.scale = 3;
 	index = 0;
+	WaveDrom.WaveformLoad ();
 	WaveDrom.InsertSVGTemplate (index, document.getElementById ('WaveDrom_Display_' + index));
 	WaveDrom.EditorRefresh ();
 	WaveDrom.ConfigurationLoad ();
-	WaveDrom.WaveformLoad ();
 	window.onresize = WaveDrom.EditorRefresh;
 };
 
@@ -1010,20 +1010,15 @@ WaveDrom.ConfigurationSave = function () {
 WaveDrom.WaveformLoad = function() {
 	var waveform = localStorage["waveform"];
 
-	if(!waveform)
-	{
-		waveform = "TODO";
-		WaveDrom.ConfigurationSaveWaveform(waveform);
-	} 
-
-	document.getElementById("InputJSON_0").firstChild.nodeValue = waveform;
+	if(waveform)
+		document.getElementById("InputJSON_0").value = waveform;
 }
 
 WaveDrom.WaveformSave = function() {
-	var waveform = document.getElementById("InputJSON_0").innerHTML;
-	if(!waveform)
-		return;
-	WaveDrom.ConfigurationSaveWaveform(waveform);
+	var waveform = document.getElementById("InputJSON_0").value;
+
+	if(waveform)
+		WaveDrom.ConfigurationSaveWaveform(waveform);
 }
 
 WaveDrom.ConfigurationSaveWaveform = function(waveform) {
