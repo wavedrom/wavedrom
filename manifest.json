@@ -10,8 +10,6 @@
       "local_path": "editor.html"
     }
   },
-  "icons": {
-    "16": "images/logo.png",
-    "128": "images/logo.png"
-  }
+  "icons": {"16": "images/logo.png", "128": "images/logo.png"},
+  "manifest_version": 2
 }
