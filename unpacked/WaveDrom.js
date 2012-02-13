@@ -396,7 +396,7 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "0.6.3",
+	version: "0.6.4",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -442,47 +442,52 @@ var WaveDrom = {
 		}
 		return R;
 	},
-	genFirstWaveBrick: function (text,  extra, times) {
+	genFirstWaveBrick: function (text, extra, times) {
 		"use strict";
+		var i, tmp = [];
 		switch (text) {
-		case 'p': return this.genBrick(['pclk', '111', 'nclk', '000'], extra, times);
-		case 'n': return this.genBrick(['nclk', '000', 'pclk', '111'], extra, times);
-		case 'P': return this.genBrick(['Pclk', '111', 'nclk', '000'], extra, times);
-		case 'N': return this.genBrick(['Nclk', '000', 'pclk', '111'], extra, times);
-		case '0': return this.genBrick(['000'], extra, times);
-		case '1': return this.genBrick(['111'], extra, times);
-		case '=': return this.genBrick(['vvv-2'], extra, times);
-		case '2': return this.genBrick(['vvv-2'], extra, times);
-		case '3': return this.genBrick(['vvv-3'], extra, times);
-		case '4': return this.genBrick(['vvv-4'], extra, times);
-		case '5': return this.genBrick(['vvv-5'], extra, times);
-		case 'd': return this.genBrick(['ddd'], extra, times);
-		case 'u': return this.genBrick(['uuu'], extra, times);
-		case 'z': return this.genBrick(['zzz'], extra, times);
-		default:  return this.genBrick(['xxx'], extra, times);
+			case 'p': tmp = this.genBrick(['pclk', '111', 'nclk', '000'], extra, times); break;
+			case 'n': tmp = this.genBrick(['nclk', '000', 'pclk', '111'], extra, times); break;
+			case 'P': tmp = this.genBrick(['Pclk', '111', 'nclk', '000'], extra, times); break;
+			case 'N': tmp = this.genBrick(['Nclk', '000', 'pclk', '111'], extra, times); break;
+			case '0': tmp = this.genBrick(['000'], extra, times); break;
+			case '1': tmp = this.genBrick(['111'], extra, times); break;
+			case '=': tmp = this.genBrick(['vvv-2'], extra, times); break;
+			case '2': tmp = this.genBrick(['vvv-2'], extra, times); break;
+			case '3': tmp = this.genBrick(['vvv-3'], extra, times); break;
+			case '4': tmp = this.genBrick(['vvv-4'], extra, times); break;
+			case '5': tmp = this.genBrick(['vvv-5'], extra, times); break;
+			case 'd': tmp = this.genBrick(['ddd'], extra, times); break;
+			case 'u': tmp = this.genBrick(['uuu'], extra, times); break;
+			case 'z': tmp = this.genBrick(['zzz'], extra, times); break;
+			default:  tmp = this.genBrick(['xxx'], extra, times); break;
 		}
+		for (i = 0; i < this.lane.phase; i += 1) {
+			tmp.shift();
+		}
+		return tmp;
 	},
 	genWaveBrick: function (text, extra, times) {
 		"use strict";
 		var v, H = {
-			'pp': ['pclk', '111', 'nclk', '000'], 'pn': ['nclk', '111', 'pclk', '000'], 'pP': ['Pclk', '111', 'nclk', '000'], 'pN': ['Nclk', '111', 'pclk', '000'],     'p0': ['000',   '000'], 'p1': ['0m1',   '111'], 'px': ['0mx',   'xxx'], 'pd': ['0md',   'ddd'], 'pu': ['0mu',   'uuu'], 'pz': ['0mz',   'zzz'],     'p=': ['0mv-2',   'vvv-2'], 'p2': ['0mv-2',   'vvv-2'], 'p3': ['0mv-3',   'vvv-3'], 'p4': ['0mv-4',   'vvv-4'], 'p5': ['0mv-5',   'vvv-5'],
-			'np': ['pclk', '111', 'nclk', '000'], 'nn': ['nclk', '111', 'pclk', '000'], 'nP': ['Pclk', '111', 'nclk', '000'], 'nN': ['Nclk', '111', 'pclk', '000'],     'n0': ['1m0',   '000'], 'n1': ['111',   '111'], 'nx': ['1mx',   'xxx'], 'nd': ['1md',   'ddd'], 'nu': ['1mu',   'uuu'], 'nz': ['1mz',   'zzz'],     'n=': ['1mv-2',   'vvv-2'], 'n2': ['1mv-2',   'vvv-2'], 'n3': ['1mv-3',   'vvv-3'], 'n4': ['1mv-4',   'vvv-4'], 'n5': ['1mv-5',   'vvv-5'],
-			'Pp': ['pclk', '111', 'nclk', '000'], 'Pn': ['nclk', '111', 'pclk', '000'], 'PP': ['Pclk', '111', 'nclk', '000'], 'PN': ['Nclk', '111', 'pclk', '000'],     'P0': ['000',   '000'], 'P1': ['0m1',   '111'], 'Px': ['0mx',   'xxx'], 'Pd': ['0md',   'ddd'], 'Pu': ['0mu',   'uuu'], 'Pz': ['0mz',   'zzz'],     'P=': ['0mv-2',   'vvv-2'], 'P2': ['0mv-2',   'vvv-2'], 'P3': ['0mv-3',   'vvv-3'], 'P4': ['0mv-4',   'vvv-4'], 'P5': ['0mv-5',   'vvv-5'],
-			'Np': ['pclk', '111', 'nclk', '000'], 'Nn': ['nclk', '111', 'pclk', '000'], 'NP': ['Pclk', '111', 'nclk', '000'], 'NN': ['Nclk', '111', 'pclk', '000'],     'N0': ['1m0',   '000'], 'N1': ['111',   '111'], 'Nx': ['1mx',   'xxx'], 'Nd': ['1md',   'ddd'], 'Nu': ['1mu',   'uuu'], 'Nz': ['1mz',   'zzz'],     'N=': ['1mv-2',   'vvv-2'], 'N2': ['1mv-2',   'vvv-2'], 'N3': ['1mv-3',   'vvv-3'], 'N4': ['1mv-4',   'vvv-4'], 'N5': ['1mv-5',   'vvv-5'],
+			'pp': ['pclk', '111', 'nclk', '000'], 'pn': ['nclk', '000', 'pclk', '111'], 'pP': ['Pclk', '111', 'nclk', '000'], 'pN': ['Nclk', '000', 'pclk', '111'],     'p0': ['000',   '000'], 'p1': ['0m1',   '111'], 'px': ['0mx',   'xxx'], 'pd': ['0md',   'ddd'], 'pu': ['0mu',   'uuu'], 'pz': ['0mz',   'zzz'],     'p=': ['0mv-2',   'vvv-2'], 'p2': ['0mv-2',   'vvv-2'], 'p3': ['0mv-3',   'vvv-3'], 'p4': ['0mv-4',   'vvv-4'], 'p5': ['0mv-5',   'vvv-5'],
+			'np': ['pclk', '111', 'nclk', '000'], 'nn': ['nclk', '000', 'pclk', '111'], 'nP': ['Pclk', '111', 'nclk', '000'], 'nN': ['Nclk', '000', 'pclk', '111'],     'n0': ['1m0',   '000'], 'n1': ['111',   '111'], 'nx': ['1mx',   'xxx'], 'nd': ['1md',   'ddd'], 'nu': ['1mu',   'uuu'], 'nz': ['1mz',   'zzz'],     'n=': ['1mv-2',   'vvv-2'], 'n2': ['1mv-2',   'vvv-2'], 'n3': ['1mv-3',   'vvv-3'], 'n4': ['1mv-4',   'vvv-4'], 'n5': ['1mv-5',   'vvv-5'],
+			'Pp': ['pclk', '111', 'nclk', '000'], 'Pn': ['nclk', '000', 'pclk', '111'], 'PP': ['Pclk', '111', 'nclk', '000'], 'PN': ['Nclk', '000', 'pclk', '111'],     'P0': ['000',   '000'], 'P1': ['0m1',   '111'], 'Px': ['0mx',   'xxx'], 'Pd': ['0md',   'ddd'], 'Pu': ['0mu',   'uuu'], 'Pz': ['0mz',   'zzz'],     'P=': ['0mv-2',   'vvv-2'], 'P2': ['0mv-2',   'vvv-2'], 'P3': ['0mv-3',   'vvv-3'], 'P4': ['0mv-4',   'vvv-4'], 'P5': ['0mv-5',   'vvv-5'],
+			'Np': ['pclk', '111', 'nclk', '000'], 'Nn': ['nclk', '000', 'pclk', '111'], 'NP': ['Pclk', '111', 'nclk', '000'], 'NN': ['Nclk', '000', 'pclk', '111'],     'N0': ['1m0',   '000'], 'N1': ['111',   '111'], 'Nx': ['1mx',   'xxx'], 'Nd': ['1md',   'ddd'], 'Nu': ['1mu',   'uuu'], 'Nz': ['1mz',   'zzz'],     'N=': ['1mv-2',   'vvv-2'], 'N2': ['1mv-2',   'vvv-2'], 'N3': ['1mv-3',   'vvv-3'], 'N4': ['1mv-4',   'vvv-4'], 'N5': ['1mv-5',   'vvv-5'],
 
-			'0p': ['pclk', '111', 'nclk', '000'], '0n': ['nclk', '111', 'pclk', '000'], '0P': ['Pclk', '111', 'nclk', '000'], '0N': ['Nclk', '111', 'pclk', '000'],     '00': ['0m0',   '000'], '01': ['0m1',   '111'], '0x': ['0mx',   'xxx'], '0d': ['0md',   'ddd'], '0u': ['0mu',   'uuu'], '0z': ['0mz',   'zzz'],     '0=': ['0mv-2',   'vvv-2'], '02': ['0mv-2',   'vvv-2'], '03': ['0mv-3',   'vvv-3'], '04': ['0mv-4',   'vvv-4'], '05': ['0mv-5',   'vvv-5'],
-			'1p': ['pclk', '111', 'nclk', '000'], '1n': ['nclk', '111', 'pclk', '000'], '1P': ['Pclk', '111', 'nclk', '000'], '1N': ['Nclk', '111', 'pclk', '000'],     '10': ['1m0',   '000'], '11': ['1m1',   '111'], '1x': ['1mx',   'xxx'], '1d': ['1md',   'ddd'], '1u': ['1mu',   'uuu'], '1z': ['1mz',   'zzz'],     '1=': ['1mv-2',   'vvv-2'], '12': ['1mv-2',   'vvv-2'], '13': ['1mv-3',   'vvv-3'], '14': ['1mv-4',   'vvv-4'], '15': ['1mv-5',   'vvv-5'],
-			'xp': ['pclk', '111', 'nclk', '000'], 'xn': ['nclk', '111', 'pclk', '000'], 'xP': ['Pclk', '111', 'nclk', '000'], 'xN': ['Nclk', '111', 'pclk', '000'],     'x0': ['xm0',   '000'], 'x1': ['xm1',   '111'], 'xx': ['xmx',   'xxx'], 'xd': ['xmd',   'ddd'], 'xu': ['xmu',   'uuu'], 'xz': ['xmz',   'zzz'],     'x=': ['xmv-2',   'vvv-2'], 'x2': ['xmv-2',   'vvv-2'], 'x3': ['xmv-3',   'vvv-3'], 'x4': ['xmv-4',   'vvv-4'], 'x5': ['xmv-5',   'vvv-5'],
-			'.p': ['pclk', '111', 'nclk', '000'], '.n': ['nclk', '111', 'pclk', '000'], '.P': ['Pclk', '111', 'nclk', '000'], '.N': ['Nclk', '111', 'pclk', '000'],     '.0': ['xm0',   '000'], '.1': ['xm1',   '111'], '.x': ['xmx',   'xxx'], '.d': ['xmd',   'ddd'], '.u': ['xmu',   'uuu'], '.z': ['xmz',   'zzz'],     '.=': ['xmv-2',   'vvv-2'], '.2': ['xmv-2',   'vvv-2'], '.3': ['xmv-3',   'vvv-3'], '.4': ['xmv-4',   'vvv-4'], '.5': ['xmv-5',   'vvv-5'],
-			'dp': ['pclk', '111', 'nclk', '000'], 'dn': ['nclk', '111', 'pclk', '000'], 'dP': ['Pclk', '111', 'nclk', '000'], 'dN': ['Nclk', '111', 'pclk', '000'],     'd0': ['dm0',   '000'], 'd1': ['dm1',   '111'], 'dx': ['dmx',   'xxx'], 'dd': ['dmd',   'ddd'], 'du': ['dmu',   'uuu'], 'dz': ['dmz',   'zzz'],     'd=': ['dmv-2',   'vvv-2'], 'd2': ['dmv-2',   'vvv-2'], 'd3': ['dmv-3',   'vvv-3'], 'd4': ['dmv-4',   'vvv-4'], 'd5': ['dmv-5',   'vvv-5'],
-			'up': ['pclk', '111', 'nclk', '000'], 'un': ['nclk', '111', 'pclk', '000'], 'uP': ['Pclk', '111', 'nclk', '000'], 'uN': ['Nclk', '111', 'pclk', '000'],     'u0': ['um0',   '000'], 'u1': ['um1',   '111'], 'ux': ['umx',   'xxx'], 'ud': ['umd',   'ddd'], 'uu': ['umu',   'uuu'], 'uz': ['umz',   'zzz'],     'u=': ['umv-2',   'vvv-2'], 'u2': ['umv-2',   'vvv-2'], 'u3': ['umv-3',   'vvv-3'], 'u4': ['umv-4',   'vvv-4'], 'u5': ['umv-5',   'vvv-5'],
-			'zp': ['pclk', '111', 'nclk', '000'], 'zn': ['nclk', '111', 'pclk', '000'], 'zP': ['Pclk', '111', 'nclk', '000'], 'zN': ['Nclk', '111', 'pclk', '000'],     'z0': ['zm0',   '000'], 'z1': ['zm1',   '111'], 'zx': ['zmx',   'xxx'], 'zd': ['zmd',   'ddd'], 'zu': ['zmu',   'uuu'], 'zz': ['zmz',   'zzz'],     'z=': ['zmv-2',   'vvv-2'], 'z2': ['zmv-2',   'vvv-2'], 'z3': ['zmv-3',   'vvv-3'], 'z4': ['zmv-4',   'vvv-4'], 'z5': ['zmv-5',   'vvv-5'],
+			'0p': ['pclk', '111', 'nclk', '000'], '0n': ['nclk', '000', 'pclk', '111'], '0P': ['Pclk', '111', 'nclk', '000'], '0N': ['Nclk', '000', 'pclk', '111'],     '00': ['0m0',   '000'], '01': ['0m1',   '111'], '0x': ['0mx',   'xxx'], '0d': ['0md',   'ddd'], '0u': ['0mu',   'uuu'], '0z': ['0mz',   'zzz'],     '0=': ['0mv-2',   'vvv-2'], '02': ['0mv-2',   'vvv-2'], '03': ['0mv-3',   'vvv-3'], '04': ['0mv-4',   'vvv-4'], '05': ['0mv-5',   'vvv-5'],
+			'1p': ['pclk', '111', 'nclk', '000'], '1n': ['nclk', '000', 'pclk', '111'], '1P': ['Pclk', '111', 'nclk', '000'], '1N': ['Nclk', '000', 'pclk', '111'],     '10': ['1m0',   '000'], '11': ['1m1',   '111'], '1x': ['1mx',   'xxx'], '1d': ['1md',   'ddd'], '1u': ['1mu',   'uuu'], '1z': ['1mz',   'zzz'],     '1=': ['1mv-2',   'vvv-2'], '12': ['1mv-2',   'vvv-2'], '13': ['1mv-3',   'vvv-3'], '14': ['1mv-4',   'vvv-4'], '15': ['1mv-5',   'vvv-5'],
+			'xp': ['pclk', '111', 'nclk', '000'], 'xn': ['nclk', '000', 'pclk', '111'], 'xP': ['Pclk', '111', 'nclk', '000'], 'xN': ['Nclk', '000', 'pclk', '111'],     'x0': ['xm0',   '000'], 'x1': ['xm1',   '111'], 'xx': ['xmx',   'xxx'], 'xd': ['xmd',   'ddd'], 'xu': ['xmu',   'uuu'], 'xz': ['xmz',   'zzz'],     'x=': ['xmv-2',   'vvv-2'], 'x2': ['xmv-2',   'vvv-2'], 'x3': ['xmv-3',   'vvv-3'], 'x4': ['xmv-4',   'vvv-4'], 'x5': ['xmv-5',   'vvv-5'],
+			'.p': ['pclk', '111', 'nclk', '000'], '.n': ['nclk', '000', 'pclk', '111'], '.P': ['Pclk', '111', 'nclk', '000'], '.N': ['Nclk', '000', 'pclk', '111'],     '.0': ['xm0',   '000'], '.1': ['xm1',   '111'], '.x': ['xmx',   'xxx'], '.d': ['xmd',   'ddd'], '.u': ['xmu',   'uuu'], '.z': ['xmz',   'zzz'],     '.=': ['xmv-2',   'vvv-2'], '.2': ['xmv-2',   'vvv-2'], '.3': ['xmv-3',   'vvv-3'], '.4': ['xmv-4',   'vvv-4'], '.5': ['xmv-5',   'vvv-5'],
+			'dp': ['pclk', '111', 'nclk', '000'], 'dn': ['nclk', '000', 'pclk', '111'], 'dP': ['Pclk', '111', 'nclk', '000'], 'dN': ['Nclk', '000', 'pclk', '111'],     'd0': ['dm0',   '000'], 'd1': ['dm1',   '111'], 'dx': ['dmx',   'xxx'], 'dd': ['dmd',   'ddd'], 'du': ['dmu',   'uuu'], 'dz': ['dmz',   'zzz'],     'd=': ['dmv-2',   'vvv-2'], 'd2': ['dmv-2',   'vvv-2'], 'd3': ['dmv-3',   'vvv-3'], 'd4': ['dmv-4',   'vvv-4'], 'd5': ['dmv-5',   'vvv-5'],
+			'up': ['pclk', '111', 'nclk', '000'], 'un': ['nclk', '000', 'pclk', '111'], 'uP': ['Pclk', '111', 'nclk', '000'], 'uN': ['Nclk', '000', 'pclk', '111'],     'u0': ['um0',   '000'], 'u1': ['um1',   '111'], 'ux': ['umx',   'xxx'], 'ud': ['umd',   'ddd'], 'uu': ['umu',   'uuu'], 'uz': ['umz',   'zzz'],     'u=': ['umv-2',   'vvv-2'], 'u2': ['umv-2',   'vvv-2'], 'u3': ['umv-3',   'vvv-3'], 'u4': ['umv-4',   'vvv-4'], 'u5': ['umv-5',   'vvv-5'],
+			'zp': ['pclk', '111', 'nclk', '000'], 'zn': ['nclk', '000', 'pclk', '111'], 'zP': ['Pclk', '111', 'nclk', '000'], 'zN': ['Nclk', '000', 'pclk', '111'],     'z0': ['zm0',   '000'], 'z1': ['zm1',   '111'], 'zx': ['zmx',   'xxx'], 'zd': ['zmd',   'ddd'], 'zu': ['zmu',   'uuu'], 'zz': ['zmz',   'zzz'],     'z=': ['zmv-2',   'vvv-2'], 'z2': ['zmv-2',   'vvv-2'], 'z3': ['zmv-3',   'vvv-3'], 'z4': ['zmv-4',   'vvv-4'], 'z5': ['zmv-5',   'vvv-5'],
 
-			'=p': ['pclk', '111', 'nclk', '000'], '=n': ['nclk', '111', 'pclk', '000'], '=P': ['Pclk', '111', 'nclk', '000'], '=N': ['Nclk', '111', 'pclk', '000'],     '=0': ['vm0-2', '000'], '=1': ['vm1-2', '111'], '=x': ['vmx-2', 'xxx'], '=d': ['vmd-2', 'ddd'], '=u': ['vmu-2', 'uuu'], '=z': ['vmz-2', 'zzz'],     '==': ['vmv-2-2', 'vvv-2'], '=2': ['vmv-2-2', 'vvv-2'], '=3': ['vmv-2-3', 'vvv-3'], '=4': ['vmv-2-4', 'vvv-4'], '=5': ['vmv-2-5', 'vvv-5'],
-			'2p': ['pclk', '111', 'nclk', '000'], '2n': ['nclk', '111', 'pclk', '000'], '2P': ['Pclk', '111', 'nclk', '000'], '2N': ['Nclk', '111', 'pclk', '000'],     '20': ['vm0-2', '000'], '21': ['vm1-2', '111'], '2x': ['vmx-2', 'xxx'], '2d': ['vmd-2', 'ddd'], '2u': ['vmu-2', 'uuu'], '2z': ['vmz-2', 'zzz'],     '2=': ['vmv-2-2', 'vvv-2'], '22': ['vmv-2-2', 'vvv-2'], '23': ['vmv-2-3', 'vvv-3'], '24': ['vmv-2-4', 'vvv-4'], '25': ['vmv-2-5', 'vvv-5'],
-			'3p': ['pclk', '111', 'nclk', '000'], '3n': ['nclk', '111', 'pclk', '000'], '3P': ['Pclk', '111', 'nclk', '000'], '3N': ['Nclk', '111', 'pclk', '000'],     '30': ['vm0-3', '000'], '31': ['vm1-3', '111'], '3x': ['vmx-3', 'xxx'], '3d': ['vmd-3', 'ddd'], '3u': ['vmu-3', 'uuu'], '3z': ['vmz-3', 'zzz'],     '3=': ['vmv-3-2', 'vvv-2'], '32': ['vmv-3-2', 'vvv-2'], '33': ['vmv-3-3', 'vvv-3'], '34': ['vmv-3-4', 'vvv-4'], '35': ['vmv-3-5', 'vvv-5'],
-			'4p': ['pclk', '111', 'nclk', '000'], '4n': ['nclk', '111', 'pclk', '000'], '4P': ['Pclk', '111', 'nclk', '000'], '4N': ['Nclk', '111', 'pclk', '000'],     '40': ['vm0-4', '000'], '41': ['vm1-4', '111'], '4x': ['vmx-4', 'xxx'], '4d': ['vmd-4', 'ddd'], '4u': ['vmu-4', 'uuu'], '4z': ['vmz-4', 'zzz'],     '4=': ['vmv-4-2', 'vvv-2'], '42': ['vmv-4-2', 'vvv-2'], '43': ['vmv-4-3', 'vvv-3'], '44': ['vmv-4-4', 'vvv-4'], '45': ['vmv-4-5', 'vvv-5'],
-			'5p': ['pclk', '111', 'nclk', '000'], '5n': ['nclk', '111', 'pclk', '000'], '5P': ['Pclk', '111', 'nclk', '000'], '5N': ['Nclk', '111', 'pclk', '000'],     '50': ['vm0-5', '000'], '51': ['vm1-5', '111'], '5x': ['vmx-5', 'xxx'], '5d': ['vmd-5', 'ddd'], '5u': ['vmu-5', 'uuu'], '5z': ['vmz-5', 'zzz'],     '5=': ['vmv-5-2', 'vvv-2'], '52': ['vmv-5-2', 'vvv-2'], '53': ['vmv-5-3', 'vvv-3'], '54': ['vmv-5-4', 'vvv-4'], '55': ['vmv-5-5', 'vvv-5']
+			'=p': ['pclk', '111', 'nclk', '000'], '=n': ['nclk', '000', 'pclk', '111'], '=P': ['Pclk', '111', 'nclk', '000'], '=N': ['Nclk', '000', 'pclk', '111'],     '=0': ['vm0-2', '000'], '=1': ['vm1-2', '111'], '=x': ['vmx-2', 'xxx'], '=d': ['vmd-2', 'ddd'], '=u': ['vmu-2', 'uuu'], '=z': ['vmz-2', 'zzz'],     '==': ['vmv-2-2', 'vvv-2'], '=2': ['vmv-2-2', 'vvv-2'], '=3': ['vmv-2-3', 'vvv-3'], '=4': ['vmv-2-4', 'vvv-4'], '=5': ['vmv-2-5', 'vvv-5'],
+			'2p': ['pclk', '111', 'nclk', '000'], '2n': ['nclk', '000', 'pclk', '111'], '2P': ['Pclk', '111', 'nclk', '000'], '2N': ['Nclk', '000', 'pclk', '111'],     '20': ['vm0-2', '000'], '21': ['vm1-2', '111'], '2x': ['vmx-2', 'xxx'], '2d': ['vmd-2', 'ddd'], '2u': ['vmu-2', 'uuu'], '2z': ['vmz-2', 'zzz'],     '2=': ['vmv-2-2', 'vvv-2'], '22': ['vmv-2-2', 'vvv-2'], '23': ['vmv-2-3', 'vvv-3'], '24': ['vmv-2-4', 'vvv-4'], '25': ['vmv-2-5', 'vvv-5'],
+			'3p': ['pclk', '111', 'nclk', '000'], '3n': ['nclk', '000', 'pclk', '111'], '3P': ['Pclk', '111', 'nclk', '000'], '3N': ['Nclk', '000', 'pclk', '111'],     '30': ['vm0-3', '000'], '31': ['vm1-3', '111'], '3x': ['vmx-3', 'xxx'], '3d': ['vmd-3', 'ddd'], '3u': ['vmu-3', 'uuu'], '3z': ['vmz-3', 'zzz'],     '3=': ['vmv-3-2', 'vvv-2'], '32': ['vmv-3-2', 'vvv-2'], '33': ['vmv-3-3', 'vvv-3'], '34': ['vmv-3-4', 'vvv-4'], '35': ['vmv-3-5', 'vvv-5'],
+			'4p': ['pclk', '111', 'nclk', '000'], '4n': ['nclk', '000', 'pclk', '111'], '4P': ['Pclk', '111', 'nclk', '000'], '4N': ['Nclk', '000', 'pclk', '111'],     '40': ['vm0-4', '000'], '41': ['vm1-4', '111'], '4x': ['vmx-4', 'xxx'], '4d': ['vmd-4', 'ddd'], '4u': ['vmu-4', 'uuu'], '4z': ['vmz-4', 'zzz'],     '4=': ['vmv-4-2', 'vvv-2'], '42': ['vmv-4-2', 'vvv-2'], '43': ['vmv-4-3', 'vvv-3'], '44': ['vmv-4-4', 'vvv-4'], '45': ['vmv-4-5', 'vvv-5'],
+			'5p': ['pclk', '111', 'nclk', '000'], '5n': ['nclk', '000', 'pclk', '111'], '5P': ['Pclk', '111', 'nclk', '000'], '5N': ['Nclk', '000', 'pclk', '111'],     '50': ['vm0-5', '000'], '51': ['vm1-5', '111'], '5x': ['vmx-5', 'xxx'], '5d': ['vmd-5', 'ddd'], '5u': ['vmu-5', 'uuu'], '5z': ['vmz-5', 'zzz'],     '5=': ['vmv-5-2', 'vvv-2'], '52': ['vmv-5-2', 'vvv-2'], '53': ['vmv-5-3', 'vvv-3'], '54': ['vmv-5-4', 'vvv-4'], '55': ['vmv-5-5', 'vvv-5']
 		};
 		for (v in H) {
 			if (text === v) {
@@ -549,10 +554,20 @@ WaveDrom.parseWaveLanes = function (sig) {
 	"use strict";
 	var x, content = [];
 	for (x in sig) {
+		if (sig[x].period) {
+			this.lane.period = sig[x].period;
+		} else {
+			this.lane.period = 1;
+		}
+		if (sig[x].phase) {
+			this.lane.phase = sig[x].phase * 2;
+		} else {
+			this.lane.phase = 0;
+		}
 		content.push([]);
 		content[content.length - 1][0] = sig[x].name;
 		if (sig[x].wave) {
-			content[content.length - 1][1] = this.parseWaveLane(sig[x].wave, this.lane.hscale-1);
+			content[content.length - 1][1] = this.parseWaveLane(sig[x].wave, this.lane.period * this.lane.hscale - 1);
 		} else {
 			content[content.length - 1][1] = null;
 		}
@@ -733,6 +748,16 @@ WaveDrom.RenderGaps = function (root, source, index) {
 		root.insertBefore (gg, root.firstChild);
 
 		for (i in source) {
+			if (source[i].period) {
+				this.lane.period = source[i].period;
+			} else {
+				this.lane.period = 1;
+			}
+			if (source[i].phase) {
+				this.lane.phase = source[i].phase * 2;
+			} else {
+				this.lane.phase = 0;
+			}
 			g = document.createElementNS (svgns, 'g');
 			g.id = "wavegap_" + i + "_" + index;
 			g.setAttribute ('transform', 'translate(0,' + (this.lane.y0 + i * this.lane.yo) + ')');
@@ -747,7 +772,7 @@ WaveDrom.RenderGaps = function (root, source, index) {
 						b    = document.createElementNS (svgns, "use");
 						b.id = "guse_" + pos + "_" + i + "_" + index;
 						b.setAttributeNS (xlinkns, 'xlink:href', '#gap');
-						b.setAttribute ('transform', 'translate(' + ((2 * pos + 1) * (this.lane.hscale) * this.lane.xs) + ')');
+						b.setAttribute ('transform', 'translate(' + (((2 * pos + 1) * this.lane.period - this.lane.phase) * this.lane.hscale * this.lane.xs) + ')');
 						g.insertBefore (b, g.firstChild);
 					}
 					pos += 1;
@@ -759,8 +784,6 @@ WaveDrom.RenderGaps = function (root, source, index) {
 
 WaveDrom.parseConfig = function (source) {
 	"use strict";
-	var x, content = [];
-
 	this.lane.hscale = 1;
 	if (this.lane.hscale0) {
 		this.lane.hscale = this.lane.hscale0;
