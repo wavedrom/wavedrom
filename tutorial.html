@@ -14,7 +14,7 @@
 
 <h1>WaveDrom Tutorial</h1>
 
-WaveDrom is an JavaScript application and WaveJSON format allows describtion of
+<a href="http://wavedrom.googlecode.com">WaveDrom</a> is an JavaScript application and WaveJSON format allows describtion of
 Digital Timing Diagrams and its rendering them directly inside the browser.
 Timing digram described as JSON data structure.
 Element <span class="fixed">"signal"</span> is an array of wavelanes.
@@ -45,6 +45,7 @@ Here is how it looks like:
 Digital clock is the special type of signal.
 It changes twice per time period and can have positive or negative polarity.
 It also can have optional marker on the working edge.
+Clock blocks can be mixed with other signal states to create clock gating effects.
 Here is the code:
 
 <pre class="WaveDrom">
@@ -52,7 +53,8 @@ Here is the code:
   { "name": "pclk", "wave": "p....." },
   { "name": "Pclk", "wave": "P....." },
   { "name": "nclk", "wave": "n....." },
-  { "name": "Nclk", "wave": "N....." }
+  { "name": "Nclk", "wave": "N....." },
+  { "name": "gclk", "wave": "0P0P.." } // gated clock
 ]}
 </pre>
 
@@ -63,7 +65,8 @@ And the rendered diagram:
   { "name": "pclk", "wave": "p....." },
   { "name": "Pclk", "wave": "P....." },
   { "name": "nclk", "wave": "n....." },
-  { "name": "Nclk", "wave": "N....." }
+  { "name": "Nclk", "wave": "N....." },
+  { "name": "gclk", "wave": "0P0P.." } // gated clock
 ]}
 </script>
 
@@ -155,57 +158,33 @@ Multi-bit signals will try grabbing labels from <span class="fixed">"data"</span
 ]}
 </script>
 
-<h2>Step 6. DDR Examples</h2>
+<h2>Step 6. Period and Phase</h2>
+
+<span class="fixed">"period"</span> and <span class="fixed">"phase"</span> parameters can be used to adjust each WaveLane.
 
 <h3>DDR Read transaction</h3>
 
 <pre>
 { "signal" : [
-  { "name": "CK",  "wave": "0.1.0.1.0.1.0.1.0.1.0.1.0.1."},
-  { "name": "CMD", "wave": "x3.x.=.x.4.x.=.x.=.x.=.x.=.x", "data" : ["RAS", "NOP", "CAS", "NOP", "NOP", "NOP", "NOP"] },
-  { "name": "ADDR","wave": "x=.x.....=.x................", "data" : ["Bank ROW", "Bank COL"] },
-  { "name": "DQS", "wave": "z.............0...1.0.1.0.z." },
-  { "name": "DQ",  "wave": "z.................5.5.5.5.z.", "data" : ["D0","D1","D2","D3"] }
+  { "name": "CK",  "wave": "P.......",                                                                     "period":2 },
+  { "name": "CMD", "wave": "x.3x=x4x=x=x=x=x", "data" : ["RAS", "NOP", "CAS", "NOP", "NOP", "NOP", "NOP"], "phase":0.5 },
+  { "name": "ADDR","wave": "x.=x..=x........", "data" : ["ROW", "COL"],                                    "phase":0.5 },
+  { "name": "DQS", "wave": "z.......0.1010z." },
+  { "name": "DQ",  "wave": "z.........5555z.", "data" : ["D0","D1","D2","D3"] }
 ]}
 </pre>
 
 <script type="WaveDrom">
 { "signal" : [
-  { "name": "CK",  "wave": "0.1.0.1.0.1.0.1.0.1.0.1.0.1."},
-  { "name": "CMD", "wave": "x3.x.=.x.4.x.=.x.=.x.=.x.=.x", "data" : ["RAS", "NOP", "CAS", "NOP", "NOP", "NOP", "NOP"] },
-  { "name": "ADDR","wave": "x=.x.....=.x................", "data" : ["Bank ROW", "Bank COL"] },
-  { "name": "DQS", "wave": "z.............0...1.0.1.0.z." },
-  { "name": "DQ",  "wave": "z.................5.5.5.5.z.", "data" : ["D0","D1","D2","D3"] }
+  { "name": "CK",  "wave": "P.......",                                                                     "period":2 },
+  { "name": "CMD", "wave": "x.3x=x4x=x=x=x=x", "data" : ["RAS", "NOP", "CAS", "NOP", "NOP", "NOP", "NOP"], "phase":0.5 },
+  { "name": "ADDR","wave": "x.=x..=x........", "data" : ["ROW", "COL"],                                    "phase":0.5 },
+  { "name": "DQS", "wave": "z.......0.1010z." },
+  { "name": "DQ",  "wave": "z.........5555z.", "data" : ["D0","D1","D2","D3"] }
 ]}
 </script>
 
-<h3>DDR Latency digram</h3>
-
-<pre>
-{ "signal" : [
-  { "name": "CK",    "wave": "0.1.0.1.0.1.0.1.0.1.0.1.0.1"},
-  { "name": "CMD",   "wave": "x4.x.......................", "data" : ["CAS"]},
-  [ "DQ",
-    { "name": "L=2", "wave": "z.........5.5.5.5.z........", "data" : ["D0", "D1", "D2", "D3"] },
-    { "name": "L=3", "wave": "z.............5.5.5.5.z....", "data" : ["D0", "D1", "D2", "D3"] },
-    { "name": "L=4", "wave": "z.................5.5.5.5.z", "data" : ["D0", "D1", "D2", "D3"] }
-  ]
-]}
-</pre>
-
-<script type="WaveDrom">
-{ "signal" : [
-  { "name": "CK",    "wave": "0.1.0.1.0.1.0.1.0.1.0.1.0.1"},
-  { "name": "CMD",   "wave": "x4.x.......................", "data" : ["CAS"]},
-  [ "DQ",
-    { "name": "L=2", "wave": "z.........5.5.5.5.z........", "data" : ["D0", "D1", "D2", "D3"] },
-    { "name": "L=3", "wave": "z.............5.5.5.5.z....", "data" : ["D0", "D1", "D2", "D3"] },
-    { "name": "L=4", "wave": "z.................5.5.5.5.z", "data" : ["D0", "D1", "D2", "D3"] }
-  ]
-]}
-</script>
-
-<h2>Step 6. Config</h2>
+<h2>Step 7. Config</h2>
 
 <h3>hscale</h3>
 
