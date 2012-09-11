@@ -105,7 +105,7 @@ use XML::Parser;
 print <<EOM;
 var WaveSkin = ["svg",{"id":"svg","xmlns":"http://www.w3.org/2000/svg","xmlns:xlink":"http://www.w3.org/1999/xlink","height":"0"}
 ,["style",{"type":"text/css"},"text{font-size:11pt;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;fill-opacity:1;font-family:Helvetica}$css"]
-,["defs",["g",{"id":"wavetemps","style":"display:none"}
+,["defs",["marker",{"id":"arrowhead","style":"display:none;overflow:visible","refX":"5","refY":"0","orient":"auto"},["path",{"d":"M -9,4 -9,-4 0,0 z"}]],["g",{"id":"wavetemps","style":"display:none"}
 $message
 ]],["g",{"id":"waves"},["g",{"id":"lanes"}],["g",{"id":"groups"}]]]
 EOM
