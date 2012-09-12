@@ -234,6 +234,8 @@ Multi-bit signals will try grabbing labels from <span class="fixed">"data"</span
 
 <h2>Step 8. Arrows</h2>
 
+<h3>Splines</h3>
+
 <pre>
 { signal: [
   { name: 'A', wave: '01........0....',  node: '.a........j' },
@@ -242,7 +244,7 @@ Multi-bit signals will try grabbing labels from <span class="fixed">"data"</span
   { name: 'D', wave: '0...1..0.....1.',  node: '....d..g...' },
   { name: 'E', wave: '0....10.......1',  node: '.....ef....' }
 ],
-edge: ['a~b', 'a~-c', 'c-~>d', 'd~-e', 'e->f', 'f->g', 'g-~>h', 'h~>i', 'h~->j']
+  edge: ['a~b', 'a~-c', 'c-~>d', 'd~-e', 'e->f', 'f->g', 'g-~>h', 'h~>i', 'h~->j']
 }
 </pre>
 
@@ -255,6 +257,28 @@ edge: ['a~b', 'a~-c', 'c-~>d', 'd~-e', 'e->f', 'f->g', 'g-~>h', 'h~>i', 'h~->j']
   { name: 'E', wave: '0....10.......1',  node: '.....ef....' }
 ],
 edge: ['a~b', 'a~-c', 'c-~>d', 'd~-e', 'e->f', 'f->g', 'g-~>h', 'h~>i', 'h~->j']
+}
+</script>
+
+<h3>Sharp lines</h3>
+
+<pre>
+{ signal: [
+  { name: 'A', wave: '01..0..',  node: '.a..e..' },
+  { name: 'B', wave: '0.1..0.',  node: '..b..d.' },
+  { name: 'C', wave: '0..1..0',  node: '...c..f' },
+],
+  edge: ['a|-b', 'a-|c', 'b-|-c', 'c-|->e', 'e-|>f', 'e|->d']
+}
+</pre>
+
+<script type="WaveDrom">
+{ signal: [
+  { name: 'A', wave: '01..0..',  node: '.a..e..' },
+  { name: 'B', wave: '0.1..0.',  node: '..b..d.' },
+  { name: 'C', wave: '0..1..0',  node: '...c..f' },
+],
+  edge: ['a|-b', 'a-|c', 'b-|-c', 'c-|->e', 'e-|>f', 'e|->d']
 }
 </script>
 

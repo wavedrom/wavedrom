@@ -825,28 +825,67 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 				var dx = to.x - from.x, dy = to.y - from.y;
 				t1 ();
 				switch (top.edge[i].slice (1,-1)) {
-					case '-'  : { break; }
-					case '~'  : { gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0.7*dx + ', 0 ' + 0.3*dx + ', ' + dy + ' ' + dx + ', ' + dy); break; }
-					case '-~' : { gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0.7*dx + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy); break; }
-					case '~-' : { gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0      + ', 0 ' + 0.3*dx + ', ' + dy + ' ' + dx + ', ' + dy); break; }
-					case '--' : { break; }
-					case '-|' : { break; }
-					case '|-' : { break; }
+					case '-'  : {
+						break;
+					}
+					case '~'  : {
+						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' c ' + 0.7*dx + ', 0 ' + 0.3*dx + ', ' + dy + ' ' + dx + ', ' + dy);
+						break;
+					}
+					case '-~' : {
+						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' c ' + 0.7*dx + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy);
+						break;
+					}
+					case '~-' : {
+						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' c ' + 0      + ', 0 ' + 0.3*dx + ', ' + dy + ' ' + dx + ', ' + dy);
+						break;
+					}
+					case '-|' : {
+						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
+						break;
+					}
+					case '|-' : {
+						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' 0,' + dy + ' ' + dx + ',0');
+						break;
+					}
+					case '-|-': {
+						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' ' + dx/2 + ',0 0,' + dy + ' ' + dx/2 + ',0');
+						break;
+					}
 					case '->' : {
 						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
-						break; }
+						break;
+					}
 					case '~>' : {
 						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
 						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0.7*dx + ', 0 ' + 0.3*dx + ', ' + dy + ' ' + dx + ', ' + dy);
-						break; }
+						break;
+					}
 					case '-~>': {
 						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
 						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0.7*dx + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy);
-						break; }
+						break;
+					}
 					case '~->': {
 						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
 						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0      + ', 0 ' + 0.3*dx + ', ' + dy + ' ' + dx + ', ' + dy);
-						break; }
+						break;
+					}
+					case '-|>' : {
+						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
+						break;
+					}
+					case '|->' : {
+						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' 0,' + dy + ' ' + dx + ',0');
+						break;
+					}
+					case '-|->': {
+						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' ' + dx/2 + ',0 0,' + dy + ' ' + dx/2 + ',0');
+						break;
+					}
 					default   : { gmark.setAttribute ('style', 'fill:none;stroke:#FF0000;stroke-width:1'); }
 				}
 			}
