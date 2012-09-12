@@ -552,14 +552,16 @@ WaveDrom.ViewSourceSVG = function (label) {
 
 WaveDrom.parseWaveLanes = function (sig) {
 	"use strict";
-	var x, content = [];
+	var x, content = [], tmp;
 	for (x in sig) {
 		this.lane.period = sig[x].period ? sig[x].period    : 1;
 		this.lane.phase  = sig[x].phase  ? sig[x].phase * 2 : 0;
 		content.push([]);
 		content[content.length - 1][0] = sig[x].name ? sig[x].name : null;
 		content[content.length - 1][1] = sig[x].wave ? this.parseWaveLane(sig[x].wave, this.lane.period * this.lane.hscale - 1) : null;
-		content[content.length - 1][2] = sig[x].data ? sig[x].data : null;
+
+		tmp = sig[x].data;
+		content[content.length - 1][2] = tmp ? ((typeof (tmp) == 'string') ? tmp.split(' ') : tmp) : null;
 	}
 	return content;
 };
@@ -757,25 +759,6 @@ WaveDrom.RenderGaps = function (root, source, index) {
 	}
 };
 
-/*
-a-b
-a-label-b
-a-label-b
-a->b
-a-label->b
-a--b
-a-label--b
-a-->b
-a~b
-a~>b
-a~~b
-a~~>b
-a=b
-a+label+b
-a*-*b
-a)-(b
-a]-[b
-*/
 WaveDrom.RenderArcs = function (root, source, index, top) {
 	"use strict";
 	var gg, i, k, text, Stack = [], Edge = {from:0, to:0}, Events = {}, pos, eventname, labeltext, label, underlabel, from, to, gmark,
