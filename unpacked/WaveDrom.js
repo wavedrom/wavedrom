@@ -761,7 +761,7 @@ WaveDrom.RenderGaps = function (root, source, index) {
 
 WaveDrom.RenderArcs = function (root, source, index, top) {
 	"use strict";
-	var gg, i, k, text, Stack = [], Edge = {from:0, to:0}, Events = {}, pos, eventname, labeltext, label, underlabel, from, to, gmark,
+	var gg, i, k, text, Stack = [], Edge = {words:[], from:0, shape:'', to:0, label:''}, Events = {}, pos, eventname, labeltext, label, underlabel, from, to, gmark,
 		svgns   = 'http://www.w3.org/2000/svg';
 		function t1 () {
 			gmark = document.createElementNS (svgns, "path");
@@ -817,14 +817,26 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 		}
 		if (top.edge) {
 			for (i in top.edge) {
-				Edge.from = top.edge[i].substr ( 0, 1);
-				Edge.to   = top.edge[i].substr (-1, 1);
+				Edge.words = top.edge[i].split(' ');
+				Edge.label = top.edge[i].substring (Edge.words[0].length);
+				Edge.from  = Edge.words[0].substr ( 0, 1);
+				Edge.to    = Edge.words[0].substr (-1, 1);
+				Edge.shape = Edge.words[0].slice (1,-1);
 				from  = Events[Edge.from];
 				to    = Events[Edge.to];
-				
+				if (Edge.label) {
+					labeltext = document.createTextNode (Edge.label);
+					label = document.createElementNS (svgns, 'text');
+					label.setAttribute ('style', 'font-size:12px;');
+					label.setAttribute ('x', ((from.x + to.x) / 2));
+					label.setAttribute ('y', ((from.y + to.y) / 2) + 3);
+					label.setAttribute ('text-anchor', 'middle');
+					label.appendChild (labeltext);
+					gg.insertBefore (label, gg.firstChild);
+				}
 				var dx = to.x - from.x, dy = to.y - from.y;
 				t1 ();
-				switch (top.edge[i].slice (1,-1)) {
+				switch (Edge.shape) {
 					case '-'  : {
 						break;
 					}
@@ -834,10 +846,12 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 					}
 					case '-~' : {
 						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' c ' + 0.7*dx + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy);
+						label.setAttribute ('x', (from.x + (to.x - from.x) * 0.75));
 						break;
 					}
 					case '~-' : {
 						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' c ' + 0      + ', 0 ' + 0.3*dx + ', ' + dy + ' ' + dx + ', ' + dy);
+						label.setAttribute ('x', (from.x + (to.x - from.x) * 0.25));
 						break;
 					}
 					case '-|' : {
@@ -864,11 +878,13 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 					case '-~>': {
 						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
 						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0.7*dx + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy);
+						label.setAttribute ('x', (from.x + (to.x - from.x) * 0.75));
 						break;
 					}
 					case '~->': {
 						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
 						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0      + ', 0 ' + 0.3*dx + ', ' + dy + ' ' + dx + ', ' + dy);
+						label.setAttribute ('x', (from.x + (to.x - from.x) * 0.25));
 						break;
 					}
 					case '-|>' : {
