@@ -827,9 +827,9 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 				if (Edge.label) {
 					labeltext = document.createTextNode (Edge.label);
 					label = document.createElementNS (svgns, 'text');
-					label.setAttribute ('style', 'font-size:12px;');
+					label.setAttribute ('style', 'font-size:11px;');
 					label.setAttribute ('x', ((from.x + to.x) / 2));
-					label.setAttribute ('y', ((from.y + to.y) / 2) + 3);
+					label.setAttribute ('y', ((from.y + to.y) / 2) + 4);
 					label.setAttribute ('text-anchor', 'middle');
 					label.appendChild (labeltext);
 					gg.insertBefore (label, gg.firstChild);
@@ -856,10 +856,12 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 					}
 					case '-|' : {
 						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
+						label.setAttribute ('x', to.x);
 						break;
 					}
 					case '|-' : {
 						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' 0,' + dy + ' ' + dx + ',0');
+						label.setAttribute ('x', from.x);
 						break;
 					}
 					case '-|-': {
@@ -890,11 +892,13 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 					case '-|>' : {
 						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
 						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
+						label.setAttribute ('x', to.x);
 						break;
 					}
 					case '|->' : {
 						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
 						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' 0,' + dy + ' ' + dx + ',0');
+						label.setAttribute ('x', from.x);
 						break;
 					}
 					case '-|->': {
