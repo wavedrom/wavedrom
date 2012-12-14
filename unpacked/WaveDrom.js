@@ -846,22 +846,22 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 					}
 					case '-~' : {
 						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' c ' + 0.7*dx + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy);
-						label.setAttribute ('x', (from.x + (to.x - from.x) * 0.75));
+						if (Edge.label) { label.setAttribute ('x', (from.x + (to.x - from.x) * 0.75)); }
 						break;
 					}
 					case '~-' : {
 						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' c ' + 0      + ', 0 ' + 0.3*dx + ', ' + dy + ' ' + dx + ', ' + dy);
-						label.setAttribute ('x', (from.x + (to.x - from.x) * 0.25));
+						if (Edge.label) { label.setAttribute ('x', (from.x + (to.x - from.x) * 0.25)); }
 						break;
 					}
 					case '-|' : {
 						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
-						label.setAttribute ('x', to.x);
+						if (Edge.label) { label.setAttribute ('x', to.x); }
 						break;
 					}
 					case '|-' : {
 						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' 0,' + dy + ' ' + dx + ',0');
-						label.setAttribute ('x', from.x);
+						if (Edge.label) { label.setAttribute ('x', from.x); }
 						break;
 					}
 					case '-|-': {
@@ -880,25 +880,25 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 					case '-~>': {
 						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
 						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0.7*dx + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy);
-						label.setAttribute ('x', (from.x + (to.x - from.x) * 0.75));
+						if (Edge.label) { label.setAttribute ('x', (from.x + (to.x - from.x) * 0.75)); }
 						break;
 					}
 					case '~->': {
 						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
 						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0      + ', 0 ' + 0.3*dx + ', ' + dy + ' ' + dx + ', ' + dy);
-						label.setAttribute ('x', (from.x + (to.x - from.x) * 0.25));
+						if (Edge.label) { label.setAttribute ('x', (from.x + (to.x - from.x) * 0.25)); }
 						break;
 					}
 					case '-|>' : {
 						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
 						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
-						label.setAttribute ('x', to.x);
+						if (Edge.label) { label.setAttribute ('x', to.x); }
 						break;
 					}
 					case '|->' : {
 						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
 						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' 0,' + dy + ' ' + dx + ',0');
-						label.setAttribute ('x', from.x);
+						if (Edge.label) { label.setAttribute ('x', from.x); }
 						break;
 					}
 					case '-|->': {
