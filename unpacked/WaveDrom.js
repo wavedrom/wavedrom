@@ -396,7 +396,7 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "0.6.4",
+	version: "13.02.05",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -591,11 +591,12 @@ WaveDrom.FindLaneMarkers = function (lanetext) {
 WaveDrom.RenderWaveLane = function (root, content, index) {
 	"use strict";
 	var i, j, k, g, gg, title, b, lanetext, labeltext, labels = [1], nxt_xgmax, scale,
-	xmax    = 0,
-	xgmax   = 0,
+	xmax     = 0,
+	xgmax    = 0,
 	glengths = [],
-	svgns   = 'http://www.w3.org/2000/svg',
-	xlinkns = 'http://www.w3.org/1999/xlink';
+	svgns    = 'http://www.w3.org/2000/svg',
+	xlinkns  = 'http://www.w3.org/1999/xlink',
+	xmlns    = 'http://www.w3.org/XML/1998/namespace';
 
 	for (j = 0; j < content.length; j += 1) {
 		if (content[j][0]) {
@@ -610,6 +611,7 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 			title.setAttribute ("y", this.lane.ym);
 			title.setAttribute ("fill", "#0041c4"); // Pantone 288C
 			title.setAttribute ("text-anchor", "end");
+			title.setAttributeNS (xmlns, "xml:space","preserve");
 			title.appendChild (lanetext);
 			g.insertBefore (title, g.firstChild);
 
@@ -633,6 +635,7 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 								title.setAttribute ("x", ((labels[k] * this.lane.xs) + this.lane.xlabel));
 								title.setAttribute ("y", this.lane.ym);
 								title.setAttribute ("text-anchor", "middle");
+								title.setAttributeNS (xmlns, "xml:space","preserve");
 								title.appendChild (labeltext);
 								gg.insertBefore (title, gg.firstChild);
 							}
@@ -660,7 +663,8 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 WaveDrom.RenderMarks = function (root, content, index) {
 	"use strict";
 	var i, g, marks, mstep, mmstep, gmark, tmark, labeltext, gy, margin,
-	svgns   = 'http://www.w3.org/2000/svg';
+	svgns   = 'http://www.w3.org/2000/svg',
+	xmlns = 'http://www.w3.org/XML/1998/namespace';
 
 	mstep  = 2 * (this.lane.hscale);
 	mmstep = mstep * this.lane.xs;
@@ -686,6 +690,7 @@ WaveDrom.RenderMarks = function (root, content, index) {
 		tmark.setAttribute ("y", gy - margin);
 		tmark.setAttribute ("text-anchor", "middle");
 		tmark.setAttribute ("fill", "#AAAAAA");
+		tmark.setAttributeNS (xmlns, "xml:space","preserve");
 		tmark.appendChild (labeltext);
 		g.insertBefore (tmark, g.firstChild);
 	}
@@ -694,7 +699,8 @@ WaveDrom.RenderMarks = function (root, content, index) {
 WaveDrom.RenderGroups = function (root, groups, index) {
 	"use strict";
 	var g, i, group, grouplabel, label, x, y,
-		svgns = 'http://www.w3.org/2000/svg';
+		svgns = 'http://www.w3.org/2000/svg',
+		xmlns = 'http://www.w3.org/XML/1998/namespace';
 	
 	for (i in groups) {
 		group = document.createElementNS (svgns, "path");
@@ -713,6 +719,7 @@ WaveDrom.RenderGroups = function (root, groups, index) {
 			label.setAttribute ("text-anchor", "middle");
 			label.setAttribute ("fill", "#0041c4");
 			label.setAttribute ("transform", "rotate(270,"+x+","+y+")");
+			label.setAttributeNS (xmlns, "xml:space","preserve");
 			label.appendChild (grouplabel);
 			root.insertBefore (label, root.firstChild);
 		}
@@ -762,7 +769,8 @@ WaveDrom.RenderGaps = function (root, source, index) {
 WaveDrom.RenderArcs = function (root, source, index, top) {
 	"use strict";
 	var gg, i, k, text, Stack = [], Edge = {words:[], from:0, shape:'', to:0, label:''}, Events = {}, pos, eventname, labeltext, label, underlabel, from, to, gmark,
-		svgns   = 'http://www.w3.org/2000/svg';
+		svgns = 'http://www.w3.org/2000/svg',
+		xmlns = 'http://www.w3.org/XML/1998/namespace';
 		function t1 () {
 			gmark = document.createElementNS (svgns, "path");
 			gmark.id = ("gmark_" + Edge.from + "_" + Edge.to);
@@ -802,6 +810,7 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 				label.setAttribute ('x', Events[k].x);
 				label.setAttribute ('y', Events[k].y + 2);
 				label.setAttribute ('text-anchor', 'middle');
+				label.setAttributeNS (xmlns, "xml:space","preserve");
 				label.appendChild (labeltext);
 				gg.insertBefore (label, gg.firstChild);
 				underlabel = document.createElementNS (svgns, 'rect');
@@ -831,6 +840,7 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 					label.setAttribute ('x', ((from.x + to.x) / 2));
 					label.setAttribute ('y', ((from.y + to.y) / 2) + 4);
 					label.setAttribute ('text-anchor', 'middle');
+					label.setAttributeNS (xmlns, "xml:space","preserve");
 					label.appendChild (labeltext);
 					gg.insertBefore (label, gg.firstChild);
 				}
