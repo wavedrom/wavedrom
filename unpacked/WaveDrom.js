@@ -290,7 +290,7 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "13.02.07",
+	version: "13.02.08",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -807,6 +807,32 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 					}
 					case '-|->': {
 						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' ' + dx/2 + ',0 0,' + dy + ' ' + dx/2 + ',0');
+						break;
+					}
+					case '<->' : {
+						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#00ff00;stroke-width:1;fill:none');
+						break;
+					}
+					case '<~>' : {
+						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0.7*dx + ', 0 ' + 0.3*dx + ', ' + dy + ' ' + dx + ', ' + dy);
+						break;
+					}
+					case '<-~>': {
+						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0.7*dx + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy);
+						if (Edge.label) { label.setAttribute ('x', (from.x + (to.x - from.x) * 0.75)); }
+						break;
+					}
+					case '<-|>' : {
+						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
+						if (Edge.label) { label.setAttribute ('x', to.x); }
+						break;
+					}
+					case '<-|->': {
+						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#00ff00;stroke-width:1;fill:none');
 						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' ' + dx/2 + ',0 0,' + dy + ' ' + dx/2 + ',0');
 						break;
 					}
