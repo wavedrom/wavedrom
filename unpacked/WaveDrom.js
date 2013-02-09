@@ -290,7 +290,7 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "13.02.08",
+	version: "13.02.09",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -938,6 +938,10 @@ WaveDrom.InsertSVGTemplate = function (index, parent) {
 	var node0, node1;
 
 	node1 = JsonML.parse(WaveSkin);
+	this.lane.xs     = Number (WaveSkin[3][1][2][2][1].width);
+	this.lane.ys     = Number (WaveSkin[3][1][2][2][1].height);
+	this.lane.xlabel = Number (WaveSkin[3][1][2][2][1].x);
+	this.lane.ym     = Number (WaveSkin[3][1][2][2][1].y);
 	node1.id = "svgcontent_" + index;
 	node1.setAttribute ('height', '0');
 	parent.insertBefore (node1, parent.firstChild);
