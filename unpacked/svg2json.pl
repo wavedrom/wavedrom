@@ -109,8 +109,8 @@ var WaveSkin = ["svg",{"id":"svg","xmlns":"http://www.w3.org/2000/svg","xmlns:xl
 ,["g",{"id":"wavetemps","style":"display:none"}
 $message
 ]
-,["marker",{"id":"arrowhead","style":"display:none;overflow:visible","refX":"5","refY":"0","orient":"auto"},["path",{"d":"M -7,3 -7,-3 0,0 z"}]]
-,["marker",{"id":"arrowtail","style":"display:none;overflow:visible","refX":"-5","refY":"0","orient":"auto"},["path",{"d":"M 7,3 7,-3 0,0 z"}]]
+,["marker",{"id":"arrowhead","style":"display:none;overflow:visible","refX":"2","refY":"0","orient":"auto"},["path",{"d":"M -7,3 -7,-3 0,0 z"}]]
+,["marker",{"id":"arrowtail","style":"display:none;overflow:visible","refX":"-2","refY":"0","orient":"auto"},["path",{"d":"M 7,3 7,-3 0,0 z"}]]
 ],["g",{"id":"waves"},["g",{"id":"lanes"}],["g",{"id":"groups"}]]]
 EOM
 
