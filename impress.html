@@ -1,0 +1,180 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=1024" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<title>WaveDrom inside impress.js</title>
+    
+    <meta name="description" content="WaveDrom + impress.js" />
+    <meta name="author" content="alex.drom" />
+
+	<link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
+
+	<link href="impress/impress.css" rel="stylesheet" />
+    
+    <!--link rel="shortcut icon" href="favicon.png" /-->
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+	<script type="text/javascript" src="skins/default.js"></script>
+	<script type="text/javascript" src="WaveDrom.js"></script>
+
+</head>
+
+<body class="impress-not-supported" onload="WaveDrom.ProcessAll()">
+
+<div class="fallback-message">
+<p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
+<p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+</div>
+
+<div id="impress">
+
+<div id="s1"  class="step slide" data-x="0" data-rotate-y="-180">
+<q>WaveDrom timing diagrams</q>
+inside your impress.js presentation
+</div>
+
+<div id="s2"  class="step slide" data-x="-1000" data-rotate-y="-90">
+<q>WaveDrom</q>
+Digital timing diagram rendering engine.
+<q>impress.js</q>
+A presentation tool.
+<q>Why not to use them together?</q>
+Both tools use JavaScript + HTML5 + CSS3
+</div>
+
+<div id="s3a" class="step slide" data-x="0">
+<h1>Timing diagram</h1>
+<br>
+<script type="WaveDrom">
+{ signal: [
+  { name: 'clk',     wave: 'P....' },
+  [ 'Address',
+  { name: 'a_val →', wave: 'x4x..', data: ['A1'] },
+  { name: 'a_req →', wave: '010..' },
+  { name: 'a_ack ←', wave: 'x1x..' },
+  ],
+  {},
+  {},
+  {},
+  {},
+]
+}
+</script>
+It all begins with the simple address phase
+</div>
+
+<div id="s3b" class="step slide" data-x="0">
+<h1>Timing diagram</h1>
+<br>
+<script type="WaveDrom">
+{ signal: [
+  { name: 'clk',     wave: 'P....' },
+  [ 'Address',
+  { name: 'a_val →', wave: 'x4.x.',              data: ['A1'] },
+  { name: 'a_req →', wave: '01.0.', node: '...C' },
+  { name: 'a_ack ←', wave: 'x01x.', node: '.AB.' },
+  ],
+  {},
+  {},
+  {},
+  {},
+], edge: ['A->B delay', 'B~>C']
+}
+</script>
+The <i>Target</i> can delay the address phase using `a_ack` signal for several cycles
+</div>
+
+<div id="s3c" class="step slide" data-x="0">
+<h1>Timing diagram</h1>
+<br>
+<script type="WaveDrom">
+{ signal: [
+  { name: 'clk',     wave: 'P.......' },
+  [ 'Address',
+  { name: 'a_val →', wave: 'x4.x.',              data: ['A1'] },
+  { name: 'a_req →', wave: '01.0.',    node: '...A' },
+  { name: 'a_ack ←', wave: 'x01x.' },
+  ],{},
+  [ 'Read',
+  { name: 'q_val ←', wave: 'x....4x.',           data: ['D1'] },
+  { name: 'q_req ←', wave: '0....10.', node: '.....B'},
+  { name: 'q_ack →', wave: 'x....1x.'},
+  ],
+], edge: ['A~>B latency']
+}
+</script>
+Data will come with some latency
+</div>
+
+<div id="s3d" class="step slide" data-x="0">
+<h1>Timing diagram</h1>
+<br>
+<script type="WaveDrom">
+{ signal: [
+  { name: 'clk',     wave: 'P..........' },
+  [ 'Address',
+  { name: 'a_val →', wave: 'x4.x.',              data: ['A1'] },
+  { name: 'a_req →', wave: '01.0.' },
+  { name: 'a_ack ←', wave: 'x01x.' },
+  ],{},
+  [ 'Read',
+  { name: 'q_val ←', wave: 'x....4...x.',        data: ['D1'] },
+  { name: 'q_req ←', wave: '0....1...0.', node: '.........E'},
+  { name: 'q_ack →', wave: 'x....1..x..', node: '.....C..D'},
+  ],
+], edge: ['C->D delay', 'D~>E']
+}
+</script>
+And now <i>Initiator</i> can delay the data acceptance for as many cycles as it wants
+</div>
+
+<div id="s3e" class="step slide" data-x="0">
+<h1>Timing diagram</h1>
+<br>
+<script type="WaveDrom">
+{ signal: [
+  { name: 'clk',     wave: 'P..........' },
+  [ 'Address',
+  { name: 'a_val →', wave: 'x4.x.',              data: ['A1'] },
+  { name: 'a_req →', wave: '01.0.',       node: '.A' },
+  { name: 'a_ack ←', wave: 'x01x.' },
+  ],{                                     node: '.B.......C'
+  },
+  [ 'Read',
+  { name: 'q_val ←', wave: 'x....4...x.',        data: ['D1'] },
+  { name: 'q_req ←', wave: '0....1...0.'},
+  { name: 'q_ack →', wave: 'x....0..1x.', node: '.........D'},
+  ],
+], edge: ['A-B', 'B->C read latency', 'C-D']
+}
+</script>
+That is how we end up with such long read latencies
+</div>
+
+<div id="s4"  class="step slide" data-y="1000" data-rotate-x="90">
+	<q>want to know more?</q>
+	<a href="http://github.com/bartaz/impress.js">impress.js</a> <br>
+	<a href="http://wavedrom.googlecode.com">WaveDrom.js</a>
+</div>
+
+</div>
+
+<div class="hint">
+    <p>Use a spacebar or arrow keys to navigate</p>
+</div>
+
+<script>
+if ("ontouchstart" in document.documentElement) { 
+    document.querySelector(".hint").innerHTML = "<p>Tap on the left or right to navigate</p>";
+}
+</script>
+
+<script src="impress/impress.js"></script>
+<script>impress().init();</script>
+
+</body>
+</html>
+
+
