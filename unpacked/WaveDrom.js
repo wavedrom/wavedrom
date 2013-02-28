@@ -290,7 +290,7 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "13.02.09",
+	version: "13.02.27",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -446,12 +446,14 @@ WaveDrom.ViewSourceSVG = function (label) {
 
 WaveDrom.parseWaveLanes = function (sig) {
 	"use strict";
-	var x, content = [], tmp;
+	var x, content = [], tmp, tmp0 = [];
 	for (x in sig) {
 		this.lane.period = sig[x].period ? sig[x].period    : 1;
 		this.lane.phase  = sig[x].phase  ? sig[x].phase * 2 : 0;
 		content.push([]);
-		content[content.length - 1][0] = sig[x].name ? sig[x].name : null;
+		tmp0 [0] = sig[x].name  ? sig[x].name  : null;
+		tmp0 [1] = sig[x].phase ? sig[x].phase : 0;
+		content[content.length - 1][0] = tmp0.slice(0);
 		content[content.length - 1][1] = sig[x].wave ? this.parseWaveLane(sig[x].wave, this.lane.period * this.lane.hscale - 1) : null;
 
 		tmp = sig[x].data;
@@ -499,7 +501,7 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 			g.setAttribute ('transform', 'translate(0,' + (this.lane.y0 + j * this.lane.yo) + ')');
 			root.insertBefore (g, root.firstChild);
 
-			lanetext = document.createTextNode (content[j][0]);
+			lanetext = document.createTextNode (content[j][0][0]);
 			title = document.createElementNS (svgns, "text");
 			title.setAttribute ("x", this.lane.tgo);
 			title.setAttribute ("y", this.lane.ym);
@@ -514,7 +516,7 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 
 			gg = document.createElementNS(svgns, 'g');
 			gg.id = "wavelane_draw_" + j + "_" + index;
-//			gg.setAttribute('transform', 'translate(' + this.lane.xg + ')');
+			gg.setAttribute('transform', 'translate(' + ((Math.ceil (2 * content[j][0][1]) - 2 * content[j][0][1]) * this.lane.xs) + ', 0)');
 			g.insertBefore(gg, g.firstChild);
 
 			if (content[j][1]) {
