@@ -290,7 +290,7 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "13.02.27",
+	version: "13.03.01",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -495,7 +495,7 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 	xmlns    = 'http://www.w3.org/XML/1998/namespace';
 
 	for (j = 0; j < content.length; j += 1) {
-		if (content[j][0]) {
+		if (content[j][0][0]) {
 			g    = document.createElementNS (svgns, 'g');
 			g.id = "wavelane_" + j + "_" + index;
 			g.setAttribute ('transform', 'translate(0,' + (this.lane.y0 + j * this.lane.yo) + ')');
