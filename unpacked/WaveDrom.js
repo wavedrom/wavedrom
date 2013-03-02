@@ -356,9 +356,6 @@ var WaveDrom = {
 			case 'z': tmp = this.genBrick(['zzz'], extra, times); break;
 			default:  tmp = this.genBrick(['xxx'], extra, times); break;
 		}
-		for (i = 0; i < this.lane.phase; i += 1) {
-			tmp.shift();
-		}
 		return tmp;
 	},
 	genWaveBrick: function (text, extra, times) {
@@ -392,7 +389,7 @@ var WaveDrom = {
 	},
 	parseWaveLane: function (text, extra) {
 		"use strict";
-		var Repeats, Top, Next, Stack = [], R = [];
+		var Repeats, Top, Next, Stack = [], R = [], i;
 
 		Stack = text.split('');
 		Next  = Stack.shift();
@@ -413,6 +410,9 @@ var WaveDrom = {
 				Repeats += 1;
 			}
 			R = R.concat(this.genWaveBrick((Top + Next), extra, Repeats));
+		}
+		for (i = 0; i < this.lane.phase; i += 1) {
+			R.shift();
 		}
 		return R;
 	}
@@ -516,7 +516,11 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 
 			gg = document.createElementNS(svgns, 'g');
 			gg.id = "wavelane_draw_" + j + "_" + index;
-			gg.setAttribute('transform', 'translate(' + ((Math.ceil (2 * content[j][0][1]) - 2 * content[j][0][1]) * this.lane.xs) + ', 0)');
+			var xoffset;
+			xoffset = content[j][0][1];
+			xoffset = (xoffset > 0) ? (Math.ceil (2 * xoffset) - 2 * xoffset) :
+			(-2 * xoffset);
+			gg.setAttribute('transform', 'translate(' + (xoffset * this.lane.xs) + ', 0)');
 			g.insertBefore(gg, g.firstChild);
 
 			if (content[j][1]) {
