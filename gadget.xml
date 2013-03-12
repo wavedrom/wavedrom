@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?> 
 <Module>
-	<ModulePrefs title="hello world example" /> 
+	<ModulePrefs title="WaveDrom" /> 
 	<Content type="url" href="https://wavedrom.googlecode.com/svn/trunk/editor.html"/>
 </Module>
