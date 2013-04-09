@@ -290,7 +290,7 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "13.03.01",
+	version: "13.04.08",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -605,7 +605,7 @@ WaveDrom.RenderGroups = function (root, groups, index) {
 	for (i in groups) {
 		group = document.createElementNS (svgns, "path");
 		group.id = ("group_" + i + "_" + index);
-		group.setAttribute ('d', 'm '+(groups[i].x)+','+(groups[i].y * this.lane.yo + 8)+' c -3,0 -5,2 -5,5 l 0,'+(groups[i].height * this.lane.yo - 16)+' c 0,3 2,5 5,5');
+		group.setAttribute ('d', 'm '+(groups[i].x+0.5)+','+(groups[i].y * this.lane.yo + 8.5)+' c -3,0 -5,2 -5,5 l 0,'+(groups[i].height * this.lane.yo - 16)+' c 0,3 2,5 5,5');
 		group.setAttribute ('style', 'stroke:#0041c4;stroke-width:1;fill:none');
 		root.insertBefore (group, root.firstChild);
 
@@ -948,12 +948,16 @@ WaveDrom.RenderWaveForm = function (index) {
 		uwidth  = this.lane.scale * width;
 		uheight = this.lane.scale * height;
 	}
+    // ???
+    uwidth  = width;
+    uheight = height;
 	
 	svgcontent.setAttribute('viewBox', "0 0 " + width + " " + height);
 	svgcontent.setAttribute('width', uwidth);
 	svgcontent.setAttribute('height', uheight);
+	svgcontent.setAttribute('overflow', 'hidden');
 
-	root.setAttribute ('transform', 'translate(' + this.lane.xg + ')');
+	root.setAttribute ('transform', 'translate(' + (this.lane.xg + 0.5) + ', 0.5)');
 };
 
 WaveDrom.InsertSVGTemplate = function (index, parent) {
@@ -1013,11 +1017,12 @@ WaveDrom.resize = function () {
 
 WaveDrom.ClearWaveLane = function (index) {
 	"use strict";
-	var root = document.getElementById ('lanes_' + index);
+	var root;
+    root = document.getElementById ('lanes_' + index);
 	while (root.childNodes.length) {
 		root.removeChild (root.childNodes[0]);
 	}
-	var root = document.getElementById ('groups_' + index);
+	root = document.getElementById ('groups_' + index);
 	while (root.childNodes.length) {
 		root.removeChild (root.childNodes[0]);
 	}
@@ -1061,7 +1066,7 @@ WaveDrom.EditorKeyUp = function (event) {
 WaveDrom.EditorRefresh = function () {
 	"use strict";
 	WaveDrom.ClearWaveLane (0);
-	WaveDrom.resize ();
+//	WaveDrom.resize ();
 	WaveDrom.RenderWaveForm (0);
 };
 
@@ -1070,10 +1075,10 @@ WaveDrom.EditorInit = function () {
 	var index, points, i, node0, node1;
 	this.lane.scale = 3;
 	index = 0;
-	WaveDrom.WaveformLoad ();
+//	WaveDrom.WaveformLoad ();
 	WaveDrom.InsertSVGTemplate (index, document.getElementById ('WaveDrom_Display_' + index));
 	WaveDrom.EditorRefresh ();
-	WaveDrom.ConfigurationLoad ();
+//	WaveDrom.ConfigurationLoad ();
 	window.onresize = WaveDrom.EditorRefresh;
 };
 
