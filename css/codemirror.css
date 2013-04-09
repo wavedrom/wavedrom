@@ -68,11 +68,11 @@
 .cm-s-default .cm-variable {color: black;}
 .cm-s-default .cm-variable-2 {color: #05a;}
 .cm-s-default .cm-variable-3 {color: #085;}
-.cm-s-default .cm-property {color: black;}
 .cm-s-default .cm-operator {color: black;}
 .cm-s-default .cm-comment {color: #a50;}
-.cm-s-default .cm-string {color: #a11;}
+.cm-s-default .cm-string {color: #00760A;}      /* custom color */
 .cm-s-default .cm-string-2 {color: #f50;}
+.cm-s-default .cm-property {color: #0041c4;} /* custom color */
 .cm-s-default .cm-meta {color: #555;}
 .cm-s-default .cm-error {color: #f00;}
 .cm-s-default .cm-qualifier {color: #555;}
