@@ -290,7 +290,7 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "13.04.08",
+	version: "13.04.10",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -915,9 +915,9 @@ WaveDrom.RenderWaveForm = function (index) {
 	svgcontent    = document.getElementById ("svgcontent_" + index);
 	TheTextBox    = document.getElementById ("InputJSON_" + index);
 	if (TheTextBox.type && TheTextBox.type == 'textarea') {
-		source = eval ('(' + TheTextBox.value + ')');
+		try { source = eval ('(' + TheTextBox.value + ')') } catch (err) { source = {signal:[{name:err}]}; };
 	} else {
-		source = eval ('(' + TheTextBox.innerHTML + ')');
+		try { source = eval ('(' + TheTextBox.innerHTML + ')') } catch (err) { source = {signal:[{name:err}]}; };
 	}
 
 	this.parseConfig (source);
@@ -948,9 +948,9 @@ WaveDrom.RenderWaveForm = function (index) {
 		uwidth  = this.lane.scale * width;
 		uheight = this.lane.scale * height;
 	}
-    // ???
-    uwidth  = width;
-    uheight = height;
+	// ???
+	uwidth  = width;
+	uheight = height;
 	
 	svgcontent.setAttribute('viewBox', "0 0 " + width + " " + height);
 	svgcontent.setAttribute('width', uwidth);
