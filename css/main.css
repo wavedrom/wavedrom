@@ -64,8 +64,8 @@ act {
     transition:opacity 0.3s ease;
     visibility: visible;
     width: 27px;
-    height: 132px;
-    max-height: 132px;
+    height: 162px;
+    max-height: 162px;
     max-width: 27px;
     overflow: hidden;
 }

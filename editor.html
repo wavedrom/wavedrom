@@ -76,8 +76,16 @@
     }
     function editorInit () {
         "use strict";
+        if (document.location.search) {
+          cm.setValue(decodeURIComponent(window.location.search.substr(1)));
+//          document.getElementById ('InputJSON_0').value = decodeURIComponent(window.location.search.substr(1));
+        }
         WaveDrom.EditorInit();
         editorState ();
+    }
+    function setFullURL () {
+        "use strict";
+        document.location.search = encodeURIComponent(document.getElementById ('InputJSON_0').value);
     }
   </script>
  </head>
@@ -87,8 +95,9 @@
    <img class="button" title="rotate layout" src="images/ic_rot.png" onclick="editorState({rot:1})"/>
    <img class="button" title="change proportions" src="images/ic_persent.png" onclick="editorState({per:1})"/>
    <img class="button" title="open SVG in the new tab" src="images/ic_svg.png" onclick="WaveDrom.ViewSVG('svgcontent_0')"/>
+   <img class="button" title="expand full URL" src="images/ic_url.png" onclick="setFullURL()"/>
    <a href="http://wavedrom.googlecode.com/svn/trunk/tutorial.html"><img class="button" title="Guide to the WaveDrom" src="images/ic_guide.png"/></a>
-   <a href="http://wavedrom.googlecode.com"><img class="button" title="Powered by WaveDrom v.2013.04.08" src="images/ic_logo.png"/></a>
+   <a href="http://wavedrom.googlecode.com"><img class="button" title="Powered by WaveDrom v.2013.04.10" src="images/ic_logo.png"/></a>
   </div>
   <div id='SVG'><div id="WaveDrom_Display_0"></div></div>
   <div id='TXT'><textarea id="InputJSON_0"></textarea></div>
