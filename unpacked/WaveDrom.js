@@ -447,18 +447,24 @@ WaveDrom.ViewSourceSVG = function (label) {
 
 WaveDrom.parseWaveLanes = function (sig) {
 	"use strict";
-	var x, content = [], tmp, tmp0 = [];
+	function data_extract (e) {
+		"use strict";
+		var tmp = e.data;
+		if (tmp === undefined) { return null };
+		if (typeof (tmp) === 'string') { return tmp.split(' ') };
+		return tmp;
+	};
+	var x, sigx, content = [], tmp0 = [];
 	for (x in sig) {
-		this.lane.period = sig[x].period ? sig[x].period    : 1;
-		this.lane.phase  = sig[x].phase  ? sig[x].phase * 2 : 0;
+		sigx = sig[x];
+		this.lane.period = sigx.period ? sigx.period    : 1;
+		this.lane.phase  = sigx.phase  ? sigx.phase * 2 : 0;
 		content.push([]);
-		tmp0[0] = sig[x].name  || ' ';
-		tmp0[1] = sig[x].phase || 0;
+		tmp0[0] = sigx.name  || ' ';
+		tmp0[1] = sigx.phase || 0;
 		content[content.length - 1][0] = tmp0.slice(0);
-		content[content.length - 1][1] = sig[x].wave ? this.parseWaveLane(sig[x].wave, this.lane.period * this.lane.hscale - 1) : null;
-
-		tmp = sig[x].data;
-		content[content.length - 1][2] = tmp ? ((typeof (tmp) == 'string') ? tmp.split(' ') : tmp) : null;
+		content[content.length - 1][1] = sigx.wave ? this.parseWaveLane(sigx.wave, this.lane.period * this.lane.hscale - 1) : null;
+		content[content.length - 1][2] = data_extract(sigx);
 	}
 	return content;
 };
@@ -515,7 +521,7 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 						fill: '#0041c4', // Pantone 288C
 						'text-anchor': 'end'
 					},
-					content[j][0][0]
+					(content[j][0][0] + '') // name
 				]
 			);
 			title.setAttributeNS(xmlns, "xml:space", "preserve");
@@ -559,7 +565,7 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 											y: this.lane.ym,
 											'text-anchor': 'middle'
 										},
-										content[j][2][k]
+										(content[j][2][k] + '')
 									]
 								);
 								title.setAttributeNS(xmlns, "xml:space", "preserve");
@@ -616,7 +622,8 @@ WaveDrom.RenderMarks = function (root, content, index) {
 					y: (gy - margin),
 					'text-anchor': 'middle',
 					fill: '#AAAAAA'
-				}, ('' + i)
+				},
+				(i + '')
 			]
 		);
 		tmark.setAttributeNS(xmlns, "xml:space", "preserve");
@@ -742,7 +749,7 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 				to    = Events[Edge.to];
 				t1();
 				if (Edge.label) {
-					label = JsonML.parse(['text', {style: 'font-size:10px;', 'text-anchor': 'middle'}, Edge.label]);
+					label = JsonML.parse(['text', {style: 'font-size:10px;', 'text-anchor': 'middle'}, (Edge.label + '')]);
 					label.setAttributeNS(xmlns, "xml:space", "preserve");
 					underlabel = JsonML.parse(['rect', {height: 9, style: 'fill:#FFFFFF;'}]);
 					gg.insertBefore(underlabel, null);
@@ -865,7 +872,7 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 				if (Events[k].x > 0) {
 					underlabel = JsonML.parse(['rect', {'y': (Events[k].y - 4), height: 8, style: 'fill:#FFFFFF;'}]);
 					gg.insertBefore(underlabel, null);
-					label = JsonML.parse(['text', {style: 'font-size:8px;', x: Events[k].x, y: (Events[k].y + 2), 'text-anchor': 'middle'}, k]);
+					label = JsonML.parse(['text', {style: 'font-size:8px;', x: Events[k].x, y: (Events[k].y + 2), 'text-anchor': 'middle'}, (k + '')]);
 					gg.insertBefore(label, null);
 					lwidth = label.getBBox().width + 2;
 					underlabel.setAttribute('x', Events[k].x - lwidth / 2);
