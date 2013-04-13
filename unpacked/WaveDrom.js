@@ -1,8 +1,9 @@
-/*jslint white: true, onevar: true, undef: true, newcap: true, nomen: true, regexp: true, plusplus: true, bitwise: true, browser: true, strict: true, evil: true, maxerr: 500, indent: 4 */
+/*jslint browser: true, windows: true, passfail: false, evil: true, sloppy: false, white: true, indent: 4, maxerr: 1000 */
 
-var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
+var JsonML;
+if (undefined === JsonML) { JsonML = {}; }
 
-(function() {
+(function () {
 	//attribute name mapping
 	var ATTRMAP = {
 			rowspan : "rowSpan",
@@ -25,11 +26,11 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 			// can add more attributes here as needed
 		},
 		// event names
-		EVTS = (function(/*string[]*/ names) {
-			var evts = {};
+		EVTS = (function (/*string[]*/ names) {
+			var evts = {}, evt;
 			while (names.length) {
-				var evt = names.shift();
-				evts["on"+evt.toLowerCase()] = evt;
+				evt = names.shift();
+				evts["on" + evt.toLowerCase()] = evt;
 			}
 			return evts;
 		})("blur,change,click,dblclick,error,focus,keydown,keypress,keyup,load,mousedown,mouseenter,mouseleave,mousemove,mouseout,mouseover,mouseup,resize,scroll,select,submit,unload".split(','));
@@ -52,7 +53,7 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 		if (attr.name && document.attachEvent) {
 			try {
 				// IE fix for not being able to programatically change the name attribute
-				var alt = document.createElement("<"+elem.tagName+" name='"+attr.name+"'>");
+				var alt = document.createElement("<" + elem.tagName + " name='" + attr.name + "'>");
 				// fix for Opera 8.5 and Netscape 7.1 creating malformed elements
 				if (elem.tagName === alt.tagName) {
 					elem = alt;
@@ -76,7 +77,7 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 					} else if (name === "class") {
 						elem.className = value;
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-						elem.setAttribute (name, value);
+						elem.setAttribute(name, value);
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 					} else if (EVTS[name]) {
 						addHandler(elem, name, value);
@@ -124,7 +125,7 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 				var childTag = child.tagName.toLowerCase();// child tagName
 				if (childTag && childTag !== "tbody" && childTag !== "thead") {
 					// insert in last tbody
-					var tBody = elem.tBodies.length > 0 ? elem.tBodies[elem.tBodies.length-1] : null;
+					var tBody = elem.tBodies.length > 0 ? elem.tBodies[elem.tBodies.length - 1] : null;
 					if (!tBody) {
 						tBody = document.createElement(childTag === "th" ? "thead" : "tbody");
 						elem.appendChild(tBody);
@@ -141,14 +142,14 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 			} else if (elem.tagName && elem.tagName.toLowerCase() === "object" &&
 				child.tagName && child.tagName.toLowerCase() === "param") {
 					// IE-only path
-					try {
-						elem.appendChild(child);
-					} catch (ex1) {}
-					try {
-						if (elem.object) {
-							elem.object[child.name] = child.value;
-						}
-					} catch (ex2) {}
+				try {
+					elem.appendChild(child);
+				} catch (ex1) {}
+				try {
+					if (elem.object) {
+						elem.object[child.name] = child.value;
+					}
+				} catch (ex2) {}
 			}
 		}
 	}
@@ -198,7 +199,7 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 	}
 	// default error handler
 	/*DOM*/ function onError(/*Error*/ ex, /*JsonML*/ jml, /*function*/ filter) {
-		return document.createTextNode("["+ex+"]");
+		return document.createTextNode("[" + ex + "]");
 	}
 
 	/* override this to perform custom error handling during binding */
@@ -206,7 +207,7 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 
 	/*DOM*/ function patch(/*DOM*/ elem, /*JsonML*/ jml, /*function*/ filter) {
 
-	for (var i=1; i<jml.length; i++) {
+		for (var i = 1; i < jml.length; i++) {
 			if (jml[i] instanceof Array || "string" === typeof jml[i]) {
 				// append children
 				appendChild(elem, JsonML.parse(jml[i], filter));
@@ -221,7 +222,7 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 		return elem;
 	}
 
-	/*DOM*/ JsonML.parse = function(/*JsonML*/ jml, /*function*/ filter) {
+	/*DOM*/ JsonML.parse = function (/*JsonML*/ jml, /*function*/ filter) {
 		try {
 			if (!jml) {
 				return null;
@@ -243,7 +244,7 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 				var frag = document.createDocumentFragment ?
 					document.createDocumentFragment() :
 					document.createElement("");
-				for (var i=1; i<jml.length; i++) {
+				for (var i = 1; i < jml.length; i++) {
 					appendChild(frag, JsonML.parse(jml[i], filter));
 				}
 
@@ -278,19 +279,19 @@ var JsonML; if ("undefined" === typeof JsonML) { JsonML = {}; }
 				var err = ("function" === typeof JsonML.onerror) ? JsonML.onerror : onError;
 				return err(ex, jml, filter);
 			} catch (ex2) {
-				return document.createTextNode("["+ex2+"]");
+				return document.createTextNode("[" + ex2 + "]");
 			}
 		}
 	};
 
-	/*bool*/ JsonML.isElement = function(/*JsonML*/ jml) {
+	/*bool*/ JsonML.isElement = function (/*JsonML*/ jml) {
 		return (jml instanceof Array) && ("string" === typeof jml[0]);
 	};
 
 })();
 
 var WaveDrom = {
-	version: "13.04.10",
+	version: "13.04.12",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -395,7 +396,7 @@ var WaveDrom = {
 		Next  = Stack.shift();
 
 		Repeats = 1;
-		while (Stack[0] === '.' || Stack[0] === '|' ) { // repeaters parser
+		while (Stack[0] === '.' || Stack[0] === '|') { // repeaters parser
 			Stack.shift();
 			Repeats += 1;
 		}
@@ -422,26 +423,26 @@ WaveDrom.ViewSVG = function (label) {
 	"use strict";
 	var f, ser, str;
 
-	f   = document.getElementById (label);
+	f   = document.getElementById(label);
 	ser = new XMLSerializer();
 	str = '<?xml version="1.0" standalone="no"?>\n' +
 	'<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n' +
 	'<!-- Created with WaveDrom -->\n' +
-	ser.serializeToString (f);
-	window.open ('data:image/svg+xml;base64,' + window.btoa (str), '_blank');
+	ser.serializeToString(f);
+	window.open('data:image/svg+xml;base64,' + window.btoa(str), '_blank');
 };
 
 WaveDrom.ViewSourceSVG = function (label) {
 	"use strict";
 	var f, ser, str;
 
-	f   = document.getElementById (label);
+	f   = document.getElementById(label);
 	ser = new XMLSerializer();
 	str = '<?xml version="1.0" standalone="no"?>\n' +
 	'<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n' +
 	'<!-- Created with WaveDrom -->\n' +
-	ser.serializeToString (f);
-	window.open ('view-source:data:image/svg+xml;base64,' + window.btoa (str), '_blank');
+	ser.serializeToString(f);
+	window.open('view-source:data:image/svg+xml;base64,' + window.btoa(str), '_blank');
 };
 
 WaveDrom.parseWaveLanes = function (sig) {
@@ -451,8 +452,8 @@ WaveDrom.parseWaveLanes = function (sig) {
 		this.lane.period = sig[x].period ? sig[x].period    : 1;
 		this.lane.phase  = sig[x].phase  ? sig[x].phase * 2 : 0;
 		content.push([]);
-		tmp0 [0] = sig[x].name  ? sig[x].name  : null;
-		tmp0 [1] = sig[x].phase ? sig[x].phase : 0;
+		tmp0[0] = sig[x].name  || ' ';
+		tmp0[1] = sig[x].phase || 0;
 		content[content.length - 1][0] = tmp0.slice(0);
 		content[content.length - 1][1] = sig[x].wave ? this.parseWaveLane(sig[x].wave, this.lane.period * this.lane.hscale - 1) : null;
 
@@ -495,61 +496,79 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 	xmlns    = 'http://www.w3.org/XML/1998/namespace';
 
 	for (j = 0; j < content.length; j += 1) {
-		if (content[j][0][0]) {
-			g    = document.createElementNS (svgns, 'g');
-			g.id = "wavelane_" + j + "_" + index;
-			g.setAttribute ('transform', 'translate(0,' + (this.lane.y0 + j * this.lane.yo) + ')');
-			root.insertBefore (g, root.firstChild);
+		if (content[j][0][0]) { // check name
+			g = JsonML.parse(
+				['g',
+					{
+						id: ("wavelane_" + j + "_" + index),
+						transform: ('translate(0,' + (this.lane.y0 + j * this.lane.yo) + ')')
+					}
+				]
+			);
+			root.insertBefore(g, null);
 
-			lanetext = document.createTextNode (content[j][0][0]);
-			title = document.createElementNS (svgns, "text");
-			title.setAttribute ("x", this.lane.tgo);
-			title.setAttribute ("y", this.lane.ym);
-			title.setAttribute ("fill", "#0041c4"); // Pantone 288C
-			title.setAttribute ("text-anchor", "end");
-			title.setAttributeNS (xmlns, "xml:space","preserve");
-			title.appendChild (lanetext);
-			g.insertBefore (title, g.firstChild);
+			title = JsonML.parse(
+				['text',
+					{
+						x: this.lane.tgo,
+						y: this.lane.ym,
+						fill: '#0041c4', // Pantone 288C
+						'text-anchor': 'end'
+					},
+					content[j][0][0]
+				]
+			);
+			title.setAttributeNS(xmlns, "xml:space", "preserve");
+			g.insertBefore(title, null);
 
 			scale = this.lane.xs * (this.lane.hscale) * 2;
-			glengths.push (title.getBBox().width);
+			glengths.push(title.getBBox().width);
 
-			gg = document.createElementNS(svgns, 'g');
-			gg.id = "wavelane_draw_" + j + "_" + index;
 			var xoffset;
 			xoffset = content[j][0][1];
-			xoffset = (xoffset > 0) ? (Math.ceil (2 * xoffset) - 2 * xoffset) :
+			xoffset = (xoffset > 0) ? (Math.ceil(2 * xoffset) - 2 * xoffset) :
 			(-2 * xoffset);
-			gg.setAttribute('transform', 'translate(' + (xoffset * this.lane.xs) + ', 0)');
-			g.insertBefore(gg, g.firstChild);
+			gg = JsonML.parse(
+				['g',
+					{
+						id: ("wavelane_draw_" + j + "_" + index),
+						transform: ('translate(' + (xoffset * this.lane.xs) + ', 0)')
+					}
+				]
+			);
+			g.insertBefore(gg, null);
 
 			if (content[j][1]) {
-				if (content[j][2] && content[j][2].length) {
-					labels = this.FindLaneMarkers (content[j][1]);
-
-					if (labels.length !== 0) {
-						for (k in labels) {
-							if (content[j][2] && content[j][2][k]) {
-								labeltext = document.createTextNode (content[j][2][k]);
-								title = document.createElementNS (svgns, "text");
-								title.setAttribute ("x", ((labels[k] * this.lane.xs) + this.lane.xlabel));
-								title.setAttribute ("y", this.lane.ym);
-								title.setAttribute ("text-anchor", "middle");
-								title.setAttributeNS (xmlns, "xml:space","preserve");
-								title.appendChild (labeltext);
-								gg.insertBefore (title, gg.firstChild);
-							}
-						}
-					}
-				}
 				for (i = 0; i < content[j][1].length; i += 1) {
 					b    = document.createElementNS(svgns, "use");
 					b.id = "use_" + i + "_" + j + "_" + index;
 					b.setAttributeNS(xlinkns, 'xlink:href', '#' + content[j][1][i]);
 					b.setAttribute('transform', 'translate(' + (i * this.lane.xs) + ')');
-					gg.insertBefore(b, gg.firstChild);
+					gg.insertBefore(b, null);
 				}
-					if (content[j][1].length > xmax) {
+				if (content[j][2] && content[j][2].length) {
+					labels = this.FindLaneMarkers(content[j][1]);
+
+					if (labels.length !== 0) {
+						for (k in labels) {
+							if (content[j][2] && content[j][2][k]) {
+								title = JsonML.parse(
+									['text',
+										{
+											x: ((labels[k] * this.lane.xs) + this.lane.xlabel),
+											y: this.lane.ym,
+											'text-anchor': 'middle'
+										},
+										content[j][2][k]
+									]
+								);
+								title.setAttributeNS(xmlns, "xml:space", "preserve");
+								gg.insertBefore(title, null);
+							}
+						}
+					}
+				}
+				if (content[j][1].length > xmax) {
 					xmax = content[j][1].length;
 				}
 			}
@@ -563,7 +582,7 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 WaveDrom.RenderMarks = function (root, content, index) {
 	"use strict";
 	var i, g, marks, mstep, mmstep, gmark, tmark, labeltext, gy, margin,
-	svgns   = 'http://www.w3.org/2000/svg',
+	svgns = 'http://www.w3.org/2000/svg',
 	xmlns = 'http://www.w3.org/XML/1998/namespace';
 
 	mstep  = 2 * (this.lane.hscale);
@@ -572,27 +591,36 @@ WaveDrom.RenderMarks = function (root, content, index) {
 	margin = 5;
 	gy     = content.length * this.lane.yo + this.lane.y0 + this.lane.ys;
 
-	g = document.createElementNS (svgns, 'g');
-	g.id = "gmarks_" + index;
-	root.insertBefore (g, root.firstChild);
+	g = JsonML.parse(['g', {id: ("gmarks_" + index)}]);
+	root.insertBefore(g, root.firstChild);
 
 	for (i = 0; i < marks; i += 1) {
-		gmark = document.createElementNS (svgns, "path");
-		gmark.id = ("gmark_" + i + "_" + index);
-		gmark.setAttribute ('d', 'm ' + (i * mmstep) + ',5 0,' + (gy - 2 * margin));
-		gmark.setAttribute ('style', 'stroke:#888888;stroke-width:0.5;stroke-dasharray:2, 2');
-		g.insertBefore (gmark, g.firstChild);
+		g.insertBefore(
+			JsonML.parse(
+				['path',
+					{
+						id:    ("gmark_" + i + "_" + index),
+						d:     ('m ' + (i * mmstep) + ',5 0,' + (gy - 2 * margin)),
+						style: 'stroke:#888888;stroke-width:0.5;stroke-dasharray:2, 2'
+					}
+				]
+			),
+			null
+		);
 	}
 	for (i = 1; i < marks; i += 1) {
-		labeltext = document.createTextNode (i);
-		tmark = document.createElementNS (svgns, "text");
-		tmark.setAttribute ("x", i * mmstep - mmstep / 2);
-		tmark.setAttribute ("y", gy - margin);
-		tmark.setAttribute ("text-anchor", "middle");
-		tmark.setAttribute ("fill", "#AAAAAA");
-		tmark.setAttributeNS (xmlns, "xml:space","preserve");
-		tmark.appendChild (labeltext);
-		g.insertBefore (tmark, g.firstChild);
+		tmark = JsonML.parse(
+			['text',
+				{
+					x: (i * mmstep - mmstep / 2),
+					y: (gy - margin),
+					'text-anchor': 'middle',
+					fill: '#AAAAAA'
+				}, ('' + i)
+			]
+		);
+		tmark.setAttributeNS(xmlns, "xml:space", "preserve");
+		g.insertBefore(tmark, null);
 	}
 };
 
@@ -603,28 +631,28 @@ WaveDrom.RenderGroups = function (root, groups, index) {
 		xmlns = 'http://www.w3.org/XML/1998/namespace';
 	
 	for (i in groups) {
-		group = document.createElementNS (svgns, "path");
+		group = document.createElementNS(svgns, "path");
 		group.id = ("group_" + i + "_" + index);
-		group.setAttribute ('d', 'm '+(groups[i].x+0.5)+','+(groups[i].y * this.lane.yo + 8.5)+' c -3,0 -5,2 -5,5 l 0,'+(groups[i].height * this.lane.yo - 16)+' c 0,3 2,5 5,5');
-		group.setAttribute ('style', 'stroke:#0041c4;stroke-width:1;fill:none');
-		root.insertBefore (group, root.firstChild);
+		group.setAttribute('d', 'm ' + (groups[i].x + 0.5) + ',' + (groups[i].y * this.lane.yo + 8.5) + ' c -3,0 -5,2 -5,5 l 0,' + (groups[i].height * this.lane.yo - 16) + ' c 0,3 2,5 5,5');
+		group.setAttribute('style', 'stroke:#0041c4;stroke-width:1;fill:none');
+		root.insertBefore(group, null);
 
 		if (typeof groups[i].name === 'string') {
-			grouplabel = document.createTextNode (groups[i].name);
-			label = document.createElementNS (svgns, "text");
+			grouplabel = document.createTextNode(groups[i].name);
+			label = document.createElementNS(svgns, "text");
 			x = (groups[i].x - 10);
 			y = (this.lane.yo * (groups[i].y + (groups[i].height / 2)) + 5);
-			label.setAttribute ("x", x);
-			label.setAttribute ("y", y);
-			label.setAttribute ("text-anchor", "middle");
-			label.setAttribute ("fill", "#0041c4");
-			label.setAttribute ("transform", "rotate(270,"+x+","+y+")");
-			label.setAttributeNS (xmlns, "xml:space","preserve");
-			label.appendChild (grouplabel);
-			root.insertBefore (label, root.firstChild);
+			label.setAttribute("x", x);
+			label.setAttribute("y", y);
+			label.setAttribute("text-anchor", "middle");
+			label.setAttribute("fill", "#0041c4");
+			label.setAttribute("transform", "rotate(270," + x + "," + y + ")");
+			label.setAttributeNS(xmlns, "xml:space", "preserve");
+			label.appendChild(grouplabel);
+			root.insertBefore(label, null);
 		}
 	}
-}
+};
 
 WaveDrom.RenderGaps = function (root, source, index) {
 	"use strict";
@@ -634,30 +662,30 @@ WaveDrom.RenderGaps = function (root, source, index) {
 
 	if (source) {
 
-		gg = document.createElementNS (svgns, 'g');
+		gg = document.createElementNS(svgns, 'g');
 		gg.id = "wavegaps_" + index;
-		//gg.setAttribute ('transform', 'translate(' + this.lane.xg + ')');
-		root.insertBefore (gg, root.firstChild);
+		//gg.setAttribute('transform', 'translate(' + this.lane.xg + ')');
+		root.insertBefore(gg, null);
 
 		for (i in source) {
 			this.lane.period = source[i].period ? source[i].period    : 1;
 			this.lane.phase  = source[i].phase  ? source[i].phase * 2 : 0;
-			g = document.createElementNS (svgns, 'g');
+			g = document.createElementNS(svgns, 'g');
 			g.id = "wavegap_" + i + "_" + index;
-			g.setAttribute ('transform', 'translate(0,' + (this.lane.y0 + i * this.lane.yo) + ')');
-			gg.insertBefore (g, gg.firstChild);
+			g.setAttribute('transform', 'translate(0,' + (this.lane.y0 + i * this.lane.yo) + ')');
+			gg.insertBefore(g, null);
 
 			text = source[i].wave;
 			if (text) {
-				Stack = text.split ('');
+				Stack = text.split('');
 				pos = 0;
 				while (Stack.length) {
 					if (Stack.shift() === '|') {
-						b    = document.createElementNS (svgns, "use");
+						b    = document.createElementNS(svgns, "use");
 						b.id = "guse_" + pos + "_" + i + "_" + index;
-						b.setAttributeNS (xlinkns, 'xlink:href', '#gap');
-						b.setAttribute ('transform', 'translate(' + (this.lane.xs * ((2 * pos + 1) * this.lane.period * this.lane.hscale - this.lane.phase)) + ')');
-						g.insertBefore (b, g.firstChild);
+						b.setAttributeNS(xlinkns, 'xlink:href', '#gap');
+						b.setAttribute('transform', 'translate(' + (this.lane.xs * ((2 * pos + 1) * this.lane.period * this.lane.hscale - this.lane.phase)) + ')');
+						g.insertBefore(b, null);
 					}
 					pos += 1;
 				}
@@ -668,16 +696,16 @@ WaveDrom.RenderGaps = function (root, source, index) {
 
 WaveDrom.RenderArcs = function (root, source, index, top) {
 	"use strict";
-	var gg, i, k, text, Stack = [], Edge = {words:[], from:0, shape:'', to:0, label:''}, Events = {}, pos, eventname, labeltext, label, underlabel, from, to, gmark,
+	var gg, i, k, text, Stack = [], Edge = {words: [], from: 0, shape: '', to: 0, label: ''}, Events = {}, pos, eventname, labeltext, label, underlabel, from, to, gmark, lwidth,
 		svgns = 'http://www.w3.org/2000/svg',
 		xmlns = 'http://www.w3.org/XML/1998/namespace';
-		function t1 () {
-			gmark = document.createElementNS (svgns, "path");
-			gmark.id = ("gmark_" + Edge.from + "_" + Edge.to);
-			gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' ' + to.x   + ',' + to.y);
-			gmark.setAttribute ('style', 'fill:none;stroke:#0000FF;stroke-width:1');
-			gg.insertBefore (gmark, gg.firstChild);
-		};
+	function t1 () {
+		gmark = document.createElementNS(svgns, "path");
+		gmark.id = ("gmark_" + Edge.from + "_" + Edge.to);
+		gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + to.x   + ',' + to.y);
+		gmark.setAttribute('style', 'fill:none;stroke:#0000FF;stroke-width:1');
+		gg.insertBefore(gmark, null);
+	}
 
 	if (source) {
 		for (i in source) {
@@ -685,7 +713,7 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 			this.lane.phase  = source[i].phase  ? source[i].phase * 2 : 0;
 			text = source[i].node;
 			if (text) {
-				Stack = text.split ('');
+				Stack = text.split('');
 				pos = 0;
 				while (Stack.length) {
 					eventname = Stack.shift();
@@ -699,167 +727,149 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 				}
 			}
 		}
-		gg = document.createElementNS (svgns, 'g');
+		gg = document.createElementNS(svgns, 'g');
 		gg.id = "wavearcs_" + index;
-		root.insertBefore (gg, root.firstChild);
-		for (k in Events) {
-			if (k == k.toLowerCase()) {
-				var lwidth;
-				if (Events[k].x > 0) {
-					labeltext = document.createTextNode (k);
-					label = document.createElementNS (svgns, 'text');
-					label.setAttribute ('style', 'font-size:8px;');
-					label.setAttribute ('x', Events[k].x);
-					label.setAttribute ('y', Events[k].y + 2);
-					label.setAttribute ('text-anchor', 'middle');
-					label.setAttributeNS (xmlns, "xml:space","preserve");
-					label.appendChild (labeltext);
-					gg.insertBefore (label, gg.firstChild);
-					lwidth = label.getBBox().width + 2;
-					underlabel = document.createElementNS (svgns, 'rect');
-					underlabel.setAttribute ('x', Events[k].x - lwidth / 2);
-					underlabel.setAttribute ('y', Events[k].y - 4);
-					underlabel.setAttribute ('width', lwidth);
-					underlabel.setAttribute ('height', 8);
-					underlabel.setAttribute ('style', 'fill:#FFFFFF;');
-					gg.insertBefore (underlabel, gg.firstChild);
-				}
-			}
-		}
+		root.insertBefore(gg, null);
 		if (top.edge) {
 			for (i in top.edge) {
 				Edge.words = top.edge[i].split(' ');
-				Edge.label = top.edge[i].substring (Edge.words[0].length);
-				Edge.label = Edge.label.substring (1);
-				Edge.from  = Edge.words[0].substr ( 0, 1);
-				Edge.to    = Edge.words[0].substr (-1, 1);
-				Edge.shape = Edge.words[0].slice (1,-1);
+				Edge.label = top.edge[i].substring(Edge.words[0].length);
+				Edge.label = Edge.label.substring(1);
+				Edge.from  = Edge.words[0].substr(0, 1);
+				Edge.to    = Edge.words[0].substr(-1, 1);
+				Edge.shape = Edge.words[0].slice(1, -1);
 				from  = Events[Edge.from];
 				to    = Events[Edge.to];
-				var lwidth;
+				t1();
 				if (Edge.label) {
-					labeltext = document.createTextNode (Edge.label);
-					label = document.createElementNS (svgns, 'text');
-					label.setAttribute ('style', 'font-size:10px;');
-					label.setAttribute ('text-anchor', 'middle');
-					label.setAttributeNS (xmlns, "xml:space","preserve");
-					label.appendChild (labeltext);
-					gg.insertBefore (label, gg.firstChild);
-					underlabel = document.createElementNS (svgns, 'rect');
+					label = JsonML.parse(['text', {style: 'font-size:10px;', 'text-anchor': 'middle'}, Edge.label]);
+					label.setAttributeNS(xmlns, "xml:space", "preserve");
+					underlabel = JsonML.parse(['rect', {height: 9, style: 'fill:#FFFFFF;'}]);
+					gg.insertBefore(underlabel, null);
+					gg.insertBefore(label, null);
 					lwidth = label.getBBox().width;
-					underlabel.setAttribute ('width', lwidth);
-					underlabel.setAttribute ('height', 9);
-					underlabel.setAttribute ('style', 'fill:#FFFFFF;');
-					gg.insertBefore (underlabel, gg.firstChild);
+					underlabel.setAttribute('width', lwidth);
 				}
 				var dx = to.x - from.x;
 				var dy = to.y - from.y;
 				var lx = ((from.x + to.x) / 2);
 				var ly = ((from.y + to.y) / 2);
-				t1 ();
 				switch (Edge.shape) {
 					case '-'  : {
 						break;
 					}
 					case '~'  : {
-						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' c ' + 0.7*dx + ', 0 ' + 0.3*dx + ', ' + dy + ' ' + dx + ', ' + dy);
+						gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' c ' + (0.7 * dx) + ', 0 ' + (0.3 * dx) + ', ' + dy + ' ' + dx + ', ' + dy);
 						break;
 					}
 					case '-~' : {
-						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' c ' + 0.7*dx + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy);
+						gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' c ' + (0.7 * dx) + ', 0 ' +         dx + ', ' + dy + ' ' + dx + ', ' + dy);
 						if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.75); }
 						break;
 					}
 					case '~-' : {
-						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' c ' + 0      + ', 0 ' + 0.3*dx + ', ' + dy + ' ' + dx + ', ' + dy);
+						gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' c ' + 0          + ', 0 ' + (0.3 * dx) + ', ' + dy + ' ' + dx + ', ' + dy);
 						if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.25); }
 						break;
 					}
 					case '-|' : {
-						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
+						gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
 						if (Edge.label) { lx = to.x; }
 						break;
 					}
 					case '|-' : {
-						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' 0,' + dy + ' ' + dx + ',0');
+						gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' 0,' + dy + ' ' + dx + ',0');
 						if (Edge.label) { lx = from.x; }
 						break;
 					}
 					case '-|-': {
-						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' ' + dx/2 + ',0 0,' + dy + ' ' + dx/2 + ',0');
+						gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + (dx / 2) + ',0 0,' + dy + ' ' + (dx / 2) + ',0');
 						break;
 					}
 					case '->' : {
-						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
 						break;
 					}
 					case '~>' : {
-						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
-						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0.7*dx + ', 0 ' + 0.3*dx + ', ' + dy + ' ' + dx + ', ' + dy);
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + (0.7 * dx) + ', 0 ' + 0.3*dx + ', ' + dy + ' ' + dx + ', ' + dy);
 						break;
 					}
 					case '-~>': {
-						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
-						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0.7*dx + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy);
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + (0.7 * dx) + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy);
 						if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.75); }
 						break;
 					}
 					case '~->': {
-						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
-						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0      + ', 0 ' + 0.3*dx + ', ' + dy + ' ' + dx + ', ' + dy);
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0      + ', 0 ' + (0.3 * dx) + ', ' + dy + ' ' + dx + ', ' + dy);
 						if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.25); }
 						break;
 					}
 					case '-|>' : {
-						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
-						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
 						if (Edge.label) { lx = to.x; }
 						break;
 					}
 					case '|->' : {
-						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
-						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' 0,' + dy + ' ' + dx + ',0');
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' 0,' + dy + ' ' + dx + ',0');
 						if (Edge.label) { lx = from.x; }
 						break;
 					}
 					case '-|->': {
-						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
-						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' ' + dx/2 + ',0 0,' + dy + ' ' + dx/2 + ',0');
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + (dx / 2) + ',0 0,' + dy + ' ' + (dx / 2) + ',0');
 						break;
 					}
 					case '<->' : {
-						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#00ff00;stroke-width:1;fill:none');
 						break;
 					}
 					case '<~>' : {
-						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#00ff00;stroke-width:1;fill:none');
-						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0.7*dx + ', 0 ' + 0.3*dx + ', ' + dy + ' ' + dx + ', ' + dy);
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + (0.7 * dx) + ', 0 ' + (0.3 * dx) + ', ' + dy + ' ' + dx + ', ' + dy);
 						break;
 					}
 					case '<-~>': {
-						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#00ff00;stroke-width:1;fill:none');
-						gmark.setAttribute ('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0.7*dx + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy);
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + (0.7 * dx) + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy);
 						if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.75); }
 						break;
 					}
 					case '<-|>' : {
-						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#00ff00;stroke-width:1;fill:none');
-						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
 						if (Edge.label) { lx = to.x; }
 						break;
 					}
 					case '<-|->': {
-						gmark.setAttribute ('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#00ff00;stroke-width:1;fill:none');
-						gmark.setAttribute ('d', 'm ' + from.x + ',' + from.y + ' ' + dx/2 + ',0 0,' + dy + ' ' + dx/2 + ',0');
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + (dx / 2) + ',0 0,' + dy + ' ' + (dx / 2) + ',0');
 						break;
 					}
-					default   : { gmark.setAttribute ('style', 'fill:none;stroke:#FF0000;stroke-width:1'); }
+					default   : { gmark.setAttribute('style', 'fill:none;stroke:#FF0000;stroke-width:1'); }
 				}
 				if (Edge.label) {
-					label.setAttribute ('x', lx);
-					label.setAttribute ('y', ly + 3);
-					underlabel.setAttribute ('x', lx - lwidth / 2);
-					underlabel.setAttribute ('y', ly - 5);
+					label.setAttribute('x', lx);
+					label.setAttribute('y', ly + 3);
+					underlabel.setAttribute('x', lx - lwidth / 2);
+					underlabel.setAttribute('y', ly - 5);
+				}
+			}
+		}
+		for (k in Events) {
+			if (k == k.toLowerCase()) {
+				if (Events[k].x > 0) {
+					underlabel = JsonML.parse(['rect', {'y': (Events[k].y - 4), height: 8, style: 'fill:#FFFFFF;'}]);
+					gg.insertBefore(underlabel, null);
+					label = JsonML.parse(['text', {style: 'font-size:8px;', x: Events[k].x, y: (Events[k].y + 2), 'text-anchor': 'middle'}, k]);
+					gg.insertBefore(label, null);
+					lwidth = label.getBBox().width + 2;
+					underlabel.setAttribute('x', Events[k].x - lwidth / 2);
+					underlabel.setAttribute('width', lwidth);
 				}
 			}
 		}
@@ -887,15 +897,15 @@ WaveDrom.rec = function (tmp, state) {
 		delta.x = 25;
 	}
 	state.x += delta.x;
-	for (i in tmp) {
+	for (i = 0; i < tmp.length; i++) {
 		if (typeof tmp[i] === 'object') {
-			if (Object.prototype.toString.call (tmp[i]) === '[object Array]') {
+			if (Object.prototype.toString.call(tmp[i]) === '[object Array]') {
 				old.y = state.y;
-				state = this.rec (tmp[i], state);
-				state.groups.push ({"x":state.xx, "y":old.y, "height":(state.y - old.y), "name":state.name});
+				state = this.rec(tmp[i], state);
+				state.groups.push({"x":state.xx, "y":old.y, "height":(state.y - old.y), "name":state.name});
 			} else {
-				state.lanes.push (tmp[i]);
-				state.width.push (state.x);
+				state.lanes.push(tmp[i]);
+				state.width.push(state.x);
 				state.y += 1;
 			}
 		}
@@ -910,44 +920,49 @@ WaveDrom.RenderWaveForm = function (index) {
 	"use strict";
 	var root, groups, svgcontent, TheTextBox, content, source, width, height, uwidth, uheight, ret, glengths, xmax = 0, i;
 
-	root          = document.getElementById ("lanes_" + index);
-	groups        = document.getElementById ("groups_" + index);
-	svgcontent    = document.getElementById ("svgcontent_" + index);
-	TheTextBox    = document.getElementById ("InputJSON_" + index);
+	root          = document.getElementById("lanes_" + index);
+	groups        = document.getElementById("groups_" + index);
+	svgcontent    = document.getElementById("svgcontent_" + index);
+	TheTextBox    = document.getElementById("InputJSON_" + index);
 	if (TheTextBox.type && TheTextBox.type == 'textarea') {
-		try { source = eval ('(' + TheTextBox.value + ')') } catch (err) { source = {signal:[{name:err}]}; };
+		try { source = eval('(' + TheTextBox.value + ')') } catch (err) { source = {signal:[{name:err}]}; };
 	} else {
-		try { source = eval ('(' + TheTextBox.innerHTML + ')') } catch (err) { source = {signal:[{name:err}]}; };
+		try { source = eval('(' + TheTextBox.innerHTML + ')') } catch (err) { source = {signal:[{name:err}]}; };
+	}
+	if (Object.prototype.toString.call(source) !== '[object Object]') {
+		source = {signal:[{name:"SemanticError: The root has to be an Object: '{signal:[...]}'"}]};
+	} else if (!source.signal) {
+		source = {signal:[{name:"SemanticError: 'signal:[...]' property is missing inside the root Object"}]};
+	} else if (Object.prototype.toString.call(source.signal) !== '[object Array]') {
+		source = {signal:[{name:"SemanticError: 'signal' object has to be an Array 'signal:[]'"}]};
 	}
 
 	this.parseConfig (source);
 
-	if (source.signal) {
-		ret = this.rec (source.signal, {'x':0, 'y':0, 'xmax':0, 'width':[], 'lanes':[], 'groups':[]});
-		this.RenderArcs (root, ret.lanes, index, source);
-		this.RenderGaps (root, ret.lanes, index);
-		this.RenderGroups (groups, ret.groups, index);
-		content  = this.parseWaveLanes (ret.lanes);
-		glengths = this.RenderWaveLane (root, content, index);
-		for (i in glengths) {
-			xmax = Math.max (xmax, (glengths[i] + ret.width[i]));
-		}
-		this.RenderMarks (root, content, index);
-		this.lane.xg = Math.ceil ((xmax - this.lane.tgo) / this.lane.xs) * this.lane.xs;
+	ret = this.rec(source.signal, {'x':0, 'y':0, 'xmax':0, 'width':[], 'lanes':[], 'groups':[]});
+	content  = this.parseWaveLanes(ret.lanes);
+	glengths = this.RenderWaveLane(root, content, index);
+	for (i in glengths) {
+		xmax = Math.max(xmax, (glengths[i] + ret.width[i]));
 	}
+	this.RenderMarks(root, content, index);
+	this.RenderArcs(root, ret.lanes, index, source);
+	this.RenderGaps(root, ret.lanes, index);
+	this.RenderGroups(groups, ret.groups, index);
+	this.lane.xg = Math.ceil((xmax - this.lane.tgo) / this.lane.xs) * this.lane.xs;
 
 	width  = (this.lane.xg + (this.lane.xs * (this.lane.xmax + 1)));
 	height = (content.length * this.lane.yo + this.lane.y0 + this.lane.ys);
 
-	if (this.lane.scale === 3) {
+//	if (this.lane.scale === 3) {
 //		uwidth  = '100%';
-		uwidth  = (window.innerWidth - 15);
+//		uwidth  = (window.innerWidth - 15);
 //		uheight = '100%';
-		uheight = (window.innerHeight - (10+7+16+7+(WaveDrom.panela.ys)+7+16+7+16+7));
-	} else {
-		uwidth  = this.lane.scale * width;
-		uheight = this.lane.scale * height;
-	}
+//		uheight = (window.innerHeight - (10+7+16+7+(WaveDrom.panela.ys)+7+16+7+16+7));
+//	} else {
+//		uwidth  = this.lane.scale * width;
+//		uheight = this.lane.scale * height;
+//	}
 	// ???
 	uwidth  = width;
 	uheight = height;
@@ -957,30 +972,26 @@ WaveDrom.RenderWaveForm = function (index) {
 	svgcontent.setAttribute('height', uheight);
 	svgcontent.setAttribute('overflow', 'hidden');
 
-	root.setAttribute ('transform', 'translate(' + (this.lane.xg + 0.5) + ', 0.5)');
+	root.setAttribute('transform', 'translate(' + (this.lane.xg + 0.5) + ', 0.5)');
 };
 
 WaveDrom.InsertSVGTemplate = function (index, parent) {
 	"use strict";
-	var node0, node1;
+	var node;
 
-	node1 = JsonML.parse(WaveSkin);
-	this.lane.xs     = Number (WaveSkin[3][1][2][2][1].width);
-	this.lane.ys     = Number (WaveSkin[3][1][2][2][1].height);
-	this.lane.xlabel = Number (WaveSkin[3][1][2][2][1].x);
-	this.lane.ym     = Number (WaveSkin[3][1][2][2][1].y);
-	node1.id = "svgcontent_" + index;
-	node1.setAttribute ('height', '0');
-	parent.insertBefore (node1, parent.firstChild);
+	this.lane.xs     = Number(WaveSkin[3][1][2][2][1].width);
+	this.lane.ys     = Number(WaveSkin[3][1][2][2][1].height);
+	this.lane.xlabel = Number(WaveSkin[3][1][2][2][1].x);
+	this.lane.ym     = Number(WaveSkin[3][1][2][2][1].y);
 
-	node0 = document.getElementById('waves');
-	node0.id = "waves_" + index;
+	WaveSkin[WaveSkin.length - 1][1].id    = "waves_"  + index;
+	WaveSkin[WaveSkin.length - 1][2][1].id = "lanes_"  + index;
+	WaveSkin[WaveSkin.length - 1][3][1].id = "groups_" + index;
+	WaveSkin[1].id = "svgcontent_" + index;
+	WaveSkin[1].height = 0;
 
-	node0 = document.getElementById('groups');
-	node0.id = "groups_" + index;
-
-	node0 = document.getElementById('lanes');
-	node0.id = "lanes_" + index;
+	node = JsonML.parse(WaveSkin);
+	parent.insertBefore(node, parent.firstChild);
 };
 
 WaveDrom.ProcessAll = function () {
@@ -989,23 +1000,23 @@ WaveDrom.ProcessAll = function () {
 
 	// backward markup
 	index = 0;
-	points = document.getElementsByTagName ('SCRIPT');
+	points = document.getElementsByTagName('SCRIPT');
 	for (i = points.length-1; i > 0; i -= 1) {
 		if (points.item(i).type && points.item(i).type == 'WaveDrom') {
-			points.item(i).setAttribute ('id', 'InputJSON_' + index);
+			points.item(i).setAttribute('id', 'InputJSON_' + index);
 
 			node0 = document.createElement('div');
 			node0.className += "WaveDrom_Display_" + index;
-			points.item(i).parentNode.insertBefore (node0, points.item(i));
+			points.item(i).parentNode.insertBefore(node0, points.item(i));
 
-			WaveDrom.InsertSVGTemplate (index, node0);
+			WaveDrom.InsertSVGTemplate(index, node0);
 
 			index += 1;
 		}
 	}
 	// forward markup
 	for (i = 0; i < index; i += 1) {
-		WaveDrom.RenderWaveForm (i);
+		WaveDrom.RenderWaveForm(i);
 	}
 };
 
@@ -1018,13 +1029,13 @@ WaveDrom.resize = function () {
 WaveDrom.ClearWaveLane = function (index) {
 	"use strict";
 	var root;
-    root = document.getElementById ('lanes_' + index);
+    root = document.getElementById('lanes_' + index);
 	while (root.childNodes.length) {
-		root.removeChild (root.childNodes[0]);
+		root.removeChild(root.childNodes[0]);
 	}
-	root = document.getElementById ('groups_' + index);
+	root = document.getElementById('groups_' + index);
 	while (root.childNodes.length) {
-		root.removeChild (root.childNodes[0]);
+		root.removeChild(root.childNodes[0]);
 	}
 };
 
@@ -1049,15 +1060,15 @@ WaveDrom.EditorKeyUp = function (event) {
 			case 93: break; // Right Click
 			default: {
 				if (WaveDrom.timer) {
-					clearTimeout (WaveDrom.timer);
+					clearTimeout(WaveDrom.timer);
 				}
-				WaveDrom.timer = setTimeout ("WaveDrom.EditorRefresh()", 750);
+				WaveDrom.timer = setTimeout("WaveDrom.EditorRefresh()", 750);
 				return;
 			}
 		}
 		if (WaveDrom.timer) {
 			clearTimeout (WaveDrom.timer);
-			WaveDrom.timer = setTimeout ("WaveDrom.EditorRefresh()", 750);
+			WaveDrom.timer = setTimeout("WaveDrom.EditorRefresh()", 750);
 		}
 	}
 //	WaveDrom.EditorRefresh();
@@ -1065,9 +1076,9 @@ WaveDrom.EditorKeyUp = function (event) {
 
 WaveDrom.EditorRefresh = function () {
 	"use strict";
-	WaveDrom.ClearWaveLane (0);
-//	WaveDrom.resize ();
-	WaveDrom.RenderWaveForm (0);
+	WaveDrom.ClearWaveLane(0);
+//	WaveDrom.resize();
+	WaveDrom.RenderWaveForm(0);
 };
 
 WaveDrom.EditorInit = function () {
@@ -1075,10 +1086,10 @@ WaveDrom.EditorInit = function () {
 	var index, points, i, node0, node1;
 	this.lane.scale = 3;
 	index = 0;
-//	WaveDrom.WaveformLoad ();
-	WaveDrom.InsertSVGTemplate (index, document.getElementById ('WaveDrom_Display_' + index));
-	WaveDrom.EditorRefresh ();
-//	WaveDrom.ConfigurationLoad ();
+//	WaveDrom.WaveformLoad();
+	WaveDrom.InsertSVGTemplate(index, document.getElementById('WaveDrom_Display_' + index));
+	WaveDrom.EditorRefresh();
+//	WaveDrom.ConfigurationLoad();
 	window.onresize = WaveDrom.EditorRefresh;
 };
 
@@ -1086,7 +1097,7 @@ WaveDrom.ExpandInputWindow = function () {
 	"use strict";
 	if (WaveDrom.panela.ys < (0.707 * window.innerHeight)) {
 		WaveDrom.panela.ys += 50;
-		WaveDrom.EditorRefresh ();
+		WaveDrom.EditorRefresh();
 	}
 };
 
@@ -1148,20 +1159,20 @@ WaveDrom.CollapseInputWindow = function () {
 	"use strict";
 	if (WaveDrom.panela.ys > 100) {
 		WaveDrom.panela.ys -= 50;
-		WaveDrom.EditorRefresh ();
+		WaveDrom.EditorRefresh();
 	}
 };
 
 WaveDrom.SetHScale = function (hscale) {
 	"use strict";
 	WaveDrom.lane.hscale0 = parseFloat(hscale);
-	WaveDrom.EditorRefresh ();
+	WaveDrom.EditorRefresh();
 };
 
 WaveDrom.SetScale = function (scale) {
 	"use strict";
 	WaveDrom.lane.scale = parseFloat(scale);
-	WaveDrom.EditorRefresh ();
+	WaveDrom.EditorRefresh();
 };
 
 window.onload = WaveDrom.ProcessAll;
