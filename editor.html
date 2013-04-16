@@ -91,6 +91,7 @@
  </head>
 
  <body onload="editorInit()">
+ <div id="content">
   <div class="toolbar">
    <img class="button" title="rotate layout" src="images/ic_rot.png" onclick="editorState({rot:1})"/>
    <img class="button" title="change proportions" src="images/ic_persent.png" onclick="editorState({per:1})"/>
@@ -101,6 +102,18 @@
   </div>
   <div id='SVG'><div id="WaveDrom_Display_0"></div></div>
   <div id='TXT'><textarea id="InputJSON_0"></textarea></div>
+ </div>
+	<script type="text/javascript">
+		(function KillBill () {
+			if (navigator.appName.indexOf('Explorer') >= 0) {
+				var e = document.getElementById('content');
+				e.parentNode.removeChild(e);
+				document.write("<h1>Sorry, Internet Explorer is not supported.</h1>")
+				document.body.style.backgroundColor = '#ffdddd';
+				window.stop();
+				}
+		})();
+	</script>
   <script>
     var e, val, timer;
     e = document.getElementById ('InputJSON_0');
