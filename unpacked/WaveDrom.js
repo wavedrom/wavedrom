@@ -291,7 +291,7 @@ if (undefined === JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "13.04.12",
+	version: "2013.04.16",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -885,14 +885,15 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 
 WaveDrom.parseConfig = function (source) {
 	"use strict";
+	function ToNumber(x) {
+		return x > 0 ? Math.round(x) : 1;
+	}
 	this.lane.hscale = 1;
 	if (this.lane.hscale0) {
 		this.lane.hscale = this.lane.hscale0;
 	}
-	if (source.config) {
-		if (source.config.hscale) {
-			this.lane.hscale = source.config.hscale;
-		}
+	if (source && source.config && source.config.hscale) {
+		this.lane.hscale = ToNumber(source.config.hscale);
 	}
 };
 
