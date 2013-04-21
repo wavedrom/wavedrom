@@ -1,11 +1,15 @@
 #!/usr/bin/perl -w
 # $Id$
 use strict;
+use POSIX;
+use File::Basename;
 use Data::Dumper;
 use XML::Parser;
 
 {
-	my $filename = $ARGV[0];
+	die "usage: " . basename($0) . " source_path\n" unless ($#ARGV == 0);
+	my $input = $ARGV[0];
+	my ($filename, $directories, $suffix) = fileparse ($input, qr/\.[^.]*/);
 
 	my $indent  = 0;
 	my $verbose = 0; # 0 1 2
@@ -93,7 +97,7 @@ use XML::Parser;
 		}
 	);
 
-	$a->parsefile($filename);
+	$a->parsefile($input);
 
 	my $css = '';
 	for (keys %histogram) {
@@ -103,15 +107,18 @@ use XML::Parser;
 	}
 
 print <<EOM;
-var WaveSkin = ["svg",{"id":"svg","xmlns":"http://www.w3.org/2000/svg","xmlns:xlink":"http://www.w3.org/1999/xlink","height":"0"}
+var WaveSkin = WaveSkin || {};
+WaveSkin.$filename = ["svg",{"id":"svg","xmlns":"http://www.w3.org/2000/svg","xmlns:xlink":"http://www.w3.org/1999/xlink","height":"0"}
 ,["style",{"type":"text/css"},"text{font-size:11pt;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;fill-opacity:1;font-family:Helvetica}$css"]
 ,["defs"
-,["g",{"id":"wavetemps","style":"display:none"}
 $message
-]
 ,["marker",{"id":"arrowhead","style":"display:none;overflow:visible","refX":"2","refY":"0","orient":"auto"},["path",{"d":"M -7,3 -7,-3 0,0 z"}]]
 ,["marker",{"id":"arrowtail","style":"display:none;overflow:visible","refX":"-2","refY":"0","orient":"auto"},["path",{"d":"M 7,3 7,-3 0,0 z"}]]
 ],["g",{"id":"waves"},["g",{"id":"lanes"}],["g",{"id":"groups"}]]]
 EOM
 
 }
+
+#,["g",{"id":"wavetemps","style":"display:none"}
+#$message
+#]

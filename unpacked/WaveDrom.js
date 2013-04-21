@@ -549,6 +549,7 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 					b    = document.createElementNS(svgns, "use");
 					b.id = "use_" + i + "_" + j + "_" + index;
 					b.setAttributeNS(xlinkns, 'xlink:href', '#' + content[j][1][i]);
+//					b.setAttribute('transform', 'translate(' + (i * this.lane.xs) + ')');
 					b.setAttribute('transform', 'translate(' + (i * this.lane.xs) + ')');
 					gg.insertBefore(b, null);
 				}
@@ -924,14 +925,47 @@ WaveDrom.rec = function (tmp, state) {
 	return state;
 };
 
+WaveDrom.InsertSVGTemplate = function (index, parent, source) {
+	"use strict";
+	var node, first, e;
+
+	// cleanup
+	while (parent.childNodes.length) {
+		parent.removeChild(parent.childNodes[0]);
+	}
+
+	for (first in WaveSkin) { break; }
+	e = WaveSkin['default'] || WaveSkin[first];
+	if (source && source.config && source.config.skin && WaveSkin[source.config.skin]) {
+		e = WaveSkin[source.config.skin];
+	}
+	if (index === 0) {
+		this.lane.xs     = Number(e[3][1][2][1].width);
+		this.lane.ys     = Number(e[3][1][2][1].height);
+		this.lane.xlabel = Number(e[3][1][2][1].x);
+		this.lane.ym     = Number(e[3][1][2][1].y);
+	} else {
+		e = ["svg",{"id":"svg","xmlns":"http://www.w3.org/2000/svg","xmlns:xlink":"http://www.w3.org/1999/xlink","height":"0"},["g",{"id":"waves"},["g",{"id":"lanes"}],["g",{"id":"groups"}]]];
+	}
+
+	e[e.length - 1][1].id    = "waves_"  + index;
+	e[e.length - 1][2][1].id = "lanes_"  + index;
+	e[e.length - 1][3][1].id = "groups_" + index;
+	e[1].id = "svgcontent_" + index;
+	e[1].height = 0;
+
+	node = JsonML.parse(e);
+	parent.insertBefore(node, null);
+};
+
 WaveDrom.RenderWaveForm = function (index) {
 	"use strict";
-	var root, groups, svgcontent, TheTextBox, content, source, width, height, uwidth, uheight, ret, glengths, xmax = 0, i;
+	var TheTextBox, source, ret,
+	root, groups, svgcontent, content, width, height, uwidth, uheight,
+	glengths, xmax = 0, i;
 
-	root          = document.getElementById("lanes_" + index);
-	groups        = document.getElementById("groups_" + index);
-	svgcontent    = document.getElementById("svgcontent_" + index);
-	TheTextBox    = document.getElementById("InputJSON_" + index);
+	TheTextBox = document.getElementById("InputJSON_" + index);
+
 	if (TheTextBox.type && TheTextBox.type == 'textarea') {
 		try { source = eval('(' + TheTextBox.value + ')') } catch (err) { source = {signal:[{name:err}]}; };
 	} else {
@@ -945,9 +979,15 @@ WaveDrom.RenderWaveForm = function (index) {
 		source = {signal:[{name:"SemanticError: 'signal' object has to be an Array 'signal:[]'"}]};
 	}
 
+	WaveDrom.InsertSVGTemplate(index, document.getElementById('WaveDrom_Display_' + index), source);
+
 	this.parseConfig (source);
 
 	ret = this.rec(source.signal, {'x':0, 'y':0, 'xmax':0, 'width':[], 'lanes':[], 'groups':[]});
+
+	root          = document.getElementById("lanes_" + index);
+	groups        = document.getElementById("groups_" + index);
+
 	content  = this.parseWaveLanes(ret.lanes);
 	glengths = this.RenderWaveLane(root, content, index);
 	for (i in glengths) {
@@ -974,55 +1014,36 @@ WaveDrom.RenderWaveForm = function (index) {
 	// ???
 	uwidth  = width;
 	uheight = height;
-	
+
+	svgcontent = document.getElementById("svgcontent_" + index);
 	svgcontent.setAttribute('viewBox', "0 0 " + width + " " + height);
 	svgcontent.setAttribute('width', uwidth);
 	svgcontent.setAttribute('height', uheight);
 	svgcontent.setAttribute('overflow', 'hidden');
-
 	root.setAttribute('transform', 'translate(' + (this.lane.xg + 0.5) + ', 0.5)');
-};
-
-WaveDrom.InsertSVGTemplate = function (index, parent) {
-	"use strict";
-	var node;
-
-	this.lane.xs     = Number(WaveSkin[3][1][2][2][1].width);
-	this.lane.ys     = Number(WaveSkin[3][1][2][2][1].height);
-	this.lane.xlabel = Number(WaveSkin[3][1][2][2][1].x);
-	this.lane.ym     = Number(WaveSkin[3][1][2][2][1].y);
-
-	WaveSkin[WaveSkin.length - 1][1].id    = "waves_"  + index;
-	WaveSkin[WaveSkin.length - 1][2][1].id = "lanes_"  + index;
-	WaveSkin[WaveSkin.length - 1][3][1].id = "groups_" + index;
-	WaveSkin[1].id = "svgcontent_" + index;
-	WaveSkin[1].height = 0;
-
-	node = JsonML.parse(WaveSkin);
-	parent.insertBefore(node, parent.firstChild);
 };
 
 WaveDrom.ProcessAll = function () {
 	"use strict";
-	var index, points, i, node0, node1;
+	var points, i, index, node0,
+		node1;
 
-	// backward markup
-	index = 0;
+	// first pass
+	index = 0; // actual number of valid anchor
 	points = document.getElementsByTagName('SCRIPT');
-	for (i = points.length-1; i > 0; i -= 1) {
-		if (points.item(i).type && points.item(i).type == 'WaveDrom') {
+	for (i = 0; i < points.length; i++) {
+		if (points.item(i).type && points.item(i).type === 'WaveDrom') {
 			points.item(i).setAttribute('id', 'InputJSON_' + index);
 
 			node0 = document.createElement('div');
-			node0.className += "WaveDrom_Display_" + index;
+//			node0.className += "WaveDrom_Display_" + index;
+			node0.id = "WaveDrom_Display_" + index;
 			points.item(i).parentNode.insertBefore(node0, points.item(i));
-
-			WaveDrom.InsertSVGTemplate(index, node0);
-
+//			WaveDrom.InsertSVGTemplate(i, node0);
 			index += 1;
 		}
 	}
-	// forward markup
+	// second pass
 	for (i = 0; i < index; i += 1) {
 		WaveDrom.RenderWaveForm(i);
 	}
@@ -1084,21 +1105,19 @@ WaveDrom.EditorKeyUp = function (event) {
 
 WaveDrom.EditorRefresh = function () {
 	"use strict";
-	WaveDrom.ClearWaveLane(0);
+//	WaveDrom.ClearWaveLane(0);
 //	WaveDrom.resize();
 	WaveDrom.RenderWaveForm(0);
 };
 
 WaveDrom.EditorInit = function () {
 	"use strict";
-	var index, points, i, node0, node1;
-	this.lane.scale = 3;
-	index = 0;
+//	this.lane.scale = 3;
 //	WaveDrom.WaveformLoad();
-	WaveDrom.InsertSVGTemplate(index, document.getElementById('WaveDrom_Display_' + index));
+//	WaveDrom.InsertSVGTemplate(index, document.getElementById('WaveDrom_Display_' + index));
 	WaveDrom.EditorRefresh();
 //	WaveDrom.ConfigurationLoad();
-	window.onresize = WaveDrom.EditorRefresh;
+//	window.onresize = WaveDrom.EditorRefresh;
 };
 
 WaveDrom.ExpandInputWindow = function () {
@@ -1183,4 +1202,4 @@ WaveDrom.SetScale = function (scale) {
 	WaveDrom.EditorRefresh();
 };
 
-window.onload = WaveDrom.ProcessAll;
+//window.onload = WaveDrom.ProcessAll;

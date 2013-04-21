@@ -3,6 +3,7 @@
   <title>Hitchhiker's Guide to the WaveDrom</title>
   <link rel="shortcut icon" href="images/favicon.ico"/>
   <script type="text/javascript" src="skins/default.js"></script>
+  <!--script type="text/javascript" src="skins/narrow.js"></script-->
   <script type="text/javascript" src="WaveDrom.js"></script>
   <link href='http://fonts.googleapis.com/css?family=Inconsolata|Varela+Round' rel='stylesheet' type='text/css'>
   <link href="tutorial.css" media="screen" rel="Stylesheet" type="text/css" /> 
@@ -83,7 +84,6 @@ Multi-bit signals will try grabbing labels from <span class="fixed">"data"</span
   { "name": "wire", "wave": "0.1..0." }
 ]}
 </pre>
-
 <script type="WaveDrom">
 { "signal" : [
   { "name": "clk",  "wave": "P......" },
@@ -103,7 +103,6 @@ Multi-bit signals will try grabbing labels from <span class="fixed">"data"</span
   { "name": "Acknowledge ←", "wave": "1.....|01." }
 ]}
 </pre>
-
 <script type="WaveDrom">
 { "signal" : [
   { "name": "clk →",         "wave": "p.....|..." },
@@ -136,7 +135,6 @@ Multi-bit signals will try grabbing labels from <span class="fixed">"data"</span
  ]
 ]}
 </pre>
-
 <script type="WaveDrom">
 { "signal" : [
  {   "name": "clk",    "wave": "P......." },
@@ -173,7 +171,6 @@ Multi-bit signals will try grabbing labels from <span class="fixed">"data"</span
   { "name": "DQ",  "wave": "z.........5555z.", "data" : ["D⁰","D¹","D²","D³"] }
 ]}
 </pre>
-
 <script type="WaveDrom">
 { "signal" : [
   { "name": "CK",  "wave": "P.......",                                                                     "period":2 },
@@ -235,6 +232,12 @@ The <span class="fixed">config:{...}</span> property controls different aspects 
   "config" : { "hscale" : 3 }
 }
 </script>
+
+<h3>skin</h3>
+
+<span class="fixed">config:{skin:'...'}</span> property can be used to select the <a href="https://code.google.com/p/wavedrom/wiki/WaveDromSkin">WaveDrom skin</a>.
+The property works only inside the first timing diagram on the page.
+<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html">WaveDrom Editor<a> includes two standard skins: <span class="fixed">'default'</span> and <span class="fixed">'narrow'</span>
 
 <h2>Step 8. Arrows</h2>
 
