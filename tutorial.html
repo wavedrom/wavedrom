@@ -15,26 +15,26 @@
 
 <h1>Hitchhiker's Guide to the WaveDrom</h1>
 
-<a href="http://wavedrom.googlecode.com">WaveDrom</a> is an JavaScript application and WaveJSON format allows describtion of
-Digital Timing Diagrams and its rendering them directly inside the browser.
-Timing digram described as JSON data structure.
-Element <span class="fixed">"signal"</span> is an array of wavelanes.
-Each wavelane has two mandatory fileds: <span class="fixed">"name"</span>
+<a href="http://wavedrom.googlecode.com">WaveDrom</a> is a JavaScript application. 
+WaveJSON is a format that describes Digital Timing Diagrams.
+WaveDrom renders the diagrmas directly inside the browser.
+Element <span class="fixed">"signal"</span> is an array of WaveLanes.
+Each WaveLane has two mandatory fields: <span class="fixed">"name"</span>
  and <span class="fixed">"wave"</span>.
 
 <h2>Step 1. The Signal</h2>
 
-Lets start with the quick example.
+Lets start with a quick example.
 Following code will create 1-bit signal named <span class="fixed">"Alfa"</span>
- that changes it's state over time.
+ that changes its state over time.
 
 <pre>
 { "signal" : [{ "name": "Alfa", "wave": "01.zx=ud.23.45" }] }
 </pre>
 
-Every character in the <span class="fixed">"wave"</span> string represents single time period.
+Every character in the <span class="fixed">"wave"</span> string represents a single time period.
 Symbol <span class="fixed">"."</span> extends previous state for one more period.
-Here is how it looks like:
+Here is how it looks:
 
 <script type="WaveDrom">
 { "signal" : [{ "name": "Alfa", "wave": "01.zx=ud.23.45" }] }
@@ -43,10 +43,10 @@ Here is how it looks like:
 
 <h2>Step 2. Adding Clock</h2>
 
-Digital clock is the special type of signal.
+Digital clock is a special type of signal.
 It changes twice per time period and can have positive or negative polarity.
-It also can have optional marker on the working edge.
-Clock blocks can be mixed with other signal states to create clock gating effects.
+It also can have an optional marker on the working edge.
+The clock's blocks can be mixed with other signal states to create the clock gating effects.
 Here is the code:
 
 <pre class="WaveDrom">
@@ -59,7 +59,7 @@ Here is the code:
 ]}
 </pre>
 
-And the rendered diagram:
+and the rendered diagram:
 
 <script type="WaveDrom">
 { "signal" : [
@@ -74,8 +74,8 @@ And the rendered diagram:
 
 <h2>Step 3. Putting all together</h2>
 
-Typical timing diagram would have clock and signals (wires).
-Multi-bit signals will try grabbing labels from <span class="fixed">"data"</span> array.
+Typical timing diagram would have the clock and signals (wires).
+Multi-bit signals will try to grab the labels from <span class="fixed">"data"</span> array.
 
 <pre>
 { "signal" : [
@@ -113,8 +113,16 @@ Multi-bit signals will try grabbing labels from <span class="fixed">"data"</span
 ]}
 </script>
 
-<h2>Step 5. Groups</h2>
+<h2>Step 5. The groups</h2>
 
+WaveLanes can be unitied in named groups that are represented in form of arrays.
+
+<span class="fixed">['group name', {...}, {...}, ...]</span>
+
+The first entry of array is the group's name.
+
+The groups can be nested.
+ 
 <pre>
 { "signal" : [
  {   "name": "clk",    "wave": "P......." },
@@ -181,13 +189,13 @@ Multi-bit signals will try grabbing labels from <span class="fixed">"data"</span
 ]}
 </script>
 
-<h2>Step 7. config</h2>
+<h2>Step 7.The config{} property</h2>
 
 The <span class="fixed">config:{...}</span> property controls different aspects of rendering.
 
 <h3>hscale</h3>
 
-<span class="fixed">config:{hscale:#}</span> property controls the horizontal scale of the diagram. User can put any integer number greater then 0.
+<span class="fixed">config:{hscale:#}</span> property controls the horizontal scale of the diagram. User can put any integer number greater than 0.
 
 <pre>
 { "signal" : [
@@ -241,19 +249,16 @@ The property works only inside the first timing diagram on the page.
 
 <h3>head/foot</h3>
 
-<span class="fixed">head:{...}</span> and <span class="fixed">foot:{...}</span> properties defines the content of area above and below the timing diagram.
+<span class="fixed">head:{...}</span> and <span class="fixed">foot:{...}</span> properties define the content of the area above and below the timing diagram.
 
-<h4>tick</h4>
-
-Adds timeline labels aligned to vertical markers.
+<h4>tick</h4> 
+-adds timeline labels aligned to vertical markers.
 
 <h4>tock</h4>
-
-Adds timeline labels between the vertical markers.
+-adds timeline labels between the vertical markers.
 
 <h4>text</h4>
-
-Adds title / caption text.
+-adds title / caption text.
 
 <pre>
 {signal: [
