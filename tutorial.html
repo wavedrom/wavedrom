@@ -40,6 +40,8 @@ Here is how it looks:
 { "signal" : [{ "name": "Alfa", "wave": "01.zx=ud.23.45" }] }
 </script>
 
+<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20%22signal%22%20%3A%20%5B%7B%20%22name%22%3A%20%22Alfa%22%2C%20%22wave%22%3A%20%2201.zx%3Dud.23.45%22%20%7D%5D%20%7D%0A">Edit Me &gt;&gt;</a>
+
 
 <h2>Step 2. Adding Clock</h2>
 
@@ -71,6 +73,9 @@ and the rendered diagram:
 ]}
 </script>
 
+<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22pclk%22%2C%20%22wave%22%3A%20%22p.....%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Pclk%22%2C%20%22wave%22%3A%20%22P.....%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22nclk%22%2C%20%22wave%22%3A%20%22n.....%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Nclk%22%2C%20%22wave%22%3A%20%22N.....%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22gclk%22%2C%20%22wave%22%3A%20%220P0P..%22%20%7D%20%2F%2F%20gated%20clock%0A%5D%7D%0A">Edit Me &gt;&gt;</a>
+
+
 
 <h2>Step 3. Putting all together</h2>
 
@@ -92,26 +97,32 @@ Multi-bit signals will try to grab the labels from <span class="fixed">"data"</s
 ]}
 </script>
 
+<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22clk%22%2C%20%20%22wave%22%3A%20%22P......%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22bus%22%2C%20%20%22wave%22%3A%20%22x.%3D%3D.%3Dx%22%2C%20%22data%22%3A%20%5B%22head%22%2C%20%22body%22%2C%20%22tail%22%2C%20%22data%22%5D%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22wire%22%2C%20%22wave%22%3A%20%220.1..0.%22%20%7D%0A%5D%7D%0A">Edit Me &gt;&gt;</a>
+
+
 <h2>Step 4. Spacers and Gaps</h2>
 
 <pre>
 { "signal" : [
-  { "name": "clk →",         "wave": "p.....|..." },
-  { "name": "Data ⇒",        "wave": "x.345x|=.x", "data": ["head", "body", "tail", "data"] },
-  { "name": "Request →",     "wave": "0.1..0|1.0" },
+  { "name": "clk",         "wave": "p.....|..." },
+  { "name": "Data",        "wave": "x.345x|=.x", "data": ["head", "body", "tail", "data"] },
+  { "name": "Request",     "wave": "0.1..0|1.0" },
   {},
-  { "name": "Acknowledge ←", "wave": "1.....|01." }
+  { "name": "Acknowledge", "wave": "1.....|01." }
 ]}
 </pre>
 <script type="WaveDrom">
 { "signal" : [
-  { "name": "clk →",         "wave": "p.....|..." },
-  { "name": "Data ⇒",        "wave": "x.345x|=.x", "data": ["head", "body", "tail", "data"] },
-  { "name": "Request →",     "wave": "0.1..0|1.0" },
+  { "name": "clk",         "wave": "p.....|..." },
+  { "name": "Data",        "wave": "x.345x|=.x", "data": ["head", "body", "tail", "data"] },
+  { "name": "Request",     "wave": "0.1..0|1.0" },
   {},
-  { "name": "Acknowledge ←", "wave": "1.....|01." }
+  { "name": "Acknowledge", "wave": "1.....|01." }
 ]}
 </script>
+
+<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22clk%22%2C%20%20%20%20%20%20%20%20%20%22wave%22%3A%20%22p.....%7C...%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Data%22%2C%20%20%20%20%20%20%20%20%22wave%22%3A%20%22x.345x%7C%3D.x%22%2C%20%22data%22%3A%20%5B%22head%22%2C%20%22body%22%2C%20%22tail%22%2C%20%22data%22%5D%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Request%22%2C%20%20%20%20%20%22wave%22%3A%20%220.1..0%7C1.0%22%20%7D%2C%0A%20%20%7B%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Acknowledge%22%2C%20%22wave%22%3A%20%221.....%7C01.%22%20%7D%0A%5D%7D%0A">Edit Me &gt;&gt;</a>
+
 
 <h2>Step 5. The groups</h2>
 
@@ -131,9 +142,9 @@ The groups can be nested.
    { "name": "write",  "wave": "01.0...." },
    { "name": "read",   "wave": "0...1..0" },
   ],
-  {  "name": "addr",   "wave": "x3.x4..x", "data": ["A₁","A₂"] },
-  {  "name": "byteen", "wave": "x3.x4..x", "data": ["BE₁","BE₂"] },
-  {  "name": "wdata",  "wave": "x3.x....", "data": ["D₁"] },
+  {  "name": "addr",   "wave": "x3.x4..x", "data": ["A1","A2"] },
+  {  "name": "byteen", "wave": "x3.x4..x", "data": ["BE1","BE2"] },
+  {  "name": "wdata",  "wave": "x3.x....", "data": ["D1"] },
  ],
  [ "Slave",
   [ "control",
@@ -151,18 +162,22 @@ The groups can be nested.
    { "name": "write",  "wave": "01.0...." },
    { "name": "read",   "wave": "0...1..0" },
   ],
-  {  "name": "addr",   "wave": "x3.x4..x", "data": ["A₁","A₂"] },
-  {  "name": "byteen", "wave": "x3.x4..x", "data": ["BE₁","BE₂"] },
-  {  "name": "wdata",  "wave": "x3.x....", "data": ["D₁"] },
+  {  "name": "addr",   "wave": "x3.x4..x", "data": ["A1","A2"] },
+  {  "name": "byteen", "wave": "x3.x4..x", "data": ["BE1","BE2"] },
+  {  "name": "wdata",  "wave": "x3.x....", "data": ["D1"] },
  ],
  [ "Slave",
   [ "control",
    { "name": "accept", "wave": "x01x0.1x" },
   ],
-  {  "name": "rdata",  "wave": "x.....4x", "data": ["D₂"] },
+  {  "name": "rdata",  "wave": "x.....4x", "data": ["D2"] },
  ]
 ]}
 </script>
+
+<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%7B%20%20%20%22name%22%3A%20%22clk%22%2C%20%20%20%20%22wave%22%3A%20%22P.......%22%20%7D%2C%0A%20%5B%20%22Master%22%2C%0A%20%20%5B%20%22control%22%2C%0A%20%20%20%7B%20%22name%22%3A%20%22write%22%2C%20%20%22wave%22%3A%20%2201.0....%22%20%7D%2C%0A%20%20%20%7B%20%22name%22%3A%20%22read%22%2C%20%20%20%22wave%22%3A%20%220...1..0%22%20%7D%2C%0A%20%20%5D%2C%0A%20%20%7B%20%20%22name%22%3A%20%22addr%22%2C%20%20%20%22wave%22%3A%20%22x3.x4..x%22%2C%20%22data%22%3A%20%5B%22A1%22%2C%22A2%22%5D%20%7D%2C%0A%20%20%7B%20%20%22name%22%3A%20%22byteen%22%2C%20%22wave%22%3A%20%22x3.x4..x%22%2C%20%22data%22%3A%20%5B%22BE1%22%2C%22BE2%22%5D%20%7D%2C%0A%20%20%7B%20%20%22name%22%3A%20%22wdata%22%2C%20%20%22wave%22%3A%20%22x3.x....%22%2C%20%22data%22%3A%20%5B%22D1%22%5D%20%7D%2C%0A%20%5D%2C%0A%20%5B%20%22Slave%22%2C%0A%20%20%5B%20%22control%22%2C%0A%20%20%20%7B%20%22name%22%3A%20%22accept%22%2C%20%22wave%22%3A%20%22x01x0.1x%22%20%7D%2C%0A%20%20%5D%2C%0A%20%20%7B%20%20%22name%22%3A%20%22rdata%22%2C%20%20%22wave%22%3A%20%22x.....4x%22%2C%20%22data%22%3A%20%5B%22D2%22%5D%20%7D%2C%0A%20%5D%0A%5D%7D%0A">Edit Me &gt;&gt;</a>
+
+
 
 <h2>Step 6. Period and Phase</h2>
 
@@ -176,7 +191,7 @@ The groups can be nested.
   { "name": "CMD", "wave": "x.3x=x4x=x=x=x=x", "data" : ["RAS", "NOP", "CAS", "NOP", "NOP", "NOP", "NOP"], "phase":0.5 },
   { "name": "ADDR","wave": "x.=x..=x........", "data" : ["ROW", "COL"],                                    "phase":0.5 },
   { "name": "DQS", "wave": "z.......0.1010z." },
-  { "name": "DQ",  "wave": "z.........5555z.", "data" : ["D⁰","D¹","D²","D³"] }
+  { "name": "DQ",  "wave": "z.........5555z.", "data" : ["D0","D1","D2","D3"] }
 ]}
 </pre>
 <script type="WaveDrom">
@@ -185,9 +200,12 @@ The groups can be nested.
   { "name": "CMD", "wave": "x.3x=x4x=x=x=x=x", "data" : ["RAS", "NOP", "CAS", "NOP", "NOP", "NOP", "NOP"], "phase":0.5 },
   { "name": "ADDR","wave": "x.=x..=x........", "data" : ["ROW", "COL"],                                    "phase":0.5 },
   { "name": "DQS", "wave": "z.......0.1010z." },
-  { "name": "DQ",  "wave": "z.........5555z.", "data" : ["D⁰","D¹","D²","D³"] }
+  { "name": "DQ",  "wave": "z.........5555z.", "data" : ["D0","D1","D2","D3"] }
 ]}
 </script>
+
+<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22CK%22%2C%20%20%22wave%22%3A%20%22P.......%22%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22period%22%3A2%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22CMD%22%2C%20%22wave%22%3A%20%22x.3x%3Dx4x%3Dx%3Dx%3Dx%3Dx%22%2C%20%22data%22%20%3A%20%5B%22RAS%22%2C%20%22NOP%22%2C%20%22CAS%22%2C%20%22NOP%22%2C%20%22NOP%22%2C%20%22NOP%22%2C%20%22NOP%22%5D%2C%20%22phase%22%3A0.5%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22ADDR%22%2C%22wave%22%3A%20%22x.%3Dx..%3Dx........%22%2C%20%22data%22%20%3A%20%5B%22ROW%22%2C%20%22COL%22%5D%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22phase%22%3A0.5%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22DQS%22%2C%20%22wave%22%3A%20%22z.......0.1010z.%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22DQ%22%2C%20%20%22wave%22%3A%20%22z.........5555z.%22%2C%20%22data%22%20%3A%20%5B%22D0%22%2C%22D1%22%2C%22D2%22%2C%22D3%22%5D%20%7D%0A%5D%7D%0A">Edit Me &gt;&gt;</a>
+
 
 <h2>Step 7.The config{} property</h2>
 
@@ -214,8 +232,12 @@ The <span class="fixed">config:{...}</span> property controls different aspects 
   { "name": "clk",         "wave": "p...." },
   { "name": "Data",        "wave": "x345x", "data": ["head", "body", "tail"] },
   { "name": "Request",     "wave": "01..0" }
-]}
+],
+  "config" : { "hscale" : 1 }
+}
 </script>
+
+<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22clk%22%2C%20%20%20%20%20%20%20%20%20%22wave%22%3A%20%22p....%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Data%22%2C%20%20%20%20%20%20%20%20%22wave%22%3A%20%22x345x%22%2C%20%22data%22%3A%20%5B%22head%22%2C%20%22body%22%2C%20%22tail%22%5D%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Request%22%2C%20%20%20%20%20%22wave%22%3A%20%2201..0%22%20%7D%0A%5D%2C%0A%20%20%22config%22%20%3A%20%7B%20%22hscale%22%20%3A%201%20%7D%0A%7D%0A">Edit Me &gt;&gt;</a>
 
 <h3>hscale = 2</h3>
 
@@ -229,6 +251,8 @@ The <span class="fixed">config:{...}</span> property controls different aspects 
 }
 </script>
 
+<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22clk%22%2C%20%20%20%20%20%20%20%20%20%22wave%22%3A%20%22p....%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Data%22%2C%20%20%20%20%20%20%20%20%22wave%22%3A%20%22x345x%22%2C%20%22data%22%3A%20%5B%22head%22%2C%20%22body%22%2C%20%22tail%22%5D%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Request%22%2C%20%20%20%20%20%22wave%22%3A%20%2201..0%22%20%7D%0A%5D%2C%0A%20%20%22config%22%20%3A%20%7B%20%22hscale%22%20%3A%202%20%7D%0A%7D%0A">Edit Me &gt;&gt;</a>
+
 <h3>hscale = 3</h3>
 
 <script type="WaveDrom">
@@ -240,6 +264,8 @@ The <span class="fixed">config:{...}</span> property controls different aspects 
   "config" : { "hscale" : 3 }
 }
 </script>
+
+<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22clk%22%2C%20%20%20%20%20%20%20%20%20%22wave%22%3A%20%22p....%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Data%22%2C%20%20%20%20%20%20%20%20%22wave%22%3A%20%22x345x%22%2C%20%22data%22%3A%20%5B%22head%22%2C%20%22body%22%2C%20%22tail%22%5D%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Request%22%2C%20%20%20%20%20%22wave%22%3A%20%2201..0%22%20%7D%0A%5D%2C%0A%20%20%22config%22%20%3A%20%7B%20%22hscale%22%20%3A%203%20%7D%0A%7D%0A">Edit Me &gt;&gt;</a>
 
 <h3>skin</h3>
 
@@ -294,6 +320,7 @@ The property works only inside the first timing diagram on the page.
 }
 </script>
 
+<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7Bsignal%3A%20%5B%0A%20%20%7Bname%3A'clk'%2C%20%20%20%20%20%20%20%20%20wave%3A%20'p....'%20%7D%2C%0A%20%20%7Bname%3A'Data'%2C%20%20%20%20%20%20%20%20wave%3A%20'x345x'%2C%20data%3A%20'a%20b%20c'%20%7D%2C%0A%20%20%7Bname%3A'Request'%2C%20%20%20%20%20wave%3A%20'01..0'%20%7D%0A%5D%2C%0A%20head%3A%7B%0A%20%20%20text%3A'WaveDrom%20example'%2C%0A%20%20%20tick%3A0%2C%0A%20%7D%2C%0A%20foot%3A%7B%0A%20%20%20text%3A'Figure%20100'%2C%0A%20%20%20tock%3A9%0A%20%7D%2C%0A%7D%0A">Edit Me &gt;&gt;</a>
 
 <h2>Step 8. Arrows</h2>
 
@@ -313,7 +340,7 @@ The property works only inside the first timing diagram on the page.
   { name: 'D', wave: '0...1..0.....1.',  node: '....d..g...' },
   { name: 'E', wave: '0....10.......1',  node: '.....ef....' }
 ],
-edge: ['a~b t₁', 'c-~a t₂', 'c-~>d time 3', 'd~-e', 'e~>f', 'f->g', 'g-~>h', 'h~>i some text', 'h~->j']
+edge: ['a~b t1', 'c-~a t2', 'c-~>d time 3', 'd~-e', 'e~>f', 'f->g', 'g-~>h', 'h~>i some text', 'h~->j']
 }
 </pre>
 
@@ -325,9 +352,12 @@ edge: ['a~b t₁', 'c-~a t₂', 'c-~>d time 3', 'd~-e', 'e~>f', 'f->g', 'g-~>h',
   { name: 'D', wave: '0...1..0.....1.',  node: '....d..g...' },
   { name: 'E', wave: '0....10.......1',  node: '.....ef....' }
 ],
-edge: ['a~b t₁', 'c-~a t₂', 'c-~>d time 3', 'd~-e', 'e~>f', 'f->g', 'g-~>h', 'h~>i some text', 'h~->j']
+edge: ['a~b t1', 'c-~a t2', 'c-~>d time 3', 'd~-e', 'e~>f', 'f->g', 'g-~>h', 'h~>i some text', 'h~->j']
 }
 </script>
+
+<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20signal%3A%20%5B%0A%20%20%7B%20name%3A%20'A'%2C%20wave%3A%20'01........0....'%2C%20%20node%3A%20'.a........j'%20%7D%2C%0A%20%20%7B%20name%3A%20'B'%2C%20wave%3A%20'0.1.......0.1..'%2C%20%20node%3A%20'..b.......i'%20%7D%2C%0A%20%20%7B%20name%3A%20'C'%2C%20wave%3A%20'0..1....0...1..'%2C%20%20node%3A%20'...c....h..'%20%7D%2C%0A%20%20%7B%20name%3A%20'D'%2C%20wave%3A%20'0...1..0.....1.'%2C%20%20node%3A%20'....d..g...'%20%7D%2C%0A%20%20%7B%20name%3A%20'E'%2C%20wave%3A%20'0....10.......1'%2C%20%20node%3A%20'.....ef....'%20%7D%0A%5D%2C%0Aedge%3A%20%5B'a~b%20t1'%2C%20'c-~a%20t2'%2C%20'c-~%3Ed%20time%203'%2C%20'd~-e'%2C%20'e~%3Ef'%2C%20'f-%3Eg'%2C%20'g-~%3Eh'%2C%20'h~%3Ei%20some%20text'%2C%20'h~-%3Ej'%5D%0A%7D%0A">Edit Me &gt;&gt;</a>
+
 
 <h3>Sharp lines</h3>
 
@@ -344,7 +374,7 @@ edge: ['a~b t₁', 'c-~a t₂', 'c-~>d time 3', 'd~-e', 'e~>f', 'f->g', 'g-~>h',
   { name: 'C', wave: '0..1..0',  node: '...c..f' },
   {                              node: '...g..h' }
 ],
-  edge: ['b-|a t₁', 'a-|c t₂', 'b-|-c t₃', 'c-|->e t₄', 'e-|>f more text', 'e|->d t₆', 'c-g', 'f-h', 'g<->h 3 ms']
+  edge: ['b-|a t1', 'a-|c t2', 'b-|-c t3', 'c-|->e t4', 'e-|>f more text', 'e|->d t6', 'c-g', 'f-h', 'g<->h 3 ms']
 }
 </pre>
 
@@ -355,9 +385,11 @@ edge: ['a~b t₁', 'c-~a t₂', 'c-~>d time 3', 'd~-e', 'e~>f', 'f->g', 'g-~>h',
   { name: 'C', wave: '0..1..0',  node: '...c..f' },
   {                              node: '...g..h' }
 ],
-  edge: ['b-|a t₁', 'a-|c t₂', 'b-|-c t₃', 'c-|->e t₄', 'e-|>f more text', 'e|->d t₆', 'c-g', 'f-h', 'g<->h 3 ms']
+  edge: ['b-|a t1', 'a-|c t2', 'b-|-c t3', 'c-|->e t4', 'e-|>f more text', 'e|->d t6', 'c-g', 'f-h', 'g<->h 3 ms']
 }
 </script>
+
+<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20signal%3A%20%5B%0A%20%20%7B%20name%3A%20'A'%2C%20wave%3A%20'01..0..'%2C%20%20node%3A%20'.a..e..'%20%7D%2C%0A%20%20%7B%20name%3A%20'B'%2C%20wave%3A%20'0.1..0.'%2C%20%20node%3A%20'..b..d.'%2C%20phase%3A0.5%20%7D%2C%0A%20%20%7B%20name%3A%20'C'%2C%20wave%3A%20'0..1..0'%2C%20%20node%3A%20'...c..f'%20%7D%2C%0A%20%20%7B%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20node%3A%20'...g..h'%20%7D%0A%5D%2C%0A%20%20edge%3A%20%5B'b-%7Ca%20t1'%2C%20'a-%7Cc%20t2'%2C%20'b-%7C-c%20t3'%2C%20'c-%7C-%3Ee%20t4'%2C%20'e-%7C%3Ef%20more%20text'%2C%20'e%7C-%3Ed%20t6'%2C%20'c-g'%2C%20'f-h'%2C%20'g%3C-%3Eh%203%20ms'%5D%0A%7D%0A">Edit Me &gt;&gt;</a>
 
 </div>
 <script type="text/javascript">
