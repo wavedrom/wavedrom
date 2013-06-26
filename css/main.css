@@ -63,10 +63,10 @@ act {
     -webkit-transition:opacity 0.3s ease;
     transition:opacity 0.3s ease;
     visibility: visible;
-    width: 27px;
-    height: 162px;
-    max-height: 162px;
-    max-width: 27px;
+    width: 215px;
+    height: 27px;
+    max-height: 27px;
+    max-width: 215px;
     overflow: hidden;
 }
 

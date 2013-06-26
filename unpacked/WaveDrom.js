@@ -291,7 +291,7 @@ if (undefined === JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "2013.04.23",
+	version: "2013.06.25",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -436,7 +436,7 @@ WaveDrom.ViewSVG = function (label) {
 	'<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n' +
 	'<!-- Created with WaveDrom -->\n' +
 	ser.serializeToString(f);
-	window.open('data:image/svg+xml;base64,' + window.btoa(str), '_blank');
+	window.open('data:image/svg+xml;base64,' + window.btoa(str), '_blank', 'location=0, resizable=1, left=100, top=100, width=600, height=300');
 };
 
 WaveDrom.ViewSourceSVG = function (label) {
@@ -1267,4 +1267,10 @@ WaveDrom.SetScale = function (scale) {
 	WaveDrom.EditorRefresh();
 };
 
-//window.onload = WaveDrom.ProcessAll;
+WaveDrom.SaveJSON = function () {
+	"use strict";
+
+	var w, text;
+	text = window.btoa (localStorage ['waveform']);
+	w = window.open('data:application/json;base64,' + text, '_blank', 'location=0,resizable=1,left=100,top=100,width=600,height=300,status=0');
+};
