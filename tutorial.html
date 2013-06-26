@@ -187,24 +187,24 @@ The groups can be nested.
 
 <pre>
 { "signal" : [
-  { "name": "CK",  "wave": "P.......",                                                                     "period":2 },
-  { "name": "CMD", "wave": "x.3x=x4x=x=x=x=x", "data" : ["RAS", "NOP", "CAS", "NOP", "NOP", "NOP", "NOP"], "phase":0.5 },
-  { "name": "ADDR","wave": "x.=x..=x........", "data" : ["ROW", "COL"],                                    "phase":0.5 },
+  { "name": "CK",  "wave": "P.......",                                                 "period":2   },
+  { "name": "CMD", "wave": "x.3x=x4x=x=x=x=x", "data" : "RAS NOP CAS NOP NOP NOP NOP", "phase" :0.5 },
+  { "name": "ADDR","wave": "x.=x..=x........", "data" : "ROW COL",                     "phase" :0.5 },
   { "name": "DQS", "wave": "z.......0.1010z." },
-  { "name": "DQ",  "wave": "z.........5555z.", "data" : ["D0","D1","D2","D3"] }
+  { "name": "DQ",  "wave": "z.........5555z.", "data" : "D0 D1 D2 D3" }
 ]}
 </pre>
 <script type="WaveDrom">
 { "signal" : [
-  { "name": "CK",  "wave": "P.......",                                                                     "period":2 },
-  { "name": "CMD", "wave": "x.3x=x4x=x=x=x=x", "data" : ["RAS", "NOP", "CAS", "NOP", "NOP", "NOP", "NOP"], "phase":0.5 },
-  { "name": "ADDR","wave": "x.=x..=x........", "data" : ["ROW", "COL"],                                    "phase":0.5 },
+  { "name": "CK",  "wave": "P.......",                                                 "period":2   },
+  { "name": "CMD", "wave": "x.3x=x4x=x=x=x=x", "data" : "RAS NOP CAS NOP NOP NOP NOP", "phase" :0.5 },
+  { "name": "ADDR","wave": "x.=x..=x........", "data" : "ROW COL",                     "phase" :0.5 },
   { "name": "DQS", "wave": "z.......0.1010z." },
-  { "name": "DQ",  "wave": "z.........5555z.", "data" : ["D0","D1","D2","D3"] }
+  { "name": "DQ",  "wave": "z.........5555z.", "data" : "D0 D1 D2 D3" }
 ]}
 </script>
 
-<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22CK%22%2C%20%20%22wave%22%3A%20%22P.......%22%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22period%22%3A2%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22CMD%22%2C%20%22wave%22%3A%20%22x.3x%3Dx4x%3Dx%3Dx%3Dx%3Dx%22%2C%20%22data%22%20%3A%20%5B%22RAS%22%2C%20%22NOP%22%2C%20%22CAS%22%2C%20%22NOP%22%2C%20%22NOP%22%2C%20%22NOP%22%2C%20%22NOP%22%5D%2C%20%22phase%22%3A0.5%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22ADDR%22%2C%22wave%22%3A%20%22x.%3Dx..%3Dx........%22%2C%20%22data%22%20%3A%20%5B%22ROW%22%2C%20%22COL%22%5D%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22phase%22%3A0.5%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22DQS%22%2C%20%22wave%22%3A%20%22z.......0.1010z.%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22DQ%22%2C%20%20%22wave%22%3A%20%22z.........5555z.%22%2C%20%22data%22%20%3A%20%5B%22D0%22%2C%22D1%22%2C%22D2%22%2C%22D3%22%5D%20%7D%0A%5D%7D%0A">Edit Me &gt;&gt;</a>
+<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22CK%22%2C%20%20%22wave%22%3A%20%22P.......%22%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22period%22%3A2%20%20%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22CMD%22%2C%20%22wave%22%3A%20%22x.3x%3Dx4x%3Dx%3Dx%3Dx%3Dx%22%2C%20%22data%22%20%3A%20%22RAS%20NOP%20CAS%20NOP%20NOP%20NOP%20NOP%22%2C%20%22phase%22%20%3A0.5%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22ADDR%22%2C%22wave%22%3A%20%22x.%3Dx..%3Dx........%22%2C%20%22data%22%20%3A%20%22ROW%20COL%22%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22phase%22%20%3A0.5%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22DQS%22%2C%20%22wave%22%3A%20%22z.......0.1010z.%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22DQ%22%2C%20%20%22wave%22%3A%20%22z.........5555z.%22%2C%20%22data%22%20%3A%20%22D0%20D1%20D2%20D3%22%20%7D%0A%5D%7D%0A">Edit Me &gt;&gt;</a>
 
 
 <h2>Step 7.The config{} property</h2>
