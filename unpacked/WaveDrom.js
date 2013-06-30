@@ -291,7 +291,7 @@ if (undefined === JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "2013.06.25",
+	version: "2013.06.29",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -1133,46 +1133,26 @@ WaveDrom.ClearWaveLane = function (index) {
 	}
 };
 
-WaveDrom.EditorKeyUp = function (event) {
-	"use strict";
-	if (event) {
-		switch (event.keyCode) {
-			case 16: break; // Shift
-			case 17: break; // Ctrl
-			case 18: break; // Alt
-
-			case 33: break; // Page Up
-			case 34: break; // Page Down
-			case 35: break; // End
-			case 36: break; // Home
-			case 37: break; // Arrow Left
-			case 38: break; // Arrow Up
-			case 39: break; // Arrow Right
-			case 40: break; // Arrow Down
-
-			case 91: break; // Windows
-			case 93: break; // Right Click
-			default: {
-				if (WaveDrom.timer) {
-					clearTimeout(WaveDrom.timer);
-				}
-				WaveDrom.timer = setTimeout("WaveDrom.EditorRefresh()", 750);
-				return;
-			}
-		}
-		if (WaveDrom.timer) {
-			clearTimeout (WaveDrom.timer);
-			WaveDrom.timer = setTimeout("WaveDrom.EditorRefresh()", 750);
-		}
-	}
-//	WaveDrom.EditorRefresh();
-};
-
 WaveDrom.EditorRefresh = function () {
 	"use strict";
+	var svg, ser, ssvg, asvg, sjson, ajson;
 //	WaveDrom.ClearWaveLane(0);
 //	WaveDrom.resize();
 	WaveDrom.RenderWaveForm(0);
+
+	svg = document.getElementById("svgcontent_0");
+	ser = new XMLSerializer();
+	ssvg = '<?xml version="1.0" standalone="no"?>\n' +
+	'<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n' +
+	'<!-- Created with WaveDrom -->\n' +
+	ser.serializeToString(svg);
+
+	asvg = document.getElementById("download_svg");
+	asvg.href = 'data:image/svg+xml;base64,' + window.btoa(ssvg);
+
+	sjson = localStorage ['waveform'];
+	ajson = document.getElementById("download_json");
+	ajson.href = 'data:text/json;base64,' + window.btoa(sjson);
 };
 
 WaveDrom.EditorInit = function () {

@@ -91,21 +91,31 @@
   </script>
  </head>
 
- <body onload="editorInit()">
- <div id="content">
-  <div class="toolbar">
-   <img class="button" title="rotate layout" src="images/ic_rot.png" onclick="editorState({rot:1})"/>
-   <img class="button" title="change proportions" src="images/ic_persent.png" onclick="editorState({per:1})"/>
-   <img class="button" title="Save SVG file" src="images/ic_download_svg.png" onclick="WaveDrom.ViewSVG('svgcontent_0')"/>
-   <img class="button" title="Save JSON file" src="images/ic_download_json.png" onclick="WaveDrom.SaveJSON()"/>
-   <img class="button" title="expand full URL" src="images/ic_url.png" onclick="setFullURL()"/>
-   <a href="http://wavedrom.googlecode.com/svn/trunk/tutorial.html"><img class="button" title="Guide to the WaveDrom" src="images/ic_guide.png"/></a>
-   <a href="http://wavedrom.googlecode.com"><img class="button" title="Powered by WaveDrom v.2013.06.25" src="images/ic_logo.png"/></a>
-  </div>
-  <div id='SVG'><div id="WaveDrom_Display_0"></div></div>
-  <div id='TXT'><textarea id="InputJSON_0"></textarea></div>
- </div>
-	<script type="text/javascript">
+  <body onload="editorInit()">
+    <div id="content">
+      <div class="toolbar">
+        <img class="button" title="rotate layout" src="images/ic_rot.png" onclick="editorState({rot:1})"/>
+
+        <img class="button" title="change proportions" src="images/ic_persent.png" onclick="editorState({per:1})"/>
+
+        <a id="download_svg" href="data:image/svg+xml,<xml>" download="mywave.svg">
+          <img class="button" title="Save SVG file" src="images/ic_download_svg.png"/>
+        </a>
+
+        <a id="download_json" href="data:text/plain,{}" download="mywave.json">
+          <img class="button" title="Save JSON file" src="images/ic_download_json.png"/>
+        </a>
+
+        <img class="button" title="expand full URL" src="images/ic_url.png" onclick="setFullURL()"/>
+
+        <a href="http://wavedrom.googlecode.com/svn/trunk/tutorial.html"><img class="button" title="Guide to the WaveDrom" src="images/ic_guide.png"/></a>
+
+        <a href="http://wavedrom.googlecode.com"><img class="button" title="Powered by WaveDrom v.2013.06.29" src="images/ic_logo.png"/></a>
+      </div>
+      <div id='SVG'><div id="WaveDrom_Display_0"></div></div>
+      <div id='TXT'><textarea id="InputJSON_0"></textarea></div>
+    </div>
+  <script type="text/javascript">
 		(function KillBill () {
 			if (navigator.appName.indexOf('Explorer') >= 0) {
 				var e = document.getElementById('content');
@@ -120,7 +130,7 @@
     var e, val, timer;
     e = document.getElementById ('InputJSON_0');
     val = localStorage ['waveform'];
-    if (val === undefined) {
+    if (val === undefined || val === '') {
         val = "{signal: [\n  {name: 'clk', wave: 'p.....|...'},\n  {name: 'dat', wave: 'x.345x|=.x', data: ['head', 'body', 'tail', 'data']},\n  {name: 'req', wave: '0.1..0|1.0'},\n  {},\n  {name: 'ack', wave: '1.....|01.'}\n]}\n";
         localStorage ['waveform'] = val;
     }
