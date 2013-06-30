@@ -291,7 +291,7 @@ if (undefined === JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "2013.06.29.1",
+	version: "2013.06.30",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -1114,30 +1114,9 @@ WaveDrom.ProcessAll = function () {
 	}
 };
 
-WaveDrom.resize = function () {
-	"use strict";
-	document.getElementById('PanelB').style.height = (window.innerHeight - (10+7+16+7+(WaveDrom.panela.ys)+7+16+7+16+7)) + 'px';
-	document.getElementById('PanelA').style.height = WaveDrom.panela.ys + 'px';
-};
-
-WaveDrom.ClearWaveLane = function (index) {
-	"use strict";
-	var root;
-    root = document.getElementById('lanes_' + index);
-	while (root.childNodes.length) {
-		root.removeChild(root.childNodes[0]);
-	}
-	root = document.getElementById('groups_' + index);
-	while (root.childNodes.length) {
-		root.removeChild(root.childNodes[0]);
-	}
-};
-
 WaveDrom.EditorRefresh = function () {
 	"use strict";
 	var svg, ser, ssvg, asvg, sjson, ajson;
-//	WaveDrom.ClearWaveLane(0);
-//	WaveDrom.resize();
 	WaveDrom.RenderWaveForm(0);
 
 	svg = document.getElementById("svgcontent_0");
@@ -1153,104 +1132,4 @@ WaveDrom.EditorRefresh = function () {
 	sjson = localStorage ['waveform'];
 	ajson = document.getElementById("download_json");
 	ajson.href = 'data:text/json;base64,' + window.btoa(sjson);
-};
-
-WaveDrom.EditorInit = function () {
-	"use strict";
-//	this.lane.scale = 3;
-//	WaveDrom.WaveformLoad();
-//	WaveDrom.InsertSVGTemplate(index, document.getElementById('WaveDrom_Display_' + index));
-	WaveDrom.EditorRefresh();
-//	WaveDrom.ConfigurationLoad();
-//	window.onresize = WaveDrom.EditorRefresh;
-};
-
-WaveDrom.ExpandInputWindow = function () {
-	"use strict";
-	if (WaveDrom.panela.ys < (0.707 * window.innerHeight)) {
-		WaveDrom.panela.ys += 50;
-		WaveDrom.EditorRefresh();
-	}
-};
-
-WaveDrom.ConfigurationLoad = function () {
-
-  var favorite = localStorage["color"];
-  if (!favorite) {
-    return;
-  }
-  var select = document.getElementById("color");
-  if(!select) {
-	return;
-  }
-  for (var i = 0; i < select.children.length; i++) {
-    var child = select.children[i];
-    if (child.value == favorite) {
-      child.selected = "true";
-      break;
-    }
-  }
-
-  //document.getElementById("InputJSON_0").value = localStorage["input"];
-  //document.getElementById("color").firstChild.nodeValue = localStorage["color"];
-};
-
-WaveDrom.ConfigurationSave = function () {
-
-  var select = document.getElementById("color");
-  var color = select.children[select.selectedIndex].value;
-  localStorage["color"] = color;
-
-  // Update status to let user know options were saved.
-  var status = document.getElementById("status");
-  status.innerHTML = "Options Saved.";
-  setTimeout(function() {
-    status.innerHTML = "";
-  }, 750);
-}
-
-WaveDrom.WaveformLoad = function() {
-	var waveform = localStorage["waveform"];
-
-	if(waveform)
-		document.getElementById("InputJSON_0").value = waveform;
-}
-
-WaveDrom.WaveformSave = function() {
-	var waveform = document.getElementById("InputJSON_0").value;
-
-	if(waveform)
-		WaveDrom.ConfigurationSaveWaveform(waveform);
-}
-
-WaveDrom.ConfigurationSaveWaveform = function(waveform) {
-	localStorage["waveform"] = waveform;
-}
-
-WaveDrom.CollapseInputWindow = function () {
-	"use strict";
-	if (WaveDrom.panela.ys > 100) {
-		WaveDrom.panela.ys -= 50;
-		WaveDrom.EditorRefresh();
-	}
-};
-
-WaveDrom.SetHScale = function (hscale) {
-	"use strict";
-	WaveDrom.lane.hscale0 = parseFloat(hscale);
-	WaveDrom.EditorRefresh();
-};
-
-WaveDrom.SetScale = function (scale) {
-	"use strict";
-	WaveDrom.lane.scale = parseFloat(scale);
-	WaveDrom.EditorRefresh();
-};
-
-WaveDrom.SaveJSON = function () {
-	"use strict";
-
-	var w, text;
-	text = window.btoa (localStorage ['waveform']);
-	w = window.open('data:application/json;base64,' + text, '_blank', 'location=0,resizable=1,left=100,top=100,width=600,height=300,status=0');
 };
