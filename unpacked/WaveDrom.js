@@ -291,7 +291,7 @@ if (undefined === JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "2013.06.29",
+	version: "2013.06.29.1",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -565,7 +565,7 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 
 					if (labels.length !== 0) {
 						for (k in labels) {
-							if (content[j][2] && content[j][2][k]) {
+							if (content[j][2] && (typeof content[j][2][k] !== 'undefined')) {
 								title = JsonML.parse(
 									['text',
 										{
