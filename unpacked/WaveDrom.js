@@ -352,7 +352,11 @@ var WaveDrom = {
 			case 'n': tmp = this.genBrick(['nclk', '000', 'pclk', '111'], extra, times); break;
 			case 'P': tmp = this.genBrick(['Pclk', '111', 'nclk', '000'], extra, times); break;
 			case 'N': tmp = this.genBrick(['Nclk', '000', 'pclk', '111'], extra, times); break;
+			case 'l':
+			case 'L':
 			case '0': tmp = this.genBrick(['000'], extra, times); break;
+			case 'h':
+			case 'H':
 			case '1': tmp = this.genBrick(['111'], extra, times); break;
 			case '=': tmp = this.genBrick(['vvv-2'], extra, times); break;
 			case '2': tmp = this.genBrick(['vvv-2'], extra, times); break;
@@ -368,32 +372,70 @@ var WaveDrom = {
 	},
 	genWaveBrick: function (text, extra, times) {
 		"use strict";
-		var v, H = {
-			'pp': ['pclk', '111', 'nclk', '000'], 'pn': ['nclk', '000', 'pclk', '111'], 'pP': ['Pclk', '111', 'nclk', '000'], 'pN': ['Nclk', '000', 'pclk', '111'],     'p0': ['000',   '000'], 'p1': ['0m1',   '111'], 'px': ['0mx',   'xxx'], 'pd': ['0md',   'ddd'], 'pu': ['0mu',   'uuu'], 'pz': ['0mz',   'zzz'],     'p=': ['0mv-2',   'vvv-2'], 'p2': ['0mv-2',   'vvv-2'], 'p3': ['0mv-3',   'vvv-3'], 'p4': ['0mv-4',   'vvv-4'], 'p5': ['0mv-5',   'vvv-5'],
-			'np': ['pclk', '111', 'nclk', '000'], 'nn': ['nclk', '000', 'pclk', '111'], 'nP': ['Pclk', '111', 'nclk', '000'], 'nN': ['Nclk', '000', 'pclk', '111'],     'n0': ['1m0',   '000'], 'n1': ['111',   '111'], 'nx': ['1mx',   'xxx'], 'nd': ['1md',   'ddd'], 'nu': ['1mu',   'uuu'], 'nz': ['1mz',   'zzz'],     'n=': ['1mv-2',   'vvv-2'], 'n2': ['1mv-2',   'vvv-2'], 'n3': ['1mv-3',   'vvv-3'], 'n4': ['1mv-4',   'vvv-4'], 'n5': ['1mv-5',   'vvv-5'],
-			'Pp': ['pclk', '111', 'nclk', '000'], 'Pn': ['nclk', '000', 'pclk', '111'], 'PP': ['Pclk', '111', 'nclk', '000'], 'PN': ['Nclk', '000', 'pclk', '111'],     'P0': ['000',   '000'], 'P1': ['0m1',   '111'], 'Px': ['0mx',   'xxx'], 'Pd': ['0md',   'ddd'], 'Pu': ['0mu',   'uuu'], 'Pz': ['0mz',   'zzz'],     'P=': ['0mv-2',   'vvv-2'], 'P2': ['0mv-2',   'vvv-2'], 'P3': ['0mv-3',   'vvv-3'], 'P4': ['0mv-4',   'vvv-4'], 'P5': ['0mv-5',   'vvv-5'],
-			'Np': ['pclk', '111', 'nclk', '000'], 'Nn': ['nclk', '000', 'pclk', '111'], 'NP': ['Pclk', '111', 'nclk', '000'], 'NN': ['Nclk', '000', 'pclk', '111'],     'N0': ['1m0',   '000'], 'N1': ['111',   '111'], 'Nx': ['1mx',   'xxx'], 'Nd': ['1md',   'ddd'], 'Nu': ['1mu',   'uuu'], 'Nz': ['1mz',   'zzz'],     'N=': ['1mv-2',   'vvv-2'], 'N2': ['1mv-2',   'vvv-2'], 'N3': ['1mv-3',   'vvv-3'], 'N4': ['1mv-4',   'vvv-4'], 'N5': ['1mv-5',   'vvv-5'],
-
-			'0p': ['pclk', '111', 'nclk', '000'], '0n': ['nclk', '000', 'pclk', '111'], '0P': ['Pclk', '111', 'nclk', '000'], '0N': ['Nclk', '000', 'pclk', '111'],     '00': ['0m0',   '000'], '01': ['0m1',   '111'], '0x': ['0mx',   'xxx'], '0d': ['0md',   'ddd'], '0u': ['0mu',   'uuu'], '0z': ['0mz',   'zzz'],     '0=': ['0mv-2',   'vvv-2'], '02': ['0mv-2',   'vvv-2'], '03': ['0mv-3',   'vvv-3'], '04': ['0mv-4',   'vvv-4'], '05': ['0mv-5',   'vvv-5'],
-			'1p': ['pclk', '111', 'nclk', '000'], '1n': ['nclk', '000', 'pclk', '111'], '1P': ['Pclk', '111', 'nclk', '000'], '1N': ['Nclk', '000', 'pclk', '111'],     '10': ['1m0',   '000'], '11': ['1m1',   '111'], '1x': ['1mx',   'xxx'], '1d': ['1md',   'ddd'], '1u': ['1mu',   'uuu'], '1z': ['1mz',   'zzz'],     '1=': ['1mv-2',   'vvv-2'], '12': ['1mv-2',   'vvv-2'], '13': ['1mv-3',   'vvv-3'], '14': ['1mv-4',   'vvv-4'], '15': ['1mv-5',   'vvv-5'],
-			'xp': ['pclk', '111', 'nclk', '000'], 'xn': ['nclk', '000', 'pclk', '111'], 'xP': ['Pclk', '111', 'nclk', '000'], 'xN': ['Nclk', '000', 'pclk', '111'],     'x0': ['xm0',   '000'], 'x1': ['xm1',   '111'], 'xx': ['xmx',   'xxx'], 'xd': ['xmd',   'ddd'], 'xu': ['xmu',   'uuu'], 'xz': ['xmz',   'zzz'],     'x=': ['xmv-2',   'vvv-2'], 'x2': ['xmv-2',   'vvv-2'], 'x3': ['xmv-3',   'vvv-3'], 'x4': ['xmv-4',   'vvv-4'], 'x5': ['xmv-5',   'vvv-5'],
-			'.p': ['pclk', '111', 'nclk', '000'], '.n': ['nclk', '000', 'pclk', '111'], '.P': ['Pclk', '111', 'nclk', '000'], '.N': ['Nclk', '000', 'pclk', '111'],     '.0': ['xm0',   '000'], '.1': ['xm1',   '111'], '.x': ['xmx',   'xxx'], '.d': ['xmd',   'ddd'], '.u': ['xmu',   'uuu'], '.z': ['xmz',   'zzz'],     '.=': ['xmv-2',   'vvv-2'], '.2': ['xmv-2',   'vvv-2'], '.3': ['xmv-3',   'vvv-3'], '.4': ['xmv-4',   'vvv-4'], '.5': ['xmv-5',   'vvv-5'],
-			'dp': ['pclk', '111', 'nclk', '000'], 'dn': ['nclk', '000', 'pclk', '111'], 'dP': ['Pclk', '111', 'nclk', '000'], 'dN': ['Nclk', '000', 'pclk', '111'],     'd0': ['dm0',   '000'], 'd1': ['dm1',   '111'], 'dx': ['dmx',   'xxx'], 'dd': ['dmd',   'ddd'], 'du': ['dmu',   'uuu'], 'dz': ['dmz',   'zzz'],     'd=': ['dmv-2',   'vvv-2'], 'd2': ['dmv-2',   'vvv-2'], 'd3': ['dmv-3',   'vvv-3'], 'd4': ['dmv-4',   'vvv-4'], 'd5': ['dmv-5',   'vvv-5'],
-			'up': ['pclk', '111', 'nclk', '000'], 'un': ['nclk', '000', 'pclk', '111'], 'uP': ['Pclk', '111', 'nclk', '000'], 'uN': ['Nclk', '000', 'pclk', '111'],     'u0': ['um0',   '000'], 'u1': ['um1',   '111'], 'ux': ['umx',   'xxx'], 'ud': ['umd',   'ddd'], 'uu': ['umu',   'uuu'], 'uz': ['umz',   'zzz'],     'u=': ['umv-2',   'vvv-2'], 'u2': ['umv-2',   'vvv-2'], 'u3': ['umv-3',   'vvv-3'], 'u4': ['umv-4',   'vvv-4'], 'u5': ['umv-5',   'vvv-5'],
-			'zp': ['pclk', '111', 'nclk', '000'], 'zn': ['nclk', '000', 'pclk', '111'], 'zP': ['Pclk', '111', 'nclk', '000'], 'zN': ['Nclk', '000', 'pclk', '111'],     'z0': ['zm0',   '000'], 'z1': ['zm1',   '111'], 'zx': ['zmx',   'xxx'], 'zd': ['zmd',   'ddd'], 'zu': ['zmu',   'uuu'], 'zz': ['zmz',   'zzz'],     'z=': ['zmv-2',   'vvv-2'], 'z2': ['zmv-2',   'vvv-2'], 'z3': ['zmv-3',   'vvv-3'], 'z4': ['zmv-4',   'vvv-4'], 'z5': ['zmv-5',   'vvv-5'],
-
-			'=p': ['pclk', '111', 'nclk', '000'], '=n': ['nclk', '000', 'pclk', '111'], '=P': ['Pclk', '111', 'nclk', '000'], '=N': ['Nclk', '000', 'pclk', '111'],     '=0': ['vm0-2', '000'], '=1': ['vm1-2', '111'], '=x': ['vmx-2', 'xxx'], '=d': ['vmd-2', 'ddd'], '=u': ['vmu-2', 'uuu'], '=z': ['vmz-2', 'zzz'],     '==': ['vmv-2-2', 'vvv-2'], '=2': ['vmv-2-2', 'vvv-2'], '=3': ['vmv-2-3', 'vvv-3'], '=4': ['vmv-2-4', 'vvv-4'], '=5': ['vmv-2-5', 'vvv-5'],
-			'2p': ['pclk', '111', 'nclk', '000'], '2n': ['nclk', '000', 'pclk', '111'], '2P': ['Pclk', '111', 'nclk', '000'], '2N': ['Nclk', '000', 'pclk', '111'],     '20': ['vm0-2', '000'], '21': ['vm1-2', '111'], '2x': ['vmx-2', 'xxx'], '2d': ['vmd-2', 'ddd'], '2u': ['vmu-2', 'uuu'], '2z': ['vmz-2', 'zzz'],     '2=': ['vmv-2-2', 'vvv-2'], '22': ['vmv-2-2', 'vvv-2'], '23': ['vmv-2-3', 'vvv-3'], '24': ['vmv-2-4', 'vvv-4'], '25': ['vmv-2-5', 'vvv-5'],
-			'3p': ['pclk', '111', 'nclk', '000'], '3n': ['nclk', '000', 'pclk', '111'], '3P': ['Pclk', '111', 'nclk', '000'], '3N': ['Nclk', '000', 'pclk', '111'],     '30': ['vm0-3', '000'], '31': ['vm1-3', '111'], '3x': ['vmx-3', 'xxx'], '3d': ['vmd-3', 'ddd'], '3u': ['vmu-3', 'uuu'], '3z': ['vmz-3', 'zzz'],     '3=': ['vmv-3-2', 'vvv-2'], '32': ['vmv-3-2', 'vvv-2'], '33': ['vmv-3-3', 'vvv-3'], '34': ['vmv-3-4', 'vvv-4'], '35': ['vmv-3-5', 'vvv-5'],
-			'4p': ['pclk', '111', 'nclk', '000'], '4n': ['nclk', '000', 'pclk', '111'], '4P': ['Pclk', '111', 'nclk', '000'], '4N': ['Nclk', '000', 'pclk', '111'],     '40': ['vm0-4', '000'], '41': ['vm1-4', '111'], '4x': ['vmx-4', 'xxx'], '4d': ['vmd-4', 'ddd'], '4u': ['vmu-4', 'uuu'], '4z': ['vmz-4', 'zzz'],     '4=': ['vmv-4-2', 'vvv-2'], '42': ['vmv-4-2', 'vvv-2'], '43': ['vmv-4-3', 'vvv-3'], '44': ['vmv-4-4', 'vvv-4'], '45': ['vmv-4-5', 'vvv-5'],
-			'5p': ['pclk', '111', 'nclk', '000'], '5n': ['nclk', '000', 'pclk', '111'], '5P': ['Pclk', '111', 'nclk', '000'], '5N': ['Nclk', '000', 'pclk', '111'],     '50': ['vm0-5', '000'], '51': ['vm1-5', '111'], '5x': ['vmx-5', 'xxx'], '5d': ['vmd-5', 'ddd'], '5u': ['vmu-5', 'uuu'], '5z': ['vmz-5', 'zzz'],     '5=': ['vmv-5-2', 'vvv-2'], '52': ['vmv-5-2', 'vvv-2'], '53': ['vmv-5-3', 'vvv-3'], '54': ['vmv-5-4', 'vvv-4'], '55': ['vmv-5-5', 'vvv-5']
+		var x1, x2, x3, y1, y2, x4, x5, x6, xclude, atext, tmp0, tmp1, tmp2, tmp3, tmp4;
+		x1 = {p:'pclk', n:'nclk', P:'Pclk', N:'Nclk', h:'pclk', l:'nclk', H:'Pclk', L:'Nclk'};
+		x2 = {'0':'0', '1':'1', 'x':'x', 'd':'d', 'u':'u', 'z':'z', '=':'v', '2':'v', '3':'v', '4':'v', '5':'v'};
+		x3 = {'0': '', '1': '', 'x': '', 'd': '', 'u': '', 'z': '', '=':'-2','2':'-2','3':'-3','4':'-4','5':'-5'};
+		y1 = {
+			'p':'0', 'n':'1',
+			'P':'0', 'N':'1',
+			'h':'1', 'l':'0',
+			'H':'1', 'L':'0',
+			'0':'0', '1':'1', 'x':'x', 'd':'d', 'u':'u', 'z':'z', '=':'v', '2':'v', '3':'v', '4':'v', '5':'v'
 		};
-		for (v in H) {
-			if (text === v) {
-				return this.genBrick(H[v], extra, times);
+		y2 = {
+			'p': '', 'n': '',
+			'P': '', 'N': '',
+			'h': '', 'l': '',
+			'H': '', 'L': '',
+			'0': '', '1': '', 'x': '', 'd': '', 'u': '', 'z': '', '=':'-2','2':'-2','3':'-3','4':'-4','5':'-5'
+		};
+		x4 = {
+			'p': '111', 'n': '000',
+			'P': '111', 'N': '000',
+			'h': '111', 'l': '000',
+			'H': '111', 'L': '000',
+			'0': '000', '1': '111', 'x': 'xxx', 'd': 'ddd', 'u': 'uuu', 'z': 'zzz',
+		    '=': 'vvv-2', '2': 'vvv-2', '3': 'vvv-3', '4': 'vvv-4', '5': 'vvv-5'
+		};
+		x5 = {p:'nclk', n:'pclk', P:'nclk', N:'pclk'};
+		x6 = {p: '000', n: '111', P: '000', N: '111'};
+		xclude = {'hp':'111', 'Hp':'111', 'ln': '000', 'Ln': '000', 'nh':'111', 'Nh':'111', 'pl': '000', 'Pl':'000'};
+
+		atext = text.split('');
+		//if (atext.length !== 2) { return this.genBrick(['xxx'], extra, times); }
+
+		tmp0 = x4[atext[1]];
+		tmp1 = x1[atext[1]];
+		if (tmp1 === undefined) {
+			tmp2 = x2[atext[1]];
+			if (tmp2 === undefined) {
+				// unknown
+				return this.genBrick(['xxx'], extra, times);
+			} else {
+				tmp3 = y1[atext[0]];
+				if (tmp3 === undefined) {
+					// unknown
+					return this.genBrick(['xxx'], extra, times);
+				}
+				// soft curves
+				return this.genBrick([tmp3 + 'm' + tmp2 + y2[atext[0]] + x3[atext[1]], tmp0], extra, times);
+			}
+		} else {
+			tmp4 = xclude[text];
+			if (tmp4 !== undefined) {
+				tmp1 = tmp4;
+			}
+			// sharp curves
+			tmp2 = x5[atext[1]];
+			if (tmp2 === undefined) {
+				// hlHL
+				return this.genBrick([tmp1, tmp0], extra, times);
+			} else {
+				// pnPN
+				return this.genBrick([tmp1, tmp0, tmp2, x6[atext[1]]], extra, times);
 			}
 		}
-		return this.genBrick(['xxx'], extra, times);
 	},
 	parseWaveLane: function (text, extra) {
 		"use strict";

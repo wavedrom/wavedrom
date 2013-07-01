@@ -52,28 +52,38 @@ The clock's blocks can be mixed with other signal states to create the clock gat
 Here is the code:
 
 <pre class="WaveDrom">
-{ "signal" : [
-  { "name": "pclk", "wave": "p....." },
-  { "name": "Pclk", "wave": "P....." },
-  { "name": "nclk", "wave": "n....." },
-  { "name": "Nclk", "wave": "N....." },
-  { "name": "gclk", "wave": "0P0P.." } // gated clock
+{ signal: [
+  { name: "pclk", wave: 'p.......' },
+  { name: "Pclk", wave: 'P.......' },
+  { name: "nclk", wave: 'n.......' },
+  { name: "Nclk", wave: 'N.......' },
+  {},
+  { name: 'clk0', wave: 'phnlPHNL' },
+  { name: 'clk1', wave: 'xhlhLHl.' },
+  { name: 'clk2', wave: 'hpHplnLn' },
+  { name: 'clk3', wave: 'nhNhplPl' },
+  { name: 'clk4', wave: 'xlh.L.Hx' },
 ]}
 </pre>
 
 and the rendered diagram:
 
 <script type="WaveDrom">
-{ "signal" : [
-  { "name": "pclk", "wave": "p....." },
-  { "name": "Pclk", "wave": "P....." },
-  { "name": "nclk", "wave": "n....." },
-  { "name": "Nclk", "wave": "N....." },
-  { "name": "gclk", "wave": "0P0P.." } // gated clock
+{ signal: [
+  { name: "pclk", wave: 'p.......' },
+  { name: "Pclk", wave: 'P.......' },
+  { name: "nclk", wave: 'n.......' },
+  { name: "Nclk", wave: 'N.......' },
+  {},
+  { name: 'clk0', wave: 'phnlPHNL' },
+  { name: 'clk1', wave: 'xhlhLHl.' },
+  { name: 'clk2', wave: 'hpHplnLn' },
+  { name: 'clk3', wave: 'nhNhplPl' },
+  { name: 'clk4', wave: 'xlh.L.Hx' },
 ]}
 </script>
 
-<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22pclk%22%2C%20%22wave%22%3A%20%22p.....%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Pclk%22%2C%20%22wave%22%3A%20%22P.....%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22nclk%22%2C%20%22wave%22%3A%20%22n.....%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Nclk%22%2C%20%22wave%22%3A%20%22N.....%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22gclk%22%2C%20%22wave%22%3A%20%220P0P..%22%20%7D%20%2F%2F%20gated%20clock%0A%5D%7D%0A">Edit Me &gt;&gt;</a>
+<a href="file:///C:/work/drom/wavedrom/trunk/editor.html?{%20signal%3A%20[%0A%20%20{%20name%3A%20%22pclk%22%2C%20wave%3A%20%27p.......%27%20}%2C%0A%20%20{%20name%3A%20%22Pclk%22%2C%20wave%3A%20%27P.......%27%20}%2C%0A%20%20{%20name%3A%20%22nclk%22%2C%20wave%3A%20%27n.......%27%20}%2C%0A%20%20{%20name%3A%20%22Nclk%22%2C%20wave%3A%20%27N.......%27%20}%2C%0A%20%20{}%2C%0A%20%20{%20name%3A%20%27clk0%27%2C%20wave%3A%20%27phnlPHNL%27%20}%2C%0A%20%20{%20name%3A%20%27clk1%27%2C%20wave%3A%20%27xhlhLHl.%27%20}%2C%0A%20%20{%20name%3A%20%27clk2%27%2C%20wave%3A%20%27hpHplnLn%27%20}%2C%0A%20%20{%20name%3A%20%27clk3%27%2C%20wave%3A%20%27nhNhplPl%27%20}%2C%0A%20%20{%20name%3A%20%27clk4%27%2C%20wave%3A%20%27xlh.L.Hx%27%20}%2C%0A]}">Edit Me &gt;&gt;</a>
 
 
 
