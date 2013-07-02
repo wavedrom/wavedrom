@@ -596,7 +596,7 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 			if (content[j][1]) {
 				for (i = 0; i < content[j][1].length; i += 1) {
 					b    = document.createElementNS(svgns, "use");
-					b.id = "use_" + i + "_" + j + "_" + index;
+//					b.id = "use_" + i + "_" + j + "_" + index;
 					b.setAttributeNS(xlinkns, 'xlink:href', '#' + content[j][1][i]);
 //					b.setAttribute('transform', 'translate(' + (i * this.lane.xs) + ')');
 					b.setAttribute('transform', 'translate(' + (i * this.lane.xs) + ')');
@@ -659,7 +659,7 @@ WaveDrom.RenderMarks = function (root, content, index) {
 						id:    ("gmark_" + i + "_" + index),
 //						d:     ('m ' + (i * mmstep) + ',' + 5 + ' 0,' + (gy - 2 * margin)),
 						d:     ('m ' + (i * mmstep) + ',' + 0 + ' 0,' + gy),
-						style: 'stroke:#888888;stroke-width:0.5;stroke-dasharray:1, 3'
+						style: 'stroke:#888;stroke-width:0.5;stroke-dasharray:1,3'
 					}
 				]
 			),
@@ -680,7 +680,7 @@ WaveDrom.RenderMarks = function (root, content, index) {
 	if (this.lane.head && (this.lane.head.tick || this.lane.head.tick == 0)) {
 		offset = Number(this.lane.head.tick);
 		for (i = 0; i < (marks + 1); i += 1) {
-			tmark = JsonML.parse(['text', {x: (i * mmstep), y: -5, 'text-anchor': 'middle', fill: '#AAAAAA'}, ((i + offset) + '')]);
+			tmark = JsonML.parse(['text', {x: (i * mmstep), y: -5, 'text-anchor': 'middle', fill: '#AAA'}, ((i + offset) + '')]);
 			tmark.setAttributeNS(xmlns, "xml:space", "preserve");
 			g.insertBefore(tmark, null);
 		}
@@ -688,7 +688,7 @@ WaveDrom.RenderMarks = function (root, content, index) {
 	if (this.lane.head && (this.lane.head.tock || this.lane.head.tock == 0)) {
 		offset = Number(this.lane.head.tock);
 		for (i = 0; i < marks; i += 1) {
-			tmark = JsonML.parse(['text', {x: (i * mmstep + mmstep / 2), y: -5, 'text-anchor': 'middle', fill: '#AAAAAA'}, ((i + offset) + '')]);
+			tmark = JsonML.parse(['text', {x: (i * mmstep + mmstep / 2), y: -5, 'text-anchor': 'middle', fill: '#AAA'}, ((i + offset) + '')]);
 			tmark.setAttributeNS(xmlns, "xml:space", "preserve");
 			g.insertBefore(tmark, null);
 		}
@@ -707,7 +707,7 @@ WaveDrom.RenderMarks = function (root, content, index) {
 	if (this.lane.foot && (this.lane.foot.tick || this.lane.foot.tick == 0)) {
 		offset = Number(this.lane.foot.tick);
 		for (i = 0; i < (marks + 1); i += 1) {
-			tmark = JsonML.parse(['text', {x: (i * mmstep), y: (gy + 15), 'text-anchor': 'middle', fill: '#AAAAAA'}, ((i + offset) + '')]);
+			tmark = JsonML.parse(['text', {x: (i * mmstep), y: (gy + 15), 'text-anchor': 'middle', fill: '#AAA'}, ((i + offset) + '')]);
 			tmark.setAttributeNS(xmlns, "xml:space", "preserve");
 			g.insertBefore(tmark, null);
 		}
@@ -715,7 +715,7 @@ WaveDrom.RenderMarks = function (root, content, index) {
 	if (this.lane.foot && (this.lane.foot.tock || this.lane.foot.tock == 0)) {
 		offset = Number(this.lane.foot.tock);
 		for (i = 0; i < marks; i += 1) {
-			tmark = JsonML.parse(['text', {x: (i * mmstep + mmstep / 2), y: (gy + 15), 'text-anchor': 'middle', fill: '#AAAAAA'}, ((i + offset) + '')]);
+			tmark = JsonML.parse(['text', {x: (i * mmstep + mmstep / 2), y: (gy + 15), 'text-anchor': 'middle', fill: '#AAA'}, ((i + offset) + '')]);
 			tmark.setAttributeNS(xmlns, "xml:space", "preserve");
 			g.insertBefore(tmark, null);
 		}
@@ -780,7 +780,7 @@ WaveDrom.RenderGaps = function (root, source, index) {
 				while (Stack.length) {
 					if (Stack.shift() === '|') {
 						b    = document.createElementNS(svgns, "use");
-						b.id = "guse_" + pos + "_" + i + "_" + index;
+//						b.id = "guse_" + pos + "_" + i + "_" + index;
 						b.setAttributeNS(xlinkns, 'xlink:href', '#gap');
 						b.setAttribute('transform', 'translate(' + (this.lane.xs * ((2 * pos + 1) * this.lane.period * this.lane.hscale - this.lane.phase)) + ')');
 						g.insertBefore(b, null);
@@ -801,7 +801,7 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 		gmark = document.createElementNS(svgns, "path");
 		gmark.id = ("gmark_" + Edge.from + "_" + Edge.to);
 		gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + to.x   + ',' + to.y);
-		gmark.setAttribute('style', 'fill:none;stroke:#0000FF;stroke-width:1');
+		gmark.setAttribute('style', 'fill:none;stroke:#00F;stroke-width:1');
 		gg.insertBefore(gmark, null);
 	}
 
@@ -842,7 +842,7 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 				if (Edge.label) {
 					label = JsonML.parse(['text', {style: 'font-size:10px;', 'text-anchor': 'middle'}, (Edge.label + '')]);
 					label.setAttributeNS(xmlns, "xml:space", "preserve");
-					underlabel = JsonML.parse(['rect', {height: 9, style: 'fill:#FFFFFF;'}]);
+					underlabel = JsonML.parse(['rect', {height: 9, style: 'fill:#FFF;'}]);
 					gg.insertBefore(underlabel, null);
 					gg.insertBefore(label, null);
 					lwidth = label.getBBox().width;
@@ -885,70 +885,70 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 						break;
 					}
 					case '->' : {
-						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0f0;stroke-width:1;fill:none');
 						break;
 					}
 					case '~>' : {
-						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0f0;stroke-width:1;fill:none');
 						gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + (0.7 * dx) + ', 0 ' + 0.3*dx + ', ' + dy + ' ' + dx + ', ' + dy);
 						break;
 					}
 					case '-~>': {
-						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0f0;stroke-width:1;fill:none');
 						gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + (0.7 * dx) + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy);
 						if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.75); }
 						break;
 					}
 					case '~->': {
-						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0f0;stroke-width:1;fill:none');
 						gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0      + ', 0 ' + (0.3 * dx) + ', ' + dy + ' ' + dx + ', ' + dy);
 						if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.25); }
 						break;
 					}
 					case '-|>' : {
-						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0f0;stroke-width:1;fill:none');
 						gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
 						if (Edge.label) { lx = to.x; }
 						break;
 					}
 					case '|->' : {
-						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0f0;stroke-width:1;fill:none');
 						gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' 0,' + dy + ' ' + dx + ',0');
 						if (Edge.label) { lx = from.x; }
 						break;
 					}
 					case '-|->': {
-						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0f0;stroke-width:1;fill:none');
 						gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + (dx / 2) + ',0 0,' + dy + ' ' + (dx / 2) + ',0');
 						break;
 					}
 					case '<->' : {
-						gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0f0;stroke-width:1;fill:none');
 						break;
 					}
 					case '<~>' : {
-						gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0f0;stroke-width:1;fill:none');
 						gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + (0.7 * dx) + ', 0 ' + (0.3 * dx) + ', ' + dy + ' ' + dx + ', ' + dy);
 						break;
 					}
 					case '<-~>': {
-						gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0f0;stroke-width:1;fill:none');
 						gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + (0.7 * dx) + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy);
 						if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.75); }
 						break;
 					}
 					case '<-|>' : {
-						gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0f0;stroke-width:1;fill:none');
 						gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
 						if (Edge.label) { lx = to.x; }
 						break;
 					}
 					case '<-|->': {
-						gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#00ff00;stroke-width:1;fill:none');
+						gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0f0;stroke-width:1;fill:none');
 						gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + (dx / 2) + ',0 0,' + dy + ' ' + (dx / 2) + ',0');
 						break;
 					}
-					default   : { gmark.setAttribute('style', 'fill:none;stroke:#FF0000;stroke-width:1'); }
+					default   : { gmark.setAttribute('style', 'fill:none;stroke:#F00;stroke-width:1'); }
 				}
 				if (Edge.label) {
 					label.setAttribute('x', lx);
@@ -961,7 +961,7 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 		for (k in Events) {
 			if (k == k.toLowerCase()) {
 				if (Events[k].x > 0) {
-					underlabel = JsonML.parse(['rect', {'y': (Events[k].y - 4), height: 8, style: 'fill:#FFFFFF;'}]);
+					underlabel = JsonML.parse(['rect', {'y': (Events[k].y - 4), height: 8, style: 'fill:#FFF;'}]);
 					gg.insertBefore(underlabel, null);
 					label = JsonML.parse(['text', {style: 'font-size:8px;', x: Events[k].x, y: (Events[k].y + 2), 'text-anchor': 'middle'}, (k + '')]);
 					gg.insertBefore(label, null);
