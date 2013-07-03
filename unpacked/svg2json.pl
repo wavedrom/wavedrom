@@ -109,7 +109,7 @@ use XML::Parser;
 print <<EOM;
 var WaveSkin = WaveSkin || {};
 WaveSkin.$filename = ["svg",{"id":"svg","xmlns":"http://www.w3.org/2000/svg","xmlns:xlink":"http://www.w3.org/1999/xlink","height":"0"}
-,["style",{"type":"text/css"},"text{font-size:11pt;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;fill-opacity:1;font-family:Helvetica}$css"]
+,["style",{"type":"text/css"},"text{font-size:11pt;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;fill-opacity:1;font-family:Helvetica}.muted{fill:#aaa}.warning{fill:#f6b900}.error{fill:#f60000}.info{fill:#0041c4}.success{fill:#00ab00}.h1{font-size:33pt;font-weight:bold}.h2{font-size:27pt;font-weight:bold}.h3{font-size:20pt;font-weight:bold}.h4{font-size:14pt;font-weight:bold}.h5{font-size:11pt;font-weight:bold}.h6{font-size:8pt;font-weight:bold}$css"]
 ,["defs"
 $message
 ,["marker",{"id":"arrowhead","style":"display:none;overflow:visible","refX":"2","refY":"0","orient":"auto"},["path",{"d":"M -7,3 -7,-3 0,0 z"}]]

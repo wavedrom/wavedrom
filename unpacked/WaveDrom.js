@@ -670,7 +670,7 @@ WaveDrom.RenderMarks = function (root, content, index) {
 			tmark = JsonML.parse(
 			['text', {
 				x: (this.lane.xmax * this.lane.xs / 2),
-				y: (this.lane.yh0 ? -23 : -3),
+				y: (this.lane.yh0 ? -33 : -13),
 				'text-anchor': 'middle',
 				fill: '#000'
 			}, this.lane.head.text]);
@@ -697,7 +697,7 @@ WaveDrom.RenderMarks = function (root, content, index) {
 			tmark = JsonML.parse(
 			['text', {
 				x: (this.lane.xmax * this.lane.xs / 2),
-				y: gy + (this.lane.yf0 ? 35 : 15),
+				y: gy + (this.lane.yf0 ? 45 : 25),
 				'text-anchor': 'middle',
 				fill: '#000'
 			}, this.lane.foot.text]);
@@ -992,7 +992,7 @@ WaveDrom.parseConfig = function (source) {
 	if (source && source.head) {
 		if (source.head.tick || source.head.tick == 0) { this.lane.yh0 = 20; }
 		if (source.head.tock || source.head.tock == 0) { this.lane.yh0 = 20; }
-		if (source.head.text) { this.lane.yh1 = 20; this.lane.head.text = source.head.text; }
+		if (source.head.text) { this.lane.yh1 = 46; this.lane.head.text = source.head.text; }
 	}
 	this.lane.yf0 = 0;
 	this.lane.yf1 = 0;
@@ -1000,7 +1000,7 @@ WaveDrom.parseConfig = function (source) {
 	if (source && source.foot) {
 		if (source.foot.tick || source.foot.tick == 0) { this.lane.yf0 = 20; }
 		if (source.foot.tock || source.foot.tock == 0) { this.lane.yf0 = 20; }
-		if (source.foot.text) { this.lane.yf1 = 20; this.lane.foot.text = source.foot.text; }
+		if (source.foot.text) { this.lane.yf1 = 46; this.lane.foot.text = source.foot.text; }
 	}
 };
 

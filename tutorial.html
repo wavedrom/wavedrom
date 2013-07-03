@@ -332,6 +332,95 @@ The property works only inside the first timing diagram on the page.
 
 <a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7Bsignal%3A%20%5B%0A%20%20%7Bname%3A'clk'%2C%20%20%20%20%20%20%20%20%20wave%3A%20'p....'%20%7D%2C%0A%20%20%7Bname%3A'Data'%2C%20%20%20%20%20%20%20%20wave%3A%20'x345x'%2C%20data%3A%20'a%20b%20c'%20%7D%2C%0A%20%20%7Bname%3A'Request'%2C%20%20%20%20%20wave%3A%20'01..0'%20%7D%0A%5D%2C%0A%20head%3A%7B%0A%20%20%20text%3A'WaveDrom%20example'%2C%0A%20%20%20tick%3A0%2C%0A%20%7D%2C%0A%20foot%3A%7B%0A%20%20%20text%3A'Figure%20100'%2C%0A%20%20%20tock%3A9%0A%20%7D%2C%0A%7D%0A">Edit Me &gt;&gt;</a>
 
+<p>
+<span class="fixed">head</span>/
+<span class="fixed">foot</span> text has all properties of SVG text. Standard SVG
+<span class="fixed">tspan</span> attributes can be used to modify default properties of text. JsonML markup language used to represent SVG text content. Several predefined styles can be used and intermixed:
+
+<p>
+<span class="fixed">h1</span>
+<span class="fixed">h2</span>
+<span class="fixed">h3</span>
+<span class="fixed">h4</span>
+<span class="fixed">h5</span>
+<span class="fixed">h6</span> -- predefined font sizes.
+
+<p>
+<span class="fixed">muted</span>
+<span class="fixed">warning</span>
+<span class="fixed">error</span>
+<span class="fixed">info</span>
+<span class="fixed">success</span> -- font color styles.
+
+<p>
+Other SVG <span class="fixed">tspan</span> attributes can be used in freestyle as shown below.
+
+<pre>
+{signal: [
+  {name:'clk', wave: 'p.....PPPPp....' },
+  {name:'dat', wave: 'x....2345x.....', data: 'a b c d' },
+  {name:'req', wave: '0....1...0.....' }
+],
+head: {text:
+  ['tspan',
+    ['tspan', {class:'error h1'}, 'error '],
+    ['tspan', {class:'warning h2'}, 'warning '],
+    ['tspan', {class:'info h3'}, 'info '],
+    ['tspan', {class:'success h4'}, 'success '],
+    ['tspan', {class:'muted h5'}, 'muted '],
+    ['tspan', {class:'h6'}, 'h6 '],
+    'default ',
+    ['tspan', {fill:'pink', 'font-weight':'bold', 'font-style':'italic'}, 'pink-bold-italic']
+  ]
+},
+foot: {text:
+  ['tspan', 'E=mc',
+    ['tspan', {dy:'-5'}, '2'],
+    ['tspan', {dy: '5'}, '. '],
+    ['tspan', {'font-size':'25'}, 'B '],
+    ['tspan', {'text-decoration':'overline'},'over '],
+    ['tspan', {'text-decoration':'underline'},'under '],
+    ['tspan', {'baseline-shift':'sub'}, 'sub '],
+    ['tspan', {'baseline-shift':'super'}, 'super ']
+  ],tock:-5
+}
+}
+</pre>
+
+<script type="WaveDrom">
+{signal: [
+  {name:'clk', wave: 'p.....PPPPp....' },
+  {name:'dat', wave: 'x....2345x.....', data: 'a b c d' },
+  {name:'req', wave: '0....1...0.....' }
+],
+head: {text:
+  ['tspan',
+    ['tspan', {class:'error h1'}, 'error '],
+    ['tspan', {class:'warning h2'}, 'warning '],
+    ['tspan', {class:'info h3'}, 'info '],
+    ['tspan', {class:'success h4'}, 'success '],
+    ['tspan', {class:'muted h5'}, 'muted '],
+    ['tspan', {class:'h6'}, 'h6 '],
+    'default ',
+    ['tspan', {fill:'pink', 'font-weight':'bold', 'font-style':'italic'}, 'pink-bold-italic']
+  ]
+},
+foot: {text:
+  ['tspan', 'E=mc',
+    ['tspan', {dy:'-5'}, '2'],
+    ['tspan', {dy: '5'}, '. '],
+    ['tspan', {'font-size':'25'}, 'B '],
+    ['tspan', {'text-decoration':'overline'},'over '],
+    ['tspan', {'text-decoration':'underline'},'under '],
+    ['tspan', {'baseline-shift':'sub'}, 'sub '],
+    ['tspan', {'baseline-shift':'super'}, 'super ']
+  ],tock:-5
+}
+}
+</script>
+
+<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7Bsignal%3A%20%5B%0A%20%20%7Bname%3A'clk'%2C%20wave%3A%20'p.....PPPPp....'%20%7D%2C%0A%20%20%7Bname%3A'dat'%2C%20wave%3A%20'x....2345x.....'%2C%20data%3A%20'a%20b%20c%20d'%20%7D%2C%0A%20%20%7Bname%3A'req'%2C%20wave%3A%20'0....1...0.....'%20%7D%0A%5D%2C%0Ahead%3A%20%7Btext%3A%0A%20%20%5B'tspan'%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'error%20h1'%7D%2C%20'error%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'warning%20h2'%7D%2C%20'warning%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'info%20h3'%7D%2C%20'info%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'success%20h4'%7D%2C%20'success%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'muted%20h5'%7D%2C%20'muted%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'h6'%7D%2C%20'h6%20'%5D%2C%0A%20%20%20%20'default%20'%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bfill%3A'pink'%2C%20'font-weight'%3A'bold'%2C%20'font-style'%3A'italic'%7D%2C%20'pink-bold-italic'%5D%0A%20%20%5D%0A%7D%2C%0Afoot%3A%20%7Btext%3A%0A%20%20%5B'tspan'%2C%20'E%3Dmc'%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bdy%3A'-5'%7D%2C%20'2'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bdy%3A%20'5'%7D%2C%20'.%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7B'font-size'%3A'25'%7D%2C%20'B%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7B'text-decoration'%3A'overline'%7D%2C'over%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7B'text-decoration'%3A'underline'%7D%2C'under%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7B'baseline-shift'%3A'sub'%7D%2C%20'sub%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7B'baseline-shift'%3A'super'%7D%2C%20'super%20'%5D%0A%20%20%5D%2Ctock%3A-5%0A%7D%0A%7D%0A">Edit Me &gt;&gt;</a>
+
 <h2>Step 8. Arrows</h2>
 
 <h3>Splines</h3>
