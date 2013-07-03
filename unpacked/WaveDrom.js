@@ -291,7 +291,7 @@ if (undefined === JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "2013.06.30",
+	version: "2013.07.02",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
