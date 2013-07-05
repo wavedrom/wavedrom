@@ -291,7 +291,7 @@ if (undefined === JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "2013.07.02",
+	version: "2013.07.04",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -570,7 +570,7 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 						fill: '#0041c4', // Pantone 288C
 						'text-anchor': 'end'
 					},
-					(content[j][0][0] + '') // name
+					content[j][0][0] // + '') // name
 				]
 			);
 			title.setAttributeNS(xmlns, "xml:space", "preserve");
@@ -615,7 +615,7 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 											y: this.lane.ym,
 											'text-anchor': 'middle'
 										},
-										(content[j][2][k] + '')
+										content[j][2][k] // + '')
 									]
 								);
 								title.setAttributeNS(xmlns, "xml:space", "preserve");
@@ -735,18 +735,18 @@ WaveDrom.RenderGroups = function (root, groups, index) {
 		group.setAttribute('style', 'stroke:#0041c4;stroke-width:1;fill:none');
 		root.insertBefore(group, null);
 
-		if (typeof groups[i].name === 'string') {
-			grouplabel = document.createTextNode(groups[i].name);
-			label = document.createElementNS(svgns, "text");
+		if (typeof groups[i].name !== 'undefined') {
 			x = (groups[i].x - 10);
 			y = (this.lane.yo * (groups[i].y + (groups[i].height / 2)) + this.lane.yh0 + this.lane.yh1);
-			label.setAttribute("x", x);
-			label.setAttribute("y", y);
-			label.setAttribute("text-anchor", "middle");
-			label.setAttribute("fill", "#0041c4");
-			label.setAttribute("transform", "rotate(270," + x + "," + y + ")");
+			label = JsonML.parse(
+			['text', {
+				x: x,
+				y: y,
+				'text-anchor': 'middle',
+				fill: '#0041c4',
+				transform: "rotate(270," + x + "," + y + ")"
+			}, groups[i].name]);
 			label.setAttributeNS(xmlns, "xml:space", "preserve");
-			label.appendChild(grouplabel);
 			root.insertBefore(label, null);
 		}
 	}

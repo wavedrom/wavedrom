@@ -145,47 +145,48 @@ The first entry of array is the group's name.
 The groups can be nested.
  
 <pre>
-{ "signal" : [
- {   "name": "clk",    "wave": "P......." },
- [ "Master",
-  [ "control",
-   { "name": "write",  "wave": "01.0...." },
-   { "name": "read",   "wave": "0...1..0" },
+{signal: [
+  {    name: 'clk',   wave: 'p..Pp..P'},
+  ['Master',
+    ['ctrl',
+      {name: 'write', wave: '01.0....'},
+      {name: 'read',  wave: '0...1..0'}
+    ],
+    {  name: 'addr',  wave: 'x3.x4..x', data: 'A1 A2'},
+    {  name: 'wdata', wave: 'x3.x....', data: 'D1'   },
   ],
-  {  "name": "addr",   "wave": "x3.x4..x", "data": ["A1","A2"] },
-  {  "name": "byteen", "wave": "x3.x4..x", "data": ["BE1","BE2"] },
-  {  "name": "wdata",  "wave": "x3.x....", "data": ["D1"] },
- ],
- [ "Slave",
-  [ "control",
-   { "name": "accept", "wave": "x01x0.1x" },
-  ],
-  {  "name": "rdata",  "wave": "x.....4x", "data": ["D2"] },
- ]
+  {},
+  ['Slave',
+    ['ctrl',
+      {name: 'ack',   wave: 'x01x0.1x'},
+    ],
+    {  name: 'rdata', wave: 'x.....4x', data: 'Q2'},
+  ]
 ]}
 </pre>
+
 <script type="WaveDrom">
-{ "signal" : [
- {   "name": "clk",    "wave": "P......." },
- [ "Master",
-  [ "control",
-   { "name": "write",  "wave": "01.0...." },
-   { "name": "read",   "wave": "0...1..0" },
+{signal: [
+  {    name: 'clk',   wave: 'p..Pp..P'},
+  ['Master',
+    ['ctrl',
+      {name: 'write', wave: '01.0....'},
+      {name: 'read',  wave: '0...1..0'}
+    ],
+    {  name: 'addr',  wave: 'x3.x4..x', data: 'A1 A2'},
+    {  name: 'wdata', wave: 'x3.x....', data: 'D1'   },
   ],
-  {  "name": "addr",   "wave": "x3.x4..x", "data": ["A1","A2"] },
-  {  "name": "byteen", "wave": "x3.x4..x", "data": ["BE1","BE2"] },
-  {  "name": "wdata",  "wave": "x3.x....", "data": ["D1"] },
- ],
- [ "Slave",
-  [ "control",
-   { "name": "accept", "wave": "x01x0.1x" },
-  ],
-  {  "name": "rdata",  "wave": "x.....4x", "data": ["D2"] },
- ]
+  {},
+  ['Slave',
+    ['ctrl',
+      {name: 'ack',   wave: 'x01x0.1x'},
+    ],
+    {  name: 'rdata', wave: 'x.....4x', data: 'Q2'},
+  ]
 ]}
 </script>
 
-<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%7B%20%20%20%22name%22%3A%20%22clk%22%2C%20%20%20%20%22wave%22%3A%20%22P.......%22%20%7D%2C%0A%20%5B%20%22Master%22%2C%0A%20%20%5B%20%22control%22%2C%0A%20%20%20%7B%20%22name%22%3A%20%22write%22%2C%20%20%22wave%22%3A%20%2201.0....%22%20%7D%2C%0A%20%20%20%7B%20%22name%22%3A%20%22read%22%2C%20%20%20%22wave%22%3A%20%220...1..0%22%20%7D%2C%0A%20%20%5D%2C%0A%20%20%7B%20%20%22name%22%3A%20%22addr%22%2C%20%20%20%22wave%22%3A%20%22x3.x4..x%22%2C%20%22data%22%3A%20%5B%22A1%22%2C%22A2%22%5D%20%7D%2C%0A%20%20%7B%20%20%22name%22%3A%20%22byteen%22%2C%20%22wave%22%3A%20%22x3.x4..x%22%2C%20%22data%22%3A%20%5B%22BE1%22%2C%22BE2%22%5D%20%7D%2C%0A%20%20%7B%20%20%22name%22%3A%20%22wdata%22%2C%20%20%22wave%22%3A%20%22x3.x....%22%2C%20%22data%22%3A%20%5B%22D1%22%5D%20%7D%2C%0A%20%5D%2C%0A%20%5B%20%22Slave%22%2C%0A%20%20%5B%20%22control%22%2C%0A%20%20%20%7B%20%22name%22%3A%20%22accept%22%2C%20%22wave%22%3A%20%22x01x0.1x%22%20%7D%2C%0A%20%20%5D%2C%0A%20%20%7B%20%20%22name%22%3A%20%22rdata%22%2C%20%20%22wave%22%3A%20%22x.....4x%22%2C%20%22data%22%3A%20%5B%22D2%22%5D%20%7D%2C%0A%20%5D%0A%5D%7D%0A">Edit Me &gt;&gt;</a>
+<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7Bsignal%3A%20%5B%0A%20%20%7B%20%20%20%20name%3A%20'clk'%2C%20%20%20wave%3A%20'p..Pp..P'%7D%2C%0A%20%20%5B'Master'%2C%0A%20%20%20%20%5B'ctrl'%2C%0A%20%20%20%20%20%20%7Bname%3A%20'write'%2C%20wave%3A%20'01.0....'%7D%2C%0A%20%20%20%20%20%20%7Bname%3A%20'read'%2C%20%20wave%3A%20'0...1..0'%7D%0A%20%20%20%20%5D%2C%0A%20%20%20%20%7B%20%20name%3A%20'addr'%2C%20%20wave%3A%20'x3.x4..x'%2C%20data%3A%20'A1%20A2'%7D%2C%0A%20%20%20%20%7B%20%20name%3A%20'wdata'%2C%20wave%3A%20'x3.x....'%2C%20data%3A%20'D1'%20%20%20%7D%2C%0A%20%20%5D%2C%0A%20%20%7B%7D%2C%0A%20%20%5B'Slave'%2C%0A%20%20%20%20%5B'ctrl'%2C%0A%20%20%20%20%20%20%7Bname%3A%20'ack'%2C%20%20%20wave%3A%20'x01x0.1x'%7D%2C%0A%20%20%20%20%5D%2C%0A%20%20%20%20%7B%20%20name%3A%20'rdata'%2C%20wave%3A%20'x.....4x'%2C%20data%3A%20'Q2'%7D%2C%0A%20%20%5D%0A%5D%7D">Edit Me &gt;&gt;</a>
 
 
 
