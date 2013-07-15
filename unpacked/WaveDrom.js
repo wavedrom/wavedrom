@@ -291,7 +291,7 @@ if (undefined === JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "2013.07.04",
+	version: "2013.07.14",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -637,16 +637,81 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 
 WaveDrom.RenderMarks = function (root, content, index) {
 	"use strict";
-	var i, offset, g, marks, mstep, mmstep, gmark, tmark, labeltext, gy, margin,
+	function captext (root, anchor, y) {
+		"use strict";
+		var tmark;
+		if (root[anchor] && root[anchor].text) {
+			tmark = JsonML.parse(
+			['text', {
+				x: (root.xmax * root.xs / 2),
+				y: y,
+				'text-anchor': 'middle',
+				fill: '#000'
+			}, root[anchor].text]);
+			tmark.setAttributeNS(xmlns, "xml:space", "preserve");
+			g.insertBefore(tmark, null);
+		}
+	};
+	function ticktock (root, ref1, ref2, x, dx, y, len) {
+		"use strict";
+		var i, tmark, step = 1, offset, val, L = [], tmp;
+		if (root[ref1] === undefined || root[ref1][ref2] === undefined) { return; }
+		val = root[ref1][ref2];
+		if (typeof val === 'string') {
+			val = val.split(' ');
+		} else if (typeof val === 'number' || typeof val === 'boolean') {
+			offset = Number (val);
+			val = [];
+			for (var i = 0; i < len; i += 1) {
+				val.push (i + offset);
+			}
+		};
+		if (Object.prototype.toString.call (val) === '[object Array]') {
+			if (val.length === 0) {
+				return;
+			} else if (val.length === 1) {
+				offset = Number (val[0]);
+				if (isNaN(offset)) {
+					L = val;
+				} else {
+					for (var i = 0; i < len; i += 1) {
+						L[i] = i + offset;
+					}
+				}
+			} else if (val.length === 2) {
+				offset = Number (val[0]);
+				step   = Number (val[1]);
+				if (isNaN(offset) || isNaN(step)) {
+					L = val;
+				} else {
+					step = step - offset;
+					for (var i = 0; i < len; i += 1) {
+						L[i] = step * i + offset;
+					}
+				}
+			} else {
+				L = val;
+			}
+		} else {
+			return;
+		}
+		for (i = 0; i < len; i += 1) {
+			tmp = L[i];
+			if (typeof tmp === 'number') { tmp += ''; }
+			tmark = JsonML.parse(['text', {x: (x + i * dx), y: y, 'text-anchor': 'middle', fill: '#AAA'}, tmp]);
+			tmark.setAttributeNS(xmlns, "xml:space", "preserve");
+			g.insertBefore(tmark, null);
+		}
+	};
+
+	var i, g, marks, mstep, mmstep, labeltext, gy,
 	svgns = 'http://www.w3.org/2000/svg',
 	xmlns = 'http://www.w3.org/XML/1998/namespace';
 
 	mstep  = 2 * (this.lane.hscale);
 	mmstep = mstep * this.lane.xs;
 	marks  = this.lane.xmax / mstep;
-	margin = 5;
-//	gy     = content.length * this.lane.yo + this.lane.y0 + this.lane.ys;
-	gy     = content.length * this.lane.yo; //  + this.lane.y0 + this.lane.ys;
+	gy     = content.length * this.lane.yo;
 
 	g = JsonML.parse(['g', {id: ("gmarks_" + index)}]);
 	root.insertBefore(g, root.firstChild);
@@ -657,7 +722,6 @@ WaveDrom.RenderMarks = function (root, content, index) {
 				['path',
 					{
 						id:    ("gmark_" + i + "_" + index),
-//						d:     ('m ' + (i * mmstep) + ',' + 5 + ' 0,' + (gy - 2 * margin)),
 						d:     ('m ' + (i * mmstep) + ',' + 0 + ' 0,' + gy),
 						style: 'stroke:#888;stroke-width:0.5;stroke-dasharray:1,3'
 					}
@@ -666,60 +730,14 @@ WaveDrom.RenderMarks = function (root, content, index) {
 			null
 		);
 	}
-	if (this.lane.head && this.lane.head.text) {
-			tmark = JsonML.parse(
-			['text', {
-				x: (this.lane.xmax * this.lane.xs / 2),
-				y: (this.lane.yh0 ? -33 : -13),
-				'text-anchor': 'middle',
-				fill: '#000'
-			}, this.lane.head.text]);
-			tmark.setAttributeNS(xmlns, "xml:space", "preserve");
-			g.insertBefore(tmark, null);
-	}
-	if (this.lane.head && (this.lane.head.tick || this.lane.head.tick == 0)) {
-		offset = Number(this.lane.head.tick);
-		for (i = 0; i < (marks + 1); i += 1) {
-			tmark = JsonML.parse(['text', {x: (i * mmstep), y: -5, 'text-anchor': 'middle', fill: '#AAA'}, ((i + offset) + '')]);
-			tmark.setAttributeNS(xmlns, "xml:space", "preserve");
-			g.insertBefore(tmark, null);
-		}
-	}
-	if (this.lane.head && (this.lane.head.tock || this.lane.head.tock == 0)) {
-		offset = Number(this.lane.head.tock);
-		for (i = 0; i < marks; i += 1) {
-			tmark = JsonML.parse(['text', {x: (i * mmstep + mmstep / 2), y: -5, 'text-anchor': 'middle', fill: '#AAA'}, ((i + offset) + '')]);
-			tmark.setAttributeNS(xmlns, "xml:space", "preserve");
-			g.insertBefore(tmark, null);
-		}
-	}
-	if (this.lane.foot && this.lane.foot.text) {
-			tmark = JsonML.parse(
-			['text', {
-				x: (this.lane.xmax * this.lane.xs / 2),
-				y: gy + (this.lane.yf0 ? 45 : 25),
-				'text-anchor': 'middle',
-				fill: '#000'
-			}, this.lane.foot.text]);
-			tmark.setAttributeNS(xmlns, "xml:space", "preserve");
-			g.insertBefore(tmark, null);
-	}
-	if (this.lane.foot && (this.lane.foot.tick || this.lane.foot.tick == 0)) {
-		offset = Number(this.lane.foot.tick);
-		for (i = 0; i < (marks + 1); i += 1) {
-			tmark = JsonML.parse(['text', {x: (i * mmstep), y: (gy + 15), 'text-anchor': 'middle', fill: '#AAA'}, ((i + offset) + '')]);
-			tmark.setAttributeNS(xmlns, "xml:space", "preserve");
-			g.insertBefore(tmark, null);
-		}
-	}
-	if (this.lane.foot && (this.lane.foot.tock || this.lane.foot.tock == 0)) {
-		offset = Number(this.lane.foot.tock);
-		for (i = 0; i < marks; i += 1) {
-			tmark = JsonML.parse(['text', {x: (i * mmstep + mmstep / 2), y: (gy + 15), 'text-anchor': 'middle', fill: '#AAA'}, ((i + offset) + '')]);
-			tmark.setAttributeNS(xmlns, "xml:space", "preserve");
-			g.insertBefore(tmark, null);
-		}
-	}
+
+	captext (this.lane, 'head', (this.lane.yh0 ? -33 : -13));
+	captext (this.lane, 'foot', gy + (this.lane.yf0 ? 45 : 25));
+
+	ticktock (this.lane, 'head', 'tick',          0, mmstep,      -5, marks + 1);
+	ticktock (this.lane, 'head', 'tock', mmstep / 2, mmstep,      -5, marks);
+	ticktock (this.lane, 'foot', 'tick',          0, mmstep, gy + 15, marks + 1);
+	ticktock (this.lane, 'foot', 'tock', mmstep / 2, mmstep, gy + 15, marks);
 };
 
 WaveDrom.RenderGroups = function (root, groups, index) {
