@@ -291,7 +291,7 @@ if (undefined === JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "2013.07.14",
+	version: "2013.07.16",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -542,7 +542,7 @@ WaveDrom.FindLaneMarkers = function (lanetext) {
 
 WaveDrom.RenderWaveLane = function (root, content, index) {
 	"use strict";
-	var i, j, k, g, gg, title, b, lanetext, labeltext, labels = [1], nxt_xgmax, scale,
+	var i, j, k, g, gg, title, b, lanetext, labeltext, labels = [1], nxt_xgmax, scale, name,
 	xmax     = 0,
 	xgmax    = 0,
 	glengths = [],
@@ -551,28 +551,28 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 	xmlns    = 'http://www.w3.org/XML/1998/namespace';
 
 	for (j = 0; j < content.length; j += 1) {
-		if (content[j][0][0]) { // check name
-			g = JsonML.parse(
-				['g',
-					{
-						id: ("wavelane_" + j + "_" + index),
-						transform: ('translate(0,' + ((this.lane.y0) + j * this.lane.yo) + ')')
-					}
-				]
-			);
+		name = content[j][0][0];
+		if (name) { // check name
+			g = JsonML.parse([
+				'g',
+				{
+					id: 'wavelane_' + j + '_' + index,
+					transform: 'translate(0,' + ((this.lane.y0) + j * this.lane.yo) + ')'
+				}
+			]);
 			root.insertBefore(g, null);
-
-			title = JsonML.parse(
-				['text',
-					{
-						x: this.lane.tgo,
-						y: this.lane.ym,
-						fill: '#0041c4', // Pantone 288C
-						'text-anchor': 'end'
-					},
-					content[j][0][0] // + '') // name
-				]
-			);
+			if (typeof name === 'number') { name += ''; }
+			title = JsonML.parse([
+				'text',
+				{
+					x: this.lane.tgo,
+					y: this.lane.ym,
+					class: 'info',
+//					fill: '#0041c4', // Pantone 288C
+					'text-anchor': 'end'
+				},
+				name // + '') // name
+			]);
 			title.setAttributeNS(xmlns, "xml:space", "preserve");
 			g.insertBefore(title, null);
 
@@ -583,14 +583,13 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 			xoffset = content[j][0][1];
 			xoffset = (xoffset > 0) ? (Math.ceil(2 * xoffset) - 2 * xoffset) :
 			(-2 * xoffset);
-			gg = JsonML.parse(
-				['g',
-					{
-						id: ("wavelane_draw_" + j + "_" + index),
-						transform: ('translate(' + (xoffset * this.lane.xs) + ', 0)')
-					}
-				]
-			);
+			gg = JsonML.parse([
+				'g',
+				{
+					id: 'wavelane_draw_' + j + '_' + index,
+					transform: 'translate(' + (xoffset * this.lane.xs) + ', 0)'
+				}
+			]);
 			g.insertBefore(gg, null);
 
 			if (content[j][1]) {
@@ -608,16 +607,15 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 					if (labels.length !== 0) {
 						for (k in labels) {
 							if (content[j][2] && (typeof content[j][2][k] !== 'undefined')) {
-								title = JsonML.parse(
-									['text',
-										{
-											x: ((labels[k] * this.lane.xs) + this.lane.xlabel),
-											y: this.lane.ym,
-											'text-anchor': 'middle'
-										},
-										content[j][2][k] // + '')
-									]
-								);
+								title = JsonML.parse([
+									'text',
+									{
+										x: labels[k] * this.lane.xs + this.lane.xlabel,
+										y: this.lane.ym,
+										'text-anchor': 'middle'
+									},
+									content[j][2][k] // + '')
+								]);
 								title.setAttributeNS(xmlns, "xml:space", "preserve");
 								gg.insertBefore(title, null);
 							}
@@ -641,13 +639,15 @@ WaveDrom.RenderMarks = function (root, content, index) {
 		"use strict";
 		var tmark;
 		if (root[anchor] && root[anchor].text) {
-			tmark = JsonML.parse(
-			['text', {
-				x: (root.xmax * root.xs / 2),
-				y: y,
-				'text-anchor': 'middle',
-				fill: '#000'
-			}, root[anchor].text]);
+			tmark = JsonML.parse([
+				'text',
+				{
+					x: root.xmax * root.xs / 2,
+					y: y,
+					'text-anchor': 'middle',
+					fill: '#000'
+				}, root[anchor].text
+			]);
 			tmark.setAttributeNS(xmlns, "xml:space", "preserve");
 			g.insertBefore(tmark, null);
 		}
@@ -698,7 +698,16 @@ WaveDrom.RenderMarks = function (root, content, index) {
 		for (i = 0; i < len; i += 1) {
 			tmp = L[i];
 			if (typeof tmp === 'number') { tmp += ''; }
-			tmark = JsonML.parse(['text', {x: (x + i * dx), y: y, 'text-anchor': 'middle', fill: '#AAA'}, tmp]);
+			tmark = JsonML.parse([
+				'text',
+				{
+					x: i * dx + x,
+					y: y,
+					'text-anchor': 'middle',
+//					fill: '#AAA'
+					class: 'muted'
+				}, tmp
+			]);
 			tmark.setAttributeNS(xmlns, "xml:space", "preserve");
 			g.insertBefore(tmark, null);
 		}
@@ -718,15 +727,14 @@ WaveDrom.RenderMarks = function (root, content, index) {
 
 	for (i = 0; i < (marks + 1); i += 1) {
 		g.insertBefore(
-			JsonML.parse(
-				['path',
-					{
-						id:    ("gmark_" + i + "_" + index),
-						d:     ('m ' + (i * mmstep) + ',' + 0 + ' 0,' + gy),
-						style: 'stroke:#888;stroke-width:0.5;stroke-dasharray:1,3'
-					}
-				]
-			),
+			JsonML.parse([
+				'path',
+				{
+					id:    'gmark_' + i + '_' + index,
+					d:     'm ' + (i * mmstep) + ',' + 0 + ' 0,' + gy,
+					style: 'stroke:#888;stroke-width:0.5;stroke-dasharray:1,3'
+				}
+			]),
 			null
 		);
 	}
@@ -742,7 +750,7 @@ WaveDrom.RenderMarks = function (root, content, index) {
 
 WaveDrom.RenderGroups = function (root, groups, index) {
 	"use strict";
-	var g, i, group, grouplabel, label, x, y,
+	var g, i, group, grouplabel, label, x, y, name,
 		svgns = 'http://www.w3.org/2000/svg',
 		xmlns = 'http://www.w3.org/XML/1998/namespace';
 	
@@ -753,17 +761,23 @@ WaveDrom.RenderGroups = function (root, groups, index) {
 		group.setAttribute('style', 'stroke:#0041c4;stroke-width:1;fill:none');
 		root.insertBefore(group, null);
 
-		if (typeof groups[i].name !== 'undefined') {
+		name = groups[i].name;
+		if (typeof name !== 'undefined') {
+			if (typeof name === 'number') { name += ''; }
 			x = (groups[i].x - 10);
 			y = (this.lane.yo * (groups[i].y + (groups[i].height / 2)) + this.lane.yh0 + this.lane.yh1);
-			label = JsonML.parse(
-			['text', {
-				x: x,
-				y: y,
-				'text-anchor': 'middle',
-				fill: '#0041c4',
-				transform: "rotate(270," + x + "," + y + ")"
-			}, groups[i].name]);
+			label = JsonML.parse([
+				'text',
+				{
+					x: x,
+					y: y,
+					'text-anchor': 'middle',
+	//				fill: '#0041c4',
+					class: 'info',
+					transform: 'rotate(270,' + x + ',' + y + ')'
+				},
+				name
+			]);
 			label.setAttributeNS(xmlns, "xml:space", "preserve");
 			root.insertBefore(label, null);
 		}
@@ -858,9 +872,22 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 				to    = Events[Edge.to];
 				t1();
 				if (Edge.label) {
-					label = JsonML.parse(['text', {style: 'font-size:10px;', 'text-anchor': 'middle'}, (Edge.label + '')]);
+					label = JsonML.parse([
+						'text',
+						{
+							style: 'font-size:10px;',
+							'text-anchor': 'middle'
+						},
+						Edge.label + ''
+					]);
 					label.setAttributeNS(xmlns, "xml:space", "preserve");
-					underlabel = JsonML.parse(['rect', {height: 9, style: 'fill:#FFF;'}]);
+					underlabel = JsonML.parse([
+						'rect',
+						{
+							height: 9,
+							style: 'fill:#FFF;'
+						}
+					]);
 					gg.insertBefore(underlabel, null);
 					gg.insertBefore(label, null);
 					lwidth = label.getBBox().width;
@@ -979,9 +1006,25 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 		for (k in Events) {
 			if (k == k.toLowerCase()) {
 				if (Events[k].x > 0) {
-					underlabel = JsonML.parse(['rect', {'y': (Events[k].y - 4), height: 8, style: 'fill:#FFF;'}]);
+					underlabel = JsonML.parse([
+						'rect',
+						{
+							y: Events[k].y - 4,
+							height: 8,
+							style: 'fill:#FFF;'
+						}
+					]);
 					gg.insertBefore(underlabel, null);
-					label = JsonML.parse(['text', {style: 'font-size:8px;', x: Events[k].x, y: (Events[k].y + 2), 'text-anchor': 'middle'}, (k + '')]);
+					label = JsonML.parse([
+						'text',
+						{
+							style: 'font-size:8px;',
+							x: Events[k].x,
+							y: Events[k].y + 2,
+							'text-anchor': 'middle'
+						},
+						(k + '')
+					]);
 					gg.insertBefore(label, null);
 					lwidth = label.getBBox().width + 2;
 					underlabel.setAttribute('x', Events[k].x - lwidth / 2);
@@ -1025,7 +1068,7 @@ WaveDrom.parseConfig = function (source) {
 WaveDrom.rec = function (tmp, state) {
 	"use strict";
 	var i, name, old = {}, delta = {"x":10};
-	if (typeof tmp[0] === 'string') {
+	if (typeof tmp[0] === 'string' || typeof tmp[0] === 'number') {
 		name = tmp[0];
 		delta.x = 25;
 	}
@@ -1084,24 +1127,36 @@ WaveDrom.InsertSVGTemplate = function (index, parent, source) {
 
 WaveDrom.RenderWaveForm = function (index) {
 	"use strict";
-	var TheTextBox, source, ret,
+	function erra (e) {
+		console.log (e.stack);
+		return { signal: [{ name: ['tspan', ['tspan', {class:'error h5'}, 'Error: '], e.message] }]};
+	};
+	function eva (index) {
+		var TheTextBox, source;
+		TheTextBox = document.getElementById ("InputJSON_" + index);
+
+		if (TheTextBox.type && TheTextBox.type == 'textarea') {
+			try { source = eval('(' + TheTextBox.value + ')') } catch (e) { return erra (e); };
+		} else {
+			try { source = eval('(' + TheTextBox.innerHTML + ')') } catch (e) { return erra (e); };
+		};
+		if (Object.prototype.toString.call(source) !== '[object Object]') {
+			return erra ({ message: "[Semantic]: The root has to be an Object: '{signal:[...]}'"});
+		};
+		if (!source.signal) {
+			return erra ({ message: "[Semantic]: 'signal:[...]' property is missing inside the root Object"});
+		};
+		if (Object.prototype.toString.call(source.signal) !== '[object Array]') {
+			return erra ({ message: "[Semantic]: 'signal' object has to be an Array 'signal:[]'"});
+		}
+		return source;
+	};
+
+	var source, ret,
 	root, groups, svgcontent, content, width, height, uwidth, uheight,
 	glengths, xmax = 0, i;
 
-	TheTextBox = document.getElementById("InputJSON_" + index);
-
-	if (TheTextBox.type && TheTextBox.type == 'textarea') {
-		try { source = eval('(' + TheTextBox.value + ')') } catch (err) { source = {signal:[{name:err}]}; };
-	} else {
-		try { source = eval('(' + TheTextBox.innerHTML + ')') } catch (err) { source = {signal:[{name:err}]}; };
-	}
-	if (Object.prototype.toString.call(source) !== '[object Object]') {
-		source = {signal:[{name:"SemanticError: The root has to be an Object: '{signal:[...]}'"}]};
-	} else if (!source.signal) {
-		source = {signal:[{name:"SemanticError: 'signal:[...]' property is missing inside the root Object"}]};
-	} else if (Object.prototype.toString.call(source.signal) !== '[object Array]') {
-		source = {signal:[{name:"SemanticError: 'signal' object has to be an Array 'signal:[]'"}]};
-	}
+	source = eva (index);
 
 	WaveDrom.InsertSVGTemplate(index, document.getElementById('WaveDrom_Display_' + index), source);
 
