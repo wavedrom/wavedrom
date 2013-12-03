@@ -431,5 +431,5 @@ LogiDrom.Init = function (label) {
 	console.log (JSON.stringify(tree));
 	svg = draw_boxes (tree, xmax);
 	console.log (JSON.stringify(svg));
-	document.getElementById(label).insertBefore(JsonML.parse(svg));
+	document.getElementById(label).insertBefore(JsonML.parse(svg), null);
 }
