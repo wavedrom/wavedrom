@@ -306,15 +306,31 @@ LogiDrom.Init = function (label) {
 	}
 
 	function random_tree (state) {
+        function random_type () {
+            var uni = 100*Math.random();
+			if (10 > uni) { return 'or'   };
+			if (20 > uni) { return 'nor'  };
+			if (30 > uni) { return 'and'  };
+			if (40 > uni) { return 'nand' };
+			if (50 > uni) { return 'xor'  };
+			if (60 > uni) { return 'nxor' };
+			if (70 > uni) { return 'add'  };
+			if (80 > uni) { return 'mul'  };
+            return 'box';
+        };
+
 		function random_gate () {
 			var uni = 100*Math.random();
-			if (10 > uni) { return ['not', 1]; }; if (15 > uni) { return ['buf', 1]; };
-			if (20 > uni) { return ['and', 2]; }; if (23 > uni) { return ['or', 2]; }; if (26 > uni) { return ['nand', 2]; };
-			if (30 > uni) { return ['and', 3]; }; if (33 > uni) { return ['or', 3]; }; if (36 > uni) { return ['nand', 3]; };
-			if (40 > uni) { return ['and', 4]; }; if (43 > uni) { return ['or', 4]; }; if (46 > uni) { return ['nand', 4]; };
-			if (50 > uni) { return ['and', 5]; }; if (53 > uni) { return ['or', 5]; }; if (56 > uni) { return ['nand', 5]; };
-			if (60 > uni) { return ['and', 6]; }; if (63 > uni) { return ['or', 6]; }; if (66 > uni) { return ['nand', 6]; };
-			return ['', 0];
+			if (10 > uni) { return ['not', 1]; };
+            if (20 > uni) { return ['buf', 1]; };
+			if (30 > uni) { return [random_type(), 2]; };
+			if (40 > uni) { return [random_type(), 3]; };
+			if (45 > uni) { return [random_type(), 4]; };
+			if (47 > uni) { return [random_type(), 5]; };
+			if (48 > uni) { return [random_type(), 6]; };
+			if (49 > uni) { return [random_type(), 7]; };
+			if (50 > uni) { return [random_type(), 8]; };
+			return ['box', 0];
 		};
 
 		var gate, i, ilen, tree = [];
@@ -333,20 +349,21 @@ LogiDrom.Init = function (label) {
 	}
 
 	function draw_body (type, inputs) {
-		var gates = {
-			not:  'm -16,0 2,0 m 0,-6 0,12 10,-6 z m 10,6 c 0,1.104569 0.895431,2 2,2 1.104569,0 2,-0.895431 2,-2 0,-1.104569 -0.895431,-2 -2,-2 -1.104569,0 -2,0.895431 -2,2 z',
-			buf:  'M -10,-6 -10,6 0,0 z m -6,6 6,0',
+		var e, gates = {
+			not:  'm -16,0 4,0 m 0,-6 0,12 10,-6 z m 10,6 c 0,1.104569 0.895431,2 2,2 1.104569,0 2,-0.895431 2,-2 0,-1.104569 -0.895431,-2 -2,-2 -1.104569,0 -2,0.895431 -2,2 z',
+			buf:  'm -2,0 2,0 m -12,-6 0,12 10,-6 z m -4,6 4,0',
 			and:  'm -16,-10 5,0 c 6,0 11,4 11,10 0,6 -5,10 -11,10 l -5,0 z',
 			nand: 'm -16,-10 3,0 c 6,0 11,4 11,10 0,6 -5,10 -11,10 l -3,0 z M 2,0 C 2,1.104569 1.104569,2 0,2 -1.104569,2 -2,1.104569 -2,0 c 0,-1.104569 0.895431,-2 2,-2 1.104569,0 2,0.895431 2,2 z',
-			or:   'm -15,-10 3,0 c 4,0 11,5 13,10 -2,5 -9,10 -13,10 l -3,0 c 3,-5 3,-15 0,-20 z',
-			nor:  'm -16,-8 8,0 c 5,0 8,3 8,8 0,5 -3,8 -8,8 l -8,0 z',
-			xor:  'm -16,-8 8,0 c 5,0 8,3 8,8 0,5 -3,8 -8,8 l -8,0 z',
-			nxor: 'm -16,-8 8,0 c 5,0 8,3 8,8 0,5 -3,8 -8,8 l -8,0 z',
+			or:   'm -18,-10 5,0 c 6,0 11,5 13,10 -2,5 -7,10 -13,10 l -5,0 c 2.5,-5 2.5,-15 0,-20 z',
+			nor:  'M 2,0 C 2,1.10457 1.104569,2 0,2 -1.104569,2 -2,0.745356 -2,0 c 0,-0.745356 0.895431,-2 2,-2 1.104569,0 2,0.89543 2,2 z m -20,-10 5,0 c 6,0 9,5 11,10 -2,5 -5,10 -11,10 l -5,0 c 2.5,-5 2.5,-15 0,-20 z',
+			xor:  'm -21,-10 c 2.5,5 2.5,15 0,20 m 3,-20 5,0 c 6,0 11,5 13,10 -2,5 -7,10 -13,10 l -5,0 c 2.5,-5 2.5,-15 0,-20 z',
+			nxor: 'm -21,-10 c 2.5,5 2.5,15 0,20 M 2,0 C 2,1.10457 1.104569,2 0,2 -1.104569,2 -2,0.745356 -2,0 c 0,-0.745356 0.895431,-2 2,-2 1.104569,0 2,0.89543 2,2 z m -20,-10 5,0 c 6,0 9,5 11,10 -2,5 -5,10 -11,10 l -5,0 c 2.5,-5 2.5,-15 0,-20 z',
+			add:  'm -8,5 0,-10 m -5,5 10,0 m 3,0 c 0,4.418278 -3.581722,8 -8,8 -4.418278,0 -8,-3.581722 -8,-8 0,-4.418278 3.581722,-8 8,-8 4.418278,0 8,3.581722 8,8 z',
+			mul:  'm -4,4 -8,-8 m 0,8 8,-8 m 4,4 c 0,4.418278 -3.581722,8 -8,8 -4.418278,0 -8,-3.581722 -8,-8 0,-4.418278 3.581722,-8 8,-8 4.418278,0 8,3.581722 8,8 z',
+    	box:  'm -16,-10 16,0 0,20 -16,0 z'
 		};
-		return ['path', {
-			d: gates[type],
-			style: "color:#000;fill:#ffc;fill-opacity:1;stroke:#000;stroke-width:1;stroke-opacity:1"
-		}];
+        e = gates[type] || gates.box;
+		return ['path', {d: e, style: "color:#000;fill:#ffc;fill-opacity:1;stroke:#000;stroke-width:1;stroke-opacity:1"}];
 	};
 
 	function draw_gate (spec) { // ['type', [x,y], [x,y] ... ]
