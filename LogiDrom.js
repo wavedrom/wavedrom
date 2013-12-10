@@ -430,9 +430,9 @@ LogiDrom.Init = function (label) {
 				['g',
 					{transform: 'translate('+fx+','+fy+')'},
 					['title', fname],
-					['path', {d:'M 0,0 a 2,2 0 1 1 -4,0 2,2 0 1 1 4,0 z'}],
+					['path', {d:'M 2,0 a 2,2 0 1 1 -4,0 2,2 0 1 1 4,0 z'}],
 					['text',
-						['tspan', {x:"-5", y:"4", style:"font-size:12px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;text-align:center;text-anchor:end;font-family:Roboto"},
+						['tspan', {x:"-4", y:"4", style:"font-size:12px;font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;text-align:center;text-anchor:end;font-family:Roboto"},
 							fname
 						]
 					]
