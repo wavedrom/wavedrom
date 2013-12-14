@@ -1,0 +1,105 @@
+<html>
+<head>
+  <title>Hitchhiker's Guide to the WaveDrom (Part 2)</title>
+  <link rel="shortcut icon" href="images/favicon.ico"/>
+  <script type="text/javascript" src="skins/default.js"></script>
+  <!--script type="text/javascript" src="skins/narrow.js"></script-->
+  <script type="text/javascript" src="WaveDrom.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Inconsolata|Varela+Round' rel='stylesheet' type='text/css'>
+  <link href="tutorial.css" media="screen" rel="Stylesheet" type="text/css" /> 
+</head>
+
+<body>
+
+<div class="content">
+
+<h1>Hitchhiker's Guide to the WaveDrom (Part 2)</h1>
+
+Logic schematic.
+
+<h2>Step 1. Timing diagram</h2>
+
+<pre>
+{ "signal" : [{ "name": "Alfa", "wave": "01.zx=ud.23.45" }] }
+</pre>
+
+<script type="WaveDrom">
+{ "signal" : [{ "name": "Alfa", "wave": "01.zx=ud.23.45" }] }
+</script>
+
+<h2>Step 2. Circuit diagram</h2>
+
+<h3>74LS688</h3>
+
+<div>
+<div>
+<pre>
+{ assign:
+  ["nand",
+    ["nxor", ["not", "p0"], ["not", "q0"]],
+    ["nxor", ["not", "p1"], ["not", "q1"]],
+    ["nxor", ["not", "p2"], ["not", "q2"]],
+    "...",
+    ["nxor", ["not", "p7"], ["not", "q7"]],
+    ["not","~en"]
+  ]
+}
+</pre>
+</div>
+
+<div>
+<script type="WaveDrom">
+{ assign:
+  ["nand",
+    ["nxor", ["not", "p0"], ["not", "q0"]],
+    ["nxor", ["not", "p1"], ["not", "q1"]],
+    ["nxor", ["not", "p2"], ["not", "q2"]],
+    "...",
+    ["nxor", ["not", "p7"], ["not", "q7"]],
+    ["not","~en"]
+  ]
+}
+</script>
+</div>
+</div>
+
+<h3>XOR Gate</h3>
+
+<pre>
+{ assign:
+  ["or",
+    ["and", ["not", "a"], "b"],
+    ["and", ["not", "b"], "a"]
+  ]
+}
+</pre>
+
+<script type="WaveDrom">
+{ assign:
+  ["or",
+    ["and", ["not", "a"], "b"],
+    ["and", ["not", "b"], "a"]
+  ]
+}
+</script>
+
+</div>
+
+<script>(function(){ window.addEventListener("load", WaveDrom.ProcessAll, false); })();</script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-21660728-1']);
+  _gaq.push(['_setDomainName', 'wavedrom.googlecode.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</body>
+</html>
