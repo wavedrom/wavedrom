@@ -290,7 +290,7 @@ if (undefined === JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "2013.07.17",
+	version: "2013.12.16",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -1139,9 +1139,6 @@ WaveDrom.InsertSVGTemplateAssign = function (index, parent, source) {
 			id: "svgcontent_" + index,
 			xmlns:"http://www.w3.org/2000/svg",
 			"xmlns:xlink":"http://www.w3.org/1999/xlink",
-			height:512,
-			viewBox: "0 0 512 512",
-			width:512,
 			overflow:"hidden"
 		},
 		['style', '.pinname{font-size:12px; font-style:normal; font-variant:normal; font-weight:500; font-stretch:normal; text-align:center; text-anchor:end; font-family:Helvetica}']
@@ -1263,13 +1260,20 @@ WaveDrom.RenderAssign = function (index, source) {
 		return ret;
 	};
 
-	var tree, xmax, svg;
+	var tree, state, xmax, svg, svgcontent, width, height;
 	tree = source.assign;
-	xmax = render (tree, {x:0,y:0,xmax:0}).xmax;
+	state = render (tree, {x:0,y:0,xmax:0, ymax:0});
+  xmax = state.xmax;
 	//console.log (JSON.stringify(tree));
 	svg = draw_boxes (tree, xmax);
 	//console.log (JSON.stringify(svg));
-	document.getElementById("svgcontent_" + index).insertBefore(JsonML.parse(['g', {transform:"translate(128.5, 32.5)"}, svg]), null);
+  width = 32 * (xmax + 1) + 96;
+  height = 8 * state.y + 8;
+  svgcontent = document.getElementById("svgcontent_" + index);
+  svgcontent.setAttribute('viewBox', "0 0 " + width + " " + height);
+  svgcontent.setAttribute('width', width);
+  svgcontent.setAttribute('height', height);
+	svgcontent.insertBefore(JsonML.parse(['g', {transform:"translate(96.5, 16.5)"}, svg]), null);
 };
 
 WaveDrom.RenderWaveForm = function (index) {
@@ -1305,7 +1309,7 @@ WaveDrom.RenderWaveForm = function (index) {
 	};
 
 	var source, ret,
-	root, groups, svgcontent, content, width, height, uwidth, uheight,
+	root, groups, svgcontent, content, width, height,
 	glengths, xmax = 0, i;
 
 	source = eva (index);
@@ -1330,13 +1334,10 @@ WaveDrom.RenderWaveForm = function (index) {
 		height = (content.length * this.lane.yo +
 		this.lane.yh0 + this.lane.yh1 + this.lane.yf0 + this.lane.yf1);
 
-		uwidth  = width;
-		uheight = height;
-
 		svgcontent = document.getElementById("svgcontent_" + index);
 		svgcontent.setAttribute('viewBox', "0 0 " + width + " " + height);
-		svgcontent.setAttribute('width', uwidth);
-		svgcontent.setAttribute('height', uheight);
+		svgcontent.setAttribute('width', width);
+		svgcontent.setAttribute('height', height);
 		svgcontent.setAttribute('overflow', 'hidden');
 		root.setAttribute('transform', 'translate(' + (this.lane.xg + 0.5) + ', ' + ((this.lane.yh0 + this.lane.yh1) + 0.5) + ')');
 	} else if (source.assign) {
