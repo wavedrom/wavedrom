@@ -290,7 +290,7 @@ if (undefined === JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "2013.12.16",
+	version: "2013.12.17",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -1158,12 +1158,12 @@ WaveDrom.RenderAssign = function (index, source) {
 			if (Object.prototype.toString.call(tree[i]) === '[object Array]') {
 				state = render (tree[i], {x:(state.x+1), y:state.y, xmax:state.xmax});
 			} else {
-				tree[i] = {name:tree[i], x:state.x+1, y:state.y};
+				tree[i] = {name:tree[i], x:(state.x+1), y:state.y};
 				state.y += 2;
 			}
 		}
 		tree[0] = {name:tree[0], x:state.x, y:Math.round((y + (state.y-2))/2)};
-		state.x--;
+    state.x--;
 		return state;
 	};
 	function draw_body (type, inputs) {
@@ -1260,14 +1260,22 @@ WaveDrom.RenderAssign = function (index, source) {
 		return ret;
 	};
 
-	var tree, state, xmax, svg, svgcontent, width, height;
-	tree = source.assign;
-	state = render (tree, {x:0,y:0,xmax:0, ymax:0});
+	var tree, state, xmax, svg = ['g'], svgcontent, width, height, i, ilen;
+  ilen = source.assign.length;
+  state = {x:0,y:0,xmax:0, ymax:0};
+  tree = source.assign;
+  for (i = 0; i < ilen; i++) {
+    state = render (tree[i][1], state);
+    state.x++;
+  }
   xmax = state.xmax;
-	//console.log (JSON.stringify(tree));
-	svg = draw_boxes (tree, xmax);
+	console.log (JSON.stringify(tree));
+
+  for (i = 0; i < ilen; i++) {
+    svg.push(draw_boxes (tree[i][1], xmax));
+  }
 	//console.log (JSON.stringify(svg));
-  width = 32 * (xmax + 1) + 96;
+  width = 200 * (xmax + 1) + 96;
   height = 8 * state.y + 8;
   svgcontent = document.getElementById("svgcontent_" + index);
   svgcontent.setAttribute('viewBox', "0 0 " + width + " " + height);

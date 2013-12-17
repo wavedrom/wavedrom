@@ -35,30 +35,30 @@ Logic schematic.
 <div>
 <div>
 <pre>
-{ assign:
-  ["nand",
+{ assign:[
+  ["z", ["nand",
     ["nxor", ["not", "p0"], ["not", "q0"]],
     ["nxor", ["not", "p1"], ["not", "q1"]],
     ["nxor", ["not", "p2"], ["not", "q2"]],
     "...",
     ["nxor", ["not", "p7"], ["not", "q7"]],
     ["not","~en"]
-  ]
-}
+  ]]
+]}
 </pre>
 </div>
 <div>
 <script type="WaveDrom">
-{ assign:
-  ["nand",
+{ assign:[
+  ["z", ["nand",
     ["nxor", ["not", "p0"], ["not", "q0"]],
     ["nxor", ["not", "p1"], ["not", "q1"]],
     ["nxor", ["not", "p2"], ["not", "q2"]],
     "...",
     ["nxor", ["not", "p7"], ["not", "q7"]],
     ["not","~en"]
-  ]
-}
+  ]]
+]}
 </script>
 </div>
 </div>
@@ -66,21 +66,65 @@ Logic schematic.
 <h3>XOR Gate</h3>
 
 <pre>
-{ assign:
-  ["or",
-    ["and", ["not", "a"], "b"],
-    ["and", ["not", "b"], "a"]
+{ assign:[
+  ["out",
+    ["or",
+      ["and", ["not", "a"], "b"],
+      ["and", ["not", "b"], "a"]
+    ]
   ]
-}
+]}
 </pre>
 
 <script type="WaveDrom">
-{ assign:
-  ["or",
-    ["and", ["not", "a"], "b"],
-    ["and", ["not", "b"], "a"]
+{ assign:[
+  ["out",
+    ["or",
+      ["and", ["not", "a"], "b"],
+      ["and", ["not", "b"], "a"]
+    ]
   ]
-}
+]}
+</script>
+
+<h3>Binary to Gray</h3>
+
+<pre>
+{ assign:[
+  ["g0", ["xor", "b0", "b1"]],
+  ["g1", ["xor", "b1", "b2"]],
+  ["g2", ["xor", "b2", "b3"]],
+  ["g3", ["buf", "b3"]]
+]}
+</pre>
+
+<script type="WaveDrom">
+{ assign:[
+  ["g0", ["xor", "b0", "b1"]],
+  ["g1", ["xor", "b1", "b2"]],
+  ["g2", ["xor", "b2", "b3"]],
+  ["g3", ["buf", "b3"]]
+]}
+</script>
+
+<h3>Gray to Binary</h3>
+
+<pre>
+{ assign:[
+  ["b3", ["buf", "g3"]],
+  ["b2", ["xor", "g2", "b3"]],
+  ["b1", ["xor", "g1", "b2"]],
+  ["b0", ["xor", "g0", "b1"]]
+]}
+</pre>
+
+<script type="WaveDrom">
+{ assign:[
+  ["b3", ["buf", "g3"]],
+  ["b2", ["xor", "g2", "b3"]],
+  ["b1", ["xor", "g1", "b2"]],
+  ["b0", ["xor", "g0", "b1"]]
+]}
 </script>
 
 </div>
