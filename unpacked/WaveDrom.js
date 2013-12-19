@@ -290,7 +290,7 @@ if (undefined === JsonML) { JsonML = {}; }
 })();
 
 var WaveDrom = {
-	version: "2013.12.17",
+	version: "2013.12.18",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -1141,7 +1141,7 @@ WaveDrom.InsertSVGTemplateAssign = function (index, parent, source) {
 			"xmlns:xlink":"http://www.w3.org/1999/xlink",
 			overflow:"hidden"
 		},
-		['style', '.pinname{font-size:12px; font-style:normal; font-variant:normal; font-weight:500; font-stretch:normal; text-align:center; text-anchor:end; font-family:Helvetica}']
+		['style', '.pinname {font-size:12px; font-style:normal; font-variant:normal; font-weight:500; font-stretch:normal; text-align:center; text-anchor:end; font-family:Helvetica} .wirename {font-size:12px; font-style:normal; font-variant:normal; font-weight:500; font-stretch:normal; text-align:center; text-anchor:start; font-family:Helvetica} .wirename:hover {fill:blue} .gate {color:#000; fill:#ffc; fill-opacity: 1;stroke:#000; stroke-width:1; stroke-opacity:1} .gate:hover {fill:red !important; } .wire {fill:none; stroke:#000; stroke-width:1; stroke-opacity:1}']
 	];
 	node = JsonML.parse(e);
 	parent.insertBefore(node, null);
@@ -1168,20 +1168,23 @@ WaveDrom.RenderAssign = function (index, source) {
 	};
 	function draw_body (type, inputs) {
 		var e, gates = {
-			not:  'm -16,0 4,0 m 0,-6 0,12 10,-6 z m 10,6 c 0,1.104569 0.895431,2 2,2 1.104569,0 2,-0.895431 2,-2 0,-1.104569 -0.895431,-2 -2,-2 -1.104569,0 -2,0.895431 -2,2 z',
-			buf:  'm -2,0 2,0 m -12,-6 0,12 10,-6 z m -4,6 4,0',
-			and:  'm -16,-10 5,0 c 6,0 11,4 11,10 0,6 -5,10 -11,10 l -5,0 z',
-			nand: 'm -16,-10 3,0 c 6,0 11,4 11,10 0,6 -5,10 -11,10 l -3,0 z M 2,0 C 2,1.104569 1.104569,2 0,2 -1.104569,2 -2,1.104569 -2,0 c 0,-1.104569 0.895431,-2 2,-2 1.104569,0 2,0.895431 2,2 z',
-			or:   'm -18,-10 4,0 c 6,0 12,5 14,10 -2,5 -8,10 -14,10 l -4,0 c 2.5,-5 2.5,-15 0,-20 z',
-			nor:  'M 2,0 C 2,1.10457 1.104569,2 0,2 -1.104569,2 -2,0.745356 -2,0 c 0,-0.745356 0.895431,-2 2,-2 1.104569,0 2,0.89543 2,2 z m -20,-10 2,0 c 6,0 12,5 14,10 -2,5 -8,10 -14,10 l -2,0 c 2.5,-5 2.5,-15 0,-20 z',
-			xor:  'm -21,-10 c 1,3 2,6 2,10 m 0,0 c 0,4 -1,7 -2,10 m 3,-20 4,0 c 6,0 12,5 14,10 -2,5 -8,10 -14,10 l -4,0 c 1,-3 2,-6 2,-10 0,-4 -1,-7 -2,-10 z',
-			nxor: 'm -21,-10 c 1,3 2,6 2,10 m 0,0 c 0,4 -1,7 -2,10 M 2,0 C 2,1.10457 1.104569,2 0,2 -1.104569,2 -2,0.745356 -2,0 c 0,-0.745356 0.895431,-2 2,-2 1.104569,0 2,0.89543 2,2 z m -20,-10 2,0 c 6,0 12,5 14,10 -2,5 -8,10 -14,10 l -2,0 c 1,-3 2,-6 2,-10 0,-4 -1,-7 -2,-10 z',
-			add:  'm -8,5 0,-10 m -5,5 10,0 m 3,0 c 0,4.418278 -3.581722,8 -8,8 -4.418278,0 -8,-3.581722 -8,-8 0,-4.418278 3.581722,-8 8,-8 4.418278,0 8,3.581722 8,8 z',
-			mul:  'm -4,4 -8,-8 m 0,8 8,-8 m 4,4 c 0,4.418278 -3.581722,8 -8,8 -4.418278,0 -8,-3.581722 -8,-8 0,-4.418278 3.581722,-8 8,-8 4.418278,0 8,3.581722 8,8 z',
+			"~":  'm -16,0 4,0 m 0,-6 0,12 10,-6 z m 10,6 c 0,1.104569 0.895431,2 2,2 1.104569,0 2,-0.895431 2,-2 0,-1.104569 -0.895431,-2 -2,-2 -1.104569,0 -2,0.895431 -2,2 z',
+			"=":  'm -2,0 2,0 m -12,-6 0,12 10,-6 z m -4,6 4,0',
+			"&":  'm -16,-10 5,0 c 6,0 11,4 11,10 0,6 -5,10 -11,10 l -5,0 z',
+			"~&": 'm -16,-10 3,0 c 6,0 11,4 11,10 0,6 -5,10 -11,10 l -3,0 z M 2,0 C 2,1.104569 1.104569,2 0,2 -1.104569,2 -2,1.104569 -2,0 c 0,-1.104569 0.895431,-2 2,-2 1.104569,0 2,0.895431 2,2 z',
+			"|":   'm -18,-10 4,0 c 6,0 12,5 14,10 -2,5 -8,10 -14,10 l -4,0 c 2.5,-5 2.5,-15 0,-20 z',
+			"~|":  'M 2,0 C 2,1.10457 1.104569,2 0,2 -1.104569,2 -2,0.745356 -2,0 c 0,-0.745356 0.895431,-2 2,-2 1.104569,0 2,0.89543 2,2 z m -20,-10 2,0 c 6,0 12,5 14,10 -2,5 -8,10 -14,10 l -2,0 c 2.5,-5 2.5,-15 0,-20 z',
+			"^":  'm -21,-10 c 1,3 2,6 2,10 m 0,0 c 0,4 -1,7 -2,10 m 3,-20 4,0 c 6,0 12,5 14,10 -2,5 -8,10 -14,10 l -4,0 c 1,-3 2,-6 2,-10 0,-4 -1,-7 -2,-10 z',
+			"~^": 'm -21,-10 c 1,3 2,6 2,10 m 0,0 c 0,4 -1,7 -2,10 M 2,0 C 2,1.10457 1.104569,2 0,2 -1.104569,2 -2,0.745356 -2,0 c 0,-0.745356 0.895431,-2 2,-2 1.104569,0 2,0.89543 2,2 z m -20,-10 2,0 c 6,0 12,5 14,10 -2,5 -8,10 -14,10 l -2,0 c 1,-3 2,-6 2,-10 0,-4 -1,-7 -2,-10 z',
+			"+":  'm -8,5 0,-10 m -5,5 10,0 m 3,0 c 0,4.418278 -3.581722,8 -8,8 -4.418278,0 -8,-3.581722 -8,-8 0,-4.418278 3.581722,-8 8,-8 4.418278,0 8,3.581722 8,8 z',
+			"*":  'm -4,4 -8,-8 m 0,8 8,-8 m 4,4 c 0,4.418278 -3.581722,8 -8,8 -4.418278,0 -8,-3.581722 -8,-8 0,-4.418278 3.581722,-8 8,-8 4.418278,0 8,3.581722 8,8 z',
 			box:  'm -16,-10 16,0 0,20 -16,0 z'
 		};
-		e = gates[type] || gates.box;
-		return ['path', {d: e, style: "color:#000;fill:#ffc;fill-opacity:1;stroke:#000;stroke-width:1;stroke-opacity:1"}];
+    if (e = gates[type]) {
+      return ['path', {class:'gate', d: e}];
+    } else {
+      return ['text', ['tspan', {x:"-14", y:"4", class:"wirename"}, type]];
+    }
 	};
 	function draw_gate (spec) { // ['type', [x,y], [x,y] ... ]
 		var i, ilen, ret = ['g'], ys = [];
@@ -1194,7 +1197,7 @@ WaveDrom.RenderAssign = function (index, source) {
 				{transform:"translate(16,0)"},
 				['path', {
 					d: 'M  '+spec[2][0]+','+Math.min.apply(null, ys)+' '+spec[2][0]+','+Math.max.apply(null, ys),
-					style:'fill:none;stroke:#000;stroke-width:1;stroke-opacity:1'
+					class: 'wire'
 				}]
 			]
 		);
@@ -1204,7 +1207,7 @@ WaveDrom.RenderAssign = function (index, source) {
 					['path',
 						{
 							d:'m  '+spec[i][0]+','+spec[i][1]+' 16,0',
-							style: "fill:none;stroke:#085;stroke-width:1;stroke-opacity:1"
+							class: 'wire'
 						}
 					]
 				]
@@ -1265,14 +1268,14 @@ WaveDrom.RenderAssign = function (index, source) {
   state = {x:0,y:0,xmax:0, ymax:0};
   tree = source.assign;
   for (i = 0; i < ilen; i++) {
-    state = render (tree[i][1], state);
+    state = render (tree[i], state);
     state.x++;
   }
   xmax = state.xmax;
 	console.log (JSON.stringify(tree));
 
   for (i = 0; i < ilen; i++) {
-    svg.push(draw_boxes (tree[i][1], xmax));
+    svg.push(draw_boxes (tree[i], xmax));
   }
 	//console.log (JSON.stringify(svg));
   width = 200 * (xmax + 1) + 96;
