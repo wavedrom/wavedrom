@@ -1141,7 +1141,7 @@ WaveDrom.InsertSVGTemplateAssign = function (index, parent, source) {
 			"xmlns:xlink":"http://www.w3.org/1999/xlink",
 			overflow:"hidden"
 		},
-		['style', '.pinname {font-size:12px; font-style:normal; font-variant:normal; font-weight:500; font-stretch:normal; text-align:center; text-anchor:end; font-family:Helvetica} .wirename {font-size:12px; font-style:normal; font-variant:normal; font-weight:500; font-stretch:normal; text-align:center; text-anchor:start; font-family:Helvetica} .wirename:hover {fill:blue} .gate {color:#000; fill:#ffc; fill-opacity: 1;stroke:#000; stroke-width:1; stroke-opacity:1} .gate:hover {fill:red !important; } .wire {fill:none; stroke:#000; stroke-width:1; stroke-opacity:1}']
+		['style', '.pinname {font-size:12px; font-style:normal; font-variant:normal; font-weight:500; font-stretch:normal; text-align:center; text-anchor:end; font-family:Helvetica} .wirename {font-size:12px; font-style:normal; font-variant:normal; font-weight:500; font-stretch:normal; text-align:center; text-anchor:start; font-family:Helvetica} .wirename:hover {fill:blue} .gate {color:#000; fill:#ffc; fill-opacity: 1;stroke:#000; stroke-width:1; stroke-opacity:1} .gate:hover {fill:red !important; } .wire {fill:none; stroke:#000; stroke-width:1; stroke-opacity:1} .grid {fill:#fff; fill-opacity:1; stroke:none}']
 	];
 	node = JsonML.parse(e);
 	parent.insertBefore(node, null);
@@ -1263,28 +1263,35 @@ WaveDrom.RenderAssign = function (index, source) {
 		return ret;
 	};
 
-	var tree, state, xmax, svg = ['g'], svgcontent, width, height, i, ilen;
+	var tree, state, xmax, svg = ['g'], grid = ['g'], svgcontent, width, height, i, ilen, j, jlen;
   ilen = source.assign.length;
-  state = {x:0,y:0,xmax:0, ymax:0};
+  state = {x:0,y:2,xmax:0};
   tree = source.assign;
   for (i = 0; i < ilen; i++) {
     state = render (tree[i], state);
     state.x++;
   }
-  xmax = state.xmax;
+  xmax = state.xmax+3;
 	console.log (JSON.stringify(tree));
 
   for (i = 0; i < ilen; i++) {
     svg.push(draw_boxes (tree[i], xmax));
   }
 	//console.log (JSON.stringify(svg));
-  width = 200 * (xmax + 1) + 96;
-  height = 8 * state.y + 8;
+  width  = 32 * (xmax + 1) + 1;
+  height = 8 * (state.y + 1) - 7;
+  ilen = 4 * (xmax + 1);
+  jlen = state.y+1;
+  for (i = 0; i <= ilen; i++) {
+    for (j = 0; j <= jlen; j++) {
+      grid.push(['rect', {height:1, width:1, x:(i*8-0.5), y:(j*8-0.5), class:'grid'}]);
+    }
+  }
   svgcontent = document.getElementById("svgcontent_" + index);
   svgcontent.setAttribute('viewBox', "0 0 " + width + " " + height);
   svgcontent.setAttribute('width', width);
   svgcontent.setAttribute('height', height);
-	svgcontent.insertBefore(JsonML.parse(['g', {transform:"translate(96.5, 16.5)"}, svg]), null);
+	svgcontent.insertBefore(JsonML.parse(['g', {transform:"translate(0.5, 0.5)"}, grid, svg]), null);
 };
 
 WaveDrom.RenderWaveForm = function (index) {
