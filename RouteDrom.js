@@ -287,9 +287,9 @@ var RouteDrom = RouteDrom || {};
 RouteDrom.Init = function (label) {
   function random_aro () {
     var  i, ilen, ret = [];
-    ilen = 40; //*Math.random();
+    ilen = 30; //*Math.random();
     for (i = 0; i < ilen; i++) {
-      ret.push(Math.floor(8 *Math.random()));
+      ret.push(Math.floor(10 *Math.random()));
     }
     return ret;
   };
@@ -317,12 +317,18 @@ RouteDrom.Init = function (label) {
           for (m = 0; m < mlen; m++) {
             if (heap[m] === null) {
               heap[m] = j;
-              ret[j] = m;
+              ret[j] = m+2;
               break;
             }
           }
         } else if (k.slice(-1)[0] === i) { // release slot
-          heap[ret[j]] = null;
+          mlen = heap.length;
+          for (m = 0; m < mlen; m++) {
+            if (heap[m] === j) {
+              heap[m] = null;
+              break;
+            }
+          }
         }
       }
     }
@@ -336,28 +342,37 @@ RouteDrom.Init = function (label) {
     return ret;
   };
   function draw (aro, hyp, slt, xmax) {
-    var x0, y0, x1, y1, i, ilen, svg = ['g'];
-    ilen = aro.length;
-    for (i = 0; i < ilen; i++) {
-      x0 = slt[aro[i]];
-      x1 = 1+xmax-x0;
-      svg.push(['path', {d: 'm '+16*x0+','+(16*i)+' '+(16*x1)+',0', class:'wire'}]);
-      svg.push(['g',
-        {transform: 'translate('+(16*x0)+','+(16*i)+')'},
-        ['path', {d:'M 2,0 a 2,2 0 1 1 -4,0 2,2 0 1 1 4,0 z'}],
-      ]);
-    }
+    var x, x1, y, y1, ys, i, ilen, j, jlen, svg, ret = ['g'];
     ilen = hyp.length;
     for (i = 0; i < ilen; i++) {
-      x0 = slt[i];
-      if (hyp[i]) {
-        y0 = hyp[i][0];
-        y1 = hyp[i].slice(-1)[0] - y0;
-        svg.push(['path', {d: 'm '+(16*x0)+','+(16*y0)+' 0,'+(16*y1), class:'wire'}]);
-        svg.push(['path', {d: 'm -16,'+(16*y0)+' '+(16*(x0+1))+',0', class:'wire'}]);
+      ys = hyp[i];
+      if ('undefined' === typeof ys) { continue; }
+      svg = ['g', ['title', i+'']];
+      x = slt[i];
+      y = ys[0];
+      if (x === null) {
+        svg.push(['path', {d: 'm 0,'+(16*y)+' '+(16*xmax)+',0', class:'wire'}]);
+        ret.push(svg);
+        continue;
+      };
+      svg.push(['path', {d: 'm 0,'+(16*y)+' '+(16*x)+',0', class:'wire'}]);
+      y1 = ys.slice(-1)[0] - y;
+      svg.push(['path', {d: 'm '+(16*x)+','+(16*y)+' 0,'+(16*y1), class:'wire'}]);
+      jlen = ys.length;
+      for (j = 0; j < jlen; j++) {
+        y = ys[j];
+        x1 = xmax-x;
+        svg.push(['path', {d: 'm '+(16*x)+','+(16*y)+' '+(16*x1)+',0', class:'wire'}]);
+        if (j < (jlen-1)) {
+          svg.push(['g',
+            {transform: 'translate('+(16*x)+','+(16*y)+')'},
+            ['path', {d:'M 2,0 a 2,2 0 1 1 -4,0 2,2 0 1 1 4,0 z'}],
+          ]);
+        }
       }
+      ret.push(svg);
     }
-    return svg;
+    return ret;
   };
 
   // Hypergraph crossing
@@ -368,7 +383,7 @@ RouteDrom.Init = function (label) {
   console.log (JSON.stringify(hyp));
   slt = slots (aro, hyp);
   console.log (slt);
-  xmax = Math.max.apply(Math, slt);
+  xmax = Math.max.apply(Math, slt) + 2;
   console.log (xmax);
   svg = draw (aro, hyp, slt, xmax);
 	document.getElementById(label).insertBefore(JsonML.parse(svg), null);
