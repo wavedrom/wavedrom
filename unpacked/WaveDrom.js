@@ -1041,12 +1041,19 @@ WaveDrom.parseConfig = function (source) {
 	function ToNumber(x) {
 		return x > 0 ? Math.round(x) : 1;
 	}
+	var hscale;
 	this.lane.hscale = 1;
 	if (this.lane.hscale0) {
 		this.lane.hscale = this.lane.hscale0;
 	}
 	if (source && source.config && source.config.hscale) {
-		this.lane.hscale = ToNumber(source.config.hscale);
+		hscale = Math.round(ToNumber(source.config.hscale));
+		if (hscale > 0) {
+			if (hscale > 100) {
+				hscale = 100;				
+			}
+			this.lane.hscale = hscale;
+		}
 	}
 	this.lane.yh0 = 0;
 	this.lane.yh1 = 0;
