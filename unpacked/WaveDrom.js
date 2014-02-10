@@ -655,7 +655,7 @@ WaveDrom.RenderMarks = function (root, content, index) {
 	};
 	function ticktock (root, ref1, ref2, x, dx, y, len) {
 		"use strict";
-		var i, tmark, step = 1, offset, val, L = [], tmp;
+		var i, tmark, step = 1, offset, dp = 0, val, L = [], tmp;
 		if (root[ref1] === undefined || root[ref1][ref2] === undefined) { return; }
 		val = root[ref1][ref2];
 		if (typeof val === 'string') {
@@ -682,12 +682,16 @@ WaveDrom.RenderMarks = function (root, content, index) {
 			} else if (val.length === 2) {
 				offset = Number (val[0]);
 				step   = Number (val[1]);
+				tmp = val[1].split('.');
+				if ( tmp.length === 2 ) {
+					dp = tmp[1].length;
+				}
 				if (isNaN(offset) || isNaN(step)) {
 					L = val;
 				} else {
-					step = step - offset;
+					offset = step * offset;
 					for (var i = 0; i < len; i += 1) {
-						L[i] = step * i + offset;
+						L[i] = (step * i + offset).toFixed(dp);
 					}
 				}
 			} else {
