@@ -1191,7 +1191,7 @@ WaveDrom.RenderAssign = function (index, source) {
 			"*":  'm -4,4 -8,-8 m 0,8 8,-8 m 4,4 c 0,4.418278 -3.581722,8 -8,8 -4.418278,0 -8,-3.581722 -8,-8 0,-4.418278 3.581722,-8 8,-8 4.418278,0 8,3.581722 8,8 z',
 			box:  'm -16,-10 16,0 0,20 -16,0 z'
 		};
-    if (e === gates[type]) {
+    if (e = gates[type]) {
       return ['path', {class:'gate', d: e}];
     } else {
       return ['text', ['tspan', {x:"-14", y:"4", class:"wirename"}, type]];
