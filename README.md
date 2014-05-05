@@ -16,5 +16,5 @@
 
 ## Screenshot
 
-![alt text](https://github.com/drom/wavedrom/raw/master/screenshot.png "screenshot")
+![alt text](https://github.com/drom/wavedrom/raw/master/images/screenshot.png "screenshot")
 
