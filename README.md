@@ -18,3 +18,4 @@
 
 ![alt text](https://github.com/drom/wavedrom/raw/master/images/screenshot.png "screenshot")
 
+See [LICENSE](https://github.com/drom/wavedrom/blob/master/LICENSE).
