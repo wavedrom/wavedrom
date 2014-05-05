@@ -1,18 +1,20 @@
+![alt text](https://github.com/drom/wavedrom/raw/master/images/logo.png "logo")
+
 | [EDITOR](http://wavedrom.googlecode.com/svn/trunk/editor.html) | [TUTORIAL](http://wavedrom.googlecode.com/svn/trunk/tutorial.html) |
 
 [WaveDrom] is Free and Open Source online digital timing diagram (waveform) rendering engine that uses javascript, HTML5 and SVG to convert [WaveJSON] input text description into SVG vector graphics.
 
-[WaveJSON] is an application of the [http://json.org/ JSON (JavaScript Object Notation)] format. The purpose of WaveJSON is to provide a compact exchange format for digital timing diagrams utilized by digital HW / IC engineers.
+[WaveJSON] is an application of the [JSON (JavaScript Object Notation)](http://json.org/) format. The purpose of WaveJSON is to provide a compact exchange format for digital timing diagrams utilized by digital HW / IC engineers.
 
-[http://wavedrom.googlecode.com/svn/trunk/editor.html WaveDromEditor] is online real-time editor of digital timing diagrams based on [WaveDrom] engine and [WaveJSON] format. The engine using [WaveDromSkin] skin mechanism to render complete picture. Multiple timing diagrams can be embedded into your HTML page as described in [WaveDromPlugins].
+[WaveDromEditor](http://wavedrom.googlecode.com/svn/trunk/editor.html) is online real-time editor of digital timing diagrams based on [WaveDrom] engine and [WaveJSON] format. The engine using [WaveDromSkin] skin mechanism to render complete picture. Multiple timing diagrams can be embedded into your HTML page as described in [WaveDromPlugins].
 
-https://wavedrom.googlecode.com/svn/trunk/images/firefox_22.gif 4+
-https://wavedrom.googlecode.com/svn/trunk/images/chrome_22.gif 10+
-https://wavedrom.googlecode.com/svn/trunk/images/safari_22.gif 5.1+
-https://wavedrom.googlecode.com/svn/trunk/images/opera_22.gif 12+
-https://wavedrom.googlecode.com/svn/trunk/images/ie_22_no.gif not supported
+![alt text](https://github.com/drom/wavedrom/raw/master/images/firefox_22.gif "firefox") 4+
+![alt text](https://github.com/drom/wavedrom/raw/master/images/chrome_22.gif "chrome") 10+
+![alt text](https://github.com/drom/wavedrom/raw/master/images/safari_22.gif "safari") 5.1+
+![alt text](https://github.com/drom/wavedrom/raw/master/images/opera_22.gif "opera") 12+
+![alt text](https://github.com/drom/wavedrom/raw/master/images/ie_22.gif "ie") 11
 
-==Screenshot===
+## Screenshot
 
-https://wavedrom.googlecode.com/svn/trunk/screenshot.png
+![alt text](https://github.com/drom/wavedrom/raw/master/screenshot.png "screenshot")
 
