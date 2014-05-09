@@ -20,7 +20,7 @@
 
 ## Community
 
-Please use WaveDrom user group [http://groups.google.com/group/wavedrom] for discussions, questions, ideas, whatever.
+Please use [WaveDrom user group](http://groups.google.com/group/wavedrom) for discussions, questions, ideas, whatever.
 
 ## License
 
