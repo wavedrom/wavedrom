@@ -18,4 +18,10 @@
 
 ![alt text](https://github.com/drom/wavedrom/raw/master/images/screenshot.png "screenshot")
 
+## Community
+
+Please use WaveDrom user group [http://groups.google.com/group/wavedrom] for discussions, questions, ideas, whatever.
+
+## License
+
 See [LICENSE](https://github.com/drom/wavedrom/blob/master/LICENSE).
