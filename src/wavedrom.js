@@ -4,6 +4,7 @@ var JsonML;
 if (undefined === JsonML) { JsonML = {}; }
 
 (function () {
+	'use strict';
 	//attribute name mapping
 	var ATTRMAP = {
 			rowspan : "rowSpan",
@@ -498,12 +499,11 @@ WaveDrom.ViewSourceSVG = function (label) {
 WaveDrom.parseWaveLanes = function (sig) {
 	"use strict";
 	function data_extract (e) {
-		"use strict";
 		var tmp = e.data;
-		if (tmp === undefined) { return null };
-		if (typeof (tmp) === 'string') { return tmp.split(' ') };
+		if (tmp === undefined) { return null; }
+		if (typeof (tmp) === 'string') { return tmp.split(' '); }
 		return tmp;
-	};
+	}
 	var x, sigx, content = [], tmp0 = [];
 	for (x in sig) {
 		sigx = sig[x];
@@ -637,7 +637,6 @@ WaveDrom.RenderWaveLane = function (root, content, index) {
 WaveDrom.RenderMarks = function (root, content, index) {
 	"use strict";
 	function captext (root, anchor, y) {
-		"use strict";
 		var tmark;
 		if (root[anchor] && root[anchor].text) {
 			tmark = JsonML.parse([
@@ -652,9 +651,8 @@ WaveDrom.RenderMarks = function (root, content, index) {
 			tmark.setAttributeNS(xmlns, "xml:space", "preserve");
 			g.insertBefore(tmark, null);
 		}
-	};
+	}
 	function ticktock (root, ref1, ref2, x, dx, y, len) {
-		"use strict";
 		var i, tmark, step = 1, offset, dp = 0, val, L = [], tmp;
 		if (root[ref1] === undefined || root[ref1][ref2] === undefined) { return; }
 		val = root[ref1][ref2];
@@ -663,10 +661,10 @@ WaveDrom.RenderMarks = function (root, content, index) {
 		} else if (typeof val === 'number' || typeof val === 'boolean') {
 			offset = Number (val);
 			val = [];
-			for (var i = 0; i < len; i += 1) {
+			for (i = 0; i < len; i += 1) {
 				val.push (i + offset);
 			}
-		};
+		}
 		if (Object.prototype.toString.call (val) === '[object Array]') {
 			if (val.length === 0) {
 				return;
@@ -675,7 +673,7 @@ WaveDrom.RenderMarks = function (root, content, index) {
 				if (isNaN(offset)) {
 					L = val;
 				} else {
-					for (var i = 0; i < len; i += 1) {
+					for (i = 0; i < len; i += 1) {
 						L[i] = i + offset;
 					}
 				}
@@ -690,7 +688,7 @@ WaveDrom.RenderMarks = function (root, content, index) {
 					L = val;
 				} else {
 					offset = step * offset;
-					for (var i = 0; i < len; i += 1) {
+					for (i = 0; i < len; i += 1) {
 						L[i] = (step * i + offset).toFixed(dp);
 					}
 				}
@@ -716,7 +714,7 @@ WaveDrom.RenderMarks = function (root, content, index) {
 			tmark.setAttributeNS(xmlns, "xml:space", "preserve");
 			g.insertBefore(tmark, null);
 		}
-	};
+	}
 
 	var i, g, marks, mstep, mmstep, labeltext, gy,
 	svgns = 'http://www.w3.org/2000/svg',
@@ -1159,6 +1157,7 @@ WaveDrom.InsertSVGTemplateAssign = function (index, parent, source) {
 };
 
 WaveDrom.RenderAssign = function (index, source) {
+	'use strict';
 	function render (tree, state) {
 		var head, y, i, ilen;
 		state.xmax = Math.max(state.xmax, state.x);
@@ -1174,9 +1173,9 @@ WaveDrom.RenderAssign = function (index, source) {
 			}
 		}
 		tree[0] = {name:tree[0], x:state.x, y:Math.round((y + (state.y-2))/2)};
-    state.x--;
+		state.x--;
 		return state;
-	};
+	}
 	function draw_body (type, inputs) {
 		var e, gates = {
 			"~":  'm -16,0 4,0 m 0,-6 0,12 10,-6 z m 10,6 c 0,1.104569 0.895431,2 2,2 1.104569,0 2,-0.895431 2,-2 0,-1.104569 -0.895431,-2 -2,-2 -1.104569,0 -2,0.895431 -2,2 z',
@@ -1191,18 +1190,18 @@ WaveDrom.RenderAssign = function (index, source) {
 			"*":  'm -4,4 -8,-8 m 0,8 8,-8 m 4,4 c 0,4.418278 -3.581722,8 -8,8 -4.418278,0 -8,-3.581722 -8,-8 0,-4.418278 3.581722,-8 8,-8 4.418278,0 8,3.581722 8,8 z',
 			box:  'm -16,-10 16,0 0,20 -16,0 z'
 		};
-    if (e = gates[type]) {
-      return ['path', {class:'gate', d: e}];
-    } else {
-      return ['text', ['tspan', {x:"-14", y:"4", class:"wirename"}, type]];
-    }
-	};
+		if (e = gates[type]) {
+			return ['path', {class:'gate', d: e}];
+		} else {
+			return ['text', ['tspan', {x:"-14", y:"4", class:"wirename"}, type]];
+		}
+	}
 	function draw_gate (spec) { // ['type', [x,y], [x,y] ... ]
 		var i, ilen, ret = ['g'], ys = [];
 		ilen = spec.length;
 		for (i = 2; i < ilen; i++) {
 			ys.push(spec[i][1]);
-		};
+		}
 		ret.push(
 			['g',
 				{transform:"translate(16,0)"},
@@ -1223,7 +1222,7 @@ WaveDrom.RenderAssign = function (index, source) {
 					]
 				]
 			);
-		};
+		}
 		ret.push(
 			['g',
 				{
@@ -1234,7 +1233,7 @@ WaveDrom.RenderAssign = function (index, source) {
 			]
 		);
 		return ret;
-	};
+	}
 	function draw_boxes (tree, xmax) {
 		var ret = ['g'], i, ilen, fx, fy, fname, spec = [];
 		if (Object.prototype.toString.call(tree) === '[object Array]') {
@@ -1272,7 +1271,7 @@ WaveDrom.RenderAssign = function (index, source) {
 			);
 		}
 		return ret;
-	};
+	}
 
 	var tree, state, xmax, svg = ['g'], grid = ['g'], svgcontent, width, height, i, ilen, j, jlen;
   ilen = source.assign.length;
@@ -1310,19 +1309,19 @@ WaveDrom.RenderWaveForm = function (index) {
 	function erra (e) {
 		console.log (e.stack);
 		return { signal: [{ name: ['tspan', ['tspan', {class:'error h5'}, 'Error: '], e.message] }]};
-	};
+	}
 	function eva (index) {
 		var TheTextBox, source;
 		TheTextBox = document.getElementById ("InputJSON_" + index);
 
 		if (TheTextBox.type && TheTextBox.type == 'textarea') {
-			try { source = eval('(' + TheTextBox.value + ')') } catch (e) { return erra (e); };
+			try { source = eval('(' + TheTextBox.value + ')'); } catch (e) { return erra (e); }
 		} else {
-			try { source = eval('(' + TheTextBox.innerHTML + ')') } catch (e) { return erra (e); };
-		};
+			try { source = eval('(' + TheTextBox.innerHTML + ')'); } catch (e) { return erra (e); }
+		}
 		if (Object.prototype.toString.call(source) !== '[object Object]') {
 			return erra ({ message: "[Semantic]: The root has to be an Object: '{signal:[...]}'"});
-		};
+		}
 		if (source.signal) {
 			if (Object.prototype.toString.call(source.signal) !== '[object Array]') {
 				return erra ({ message: "[Semantic]: 'signal' object has to be an Array 'signal:[]'"});
@@ -1333,9 +1332,9 @@ WaveDrom.RenderWaveForm = function (index) {
 			}
 		} else {
 			return erra ({ message: "[Semantic]: 'signal:[...]' or 'assign:[...]' property is missing inside the root Object"});
-		};
+		}
 		return source;
-	};
+	}
 
 	var source, ret,
 	root, groups, svgcontent, content, width, height,

@@ -25,7 +25,8 @@
   },
   "homepage": "https://github.com/drom/wavedrom",
   "devDependencies": {
-    "grunt": "~0.4.4",
+    "grunt":                "~0.4.4",
+    "jshint":               "2.5.x",
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-uglify": "~0.4.0"
   }
