@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/drom/wavedrom.svg?branch=master)](https://travis-ci.org/drom/wavedrom)
+
 ![alt text](https://github.com/drom/wavedrom/raw/master/images/logo.png "logo")
 
 | [EDITOR](http://wavedrom.googlecode.com/svn/trunk/editor.html) | [TUTORIAL](http://wavedrom.googlecode.com/svn/trunk/tutorial.html) |
