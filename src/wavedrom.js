@@ -266,7 +266,7 @@ if (undefined === JsonML) { JsonML = {}; }
 				return null;
 			}
 			//!!!!!!!!!!!!!!
-			svgns   = 'http://www.w3.org/2000/svg';
+			var svgns = 'http://www.w3.org/2000/svg';
 			var elem;
 			//			elem = patch(document.createElement(tagName), jml, filter);
 			elem = patch(document.createElementNS(svgns, tagName), jml, filter);
@@ -1040,7 +1040,7 @@ WaveDrom.RenderArcs = function (root, source, index, top) {
 
 WaveDrom.parseConfig = function (source) {
 	"use strict";
-	function ToNumber(x) {
+	function tonumber (x) {
 		return x > 0 ? Math.round(x) : 1;
 	}
 	var hscale;
@@ -1049,7 +1049,7 @@ WaveDrom.parseConfig = function (source) {
 		this.lane.hscale = this.lane.hscale0;
 	}
 	if (source && source.config && source.config.hscale) {
-		hscale = Math.round(ToNumber(source.config.hscale));
+		hscale = Math.round (tonumber (source.config.hscale));
 		if (hscale > 0) {
 			if (hscale > 100) {
 				hscale = 100;				
@@ -1061,16 +1061,16 @@ WaveDrom.parseConfig = function (source) {
 	this.lane.yh1 = 0;
 	this.lane.head = source.head;
 	if (source && source.head) {
-		if (source.head.tick || source.head.tick == 0) { this.lane.yh0 = 20; }
-		if (source.head.tock || source.head.tock == 0) { this.lane.yh0 = 20; }
+		if (source.head.tick || source.head.tick === 0) { this.lane.yh0 = 20; }
+		if (source.head.tock || source.head.tock === 0) { this.lane.yh0 = 20; }
 		if (source.head.text) { this.lane.yh1 = 46; this.lane.head.text = source.head.text; }
 	}
 	this.lane.yf0 = 0;
 	this.lane.yf1 = 0;
 	this.lane.foot = source.foot;
 	if (source && source.foot) {
-		if (source.foot.tick || source.foot.tick == 0) { this.lane.yf0 = 20; }
-		if (source.foot.tock || source.foot.tock == 0) { this.lane.yf0 = 20; }
+		if (source.foot.tick || source.foot.tick === 0) { this.lane.yf0 = 20; }
+		if (source.foot.tock || source.foot.tock === 0) { this.lane.yf0 = 20; }
 		if (source.foot.text) { this.lane.yf1 = 46; this.lane.foot.text = source.foot.text; }
 	}
 };
@@ -1190,7 +1190,8 @@ WaveDrom.RenderAssign = function (index, source) {
 			"*":  'm -4,4 -8,-8 m 0,8 8,-8 m 4,4 c 0,4.418278 -3.581722,8 -8,8 -4.418278,0 -8,-3.581722 -8,-8 0,-4.418278 3.581722,-8 8,-8 4.418278,0 8,3.581722 8,8 z',
 			box:  'm -16,-10 16,0 0,20 -16,0 z'
 		};
-		if (e = gates[type]) {
+		e = gates[type];
+		if (e) {
 			return ['path', {class:'gate', d: e}];
 		} else {
 			return ['text', ['tspan', {x:"-14", y:"4", class:"wirename"}, type]];
@@ -1415,7 +1416,7 @@ WaveDrom.EditorRefresh = function () {
 	asvg = document.getElementById("download_svg");
 	asvg.href = 'data:image/svg+xml;base64,' + window.btoa(ssvg);
 
-	sjson = localStorage ['waveform'];
+	sjson = localStorage.waveform;
 	ajson = document.getElementById("download_json");
 	ajson.href = 'data:text/json;base64,' + window.btoa(sjson);
 };
