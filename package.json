@@ -7,7 +7,7 @@
     "doc": "doc"
   },
   "scripts": {
-    "test": "test"
+    "test": "grunt test"
   },
   "repository": {
     "type": "git",
@@ -23,5 +23,10 @@
   "bugs": {
     "url": "https://github.com/drom/wavedrom/issues"
   },
-  "homepage": "https://github.com/drom/wavedrom"
+  "homepage": "https://github.com/drom/wavedrom",
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-uglify": "~0.4.0"
+  }
 }
