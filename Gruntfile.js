@@ -8,7 +8,7 @@ module.exports = function(grunt) {
     },
     concat: {
       dist: {
-        src: ['src/JsonML.js', 'src/WaveDrom.js'],
+        src: ['src/JsonML.js', 'src/WaveDrom.js', 'src/Save.js'],
         dest: 'build/build.js',
       },
     },
