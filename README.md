@@ -4,11 +4,11 @@
 
 ## Introduction
 
-**WaveDrom** is Free and Open Source online digital timing diagram (waveform) rendering engine that uses javascript, HTML5 and SVG to convert [WaveJSON](wiki/WaveJSON) input text description into SVG vector graphics.
+**WaveDrom** is Free and Open Source online digital timing diagram (waveform) rendering engine that uses javascript, HTML5 and SVG to convert [WaveJSON](https://github.com/drom/wavedrom/wiki/WaveJSON) input text description into SVG vector graphics.
 
-[WaveJSON](wiki/WaveJSON) is an application of the [JSON](http://json.org/) format. The purpose of [WaveJSON](wiki/WaveJSON) is to provide a compact exchange format for digital timing diagrams utilized by digital HW / IC engineers.
+[WaveJSON](https://github.com/drom/wavedrom/wiki/WaveJSON) is an application of the [JSON](http://json.org/) format. The purpose of [WaveJSON](https://github.com/drom/wavedrom/wiki/WaveJSON) is to provide a compact exchange format for digital timing diagrams utilized by digital HW / IC engineers.
 
-The engine using [WaveDromSkin](wiki/WaveDromSkin) skin mechanism to render complete picture.
+The engine using [WaveDromSkin](https://github.com/drom/wavedrom/wiki/WaveDromSkin) skin mechanism to render complete picture.
 
 ## Screenshot
 
@@ -41,7 +41,7 @@ There are 3 steps to insert **WaveDrom** diagrams directly into your page:
 <body onload="WaveDrom.ProcessAll()">
 ```
 
-3) Insert [WaveJSON](wiki/WaveJSON) source inside HTML ``<body>`` wrapped with ``<script>`` tag:
+3) Insert [WaveJSON](https://github.com/drom/wavedrom/wiki/WaveJSON) source inside HTML ``<body>`` wrapped with ``<script>`` tag:
 
 ```html
 <script type="WaveDrom">
