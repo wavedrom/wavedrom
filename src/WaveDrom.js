@@ -9,7 +9,7 @@ var WaveDrom = {
 		xg     : 120,   // tmpgraphlane0.x
 		//		yg     : 0,     // head gap
 		yh0    : 0,     // head gap title
-		yh1    : 0,     // head gap 
+		yh1    : 0,     // head gap
 		yf0    : 0,     // foot gap
 		yf1    : 0,     // foot gap
 		y0     : 5,    // tmpgraphlane0.y
@@ -247,7 +247,7 @@ WaveDrom.FindLaneMarkers = function (lanetext) {
 	if (lcount !== 0) {
 		ret.push(gcount - ((lcount + 1) / 2));
 	}
-	
+
 	return ret;
 };
 
@@ -466,7 +466,7 @@ WaveDrom.RenderGroups = function (root, groups, index) {
 	var g, i, group, grouplabel, label, x, y, name,
 		svgns = 'http://www.w3.org/2000/svg',
 		xmlns = 'http://www.w3.org/XML/1998/namespace';
-	
+
 	for (i in groups) {
 		group = document.createElementNS(svgns, "path");
 		group.id = ("group_" + i + "_" + index);
@@ -762,7 +762,7 @@ WaveDrom.parseConfig = function (source) {
 		hscale = Math.round (tonumber (source.config.hscale));
 		if (hscale > 0) {
 			if (hscale > 100) {
-				hscale = 100;				
+				hscale = 100;
 			}
 			this.lane.hscale = hscale;
 		}
@@ -961,7 +961,7 @@ WaveDrom.RenderAssign = function (index, source) {
 			ret.push(draw_gate (spec));
 			for (i = 1; i < ilen; i++) {
 				ret.push(draw_boxes (tree[i], xmax));
-			}		
+			}
 		} else {
 			fname = tree.name;
 			fx = 32*(xmax-tree.x);
