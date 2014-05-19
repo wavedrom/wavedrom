@@ -20,6 +20,10 @@ module.exports = function(grunt) {
         src: 'build/build.js',
         dest: 'build/WaveDrom.js'
       }
+    },
+    clean: {
+      build: ['build'],
+      node:['node_modules']
     }
   });
 
@@ -27,6 +31,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
   // Default task(s).
   grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
