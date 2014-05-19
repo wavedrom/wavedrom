@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/drom/wavedrom.svg?branch=master)](https://travis-ci.org/drom/wavedrom)
+[![Build Status](https://travis-ci.org/drom/wavedrom.svg?branch=master)](https://travis-ci.org/drom/wavedrom) [![NPM version](https://img.shields.io/npm/v/wavedrom.svg)](https://www.npmjs.org/package/wavedrom)
 
 [EDITOR](http://wavedrom.github.io/editor.html) | [TUTORIAL](http://wavedrom.github.io/tutorial.html)
 
@@ -68,7 +68,6 @@ Script will find all ``<script type="WaveDrom">`` instances and insert timing di
 ### Blogs & Wikis
 
 Blogger integration: (http://wavedrom.blogspot.com/2011/08/wavedrom-digital-timing-diagram-in-your.html)
-
 
 ## Editor
 
