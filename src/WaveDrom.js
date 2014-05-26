@@ -1,7 +1,6 @@
 /*jslint evil: true */
 
 var WaveDrom = {
-	version: "2014.05.11",
 	timer: 0,
 	lane: {
 		xs     : 20,    // tmpgraphlane0.width
@@ -1015,46 +1014,45 @@ WaveDrom.RenderAssign = function (index, source) {
 	svgcontent.insertBefore(JsonML.parse(['g', {transform:"translate(0.5, 0.5)"}, grid, svg]), null);
 };
 
-WaveDrom.RenderWaveForm = function (index) {
+WaveDrom.eva = function (id) {
 	"use strict";
 	function erra (e) {
 		console.log (e.stack);
 		return { signal: [{ name: ['tspan', ['tspan', {class:'error h5'}, 'Error: '], e.message] }]};
 	}
-	function eva (index) {
-		var TheTextBox, source;
-		TheTextBox = document.getElementById ("InputJSON_" + index);
+	var TheTextBox, source;
+	TheTextBox = document.getElementById (id);
 
-		if (TheTextBox.type && TheTextBox.type == 'textarea') {
-			try { source = eval('(' + TheTextBox.value + ')'); } catch (e) { return erra (e); }
-		} else {
-			try { source = eval('(' + TheTextBox.innerHTML + ')'); } catch (e) { return erra (e); }
-		}
-		if (Object.prototype.toString.call(source) !== '[object Object]') {
-			return erra ({ message: "[Semantic]: The root has to be an Object: '{signal:[...]}'"});
-		}
-		if (source.signal) {
-			if (Object.prototype.toString.call(source.signal) !== '[object Array]') {
-				return erra ({ message: "[Semantic]: 'signal' object has to be an Array 'signal:[]'"});
-			}
-		} else if (source.assign) {
-			if (Object.prototype.toString.call(source.assign) !== '[object Array]') {
-				return erra ({ message: "[Semantic]: 'assign' object hasto be an Array 'assign:[]'"});
-			}
-		} else {
-			return erra ({ message: "[Semantic]: 'signal:[...]' or 'assign:[...]' property is missing inside the root Object"});
-		}
-		return source;
+	if (TheTextBox.type && TheTextBox.type == 'textarea') {
+		try { source = eval('(' + TheTextBox.value + ')'); } catch (e) { return erra (e); }
+	} else {
+		try { source = eval('(' + TheTextBox.innerHTML + ')'); } catch (e) { return erra (e); }
 	}
+	if (Object.prototype.toString.call(source) !== '[object Object]') {
+		return erra ({ message: "[Semantic]: The root has to be an Object: '{signal:[...]}'"});
+	}
+	if (source.signal) {
+		if (Object.prototype.toString.call(source.signal) !== '[object Array]') {
+			return erra ({ message: "[Semantic]: 'signal' object has to be an Array 'signal:[]'"});
+		}
+	} else if (source.assign) {
+		if (Object.prototype.toString.call(source.assign) !== '[object Array]') {
+			return erra ({ message: "[Semantic]: 'assign' object hasto be an Array 'assign:[]'"});
+		}
+	} else {
+		return erra ({ message: "[Semantic]: 'signal:[...]' or 'assign:[...]' property is missing inside the root Object"});
+	}
+	return source;
+};
 
-	var source, ret,
+WaveDrom.RenderWaveForm = function (index, source, output) {
+	"use strict";
+	var ret,
 	root, groups, svgcontent, content, width, height,
 	glengths, xmax = 0, i;
 
-	source = eva (index);
-
 	if (source.signal) {
-		WaveDrom.InsertSVGTemplate(index, document.getElementById('WaveDrom_Display_' + index), source);
+		this.InsertSVGTemplate(index, document.getElementById(output + index), source);
 		this.parseConfig (source);
 		ret = this.rec(source.signal, {'x':0, 'y':0, 'xmax':0, 'width':[], 'lanes':[], 'groups':[]});
 		root          = document.getElementById("lanes_" + index);
@@ -1080,8 +1078,8 @@ WaveDrom.RenderWaveForm = function (index) {
 		svgcontent.setAttribute('overflow', 'hidden');
 		root.setAttribute('transform', 'translate(' + (this.lane.xg + 0.5) + ', ' + ((this.lane.yh0 + this.lane.yh1) + 0.5) + ')');
 	} else if (source.assign) {
-		WaveDrom.InsertSVGTemplateAssign(index, document.getElementById('WaveDrom_Display_' + index), source);
-		WaveDrom.RenderAssign(index, source);
+		this.InsertSVGTemplateAssign(index, document.getElementById(output + index), source);
+		this.RenderAssign(index, source);
 	}
 };
 
@@ -1107,7 +1105,7 @@ WaveDrom.ProcessAll = function () {
 	}
 	// second pass
 	for (i = 0; i < index; i += 1) {
-		WaveDrom.RenderWaveForm(i);
+		WaveDrom.RenderWaveForm(i, WaveDrom.eva ('InputJSON_' + i), 'WaveDrom_Display_');
 		WaveDrom.AppendSaveAsDialog(i);
 	}
 	// add styles
@@ -1117,7 +1115,7 @@ WaveDrom.ProcessAll = function () {
 WaveDrom.EditorRefresh = function () {
 	"use strict";
 	var svg, ser, ssvg, asvg, sjson, ajson;
-	WaveDrom.RenderWaveForm(0);
+	WaveDrom.RenderWaveForm(0, WaveDrom.eva ('InputJSON_0'), 'WaveDrom_Display_');
 
 	svg = document.getElementById("svgcontent_0");
 	ser = new XMLSerializer();
