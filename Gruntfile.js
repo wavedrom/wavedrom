@@ -18,7 +18,7 @@ module.exports = function(grunt) {
       },
       build: {
         src: 'build/build.js',
-        dest: 'build/WaveDrom.js'
+        dest: 'WaveDrom.js'
       }
     },
     clean: {

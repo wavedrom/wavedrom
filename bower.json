@@ -1,7 +1,7 @@
 {
   "name": "wavedrom",
   "description": "Digital timing diagram in your browser",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "homepage": "https://github.com/drom/wavedrom",
   "keywords": [
     "waveform",
@@ -9,5 +9,6 @@
     "RTL"
   ],
   "author": "alex.drom@gmail.com",
-  "license": "MIT"
+  "license": "MIT",
+  "main": "WaveDrom.js"
 }
