@@ -1106,7 +1106,7 @@ WaveDrom.ProcessAll = function () {
 	// second pass
 	for (i = 0; i < index; i += 1) {
 		WaveDrom.RenderWaveForm(i, WaveDrom.eva ('InputJSON_' + i), 'WaveDrom_Display_');
-		WaveDrom.AppendSaveAsDialog(i);
+		WaveDrom.AppendSaveAsDialog(i, 'WaveDrom_Display_');
 	}
 	// add styles
 	document.head.innerHTML += '<style type="text/css">div.wavedromMenu{position:fixed;border:solid 1pt#CCCCCC;background-color:white;box-shadow:0px 10px 20px #808080;cursor:default;margin:0px;padding:0px;}div.wavedromMenu>ul{margin:0px;padding:0px;}div.wavedromMenu>ul>li{padding:2px 10px;list-style:none;}div.wavedromMenu>ul>li:hover{background-color:#b5d5ff;}</style>';
