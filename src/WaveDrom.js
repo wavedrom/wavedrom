@@ -992,7 +992,7 @@ WaveDrom.RenderAssign = function (index, source) {
     state.x++;
   }
   xmax = state.xmax+3;
-	console.log (JSON.stringify(tree));
+	// console.log (JSON.stringify(tree));
 
   for (i = 0; i < ilen; i++) {
     svg.push(draw_boxes (tree[i], xmax));

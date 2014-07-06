@@ -74,11 +74,11 @@ if (undefined === JsonML) { JsonML = {}; }
                         } else {
                             elem.style = value;
                         }
-                    } else if (name === "class") {
-                        elem.className = value;
-                        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                        elem.setAttribute(name, value);
-                        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//                    } else if (name === "class") {
+//                        elem.className = value;
+//                        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//                        elem.setAttribute(name, value);
+//                        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     } else if (EVTS[name]) {
                         addHandler(elem, name, value);
 
