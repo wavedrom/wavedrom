@@ -25,15 +25,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.3496094"
-     inkscape:cx="384"
-     inkscape:cy="256"
+     inkscape:cx="301.36784"
+     inkscape:cy="224.2185"
      inkscape:document-units="px"
      inkscape:current-layer="svg2"
      showgrid="true"
-     inkscape:window-width="1538"
-     inkscape:window-height="878"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-width="1885"
+     inkscape:window-height="1060"
+     inkscape:window-x="-4"
+     inkscape:window-y="-3"
      inkscape:window-maximized="1"
      showguides="true"
      inkscape:guide-bbox="true">
@@ -113,7 +113,7 @@
     <path
        id="rect3755-4-2"
        style="color:#000000;fill:#ffffce;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-       d="m -16,-10 3,0 c 6,0 11,4 11,10 0,6 -5,10 -11,10 l -3,0 z M 2,0 C 2,1.104569 1.104569,2 0,2 -1.104569,2 -2,1.104569 -2,0 c 0,-1.104569 0.895431,-2 2,-2 1.104569,0 2,0.895431 2,2 z"
+       d="m -16,-10 5,0 c 6,0 11,4 11,10 0,6 -5,10 -11,10 l -5,0 z M 4,0 C 4,1.104569 3.104569,2 2,2 0.895431,2 0,1.104569 0,0 c 0,-1.104569 0.895431,-2 2,-2 1.104569,0 2,0.895431 2,2 z"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="csssccsssss" />
   </g>
@@ -3245,11 +3245,11 @@
      transform="translate(96,440)"
      style="fill:#ffffce;fill-opacity:1">
     <path
-       d="m -2,0 2,0 m -12,-6 0,12 10,-6 z m -4,6 4,0"
+       d="M -11,-6 -11,6 0,0 z m -5,6 5,0"
        style="fill:#ffffce;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:bevel;stroke-opacity:1"
        id="path3011-0-4-9-1-5-1-0"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cccccccc" />
+       sodipodi:nodetypes="cccccc" />
   </g>
   <rect
      style="color:#000000;fill:none;stroke:#ff7f50;stroke-width:0.25;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
