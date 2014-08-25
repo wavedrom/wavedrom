@@ -58,8 +58,8 @@ There are 3 steps to insert **WaveDrom** diagrams directly into your page:
 Script will find all ``<script type="WaveDrom">`` instances and insert timing diagram at that point.
 
 
- * [jsbin](http://jsbin.com/uderuw/15)
- * [jsfiddle](http://jsfiddle.net/H7nBn/22)
+ * [jsbin](http://jsbin.com/uderuw/17)
+ * [jsfiddle](http://jsfiddle.net/H7nBn/25)
 
 
 ### impress.js
