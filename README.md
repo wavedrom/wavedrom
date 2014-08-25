@@ -2,7 +2,7 @@
 [![NPM version](https://img.shields.io/npm/v/wavedrom.svg)](https://www.npmjs.org/package/wavedrom)
 [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
-[EDITOR](http://wavedrom.github.io/editor.html) | [TUTORIAL](http://wavedrom.github.io/tutorial.html)
+[EDITOR](http://wavedrom.com/editor.html) | [TUTORIAL](http://wavedrom.com/tutorial.html)
 
 ## Introduction
 
@@ -14,17 +14,17 @@ The engine using [WaveDromSkin](https://github.com/drom/wavedrom/wiki/WaveDromSk
 
 ## Screenshot
 
-![alt text](http://wavedrom.github.io/images/screenshot.png "screenshot")
+![alt text](http://wavedrom.com/images/screenshot.png "screenshot")
 
 ## Web usage
 
 **WaveDrom** timing diagrams can be embedded into the web pages, blogs, wikis to be rendered by the most of modern browsers:
 
-![alt text](http://wavedrom.github.io/images/firefox_22.gif "firefox") 4+
-![alt text](http://wavedrom.github.io/images/chrome_22.gif "chrome") 10+
-![alt text](http://wavedrom.github.io/images/safari_22.gif "safari") 5.1+
-![alt text](http://wavedrom.github.io/images/opera_22.gif "opera") 12+
-![alt text](http://wavedrom.github.io/images/ie_22.gif "ie") 11
+![alt text](http://wavedrom.com/images/firefox_22.gif "firefox") 4+
+![alt text](http://wavedrom.com/images/chrome_22.gif "chrome") 10+
+![alt text](http://wavedrom.com/images/safari_22.gif "safari") 5.1+
+![alt text](http://wavedrom.com/images/opera_22.gif "opera") 12+
+![alt text](http://wavedrom.com/images/ie_22.gif "ie") 11
 
 ### HTML pages
 
@@ -33,8 +33,8 @@ There are 3 steps to insert **WaveDrom** diagrams directly into your page:
 1) Put following line into your HTML page ```<header>``` or ```<body>```:
 
 ```html
-<script src="http://wavedrom.github.io/skins/default.js" type="text/javascript"></script>
-<script src="http://wavedrom.github.io/WaveDrom.js" type="text/javascript"></script>
+<script src="http://wavedrom.com/skins/default.js" type="text/javascript"></script>
+<script src="http://wavedrom.com/WaveDrom.js" type="text/javascript"></script>
 ```
 
 2) Set ``onload`` event for HTML body.
@@ -64,7 +64,7 @@ Script will find all ``<script type="WaveDrom">`` instances and insert timing di
 
 ### impress.js
 
-(http://wavedrom.github.io/impress.html)
+(http://wavedrom.com/impress.html)
 
 
 ### Blogs & Wikis
@@ -73,7 +73,7 @@ Blogger integration: (http://wavedrom.blogspot.com/2011/08/wavedrom-digital-timi
 
 ## Editor
 
-[WaveDromEditor](http://wavedrom.github.io/editor.html)
+[WaveDromEditor](http://wavedrom.com/editor.html)
 is online real-time editor of digital timing diagrams based on **WaveDrom** engine and **WaveJSON** format.
 
 ## Community
