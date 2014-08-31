@@ -1150,6 +1150,7 @@ WaveDrom.EditorRefresh = function () {
 	var svg, ser, ssvg, asvg, sjson, ajson;
 	WaveDrom.RenderWaveForm(0, WaveDrom.eva ('InputJSON_0'), 'WaveDrom_Display_');
 
+	/*
 	svg = document.getElementById("svgcontent_0");
 	ser = new XMLSerializer();
 	ssvg = '<?xml version="1.0" standalone="no"?>\n' +
@@ -1163,4 +1164,5 @@ WaveDrom.EditorRefresh = function () {
 	sjson = localStorage.waveform;
 	ajson = document.getElementById("download_json");
 	ajson.href = 'data:text/json;base64,' + window.btoa(sjson);
+	*/
 };
