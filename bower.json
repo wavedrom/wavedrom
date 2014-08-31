@@ -1,7 +1,7 @@
 {
   "name": "wavedrom",
   "description": "Digital timing diagram in your browser",
-  "version": "0.9.5",
+  "version": "0.9.8",
   "homepage": "https://github.com/drom/wavedrom",
   "keywords": [
     "waveform",
