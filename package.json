@@ -1,35 +1,39 @@
 {
-  "name": "wavedrom",
-  "version": "0.9.9",
-  "description": "Digital timing diagram in your browser",
-  "homepage": "http://wavedrom.com",
-  "author": "alex.drom@gmail.com",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/drom/wavedrom.git"
-  },
-  "bugs": {
-    "url": "https://github.com/drom/wavedrom/issues"
-  },
-  "main": "WaveDrom.js",
-  "files":["WaveDrom.js", "LICENSE"],
-  "scripts": {
-    "test": "grunt"
-  },
-  "keywords": [
-    "waveform",
-    "verilog",
-    "RTL"
-  ],
-  "devDependencies": {
-    "grunt":                "*",
-    "grunt-cli":            "*",
-    "jshint":               "*",
-    "grunt-contrib-concat": "*",
-    "grunt-contrib-jshint": "*",
-    "grunt-contrib-uglify": "*",
-    "grunt-contrib-clean":  "*",
-    "phantomjs":            "*"
-  }
+    "name": "wavedrom",
+    "version": "0.9.10",
+    "description": "Digital timing diagram in your browser",
+    "homepage": "http://wavedrom.com",
+    "author": "alex.drom@gmail.com",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/drom/wavedrom.git"
+    },
+    "bugs": {
+        "url": "https://github.com/drom/wavedrom/issues"
+    },
+    "main": "WaveDrom.js",
+    "files":[
+        "WaveDrom.js",
+        "LICENSE",
+        "skins/**"
+    ],
+    "scripts": {
+        "test": "grunt"
+    },
+    "keywords": [
+        "waveform",
+        "verilog",
+        "RTL"
+    ],
+    "devDependencies": {
+        "grunt":                "*",
+        "grunt-cli":            "*",
+        "jshint":               "*",
+        "grunt-contrib-concat": "*",
+        "grunt-contrib-jshint": "*",
+        "grunt-contrib-uglify": "*",
+        "grunt-contrib-clean":  "*",
+        "phantomjs":            "*"
+    }
 }
