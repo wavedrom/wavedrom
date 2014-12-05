@@ -1,6 +1,6 @@
 {
     "name": "wavedrom",
-    "version": "0.9.10",
+    "version": "0.9.11",
     "description": "Digital timing diagram in your browser",
     "homepage": "http://wavedrom.com",
     "author": "alex.drom@gmail.com",
@@ -15,6 +15,7 @@
     "main": "WaveDrom.js",
     "files":[
         "WaveDrom.js",
+        "wavedrom.max.js",
         "LICENSE",
         "skins/**"
     ],

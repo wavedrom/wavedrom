@@ -9,21 +9,21 @@ module.exports = function(grunt) {
     concat: {
       dist: {
         src: ['src/JsonML.js', 'src/WaveDrom.js', 'src/Save.js'],
-        dest: 'build/build.js',
-      },
+        dest: 'wavedrom.max.js'
+      }
     },
     uglify: {
       options: {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
       build: {
-        src: 'build/build.js',
+        src: 'wavedrom.max.js',
         dest: 'WaveDrom.js'
       }
     },
     clean: {
       build: ['build'],
-      node:['node_modules']
+      node: ['node_modules']
     }
   });
 

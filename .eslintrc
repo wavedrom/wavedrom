@@ -1,0 +1,11 @@
+{
+    env: {
+        node: true
+    },
+    rules: {
+        quotes: [1, "single"],
+        no-mixed-requires: 1,
+        no-unused-vars: 1,
+        camelcase: 1
+    }
+}
