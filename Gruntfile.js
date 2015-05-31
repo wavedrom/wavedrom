@@ -4,12 +4,11 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         eslint: {
-            all: ['Gruntfile.js', 'src/WaveDrom.js', 'src/Save.js']
+            all: ['Gruntfile.js', 'lib/*.js']
         },
-        concat: {
-            dist: {
-                src: ['src/JsonML.js', 'src/WaveDrom.js', 'src/Save.js'],
-                dest: 'wavedrom.max.js'
+        browserify: {
+            all: {
+                src: ['./lib/wave-drom.js'], dest: 'build/WaveDrom.js'
             }
         },
         uglify: {
@@ -17,8 +16,8 @@ module.exports = function(grunt) {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
             },
             build: {
-                src: 'wavedrom.max.js',
-                dest: 'WaveDrom.js'
+                src: 'build/WaveDrom.js',
+                dest: 'build/WaveDrom.min.js'
             }
         },
         clean: {
@@ -30,9 +29,10 @@ module.exports = function(grunt) {
     // Load the plugin that provides the "uglify" task.
     grunt.loadNpmTasks('grunt-eslint');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-clean');
 
     // Default task(s).
-    grunt.registerTask('default', ['eslint', 'concat', 'uglify']);
+    grunt.registerTask('default', ['eslint', 'browserify', 'uglify']);
 };
