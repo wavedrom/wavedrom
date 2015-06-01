@@ -1081,11 +1081,13 @@ var jsonmlParse = require('./create-element');
          xmlns = 'http://www.w3.org/XML/1998/namespace';
 
      function t1 () {
-         gmark = document.createElementNS(svgns, 'path');
-         gmark.id = ('gmark_' + Edge.from + '_' + Edge.to);
-         gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + to.x   + ',' + to.y);
-         gmark.setAttribute('style', 'fill:none;stroke:#00F;stroke-width:1');
-         gg.insertBefore(gmark, null);
+         if (from && to) {
+             gmark = document.createElementNS(svgns, 'path');
+             gmark.id = ('gmark_' + Edge.from + '_' + Edge.to);
+             gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + to.x   + ',' + to.y);
+             gmark.setAttribute('style', 'fill:none;stroke:#00F;stroke-width:1');
+             gg.insertBefore(gmark, null);
+         }
      }
 
      if (source) {
@@ -1111,7 +1113,7 @@ var jsonmlParse = require('./create-element');
          gg = document.createElementNS(svgns, 'g');
          gg.id = 'wavearcs_' + index;
          root.insertBefore(gg, null);
-         if (top.edge) {
+         if (top.edge && from && to) {
              for (i in top.edge) {
                  Edge.words = top.edge[i].split(' ');
                  Edge.label = top.edge[i].substring(Edge.words[0].length);
