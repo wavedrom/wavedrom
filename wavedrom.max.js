@@ -225,14 +225,16 @@ module.exports = eva;
 'use strict';
 
 function findLaneMarkers (lanetext) {
-    var i, gcount = 0, lcount = 0, ret = [];
+    var gcount = 0,
+        lcount = 0,
+        ret = [];
 
-    for (i in lanetext) {
+    lanetext.forEach(function (e) {
         if (
-            (lanetext[i] === 'vvv-2') ||
-            (lanetext[i] === 'vvv-3') ||
-            (lanetext[i] === 'vvv-4') ||
-            (lanetext[i] === 'vvv-5')
+            (e === 'vvv-2') ||
+            (e === 'vvv-3') ||
+            (e === 'vvv-4') ||
+            (e === 'vvv-5')
         ) {
             lcount += 1;
         } else {
@@ -242,7 +244,9 @@ function findLaneMarkers (lanetext) {
             }
         }
         gcount += 1;
-    }
+
+    });
+
     if (lcount !== 0) {
         ret.push(gcount - ((lcount + 1) / 2));
     }
@@ -325,34 +329,77 @@ var genBrick = require('./gen-brick');
 
 function genWaveBrick (text, extra, times) {
     var x1, x2, x3, y1, y2, x4, x5, x6, xclude, atext, tmp0, tmp1, tmp2, tmp3, tmp4;
+
     x1 = {p:'pclk', n:'nclk', P:'Pclk', N:'Nclk', h:'pclk', l:'nclk', H:'Pclk', L:'Nclk'};
-    x2 = {'0':'0', '1':'1', 'x':'x', 'd':'d', 'u':'u', 'z':'z', '=':'v',  '2':'v',  '3':'v',  '4':'v',  5:'v' };
-    x3 = {'0': '', '1': '', 'x': '', 'd': '', 'u': '', 'z': '', '=':'-2', '2':'-2', '3':'-3', '4':'-4', 5:'-5'};
+
+    x2 = {
+        '0':'0', '1':'1',
+        'x':'x',
+        'd':'d',
+        'u':'u',
+        'z':'z',
+        '=':'v',  '2':'v',  '3':'v',  '4':'v', '5':'v'
+    };
+
+    x3 = {
+        '0': '', '1': '',
+        'x': '',
+        'd': '',
+        'u': '',
+        'z': '',
+        '=':'-2', '2':'-2', '3':'-3', '4':'-4', '5':'-5'
+    };
+
     y1 = {
         'p':'0', 'n':'1',
         'P':'0', 'N':'1',
         'h':'1', 'l':'0',
         'H':'1', 'L':'0',
-        '0':'0', '1':'1', 'x':'x', 'd':'d', 'u':'u', 'z':'z', '=':'v', '2':'v', '3':'v', '4':'v', '5':'v'
+        '0':'0', '1':'1',
+        'x':'x',
+        'd':'d',
+        'u':'u',
+        'z':'z',
+        '=':'v', '2':'v', '3':'v', '4':'v', '5':'v'
     };
+
     y2 = {
         'p': '', 'n': '',
         'P': '', 'N': '',
         'h': '', 'l': '',
         'H': '', 'L': '',
-        '0': '', '1': '', 'x': '', 'd': '', 'u': '', 'z': '', '=':'-2', '2':'-2', '3':'-3', '4':'-4', '5':'-5'
+        '0': '', '1': '',
+        'x': '',
+        'd': '',
+        'u': '',
+        'z': '',
+        '=':'-2', '2':'-2', '3':'-3', '4':'-4', '5':'-5'
     };
+
     x4 = {
         'p': '111', 'n': '000',
         'P': '111', 'N': '000',
         'h': '111', 'l': '000',
         'H': '111', 'L': '000',
-        '0': '000', '1': '111', 'x': 'xxx', 'd': 'ddd', 'u': 'uuu', 'z': 'zzz',
+        '0': '000', '1': '111',
+        'x': 'xxx',
+        'd': 'ddd',
+        'u': 'uuu',
+        'z': 'zzz',
         '=': 'vvv-2', '2': 'vvv-2', '3': 'vvv-3', '4': 'vvv-4', '5': 'vvv-5'
     };
-    x5 = {p:'nclk', n:'pclk', P:'nclk', N:'pclk'};
-    x6 = {p: '000', n: '111', P: '000', N: '111'};
-    xclude = {'hp':'111', 'Hp':'111', 'ln': '000', 'Ln': '000', 'nh':'111', 'Nh':'111', 'pl': '000', 'Pl':'000'};
+
+    x5 = {
+        p:'nclk', n:'pclk', P:'nclk', N:'pclk'
+    };
+
+    x6 = {
+        p: '000', n: '111', P: '000', N: '111'
+    };
+
+    xclude = {
+        'hp':'111', 'Hp':'111', 'ln': '000', 'Ln': '000', 'nh':'111', 'Nh':'111', 'pl': '000', 'Pl':'000'
+    };
 
     atext = text.split('');
     //if (atext.length !== 2) { return genBrick(['xxx'], extra, times); }
@@ -395,7 +442,8 @@ module.exports = genWaveBrick;
 },{"./gen-brick":6}],9:[function(require,module,exports){
 'use strict';
 
-var jsonmlParse = require('./create-element');
+var jsonmlParse = require('./create-element'),
+    w3 = require('./w3');
 
 function insertSVGTemplateAssign (index, parent) {
     var node, e;
@@ -404,7 +452,7 @@ function insertSVGTemplateAssign (index, parent) {
         parent.removeChild(parent.childNodes[0]);
     }
     e =
-    ['svg', {id: 'svgcontent_' + index, xmlns:'http://www.w3.org/2000/svg', 'xmlns:xlink':'http://www.w3.org/1999/xlink', overflow:'hidden'},
+    ['svg', {id: 'svgcontent_' + index, xmlns: w3.svg, 'xmlns:xlink': w3.xlink, overflow:'hidden'},
         ['style', '.pinname {font-size:12px; font-style:normal; font-variant:normal; font-weight:500; font-stretch:normal; text-align:center; text-anchor:end; font-family:Helvetica} .wirename {font-size:12px; font-style:normal; font-variant:normal; font-weight:500; font-stretch:normal; text-align:center; text-anchor:start; font-family:Helvetica} .wirename:hover {fill:blue} .gate {color:#000; fill:#ffc; fill-opacity: 1;stroke:#000; stroke-width:1; stroke-opacity:1} .gate:hover {fill:red !important; } .wire {fill:none; stroke:#000; stroke-width:1; stroke-opacity:1} .grid {fill:#fff; fill-opacity:1; stroke:none}']
     ];
     node = jsonmlParse(e);
@@ -415,10 +463,11 @@ module.exports = insertSVGTemplateAssign;
 
 /* eslint-env browser */
 
-},{"./create-element":2}],10:[function(require,module,exports){
+},{"./create-element":2,"./w3":29}],10:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element'),
+    w3 = require('./w3'),
     waveSkin = require('./wave-skin');
 
 function insertSVGTemplate (index, parent, source, lane) {
@@ -443,9 +492,19 @@ function insertSVGTemplate (index, parent, source, lane) {
         lane.xlabel = Number(e[3][1][2][1].x);
         lane.ym     = Number(e[3][1][2][1].y);
     } else {
-        e =
-        ['svg', {id: 'svg', xmlns: 'http://www.w3.org/2000/svg', 'xmlns:xlink': 'http://www.w3.org/1999/xlink', height: '0'},
-            ['g', {id: 'waves'},
+        e = [
+            'svg',
+            {
+                id: 'svg',
+                xmlns: w3.svg,
+                'xmlns:xlink': w3.xlink,
+                height: '0'
+            },
+            [
+                'g',
+                {
+                    id: 'waves'
+                },
                 ['g', {id: 'lanes'}],
                 ['g', {id: 'groups'}]
             ]
@@ -466,7 +525,7 @@ module.exports = insertSVGTemplate;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"./wave-skin":30}],11:[function(require,module,exports){
+},{"./create-element":2,"./w3":29,"./wave-skin":31}],11:[function(require,module,exports){
 'use strict';
 
 //attribute name mapping
@@ -693,6 +752,7 @@ module.exports = hydrate;
 'use strict';
 
 var hydrate = require('./jsonml-hydrate'),
+    w3 = require('./w3'),
     appendChild = require('./jsonml-append-child'),
     addAttributes = require('./jsonml-add-attributes'),
     trimWhitespace = require('./jsonml-trim-whitespace');
@@ -738,6 +798,8 @@ patch = /*DOM*/ function (/*DOM*/ elem, /*JsonML*/ jml, /*function*/ filter) {
 };
 
 parse = /*DOM*/ function (/*JsonML*/ jml, /*function*/ filter) {
+    var elem;
+
     try {
         if (!jml) {
             return null;
@@ -786,14 +848,9 @@ parse = /*DOM*/ function (/*JsonML*/ jml, /*function*/ filter) {
             // in IE styles are effective immediately
             return null;
         }
-        //!!!!!!!!!!!!!!
-        var svgns = 'http://www.w3.org/2000/svg';
-        var elem;
-        //          elem = patch(document.createElement(tagName), jml, filter);
 
-        elem = patch(document.createElementNS(svgns, tagName), jml, filter);
+        elem = patch(document.createElementNS(w3.svg, tagName), jml, filter);
 
-        //!!!!!!!!!!!!!!
         // trim extraneous whitespace
         trimWhitespace(elem);
         // return (elem && (typeof filter === 'function')) ? filter(elem) : elem;
@@ -814,7 +871,7 @@ module.exports = parse;
 /* eslint-env browser */
 /* eslint yoda:1 */
 
-},{"./jsonml-add-attributes":11,"./jsonml-append-child":12,"./jsonml-hydrate":13,"./jsonml-trim-whitespace":15}],15:[function(require,module,exports){
+},{"./jsonml-add-attributes":11,"./jsonml-append-child":12,"./jsonml-hydrate":13,"./jsonml-trim-whitespace":15,"./w3":29}],15:[function(require,module,exports){
 'use strict';
 
 /*bool*/ function isWhitespace(/*DOM*/ node) {
@@ -876,6 +933,7 @@ function parseConfig (source, lane) {
     }
 
     lane.hscale = 1;
+
     if (lane.hscale0) {
         lane.hscale = lane.hscale0;
     }
@@ -891,18 +949,36 @@ function parseConfig (source, lane) {
     lane.yh0 = 0;
     lane.yh1 = 0;
     lane.head = source.head;
+
     if (source && source.head) {
-        if (source.head.tick || source.head.tick === 0) { lane.yh0 = 20; }
-        if (source.head.tock || source.head.tock === 0) { lane.yh0 = 20; }
-        if (source.head.text) { lane.yh1 = 46; lane.head.text = source.head.text; }
+        if (
+            source.head.tick || source.head.tick === 0 ||
+            source.head.tock || source.head.tock === 0
+        ) {
+            lane.yh0 = 20;
+        }
+
+        if (source.head.text) {
+            lane.yh1 = 46;
+            lane.head.text = source.head.text;
+        }
     }
+
     lane.yf0 = 0;
     lane.yf1 = 0;
     lane.foot = source.foot;
     if (source && source.foot) {
-        if (source.foot.tick || source.foot.tick === 0) { lane.yf0 = 20; }
-        if (source.foot.tock || source.foot.tock === 0) { lane.yf0 = 20; }
-        if (source.foot.text) { lane.yf1 = 46; lane.foot.text = source.foot.text; }
+        if (
+            source.foot.tick || source.foot.tick === 0 ||
+            source.foot.tock || source.foot.tock === 0
+        ) {
+            lane.yf0 = 20;
+        }
+
+        if (source.foot.text) {
+            lane.yf1 = 46;
+            lane.foot.text = source.foot.text;
+        }
     }
 }
 
@@ -1058,7 +1134,8 @@ module.exports = rec;
 },{}],22:[function(require,module,exports){
 'use strict';
 
-var jsonmlParse = require('./create-element');
+var jsonmlParse = require('./create-element'),
+    w3 = require('./w3');
 
  function renderArcs (root, source, index, top, lane) {
      var gg,
@@ -1075,14 +1152,16 @@ var jsonmlParse = require('./create-element');
          underlabel,
          from,
          to,
+         dx,
+         dy,
+         lx,
+         ly,
          gmark,
-         lwidth,
-         svgns = 'http://www.w3.org/2000/svg',
-         xmlns = 'http://www.w3.org/XML/1998/namespace';
+         lwidth;
 
      function t1 () {
          if (from && to) {
-             gmark = document.createElementNS(svgns, 'path');
+             gmark = document.createElementNS(w3.svg, 'path');
              gmark.id = ('gmark_' + Edge.from + '_' + Edge.to);
              gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + to.x   + ',' + to.y);
              gmark.setAttribute('style', 'fill:none;stroke:#00F;stroke-width:1');
@@ -1110,7 +1189,7 @@ var jsonmlParse = require('./create-element');
                  }
              }
          }
-         gg = document.createElementNS(svgns, 'g');
+         gg = document.createElementNS(w3.svg, 'g');
          gg.id = 'wavearcs_' + index;
          root.insertBefore(gg, null);
          if (top.edge) {
@@ -1134,7 +1213,7 @@ var jsonmlParse = require('./create-element');
                              },
                              Edge.label + ''
                          ]);
-                         label.setAttributeNS(xmlns, 'xml:space', 'preserve');
+                         label.setAttributeNS(w3.xmlns, 'xml:space', 'preserve');
                          underlabel = jsonmlParse([
                              'rect',
                              {
@@ -1149,10 +1228,11 @@ var jsonmlParse = require('./create-element');
 
                          underlabel.setAttribute('width', lwidth);
                      }
-                     var dx = to.x - from.x;
-                     var dy = to.y - from.y;
-                     var lx = ((from.x + to.x) / 2);
-                     var ly = ((from.y + to.y) / 2);
+                     dx = to.x - from.x;
+                     dy = to.y - from.y;
+                     lx = ((from.x + to.x) / 2);
+                     ly = ((from.y + to.y) / 2);
+
                      switch (Edge.shape) {
                          case '-'  : {
                              break;
@@ -1298,7 +1378,7 @@ module.exports = renderArcs;
 
 /* eslint-env browser */
 
-},{"./create-element":2}],23:[function(require,module,exports){
+},{"./create-element":2,"./w3":29}],23:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element');
@@ -1509,22 +1589,21 @@ module.exports = renderAssign;
 },{"./create-element":2}],24:[function(require,module,exports){
 'use strict';
 
+var w3 = require('./w3');
+
 function renderGaps (root, source, index, lane) {
-    var i, gg, g, b, pos, Stack = [], text,
-        svgns   = 'http://www.w3.org/2000/svg',
-        xlinkns = 'http://www.w3.org/1999/xlink';
+    var i, gg, g, b, pos, Stack = [], text;
 
     if (source) {
 
-        gg = document.createElementNS(svgns, 'g');
+        gg = document.createElementNS(w3.svg, 'g');
         gg.id = 'wavegaps_' + index;
-        //gg.setAttribute('transform', 'translate(' + lane.xg + ')');
         root.insertBefore(gg, null);
 
         for (i in source) {
             lane.period = source[i].period ? source[i].period    : 1;
             lane.phase  = source[i].phase  ? source[i].phase * 2 : 0;
-            g = document.createElementNS(svgns, 'g');
+            g = document.createElementNS(w3.svg, 'g');
             g.id = 'wavegap_' + i + '_' + index;
             g.setAttribute('transform', 'translate(0,' + (lane.y0 + i * lane.yo) + ')');
             gg.insertBefore(g, null);
@@ -1535,9 +1614,9 @@ function renderGaps (root, source, index, lane) {
                 pos = 0;
                 while (Stack.length) {
                     if (Stack.shift() === '|') {
-                        b    = document.createElementNS(svgns, 'use');
+                        b    = document.createElementNS(w3.svg, 'use');
                         // b.id = 'guse_' + pos + '_' + i + '_' + index;
-                        b.setAttributeNS(xlinkns, 'xlink:href', '#gap');
+                        b.setAttributeNS(w3.xlink, 'xlink:href', '#gap');
                         b.setAttribute('transform', 'translate(' + (lane.xs * ((2 * pos + 1) * lane.period * lane.hscale - lane.phase)) + ')');
                         g.insertBefore(b, null);
                     }
@@ -1552,18 +1631,17 @@ module.exports = renderGaps;
 
 /* eslint-env browser */
 
-},{}],25:[function(require,module,exports){
+},{"./w3":29}],25:[function(require,module,exports){
 'use strict';
 
-var jsonmlParse = require('./create-element');
+var jsonmlParse = require('./create-element'),
+    w3 = require('./w3');
 
 function renderGroups (root, groups, index, lane) {
-    var i, group, label, x, y, name, // g grouplabel
-        svgns = 'http://www.w3.org/2000/svg',
-        xmlns = 'http://www.w3.org/XML/1998/namespace';
+    var i, group, label, x, y, name;
 
     for (i in groups) {
-        group = document.createElementNS(svgns, 'path');
+        group = document.createElementNS(w3.svg, 'path');
         group.id = ('group_' + i + '_' + index);
         group.setAttribute('d', 'm ' + (groups[i].x + 0.5) + ',' + (groups[i].y * lane.yo + 3.5 + lane.yh0 + lane.yh1) + ' c -3,0 -5,2 -5,5 l 0,' + (groups[i].height * lane.yo - 16) + ' c 0,3 2,5 5,5');
         group.setAttribute('style', 'stroke:#0041c4;stroke-width:1;fill:none');
@@ -1586,7 +1664,7 @@ function renderGroups (root, groups, index, lane) {
                 },
                 name
             ]);
-            label.setAttributeNS(xmlns, 'xml:space', 'preserve');
+            label.setAttributeNS(w3.xmlns, 'xml:space', 'preserve');
             root.insertBefore(label, null);
         }
     }
@@ -1596,13 +1674,14 @@ module.exports = renderGroups;
 
 /* eslint-env browser */
 
-},{"./create-element":2}],26:[function(require,module,exports){
+},{"./create-element":2,"./w3":29}],26:[function(require,module,exports){
 'use strict';
 
-var jsonmlParse = require('./create-element');
+var jsonmlParse = require('./create-element'),
+    w3 = require('./w3');
 
  function renderMarks (root, content, index, lane) {
-     var i, g, marks, mstep, mmstep, gy, xmlns; // svgns
+     var i, g, marks, mstep, mmstep, gy; // svgns
 
      function captext (cxt, anchor, y) {
          var tmark;
@@ -1617,7 +1696,7 @@ var jsonmlParse = require('./create-element');
                      fill: '#000'
                  }, cxt[anchor].text
              ]);
-             tmark.setAttributeNS(xmlns, 'xml:space', 'preserve');
+             tmark.setAttributeNS(w3.xmlns, 'xml:space', 'preserve');
              g.insertBefore(tmark, null);
          }
      }
@@ -1678,17 +1757,13 @@ var jsonmlParse = require('./create-element');
                      x: i * dx + x,
                      y: y,
                      'text-anchor': 'middle',
-                     //					fill: '#AAA'
                      class: 'muted'
                  }, tmp
              ]);
-             tmark.setAttributeNS(xmlns, 'xml:space', 'preserve');
+             tmark.setAttributeNS(w3.xmlns, 'xml:space', 'preserve');
              g.insertBefore(tmark, null);
          }
      }
-
-     // svgns = 'http://www.w3.org/2000/svg';
-     xmlns = 'http://www.w3.org/XML/1998/namespace';
 
      mstep  = 2 * (lane.hscale);
      mmstep = mstep * lane.xs;
@@ -1725,7 +1800,7 @@ module.exports = renderMarks;
 
 /* eslint-env browser */
 
-},{"./create-element":2}],27:[function(require,module,exports){
+},{"./create-element":2,"./w3":29}],27:[function(require,module,exports){
 'use strict';
 
 var rec = require('./rec'),
@@ -1785,17 +1860,23 @@ module.exports = renderWaveForm;
 'use strict';
 
 var jsonmlParse = require('./create-element'),
+    w3 = require('./w3'),
     findLaneMarkers = require('./find-lane-markers');
 
 function renderWaveLane (root, content, index, lane) {
-    var i, j, k, g, gg, title, b, labels = [1], name,
-
-    xmax     = 0,
-    xgmax    = 0,
-    glengths = [],
-    svgns    = 'http://www.w3.org/2000/svg',
-    xlinkns  = 'http://www.w3.org/1999/xlink',
-    xmlns    = 'http://www.w3.org/XML/1998/namespace';
+    var i,
+        j,
+        k,
+        g,
+        gg,
+        title,
+        b,
+        labels = [1],
+        name,
+        xoffset,
+        xmax     = 0,
+        xgmax    = 0,
+        glengths = [];
 
     for (j = 0; j < content.length; j += 1) {
         name = content[j][0][0];
@@ -1808,26 +1889,26 @@ function renderWaveLane (root, content, index, lane) {
                 }
             ]);
             root.insertBefore(g, null);
+
             if (typeof name === 'number') { name += ''; }
+
             title = jsonmlParse([
                 'text',
                 {
                     x: lane.tgo,
                     y: lane.ym,
                     class: 'info',
-                // fill: '#0041c4', // Pantone 288C
                     'text-anchor': 'end'
                 },
                 name // + '') // name
             ]);
-            title.setAttributeNS(xmlns, 'xml:space', 'preserve');
+            title.setAttributeNS(w3.xmlns, 'xml:space', 'preserve');
             g.insertBefore(title, null);
 
             // scale = lane.xs * (lane.hscale) * 2;
 
             glengths.push(title.getBBox().width);
 
-            var xoffset;
             xoffset = content[j][0][1];
             xoffset = (xoffset > 0) ? (Math.ceil(2 * xoffset) - 2 * xoffset) :
             (-2 * xoffset);
@@ -1842,9 +1923,9 @@ function renderWaveLane (root, content, index, lane) {
 
             if (content[j][1]) {
                 for (i = 0; i < content[j][1].length; i += 1) {
-                    b    = document.createElementNS(svgns, 'use');
+                    b = document.createElementNS(w3.svg, 'use');
                     // b.id = 'use_' + i + '_' + j + '_' + index;
-                    b.setAttributeNS(xlinkns, 'xlink:href', '#' + content[j][1][i]);
+                    b.setAttributeNS(w3.xlink, 'xlink:href', '#' + content[j][1][i]);
                     // b.setAttribute('transform', 'translate(' + (i * lane.xs) + ')');
                     b.setAttribute('transform', 'translate(' + (i * lane.xs) + ')');
                     gg.insertBefore(b, null);
@@ -1864,7 +1945,7 @@ function renderWaveLane (root, content, index, lane) {
                                     },
                                     content[j][2][k] // + '')
                                 ]);
-                                title.setAttributeNS(xmlns, 'xml:space', 'preserve');
+                                title.setAttributeNS(w3.xmlns, 'xml:space', 'preserve');
                                 gg.insertBefore(title, null);
                             }
                         }
@@ -1885,7 +1966,14 @@ module.exports = renderWaveLane;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"./find-lane-markers":5}],29:[function(require,module,exports){
+},{"./create-element":2,"./find-lane-markers":5,"./w3":29}],29:[function(require,module,exports){
+module.exports = {
+    svg: 'http://www.w3.org/2000/svg',
+    xlink: 'http://www.w3.org/1999/xlink',
+    xmlns: 'http://www.w3.org/XML/1998/namespace'
+};
+
+},{}],30:[function(require,module,exports){
 'use strict';
 
 window.WaveDrom = window.WaveDrom || {};
@@ -1900,11 +1988,11 @@ window.WaveDrom.EditorRefresh = editorRefresh;
 
 /* eslint-env browser */
 
-},{"./editor-refresh":3,"./process-all":20,"./render-wave-form":27}],30:[function(require,module,exports){
+},{"./editor-refresh":3,"./process-all":20,"./render-wave-form":27}],31:[function(require,module,exports){
 'use strict';
 
 module.exports = window.WaveSkin;
 
 /* eslint-env browser */
 
-},{}]},{},[29]);
+},{}]},{},[30]);
