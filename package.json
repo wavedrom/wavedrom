@@ -17,6 +17,7 @@
     "WaveDrom.js",
     "wavedrom.max.js",
     "LICENSE",
+    "lib/**",
     "skins/**"
   ],
   "scripts": {
