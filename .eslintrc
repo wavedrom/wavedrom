@@ -3,7 +3,9 @@
         node: true
     },
     rules: {
-        quotes: [1, "single"],
+        strict: [2, 'global'],
+        semi: [2, 'always'],
+        quotes: [1, 'single'],
         no-mixed-requires: 1,
         no-unused-vars: 1,
         camelcase: 0,

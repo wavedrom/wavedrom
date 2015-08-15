@@ -144,7 +144,7 @@ module.exports = jsonmlParse;
 
 /* eslint-env browser */
 
-},{"./jsonml-parse":14}],3:[function(require,module,exports){
+},{"./jsonml-parse":15}],3:[function(require,module,exports){
 'use strict';
 
 var eva = require('./eva'),
@@ -180,7 +180,7 @@ function editorRefresh () {
 
 module.exports = editorRefresh;
 
-},{"./eva":4,"./lane":16,"./render-wave-form":27}],4:[function(require,module,exports){
+},{"./eva":4,"./lane":17,"./render-wave-form":28}],4:[function(require,module,exports){
 'use strict';
 
 function eva (id) {
@@ -442,6 +442,15 @@ module.exports = genWaveBrick;
 },{"./gen-brick":6}],9:[function(require,module,exports){
 'use strict';
 
+module.exports = {
+    processAll: require('./process-all'),
+    renderWaveForm: require('./render-wave-form'),
+    editorRefresh: require('./editor-refresh')
+};
+
+},{"./editor-refresh":3,"./process-all":21,"./render-wave-form":28}],10:[function(require,module,exports){
+'use strict';
+
 var jsonmlParse = require('./create-element'),
     w3 = require('./w3');
 
@@ -463,7 +472,7 @@ module.exports = insertSVGTemplateAssign;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"./w3":29}],10:[function(require,module,exports){
+},{"./create-element":2,"./w3":30}],11:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element'),
@@ -525,7 +534,7 @@ module.exports = insertSVGTemplate;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"./w3":29,"./wave-skin":31}],11:[function(require,module,exports){
+},{"./create-element":2,"./w3":30,"./wave-skin":32}],12:[function(require,module,exports){
 'use strict';
 
 //attribute name mapping
@@ -646,7 +655,7 @@ module.exports = addAttributes;
 /* eslint-env browser */
 /* eslint no-new-func:0 */
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 /*void*/ function appendChild(/*DOM*/ elem, /*DOM*/ child) {
@@ -716,7 +725,7 @@ module.exports = appendChild;
 
 /* eslint-env browser */
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 var trimWhitespace = require('./jsonml-trim-whitespace');
@@ -748,7 +757,7 @@ module.exports = hydrate;
 
 /* eslint-env browser */
 
-},{"./jsonml-trim-whitespace":15}],14:[function(require,module,exports){
+},{"./jsonml-trim-whitespace":16}],15:[function(require,module,exports){
 'use strict';
 
 var hydrate = require('./jsonml-hydrate'),
@@ -871,7 +880,7 @@ module.exports = parse;
 /* eslint-env browser */
 /* eslint yoda:1 */
 
-},{"./jsonml-add-attributes":11,"./jsonml-append-child":12,"./jsonml-hydrate":13,"./jsonml-trim-whitespace":15,"./w3":29}],15:[function(require,module,exports){
+},{"./jsonml-add-attributes":12,"./jsonml-append-child":13,"./jsonml-hydrate":14,"./jsonml-trim-whitespace":16,"./w3":30}],16:[function(require,module,exports){
 'use strict';
 
 /*bool*/ function isWhitespace(/*DOM*/ node) {
@@ -897,7 +906,7 @@ module.exports = trimWhitespace;
 
 /* eslint-env browser */
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 var lane = {
@@ -922,7 +931,7 @@ var lane = {
 
 module.exports = lane;
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 function parseConfig (source, lane) {
@@ -984,7 +993,7 @@ function parseConfig (source, lane) {
 
 module.exports = parseConfig;
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 var genFirstWaveBrick = require('./gen-first-wave-brick'),
@@ -1021,7 +1030,7 @@ function parseWaveLane (text, extra, lane) {
 
 module.exports = parseWaveLane;
 
-},{"./gen-first-wave-brick":7,"./gen-wave-brick":8}],19:[function(require,module,exports){
+},{"./gen-first-wave-brick":7,"./gen-wave-brick":8}],20:[function(require,module,exports){
 'use strict';
 
 var parseWaveLane = require('./parse-wave-lane');
@@ -1057,7 +1066,7 @@ function parseWaveLanes (sig, lane) {
 
 module.exports = parseWaveLanes;
 
-},{"./parse-wave-lane":18}],20:[function(require,module,exports){
+},{"./parse-wave-lane":19}],21:[function(require,module,exports){
 'use strict';
 
 var eva = require('./eva'),
@@ -1074,7 +1083,7 @@ function processAll () {
 
     // first pass
     index = 0; // actual number of valid anchor
-    points = document.getElementsByTagName('SCRIPT');
+    points = document.querySelectorAll('*');
     for (i = 0; i < points.length; i++) {
         if (points.item(i).type && points.item(i).type === 'WaveDrom') {
             points.item(i).setAttribute('id', 'InputJSON_' + index);
@@ -1100,7 +1109,7 @@ module.exports = processAll;
 
 /* eslint-env browser */
 
-},{"./append-save-as-dialog":1,"./eva":4,"./lane":16,"./render-wave-form":27}],21:[function(require,module,exports){
+},{"./append-save-as-dialog":1,"./eva":4,"./lane":17,"./render-wave-form":28}],22:[function(require,module,exports){
 'use strict';
 
 function rec (tmp, state) {
@@ -1131,7 +1140,7 @@ function rec (tmp, state) {
 
 module.exports = rec;
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element'),
@@ -1378,7 +1387,7 @@ module.exports = renderArcs;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"./w3":29}],23:[function(require,module,exports){
+},{"./create-element":2,"./w3":30}],24:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element');
@@ -1586,7 +1595,7 @@ module.exports = renderAssign;
 
 /* eslint-env browser */
 
-},{"./create-element":2}],24:[function(require,module,exports){
+},{"./create-element":2}],25:[function(require,module,exports){
 'use strict';
 
 var w3 = require('./w3');
@@ -1631,7 +1640,7 @@ module.exports = renderGaps;
 
 /* eslint-env browser */
 
-},{"./w3":29}],25:[function(require,module,exports){
+},{"./w3":30}],26:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element'),
@@ -1674,7 +1683,7 @@ module.exports = renderGroups;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"./w3":29}],26:[function(require,module,exports){
+},{"./create-element":2,"./w3":30}],27:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element'),
@@ -1800,7 +1809,7 @@ module.exports = renderMarks;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"./w3":29}],27:[function(require,module,exports){
+},{"./create-element":2,"./w3":30}],28:[function(require,module,exports){
 'use strict';
 
 var rec = require('./rec'),
@@ -1856,7 +1865,7 @@ module.exports = renderWaveForm;
 
 /* eslint-env browser */
 
-},{"./insert-svg-template":10,"./insert-svg-template-assign":9,"./parse-config":17,"./parse-wave-lanes":19,"./rec":21,"./render-arcs":22,"./render-assign":23,"./render-gaps":24,"./render-groups":25,"./render-marks":26,"./render-wave-lane":28}],28:[function(require,module,exports){
+},{"./insert-svg-template":11,"./insert-svg-template-assign":10,"./parse-config":18,"./parse-wave-lanes":20,"./rec":22,"./render-arcs":23,"./render-assign":24,"./render-gaps":25,"./render-groups":26,"./render-marks":27,"./render-wave-lane":29}],29:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element'),
@@ -1966,33 +1975,33 @@ module.exports = renderWaveLane;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"./find-lane-markers":5,"./w3":29}],29:[function(require,module,exports){
+},{"./create-element":2,"./find-lane-markers":5,"./w3":30}],30:[function(require,module,exports){
+'use strict';
+
 module.exports = {
     svg: 'http://www.w3.org/2000/svg',
     xlink: 'http://www.w3.org/1999/xlink',
     xmlns: 'http://www.w3.org/XML/1998/namespace'
 };
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 'use strict';
 
 window.WaveDrom = window.WaveDrom || {};
 
-var processAll = require('./process-all'),
-    renderWaveForm = require('./render-wave-form'),
-    editorRefresh = require('./editor-refresh');
+var index = require('./');
 
-window.WaveDrom.ProcessAll = processAll;
-window.WaveDrom.RenderWaveForm = renderWaveForm;
-window.WaveDrom.EditorRefresh = editorRefresh;
+window.WaveDrom.ProcessAll = index.processAll;
+window.WaveDrom.RenderWaveForm = index.renderWaveForm;
+window.WaveDrom.EditorRefresh = index.editorRefresh;
 
 /* eslint-env browser */
 
-},{"./editor-refresh":3,"./process-all":20,"./render-wave-form":27}],31:[function(require,module,exports){
+},{"./":9}],32:[function(require,module,exports){
 'use strict';
 
 module.exports = window.WaveSkin;
 
 /* eslint-env browser */
 
-},{}]},{},[30]);
+},{}]},{},[31]);
