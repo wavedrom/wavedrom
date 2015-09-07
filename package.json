@@ -40,6 +40,9 @@
     "grunt-eslint": "^17",
     "jshint": "^2.7",
     "phantomjs": "^1.8",
+    "snapsvg" : "^0.4.0",
+    "interact.js": "^1.2.4",
     "sax": "^1.0"
+
   }
 }
