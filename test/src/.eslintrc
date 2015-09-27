@@ -1,0 +1,7 @@
+{
+    rules: {
+        strict: 0,
+        quotes: 0,
+        semi: 0
+    }
+}
