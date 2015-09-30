@@ -1,0 +1,44 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Font Test</title>
+  <link href='http://fonts.googleapis.com/css?family=Roboto|Droid+Sans+Mono|Varela+Round' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<script>
+(function () {
+    var div = document.createElement('div');
+    div.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1000" width="1000" viewBox="0 0 1000 1000"><g><text id="char">a</text></g></svg>';
+    document.body.appendChild(div);
+
+    var char, res, i;
+    res = [];
+    char = document.getElementById('char');
+
+    char.style.fontSize = '100pt';
+    char.style.fontFamily = 'Helvetica';
+
+    for (i = 0; i < 512; i++) {
+        char.innerHTML = String.fromCharCode(i);
+        res.push(char.getBBox().width);
+    }
+    var stat = res.reduce(
+        function (prev, cur, i) {
+            if (i < 200) {
+                prev.max = Math.max(prev.max, cur);
+                if (cur > 0) {
+                    prev.count += 1;
+                    prev.sum += cur;
+                }
+            }
+            return prev;
+        },
+        { max: 0, count: 0, sum: 0 }
+    );
+    // console.log(JSON.stringify(res));
+    // console.log(stat.max, stat.sum / stat.count, (stat.max + stat.sum / stat.count) / 2);
+    console.log(JSON.stringify({ chars: res, other: Math.round((stat.max + stat.sum / stat.count) / 1.8) }));
+})();
+</script>
+</body>
+</html>
