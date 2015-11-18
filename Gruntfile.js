@@ -9,7 +9,7 @@ module.exports = function(grunt) {
         },
         browserify: {
             all: {
-                src: ['./lib/wave-drom.js'], dest: 'build/WaveDrom.js'
+                src: ['./lib/wave-drom.js'], dest: 'wavedrom.max.js'
             }
         },
         uglify: {
@@ -17,8 +17,8 @@ module.exports = function(grunt) {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
             },
             build: {
-                src: 'build/WaveDrom.js',
-                dest: 'build/WaveDrom.min.js'
+                src: 'wavedrom.max.js',
+                dest: 'WaveDrom.js'
             }
         },
         clean: {
