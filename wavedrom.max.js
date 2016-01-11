@@ -1141,7 +1141,8 @@ module.exports = rec;
 },{}],23:[function(require,module,exports){
 'use strict';
 
-var jsonmlParse = require('./create-element'),
+var tspan = require('tspan'),
+    jsonmlParse = require('./create-element'),
     w3 = require('./w3');
 
  function renderArcs (root, source, index, top, lane) {
@@ -1212,13 +1213,15 @@ var jsonmlParse = require('./create-element'),
                  t1();
                  if (from && to) {
                      if (Edge.label) {
-                         label = jsonmlParse(['text',
+                         label = tspan.parse(Edge.label);
+                         label.unshift(
+                             'text',
                              {
                                  style: 'font-size:10px;',
                                  'text-anchor': 'middle'
-                             },
-                             Edge.label + ''
-                         ]);
+                             }
+                         );
+                         label = jsonmlParse(label);
                          label.setAttributeNS(w3.xmlns, 'xml:space', 'preserve');
                          underlabel = jsonmlParse(['rect',
                              {
@@ -1381,7 +1384,7 @@ module.exports = renderArcs;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"./w3":30}],24:[function(require,module,exports){
+},{"./create-element":2,"./w3":30,"tspan":34}],24:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element');
@@ -1637,8 +1640,10 @@ module.exports = renderGaps;
 },{"./w3":30}],26:[function(require,module,exports){
 'use strict';
 
+var tspan = require('tspan');
+
 function renderGroups (groups, index, lane) {
-    var x, y, res = ['g'];
+    var x, y, res = ['g'], ts;
 
     groups.forEach(function (e, i) {
         res.push(['path',
@@ -1655,17 +1660,16 @@ function renderGroups (groups, index, lane) {
 
         x = (e.x - 10);
         y = (lane.yo * (e.y + (e.height / 2)) + lane.yh0 + lane.yh1);
-        res.push(['text',
+        ts = tspan.parse(e.name);
+        ts.unshift(
+            'text',
             {
-                x: x,
-                y: y,
                 'text-anchor': 'middle',
                 class: 'info',
-                transform: 'rotate(270,' + x + ',' + y + ')',
                 'xml:space': 'preserve'
-            },
-            e.name.toString()
-        ]);
+            }
+        );
+        res.push(['g', {transform: 'translate(' + x + ',' + y + ')'}, ['g', {transform: 'rotate(270)'}, ts]]);
     });
     return res;
 }
@@ -1674,96 +1678,101 @@ module.exports = renderGroups;
 
 /* eslint-env browser */
 
-},{}],27:[function(require,module,exports){
+},{"tspan":34}],27:[function(require,module,exports){
 'use strict';
 
-var jsonmlParse = require('./create-element'),
+var tspan = require('tspan'),
+    jsonmlParse = require('./create-element'),
     w3 = require('./w3');
 
- function renderMarks (root, content, index, lane) {
-     var i, g, marks, mstep, mmstep, gy; // svgns
+function renderMarks (root, content, index, lane) {
+    var i, g, marks, mstep, mmstep, gy; // svgns
 
-     function captext (cxt, anchor, y) {
-         var tmark;
+    function captext (cxt, anchor, y) {
+        var tmark;
 
-         if (cxt[anchor] && cxt[anchor].text) {
-             tmark = jsonmlParse([
-                 'text',
-                 {
-                     x: cxt.xmax * cxt.xs / 2,
-                     y: y,
-                     'text-anchor': 'middle',
-                     fill: '#000'
-                 }, cxt[anchor].text
-             ]);
-             tmark.setAttributeNS(w3.xmlns, 'xml:space', 'preserve');
-             g.insertBefore(tmark, null);
-         }
-     }
+        if (cxt[anchor] && cxt[anchor].text) {
+            tmark = tspan.parse(cxt[anchor].text);
+            tmark.unshift(
+                'text',
+                {
+                    x: cxt.xmax * cxt.xs / 2,
+                    y: y,
+                    'text-anchor': 'middle',
+                    fill: '#000'
+                }
+            );
+            tmark = jsonmlParse(tmark);
+            tmark.setAttributeNS(w3.xmlns, 'xml:space', 'preserve');
+            g.insertBefore(tmark, null);
+        }
+    }
 
-     function ticktock (cxt, ref1, ref2, x, dx, y, len) {
-         var tmark, step = 1, offset, dp = 0, val, L = [], tmp;
+    function ticktock (cxt, ref1, ref2, x, dx, y, len) {
+        var tmark, step = 1, offset, dp = 0, val, L = [], tmp;
 
-         if (cxt[ref1] === undefined || cxt[ref1][ref2] === undefined) { return; }
-         val = cxt[ref1][ref2];
-         if (typeof val === 'string') {
-             val = val.split(' ');
-         } else if (typeof val === 'number' || typeof val === 'boolean') {
-             offset = Number(val);
-             val = [];
-             for (i = 0; i < len; i += 1) {
-                 val.push(i + offset);
-             }
-         }
-         if (Object.prototype.toString.call(val) === '[object Array]') {
-             if (val.length === 0) {
-                 return;
-             } else if (val.length === 1) {
-                 offset = Number(val[0]);
-                 if (isNaN(offset)) {
-                     L = val;
-                 } else {
-                     for (i = 0; i < len; i += 1) {
-                         L[i] = i + offset;
-                     }
-                 }
-             } else if (val.length === 2) {
-                 offset = Number(val[0]);
-                 step   = Number(val[1]);
-                 tmp = val[1].split('.');
-                 if ( tmp.length === 2 ) {
-                     dp = tmp[1].length;
-                 }
-                 if (isNaN(offset) || isNaN(step)) {
-                     L = val;
-                 } else {
-                     offset = step * offset;
-                     for (i = 0; i < len; i += 1) {
-                         L[i] = (step * i + offset).toFixed(dp);
-                     }
-                 }
-             } else {
-                 L = val;
-             }
-         } else {
-             return;
-         }
-         for (i = 0; i < len; i += 1) {
-             tmp = L[i];
-             if (typeof tmp === 'number') { tmp += ''; }
-             tmark = jsonmlParse([
-                 'text',
-                 {
-                     x: i * dx + x,
-                     y: y,
-                     'text-anchor': 'middle',
-                     class: 'muted'
-                 }, tmp
-             ]);
-             tmark.setAttributeNS(w3.xmlns, 'xml:space', 'preserve');
-             g.insertBefore(tmark, null);
-         }
-     }
+        if (cxt[ref1] === undefined || cxt[ref1][ref2] === undefined) { return; }
+        val = cxt[ref1][ref2];
+        if (typeof val === 'string') {
+            val = val.split(' ');
+        } else if (typeof val === 'number' || typeof val === 'boolean') {
+            offset = Number(val);
+            val = [];
+            for (i = 0; i < len; i += 1) {
+                val.push(i + offset);
+            }
+        }
+        if (Object.prototype.toString.call(val) === '[object Array]') {
+            if (val.length === 0) {
+                return;
+            } else if (val.length === 1) {
+                offset = Number(val[0]);
+                if (isNaN(offset)) {
+                    L = val;
+                } else {
+                    for (i = 0; i < len; i += 1) {
+                        L[i] = i + offset;
+                    }
+                }
+            } else if (val.length === 2) {
+                offset = Number(val[0]);
+                step   = Number(val[1]);
+                tmp = val[1].split('.');
+                if ( tmp.length === 2 ) {
+                    dp = tmp[1].length;
+                }
+                if (isNaN(offset) || isNaN(step)) {
+                    L = val;
+                } else {
+                    offset = step * offset;
+                    for (i = 0; i < len; i += 1) {
+                        L[i] = (step * i + offset).toFixed(dp);
+                    }
+                }
+            } else {
+                L = val;
+            }
+        } else {
+            return;
+        }
+        for (i = 0; i < len; i += 1) {
+            tmp = L[i];
+            //  if (typeof tmp === 'number') { tmp += ''; }
+            tmark = tspan.parse(tmp);
+            tmark.unshift(
+                'text',
+                {
+                    x: i * dx + x,
+                    y: y,
+                    'text-anchor': 'middle',
+                    class: 'muted'
+                }
+            );
+            tmark = jsonmlParse(tmark);
+            tmark.setAttributeNS(w3.xmlns, 'xml:space', 'preserve');
+            g.insertBefore(tmark, null);
+        }
+    }
 
      mstep  = 2 * (lane.hscale);
      mmstep = mstep * lane.xs;
@@ -1800,7 +1809,7 @@ module.exports = renderMarks;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"./w3":30}],28:[function(require,module,exports){
+},{"./create-element":2,"./w3":30,"tspan":34}],28:[function(require,module,exports){
 'use strict';
 
 var rec = require('./rec'),
@@ -1860,7 +1869,8 @@ module.exports = renderWaveForm;
 },{"./insert-svg-template":11,"./insert-svg-template-assign":10,"./parse-config":18,"./parse-wave-lanes":20,"./rec":22,"./render-arcs":23,"./render-assign":24,"./render-gaps":25,"./render-groups":26,"./render-marks":27,"./render-wave-lane":29,"onml/lib/stringify":33}],29:[function(require,module,exports){
 'use strict';
 
-var jsonmlParse = require('./create-element'),
+var tspan = require('tspan'),
+    jsonmlParse = require('./create-element'),
     w3 = require('./w3'),
     findLaneMarkers = require('./find-lane-markers');
 
@@ -1889,18 +1899,17 @@ function renderWaveLane (root, content, index, lane) {
                 }
             ]);
             root.insertBefore(g, null);
-
-            if (typeof name === 'number') { name += ''; }
-
-            title = jsonmlParse(['text',
+            title = tspan.parse(name);
+            title.unshift(
+                'text',
                 {
                     x: lane.tgo,
                     y: lane.ym,
                     class: 'info',
                     'text-anchor': 'end'
-                },
-                name // + '') // name
-            ]);
+                }
+            );
+            title = jsonmlParse(title);
             title.setAttributeNS(w3.xmlns, 'xml:space', 'preserve');
             g.insertBefore(title, null);
 
@@ -1934,14 +1943,16 @@ function renderWaveLane (root, content, index, lane) {
                     if (labels.length !== 0) {
                         for (k in labels) {
                             if (content[j][2] && (typeof content[j][2][k] !== 'undefined')) {
-                                title = jsonmlParse(['text',
+                                title = tspan.parse(content[j][2][k]);
+                                title.unshift(
+                                    'text',
                                     {
                                         x: labels[k] * lane.xs + lane.xlabel,
                                         y: lane.ym,
                                         'text-anchor': 'middle'
-                                    },
-                                    content[j][2][k] // + '')
-                                ]);
+                                    }
+                                );
+                                title = jsonmlParse(title);
                                 title.setAttributeNS(w3.xmlns, 'xml:space', 'preserve');
                                 gg.insertBefore(title, null);
                             }
@@ -1963,7 +1974,7 @@ module.exports = renderWaveLane;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"./find-lane-markers":5,"./w3":30}],30:[function(require,module,exports){
+},{"./create-element":2,"./find-lane-markers":5,"./w3":30,"tspan":34}],30:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -2088,5 +2099,114 @@ function stringify (a) {
 }
 
 module.exports = stringify;
+
+},{}],34:[function(require,module,exports){
+'use strict';
+
+var token = /<o>|<ins>|<s>|<sub>|<sup>|<b>|<i>|<tt>|<\/o>|<\/ins>|<\/s>|<\/sub>|<\/sup>|<\/b>|<\/i>|<\/tt>/;
+
+function update (s, cmd) {
+    if (cmd.add) {
+        cmd.add.split(';').forEach(function (e) {
+            var arr = e.split(' ');
+            s[arr[0]][arr[1]] = true;
+        });
+    }
+    if (cmd.del) {
+        cmd.del.split(';').forEach(function (e) {
+            var arr = e.split(' ');
+            delete s[arr[0]][arr[1]];
+        });
+    }
+}
+
+var trans = {
+    '<o>'    : { add: 'text-decoration overline' },
+    '</o>'   : { del: 'text-decoration overline' },
+
+    '<ins>'  : { add: 'text-decoration underline' },
+    '</ins>' : { del: 'text-decoration underline' },
+
+    '<s>'    : { add: 'text-decoration line-through' },
+    '</s>'   : { del: 'text-decoration line-through' },
+
+    '<b>'    : { add: 'font-weight bold' },
+    '</b>'   : { del: 'font-weight bold' },
+
+    '<i>'    : { add: 'font-style italic' },
+    '</i>'   : { del: 'font-style italic' },
+
+    '<sub>'  : { add: 'baseline-shift sub;font-size .7em' },
+    '</sub>' : { del: 'baseline-shift sub;font-size .7em' },
+
+    '<sup>'  : { add: 'baseline-shift super;font-size .7em' },
+    '</sup>' : { del: 'baseline-shift super;font-size .7em' },
+
+    '<tt>'   : { add: 'font-family monospace' },
+    '</tt>'  : { del: 'font-family monospace' }
+};
+
+function dump (s) {
+    return Object.keys(s).reduce(function (pre, cur) {
+        var keys = Object.keys(s[cur]);
+        if (keys.length > 0) {
+            pre[cur] = keys.join(' ');
+        }
+        return pre;
+    }, {});
+}
+
+function parse (str) {
+    var state, res, i, m, a;
+
+    if (str === undefined) {
+        return [];
+    }
+
+    if (typeof str === 'number') {
+        return [str + ''];
+    }
+
+    if (typeof str !== 'string') {
+        return [str];
+    }
+
+    res = [];
+
+    state = {
+        'text-decoration': {},
+        'font-weight': {},
+        'font-style': {},
+        'baseline-shift': {},
+        'font-size': {},
+        'font-family': {}
+    };
+
+    while (true) {
+        i = str.search(token);
+
+        if (i === -1) {
+            res.push(['tspan', dump(state), str]);
+            return res;
+        }
+
+        if (i > 0) {
+            a = str.slice(0, i);
+            res.push(['tspan', dump(state), a]);
+        }
+
+        m = str.match(token)[0];
+
+        update(state, trans[m]);
+
+        str = str.slice(i + m.length);
+
+        if (str.length === 0) {
+            return res;
+        }
+    }
+}
+
+exports.parse = parse;
 
 },{}]},{},[31]);
