@@ -148,7 +148,6 @@ module.exports = jsonmlParse;
 'use strict';
 
 var eva = require('./eva'),
-    lane = require('./lane'),
     renderWaveForm = require('./render-wave-form');
 
 function editorRefresh () {
@@ -159,7 +158,7 @@ function editorRefresh () {
     // 	sjson,
     // 	ajson;
 
-    renderWaveForm(0, eva('InputJSON_0'), 'WaveDrom_Display_', lane);
+    renderWaveForm(0, eva('InputJSON_0'), 'WaveDrom_Display_');
 
     /*
     svg = document.getElementById('svgcontent_0');
@@ -180,7 +179,7 @@ function editorRefresh () {
 
 module.exports = editorRefresh;
 
-},{"./eva":4,"./lane":17,"./render-wave-form":28}],4:[function(require,module,exports){
+},{"./eva":4,"./render-wave-form":28}],4:[function(require,module,exports){
 'use strict';
 
 function eva (id) {
@@ -442,10 +441,14 @@ module.exports = genWaveBrick;
 },{"./gen-brick":6}],9:[function(require,module,exports){
 'use strict';
 
+var processAll = require('./process-all'),
+    renderWaveForm = require('./render-wave-form'),
+    editorRefresh = require('./editor-refresh');
+
 module.exports = {
-    processAll: require('./process-all'),
-    renderWaveForm: require('./render-wave-form'),
-    editorRefresh: require('./editor-refresh')
+    processAll: processAll,
+    renderWaveForm: renderWaveForm,
+    editorRefresh: editorRefresh
 };
 
 },{"./editor-refresh":3,"./process-all":21,"./render-wave-form":28}],10:[function(require,module,exports){
@@ -1068,7 +1071,6 @@ module.exports = parseWaveLanes;
 'use strict';
 
 var eva = require('./eva'),
-    lane = require('./lane'),
     appendSaveAsDialog = require('./append-save-as-dialog'),
     renderWaveForm = require('./render-wave-form');
 
@@ -1096,7 +1098,7 @@ function processAll () {
     }
     // second pass
     for (i = 0; i < index; i += 1) {
-        renderWaveForm(i, eva('InputJSON_' + i), 'WaveDrom_Display_', lane);
+        renderWaveForm(i, eva('InputJSON_' + i), 'WaveDrom_Display_');
         appendSaveAsDialog(i, 'WaveDrom_Display_');
     }
     // add styles
@@ -1107,7 +1109,7 @@ module.exports = processAll;
 
 /* eslint-env browser */
 
-},{"./append-save-as-dialog":1,"./eva":4,"./lane":17,"./render-wave-form":28}],22:[function(require,module,exports){
+},{"./append-save-as-dialog":1,"./eva":4,"./render-wave-form":28}],22:[function(require,module,exports){
 'use strict';
 
 function rec (tmp, state) {
@@ -1218,11 +1220,11 @@ var tspan = require('tspan'),
                              'text',
                              {
                                  style: 'font-size:10px;',
-                                 'text-anchor': 'middle'
+                                 'text-anchor': 'middle',
+                                 'xml:space': 'preserve'
                              }
                          );
                          label = jsonmlParse(label);
-                         label.setAttributeNS(w3.xmlns, 'xml:space', 'preserve');
                          underlabel = jsonmlParse(['rect',
                              {
                                  height: 9,
@@ -1358,7 +1360,6 @@ var tspan = require('tspan'),
                              style: 'fill:#FFF;'
                          }
                      ]);
-                     gg.insertBefore(underlabel, null);
                      label = jsonmlParse(['text',
                          {
                              style: 'font-size:8px;',
@@ -1368,6 +1369,8 @@ var tspan = require('tspan'),
                          },
                          (k + '')
                      ]);
+
+                     gg.insertBefore(underlabel, null);
                      gg.insertBefore(label, null);
 
                      lwidth = label.getBBox().width + 2;
@@ -1682,8 +1685,8 @@ module.exports = renderGroups;
 'use strict';
 
 var tspan = require('tspan'),
-    jsonmlParse = require('./create-element'),
-    w3 = require('./w3');
+    jsonmlParse = require('./create-element');
+    // w3 = require('./w3');
 
 function renderMarks (root, content, index, lane) {
     var i, g, marks, mstep, mmstep, gy; // svgns
@@ -1699,11 +1702,11 @@ function renderMarks (root, content, index, lane) {
                     x: cxt.xmax * cxt.xs / 2,
                     y: y,
                     'text-anchor': 'middle',
-                    fill: '#000'
+                    fill: '#000',
+                    'xml:space': 'preserve'
                 }
             );
             tmark = jsonmlParse(tmark);
-            tmark.setAttributeNS(w3.xmlns, 'xml:space', 'preserve');
             g.insertBefore(tmark, null);
         }
     }
@@ -1765,11 +1768,11 @@ function renderMarks (root, content, index, lane) {
                     x: i * dx + x,
                     y: y,
                     'text-anchor': 'middle',
-                    class: 'muted'
+                    class: 'muted',
+                    'xml:space': 'preserve'
                 }
             );
             tmark = jsonmlParse(tmark);
-            tmark.setAttributeNS(w3.xmlns, 'xml:space', 'preserve');
             g.insertBefore(tmark, null);
         }
     }
@@ -1809,10 +1812,11 @@ module.exports = renderMarks;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"./w3":30,"tspan":34}],28:[function(require,module,exports){
+},{"./create-element":2,"tspan":34}],28:[function(require,module,exports){
 'use strict';
 
 var rec = require('./rec'),
+    lane = require('./lane'),
     onmlStringify = require('onml/lib/stringify'),
     parseConfig = require('./parse-config'),
     parseWaveLanes = require('./parse-wave-lanes'),
@@ -1825,7 +1829,7 @@ var rec = require('./rec'),
     insertSVGTemplate = require('./insert-svg-template'),
     insertSVGTemplateAssign = require('./insert-svg-template-assign');
 
-function renderWaveForm (index, source, output, lane) {
+function renderWaveForm (index, source, output) {
     var ret,
     root, groups, svgcontent, content, width, height,
     glengths, xmax = 0, i;
@@ -1866,7 +1870,7 @@ module.exports = renderWaveForm;
 
 /* eslint-env browser */
 
-},{"./insert-svg-template":11,"./insert-svg-template-assign":10,"./parse-config":18,"./parse-wave-lanes":20,"./rec":22,"./render-arcs":23,"./render-assign":24,"./render-gaps":25,"./render-groups":26,"./render-marks":27,"./render-wave-lane":29,"onml/lib/stringify":33}],29:[function(require,module,exports){
+},{"./insert-svg-template":11,"./insert-svg-template-assign":10,"./lane":17,"./parse-config":18,"./parse-wave-lanes":20,"./rec":22,"./render-arcs":23,"./render-assign":24,"./render-gaps":25,"./render-groups":26,"./render-marks":27,"./render-wave-lane":29,"onml/lib/stringify":33}],29:[function(require,module,exports){
 'use strict';
 
 var tspan = require('tspan'),
@@ -1906,11 +1910,11 @@ function renderWaveLane (root, content, index, lane) {
                     x: lane.tgo,
                     y: lane.ym,
                     class: 'info',
-                    'text-anchor': 'end'
+                    'text-anchor': 'end',
+                    'xml:space': 'preserve'
                 }
             );
             title = jsonmlParse(title);
-            title.setAttributeNS(w3.xmlns, 'xml:space', 'preserve');
             g.insertBefore(title, null);
 
             // scale = lane.xs * (lane.hscale) * 2;
@@ -1949,11 +1953,11 @@ function renderWaveLane (root, content, index, lane) {
                                     {
                                         x: labels[k] * lane.xs + lane.xlabel,
                                         y: lane.ym,
-                                        'text-anchor': 'middle'
+                                        'text-anchor': 'middle',
+                                        'xml:space': 'preserve'
                                     }
                                 );
                                 title = jsonmlParse(title);
-                                title.setAttributeNS(w3.xmlns, 'xml:space', 'preserve');
                                 gg.insertBefore(title, null);
                             }
                         }
