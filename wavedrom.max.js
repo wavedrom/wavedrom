@@ -442,16 +442,18 @@ module.exports = genWaveBrick;
 'use strict';
 
 var processAll = require('./process-all'),
+    eva = require('./eva'),
     renderWaveForm = require('./render-wave-form'),
     editorRefresh = require('./editor-refresh');
 
 module.exports = {
     processAll: processAll,
+    eva: eva,
     renderWaveForm: renderWaveForm,
     editorRefresh: editorRefresh
 };
 
-},{"./editor-refresh":3,"./process-all":21,"./render-wave-form":28}],10:[function(require,module,exports){
+},{"./editor-refresh":3,"./eva":4,"./process-all":21,"./render-wave-form":28}],10:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element'),
@@ -1990,13 +1992,9 @@ module.exports = {
 },{}],31:[function(require,module,exports){
 'use strict';
 
-window.WaveDrom = window.WaveDrom || {};
-
 var index = require('./');
 
-window.WaveDrom.ProcessAll = index.processAll;
-window.WaveDrom.RenderWaveForm = index.renderWaveForm;
-window.WaveDrom.EditorRefresh = index.editorRefresh;
+window.WaveDrom = index;
 
 /* eslint-env browser */
 
