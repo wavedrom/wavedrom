@@ -38,6 +38,12 @@ There are 3 steps to insert **WaveDrom** diagrams directly into your page:
 <script src="http://wavedrom.com/skins/default.js" type="text/javascript"></script>
 <script src="http://wavedrom.com/wavedrom.min.js" type="text/javascript"></script>
 ```
+or from CDN:
+
+```html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.2.4/skins/default.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.2.4/wavedrom.min.js" type="text/javascript"></script>
+```
 
 2) Set ``onload`` event for HTML body.
 
