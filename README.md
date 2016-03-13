@@ -84,6 +84,23 @@ Blogger integration: (http://wavedrom.blogspot.com/2011/08/wavedrom-digital-timi
 [WaveDromEditor](http://wavedrom.com/editor.html)
 is online real-time editor of digital timing diagrams based on **WaveDrom** engine and **WaveJSON** format.
 
+## Standalone WaveDromEditor
+
+### Windows
+1. Download latest `wavedrom-editor-v1.2.0-win-{ia32|ia64}.zip` release from here: [releases](https://github.com/wavedrom/wavedrom.github.io/releases)
+2. Unzip it into working direactory.
+3. run the editor: WaveDromEditor.exe
+
+### Linux
+1. Download latest `wavedrom-editor-v1.2.0-linux-{ia32|x64}.tar.gz` release from here: [releases](https://github.com/wavedrom/wavedrom.github.io/releases)
+2. unzip-untar the package: `tar -xvzf wavedrom-editor-v1.2.0-linux-x64.tar.gz`
+3. run the editor: `./WaveDromEditor/linux64/WaveDromEditor`
+
+## OSX
+1. Download latest `wavedrom-editor-v1.2.0-osx-ia64.zip` release:
+2. unzip
+3. run
+
 ## Community
 
 Please use [WaveDrom user group](http://groups.google.com/group/wavedrom) for discussions, questions, ideas, whatever.
