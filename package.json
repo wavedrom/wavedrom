@@ -29,16 +29,16 @@
     "RTL"
   ],
   "devDependencies": {
-    "eslint": "^2.2.0",
+    "eslint": "^2.6.0",
     "grunt": "^0.4.5",
-    "grunt-browserify": "^4.0.1",
-    "grunt-cli": "^0.1.13",
+    "grunt-browserify": "^5.0.0",
+    "grunt-cli": "^1.2.0",
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-concat": "^1.0.0",
-    "grunt-contrib-uglify": "^0.11.1",
+    "grunt-contrib-uglify": "^1.0.1",
     "grunt-eslint": "^18.0.0",
     "jsof": "^0.2.1",
-    "yargs": "^4.2.0"
+    "yargs": "^4.3.2"
   },
   "dependencies": {
     "onml": "^0.3.1",
