@@ -962,12 +962,34 @@ function parseConfig (source, lane) {
     lane.yh1 = 0;
     lane.head = source.head;
 
+    lane.xmin_cfg = 0;
+    lane.xmax_cfg = 1e12; // essentially infinity
+    if (source && source.config && source.config.hbounds && source.config.hbounds.length==2) {
+        source.config.hbounds[0] = Math.floor(source.config.hbounds[0]);
+        source.config.hbounds[1] = Math.ceil(source.config.hbounds[1]);
+        if (  source.config.hbounds[0] < source.config.hbounds[1] ) {
+            // convert hbounds ticks min, max to bricks min, max
+            // TODO: do we want to base this on ticks or tocks in
+            //  head or foot?  All 4 can be different... or just 0 reference?
+            lane.xmin_cfg = 2 * Math.floor(source.config.hbounds[0]);
+            lane.xmax_cfg = 2 * Math.floor(source.config.hbounds[1]);
+        }
+    }
+
     if (source && source.head) {
         if (
             source.head.tick || source.head.tick === 0 ||
             source.head.tock || source.head.tock === 0
         ) {
             lane.yh0 = 20;
+        }
+        // if tick defined, modify start tick by lane.xmin_cfg
+        if ( source.head.tick || source.head.tick === 0 ) {
+            source.head.tick = source.head.tick + lane.xmin_cfg/2;
+        }
+        // if tock defined, modify start tick by lane.xmin_cfg
+        if ( source.head.tock || source.head.tock === 0 ) {
+            source.head.tock = source.head.tock + lane.xmin_cfg/2;
         }
 
         if (source.head.text) {
@@ -986,6 +1008,14 @@ function parseConfig (source, lane) {
         ) {
             lane.yf0 = 20;
         }
+        // if tick defined, modify start tick by lane.xmin_cfg
+        if ( source.foot.tick || source.foot.tick === 0 ) {
+            source.foot.tick = source.foot.tick + lane.xmin_cfg/2;
+        }
+        // if tock defined, modify start tick by lane.xmin_cfg
+        if ( source.foot.tock || source.foot.tock === 0 ) {
+            source.foot.tock = source.foot.tock + lane.xmin_cfg/2;
+        }
 
         if (source.foot.text) {
             lane.yf1 = 46;
@@ -1000,10 +1030,15 @@ module.exports = parseConfig;
 'use strict';
 
 var genFirstWaveBrick = require('./gen-first-wave-brick'),
-    genWaveBrick = require('./gen-wave-brick');
+    genWaveBrick = require('./gen-wave-brick'),
+    findLaneMarkers = require('./find-lane-markers');
 
+// text is the wave member of the signal object
+// extra = hscale-1 ( padding )
+// lane is an object containing all properties for this waveform
 function parseWaveLane (text, extra, lane) {
     var Repeats, Top, Next, Stack = [], R = [], i;
+    var unseen_bricks = [], num_unseen_markers;
 
     Stack = text.split('');
     Next  = Stack.shift();
@@ -1025,45 +1060,79 @@ function parseWaveLane (text, extra, lane) {
         }
         R = R.concat(genWaveBrick((Top + Next), extra, Repeats));
     }
+    // shift out unseen bricks due to phase shift, and save them in
+    //  unseen_bricks array
     for (i = 0; i < lane.phase; i += 1) {
-        R.shift();
+        unseen_bricks.push(R.shift());
     }
-    return R;
+    if (unseen_bricks.length > 0) {
+        num_unseen_markers = findLaneMarkers( unseen_bricks ).length;
+        // if end of unseen_bricks and start of R both have a marker,
+        //  then one less unseen marker
+        if ( findLaneMarkers( [unseen_bricks[unseen_bricks.length-1]] ).length == 1 &&
+             findLaneMarkers( [R[0]] ).length == 1 ) {
+            num_unseen_markers -= 1;
+        }
+    } else {
+        num_unseen_markers = 0;
+    }
+
+    // R is array of half brick types, each is item is string
+    // num_unseen_markers is how many markers are now unseen due to phase
+    return [R, num_unseen_markers];
 }
 
 module.exports = parseWaveLane;
 
-},{"./gen-first-wave-brick":7,"./gen-wave-brick":8}],20:[function(require,module,exports){
+},{"./find-lane-markers":5,"./gen-first-wave-brick":7,"./gen-wave-brick":8}],20:[function(require,module,exports){
 'use strict';
 
 var parseWaveLane = require('./parse-wave-lane');
 
-function data_extract (e) {
-    var tmp;
+function data_extract (e, num_unseen_markers) {
+    var ret_data;
 
-    tmp = e.data;
-    if (tmp === undefined) { return null; }
-    if (typeof (tmp) === 'string') { return tmp.split(' '); }
-    return tmp;
+    ret_data = e.data;
+    if (ret_data === undefined) { return null; }
+    if (typeof (ret_data) === 'string') { ret_data= ret_data.split(' '); }
+    // slice data array after unseen markers
+    ret_data = ret_data.slice( num_unseen_markers );
+    return ret_data;
 }
 
 function parseWaveLanes (sig, lane) {
     var x,
         sigx,
         content = [],
+        content_wave,
+        parsed_wave_lane,
+        num_unseen_markers,
         tmp0 = [];
 
     for (x in sig) {
+        // sigx is each signal in the array of signals being iterated over
         sigx = sig[x];
         lane.period = sigx.period ? sigx.period    : 1;
-        lane.phase  = sigx.phase  ? sigx.phase * 2 : 0;
+        // xmin_cfg is min. brick of hbounds, add to lane.phase of all signals
+        lane.phase  = (sigx.phase  ? sigx.phase * 2 : 0) + lane.xmin_cfg;
         content.push([]);
         tmp0[0] = sigx.name  || ' ';
-        tmp0[1] = sigx.phase || 0;
+        // xmin_cfg is min. brick of hbounds, add 1/2 to sigx.phase of all sigs
+        tmp0[1] = (sigx.phase || 0) + lane.xmin_cfg/2;
+        if ( sigx.wave ) {
+            parsed_wave_lane = parseWaveLane(sigx.wave, lane.period * lane.hscale - 1, lane);
+            content_wave = parsed_wave_lane[0] ;
+            num_unseen_markers = parsed_wave_lane[1];
+        } else {
+            content_wave = null;
+        }
         content[content.length - 1][0] = tmp0.slice(0);
-        content[content.length - 1][1] = sigx.wave ? parseWaveLane(sigx.wave, lane.period * lane.hscale - 1, lane) : null;
-        content[content.length - 1][2] = data_extract(sigx);
+        content[content.length - 1][1] = content_wave;
+        content[content.length - 1][2] = data_extract(sigx,num_unseen_markers);
     }
+    // content is an array of arrays, representing the list of signals using
+    //  the same order:
+    // content[0] = [ [name,phase], parsedwavelaneobj, dataextracted ]
     return content;
 }
 
@@ -1971,7 +2040,8 @@ function renderWaveLane (root, content, index, lane) {
             }
         }
     }
-    lane.xmax = xmax;
+    // xmax if no xmax_cfg,xmin_cfg, else set to config
+    lane.xmax = Math.min(xmax, lane.xmax_cfg - lane.xmin_cfg);
     lane.xg = xgmax + 20;
     return glengths;
 }
