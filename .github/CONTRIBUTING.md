@@ -1,3 +1,3 @@
 # Contributing
 
-We are open for Pull Requests. Of any kind.
+We are open for Issues and Pull Requests. Of any kind.
