@@ -1253,7 +1253,7 @@ var tspan = require('tspan'),
      if (source) {
          for (i in source) {
              lane.period = source[i].period ? source[i].period    : 1;
-             lane.phase  = source[i].phase  ? source[i].phase * 2 : 0;
+             lane.phase  = (source[i].phase  ? source[i].phase * 2 : 0) + lane.xmin_cfg;
              text = source[i].node;
              if (text) {
                  Stack = text.split('');
@@ -1682,7 +1682,7 @@ function renderGaps (root, source, index, lane) {
 
         for (i in source) {
             lane.period = source[i].period ? source[i].period    : 1;
-            lane.phase  = source[i].phase  ? source[i].phase * 2 : 0;
+            lane.phase  = (source[i].phase  ? source[i].phase * 2 : 0) + lane.xmin_cfg;
             g = document.createElementNS(w3.svg, 'g');
             g.id = 'wavegap_' + i + '_' + index;
             g.setAttribute('transform', 'translate(0,' + (lane.y0 + i * lane.yo) + ')');

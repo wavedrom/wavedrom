@@ -29,17 +29,17 @@
     "RTL"
   ],
   "devDependencies": {
-    "eslint": "^2.7.0",
+    "eslint": "^3.0.1",
     "grunt": "^1.0.1",
     "grunt-browserify": "^5.0.0",
     "grunt-cli": "^1.2.0",
     "grunt-contrib-clean": "^1.0.0",
-    "grunt-contrib-concat": "^1.0.0",
+    "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-uglify": "^1.0.1",
-    "grunt-eslint": "^18.0.0",
-    "js-beautify": "^1.6.2",
+    "grunt-eslint": "^19.0.0",
+    "js-beautify": "^1.6.3",
     "jsof": "^0.2.1",
-    "yargs": "^4.4.0"
+    "yargs": "^4.7.1"
   },
   "dependencies": {
     "onml": "^0.3.1",
