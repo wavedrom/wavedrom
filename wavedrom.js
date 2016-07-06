@@ -1037,11 +1037,12 @@ var genFirstWaveBrick = require('./gen-first-wave-brick'),
 // extra = hscale-1 ( padding )
 // lane is an object containing all properties for this waveform
 function parseWaveLane (text, extra, lane) {
-    var Repeats, Top, Next, Stack = [], R = [], i;
+    var Repeats, Top, Next, Stack = [], R = [], i, subCycle;
     var unseen_bricks = [], num_unseen_markers;
 
     Stack = text.split('');
     Next  = Stack.shift();
+    subCycle = false;
 
     Repeats = 1;
     while (Stack[0] === '.' || Stack[0] === '|') { // repeaters parser
@@ -1053,12 +1054,24 @@ function parseWaveLane (text, extra, lane) {
     while (Stack.length) {
         Top = Next;
         Next = Stack.shift();
+        if (Next === '<') { // sub-cycles on
+            subCycle = true;
+            Next = Stack.shift();
+        }
+        if (Next === '>') { // sub-cycles off
+            subCycle = false;
+            Next = Stack.shift();
+        }
         Repeats = 1;
         while (Stack[0] === '.' || Stack[0] === '|') { // repeaters parser
             Stack.shift();
             Repeats += 1;
         }
-        R = R.concat(genWaveBrick((Top + Next), extra, Repeats));
+        if (subCycle) {
+            R = R.concat(genWaveBrick((Top + Next), 0, Repeats - 1));
+        } else {
+            R = R.concat(genWaveBrick((Top + Next), extra, Repeats));
+        }
     }
     // shift out unseen bricks due to phase shift, and save them in
     //  unseen_bricks array
