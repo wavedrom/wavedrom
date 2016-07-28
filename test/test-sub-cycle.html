@@ -40,6 +40,18 @@
 ]}
 </script>
 
+Gaps
+
+<script type="WaveDrom">
+{ signal: [
+  { name: 'clk',  wave: 'p.....'},
+  { name: 'A0', wave: 'x=x|=x|=.', data: 'a1 b1' },
+  { name: 'A1', wave: 'x=<x|>=<x|>=.', data: 'a1 b1' },
+  { name: 'A2', wave: 'x=<x|>=<x|>=.', data: 'a2 b2', period: 2 },
+  { name: 'A3', wave: 'x=<x|>=<x|>=.', data: 'a3 b3', period: 3 }
+]}
+</script>
+
 </div>
 
 <script>(function(){ window.addEventListener("load", WaveDrom.ProcessAll, false); })();</script>
