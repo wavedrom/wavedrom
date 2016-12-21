@@ -12,7 +12,7 @@
 
 [WaveJSON](https://github.com/drom/wavedrom/wiki/WaveJSON) is an application of the [JSON](http://json.org/) format. The purpose of [WaveJSON](https://github.com/drom/wavedrom/wiki/WaveJSON) is to provide a compact exchange format for digital timing diagrams utilized by digital HW / IC engineers.
 
-The engine using [WaveDromSkin](https://github.com/drom/wavedrom/wiki/WaveDromSkin) skin mechanism to render complete picture.
+The engine using [WaveDromSkin](unpacked/README.md) skin mechanism to render complete picture.
 
 ## Screenshot
 
