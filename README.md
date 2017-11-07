@@ -89,12 +89,12 @@ is online real-time editor of digital timing diagrams based on **WaveDrom** engi
 ### Windows
 1. Download latest `wavedrom-editor-v1.5.0-win-{ia32|ia64}.zip` release from here: [releases](https://github.com/wavedrom/wavedrom.github.io/releases)
 2. Unzip it into working direactory.
-3. run the editor: `WaveDromEditor.exe`
+3. run the editor: `wavedrom-editor.exe`
 
 ### Linux
 1. Download latest `wavedrom-editor-v1.5.0-linux-{ia32|x64}.tar.gz` release from here: [releases](https://github.com/wavedrom/wavedrom.github.io/releases)
-2. unzip-untar the package: `tar -xvzf wavedrom-editor-v1.3.0-linux-x64.tar.gz`
-3. run the editor: `./WaveDromEditor/linux64/WaveDromEditor`
+2. unzip-untar the package: `tar -xvzf wavedrom-editor-v1.5.0-linux-x64.tar.gz`
+3. run the editor: `./WaveDromEditor/linux64/wavedrom-editor`
 
 ## OSX
 1. Download latest `wavedrom-editor-v1.5.0-osx-x64.zip` release:
