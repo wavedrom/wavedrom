@@ -2109,6 +2109,17 @@ module.exports = window.WaveSkin;
 },{}],33:[function(require,module,exports){
 'use strict';
 
+var parse = require('./parse'),
+    reparse = require('./reparse');
+
+module.exports = {
+    parse: parse,
+    reparse: reparse
+};
+
+},{"./parse":34,"./reparse":35}],34:[function(require,module,exports){
+'use strict';
+
 var token = /<o>|<ins>|<s>|<sub>|<sup>|<b>|<i>|<tt>|<\/o>|<\/ins>|<\/s>|<\/sub>|<\/sup>|<\/b>|<\/i>|<\/tt>/;
 
 function update (s, cmd) {
@@ -2213,6 +2224,47 @@ function parse (str) {
     }
 }
 
-exports.parse = parse;
+module.exports = parse;
+/* eslint no-constant-condition: 0 */
 
-},{}]},{},[31]);
+},{}],35:[function(require,module,exports){
+'use strict';
+
+var parse = require('./parse');
+
+function deDash (str) {
+    var m = str.match(/(\w+)-(\w)(\w+)/);
+    if (m === null) {
+        return str;
+    }
+    var newStr = m[1] + m[2].toUpperCase() + m[3];
+    return newStr;
+}
+
+function reparse (React) {
+
+    var $ = React.createElement;
+
+    function reTspan (e, i) {
+        var tag = e[0];
+        var attr = e[1];
+
+        var newAttr = Object.keys(attr).reduce(function (res, key) {
+            var newKey = deDash(key);
+            res[newKey] = attr[key];
+            return res;
+        }, {});
+
+        var body = e[2];
+        attr.key = i;
+        return $(tag, newAttr, body);
+    }
+
+    return function (str) {
+        return parse(str).map(reTspan);
+    };
+}
+
+module.exports = reparse;
+
+},{"./parse":34}]},{},[31]);
