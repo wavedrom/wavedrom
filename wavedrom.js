@@ -179,7 +179,7 @@ function editorRefresh () {
 
 module.exports = editorRefresh;
 
-},{"./eva":4,"./render-wave-form":28}],4:[function(require,module,exports){
+},{"./eva":4,"./render-wave-form":29}],4:[function(require,module,exports){
 'use strict';
 
 function eva (id) {
@@ -210,6 +210,8 @@ function eva (id) {
         if (Object.prototype.toString.call(source.assign) !== '[object Array]') {
             return erra({ message: '[Semantic]: "assign" object hasto be an Array "assign:[]"'});
         }
+    } else if (source.reg) {
+        // test register
     } else {
         return erra({ message: '[Semantic]: "signal:[...]" or "assign:[...]" property is missing inside the root Object'});
     }
@@ -453,7 +455,7 @@ module.exports = {
     editorRefresh: editorRefresh
 };
 
-},{"./editor-refresh":3,"./eva":4,"./process-all":21,"./render-wave-form":28}],10:[function(require,module,exports){
+},{"./editor-refresh":3,"./eva":4,"./process-all":21,"./render-wave-form":29}],10:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element'),
@@ -477,7 +479,7 @@ module.exports = insertSVGTemplateAssign;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"./w3":30}],11:[function(require,module,exports){
+},{"./create-element":2,"./w3":31}],11:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element'),
@@ -537,7 +539,7 @@ module.exports = insertSVGTemplate;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"./w3":30,"./wave-skin":32}],12:[function(require,module,exports){
+},{"./create-element":2,"./w3":31,"./wave-skin":33}],12:[function(require,module,exports){
 'use strict';
 
 //attribute name mapping
@@ -883,7 +885,7 @@ module.exports = parse;
 /* eslint-env browser */
 /* eslint yoda:1 */
 
-},{"./jsonml-add-attributes":12,"./jsonml-append-child":13,"./jsonml-hydrate":14,"./jsonml-trim-whitespace":16,"./w3":30}],16:[function(require,module,exports){
+},{"./jsonml-add-attributes":12,"./jsonml-append-child":13,"./jsonml-hydrate":14,"./jsonml-trim-whitespace":16,"./w3":31}],16:[function(require,module,exports){
 'use strict';
 
 /*bool*/ function isWhitespace(/*DOM*/ node) {
@@ -1193,7 +1195,7 @@ module.exports = processAll;
 
 /* eslint-env browser */
 
-},{"./append-save-as-dialog":1,"./eva":4,"./render-wave-form":28}],22:[function(require,module,exports){
+},{"./append-save-as-dialog":1,"./eva":4,"./render-wave-form":29}],22:[function(require,module,exports){
 'use strict';
 
 function rec (tmp, state) {
@@ -1471,7 +1473,7 @@ module.exports = renderArcs;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"./w3":30,"tspan":33}],24:[function(require,module,exports){
+},{"./create-element":2,"./w3":31,"tspan":35}],24:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element');
@@ -1737,7 +1739,7 @@ module.exports = renderGaps;
 
 /* eslint-env browser */
 
-},{"./w3":30}],26:[function(require,module,exports){
+},{"./w3":31}],26:[function(require,module,exports){
 'use strict';
 
 var tspan = require('tspan');
@@ -1778,7 +1780,7 @@ module.exports = renderGroups;
 
 /* eslint-env browser */
 
-},{"tspan":33}],27:[function(require,module,exports){
+},{"tspan":35}],27:[function(require,module,exports){
 'use strict';
 
 var tspan = require('tspan'),
@@ -1909,7 +1911,26 @@ module.exports = renderMarks;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"tspan":33}],28:[function(require,module,exports){
+},{"./create-element":2,"tspan":35}],28:[function(require,module,exports){
+'use strict';
+
+var jsonmlParse = require('./create-element'),
+    render = require('bit-field/lib/render');
+
+function renderReg (index, source, parent) {
+    // cleanup
+    while (parent.childNodes.length) {
+        parent.removeChild(parent.childNodes[0]);
+    }
+    console.log(source);
+    var e = render(source.reg);
+    var node = jsonmlParse(e);
+    parent.insertBefore(node, null);
+}
+
+module.exports = renderReg;
+
+},{"./create-element":2,"bit-field/lib/render":34}],29:[function(require,module,exports){
 'use strict';
 
 var rec = require('./rec'),
@@ -1922,6 +1943,7 @@ var rec = require('./rec'),
     renderGroups = require('./render-groups'),
     renderWaveLane = require('./render-wave-lane'),
     renderAssign = require('./render-assign'),
+    renderReg = require('./render-reg'),
     renderArcs = require('./render-arcs'),
     insertSVGTemplate = require('./insert-svg-template'),
     insertSVGTemplateAssign = require('./insert-svg-template-assign');
@@ -1960,6 +1982,8 @@ function renderWaveForm (index, source, output) {
     } else if (source.assign) {
         insertSVGTemplateAssign(index, document.getElementById(output + index), source);
         renderAssign(index, source);
+    } else if (source.reg) {
+        renderReg(index, source, document.getElementById(output + index));
     }
 }
 
@@ -1967,7 +1991,7 @@ module.exports = renderWaveForm;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"./insert-svg-template":11,"./insert-svg-template-assign":10,"./lane":17,"./parse-config":18,"./parse-wave-lanes":20,"./rec":22,"./render-arcs":23,"./render-assign":24,"./render-gaps":25,"./render-groups":26,"./render-marks":27,"./render-wave-lane":29}],29:[function(require,module,exports){
+},{"./create-element":2,"./insert-svg-template":11,"./insert-svg-template-assign":10,"./lane":17,"./parse-config":18,"./parse-wave-lanes":20,"./rec":22,"./render-arcs":23,"./render-assign":24,"./render-gaps":25,"./render-groups":26,"./render-marks":27,"./render-reg":28,"./render-wave-lane":30}],30:[function(require,module,exports){
 'use strict';
 
 var tspan = require('tspan'),
@@ -2076,7 +2100,7 @@ module.exports = renderWaveLane;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"./find-lane-markers":5,"./w3":30,"tspan":33}],30:[function(require,module,exports){
+},{"./create-element":2,"./find-lane-markers":5,"./w3":31,"tspan":35}],31:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -2085,7 +2109,7 @@ module.exports = {
     xmlns: 'http://www.w3.org/XML/1998/namespace'
 };
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 'use strict';
 
 window.WaveDrom = window.WaveDrom || {};
@@ -2099,14 +2123,219 @@ window.WaveDrom.eva = index.eva;
 
 /* eslint-env browser */
 
-},{"./":9}],32:[function(require,module,exports){
+},{"./":9}],33:[function(require,module,exports){
 'use strict';
 
 module.exports = window.WaveSkin;
 
 /* eslint-env browser */
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
+'use strict';
+
+var tspan = require('tspan');
+
+function t (x, y) {
+    return 'translate(' + x + ',' + y + ')';
+}
+
+function hline (len, x, y) {
+    var res = ['line'];
+    var opt = {};
+    if (x) {
+        opt.x1 = x;
+        opt.x2 = x + len;
+    } else {
+        opt.x2 = len;
+    }
+    if (y) {
+        opt.y1 = y;
+        opt.y2 = y;
+    }
+    res.push(opt);
+    return res;
+}
+
+function vline (len, x, y) {
+    var res = ['line'];
+    var opt = {};
+    if (x) {
+        opt.x1 = x;
+        opt.x2 = x;
+    }
+    if (y) {
+        opt.y1 = y;
+        opt.y2 = y + len;
+    } else {
+        opt.y2 = len;
+    }
+    res.push(opt);
+    return res;
+}
+
+function labelArr (desc, options) {
+    var step = options.hspace / options.mod;
+    var bits  = ['g', {transform: t(step / 2, options.vspace / 5)}];
+    var names = ['g', {transform: t(step / 2, options.vspace / 2 + 4)}];
+    var attrs = ['g', {transform: t(step / 2, options.vspace)}];
+    var blanks = ['g', {transform: t(0, options.vspace / 4)}];
+    var fontsize = options.fontsize;
+    var fontfamily = options.fontfamily;
+    var fontweight = options.fontweight;
+    desc.forEach(function (e) {
+        var lText, aText, lsbm, msbm, lsb, msb;
+        lsbm = 0;
+        msbm = options.mod - 1;
+        lsb = options.index * options.mod;
+        msb = (options.index + 1) * options.mod - 1;
+        if (((e.lsb / options.mod) >> 0) === options.index) {
+            lsbm = e.lsbm;
+            lsb = e.lsb;
+            if (((e.msb / options.mod) >> 0) === options.index) {
+                msb = e.msb;
+                msbm = e.msbm;
+            }
+        } else {
+            if (((e.msb / options.mod) >> 0) === options.index) {
+                msb = e.msb;
+                msbm = e.msbm;
+            } else {
+                return;
+            }
+        }
+        bits.push(['text', {
+            x: step * (options.mod - lsbm - 1),
+            'font-size': fontsize,
+            'font-family': fontfamily,
+            'font-weight': fontweight
+        }, lsb]);
+        if (lsbm !== msbm) {
+            bits.push(['text', {
+                x: step * (options.mod - msbm - 1),
+                'font-size': fontsize,
+                'font-family': fontfamily,
+                'font-weight': fontweight
+            }, msb]);
+        }
+        if (e.name) {
+            lText = tspan.parse(e.name);
+            lText.unshift({
+                x: step * (options.mod - ((msbm + lsbm) / 2) - 1),
+                'font-size': fontsize,
+                'font-family': fontfamily,
+                'font-weight': fontweight
+            });
+            lText.unshift('text');
+            names.push(lText);
+        } else {
+            blanks.push(['rect', {
+                style: 'fill-opacity:0.1',
+                x: step * (options.mod - msbm - 1),
+                y: 0,
+                width: step * (msbm - lsbm + 1),
+                height: options.vspace / 2
+            }]);
+        }
+        if (e.attr) {
+            aText = tspan.parse(e.attr);
+            aText.unshift({
+                x: step * (options.mod - ((msbm + lsbm) / 2) - 1),
+                'font-size': fontsize,
+                'font-family': fontfamily,
+                'font-weight': fontweight
+            });
+            aText.unshift('text');
+            attrs.push(aText);
+        }
+    });
+    return ['g', blanks, bits, names, attrs];
+}
+
+function labels (desc, options) {
+    return ['g', {'text-anchor': 'middle'},
+        labelArr(desc, options)
+    ];
+}
+
+function cage (desc, options) {
+    var hspace = options.hspace;
+    var vspace = options.vspace;
+    var mod = options.mod;
+    var res = ['g', {
+        stroke: 'black',
+        'stroke-width': 1,
+        'stroke-linecap': 'round',
+        transform: t(0, vspace / 4)
+    }];
+
+    res.push(hline(hspace));
+    res.push(vline(vspace / 2));
+    res.push(hline(hspace, 0, vspace / 2));
+
+    var i = options.index * options.mod, j = options.mod;
+    do {
+        if ((j === options.mod) || desc.some(function (e) { return (e.lsb === i); })) {
+            res.push(vline((vspace / 2), j * (hspace / mod)));
+        } else {
+            res.push(vline((vspace / 16), j * (hspace / mod)));
+            res.push(vline((vspace / 16), j * (hspace / mod), vspace * 7 / 16));
+        }
+        i++; j--;
+    } while (j);
+    return res;
+}
+
+function lane (desc, options) {
+    var res = ['g', {
+        transform: t(4.5, (options.lanes - options.index - 1) * options.vspace + 0.5)
+    }];
+    res.push(cage(desc, options));
+    res.push(labels(desc, options));
+    return res;
+}
+
+function render (desc, options) {
+    options = options || {
+        vspace: 80,
+        hspace: 640,
+        lanes: 2,
+        bits: 32
+    };
+
+    var res = ['svg', {
+        xmlns: 'http://www.w3.org/2000/svg',
+        width: (options.hspace + 9),
+        height: (options.vspace * options.lanes + 5),
+        viewBox: [
+            0,
+            0,
+            (options.hspace + 9),
+            (options.vspace * options.lanes + 5)
+        ].join(' ')
+    }];
+
+    var lsb = 0;
+    var mod = options.bits / options.lanes;
+    options.mod = mod;
+    desc.forEach(function (e) {
+        e.lsb = lsb;
+        e.lsbm = lsb % mod;
+        lsb += e.bits;
+        e.msb = lsb - 1;
+        e.msbm = e.msb % mod;
+    });
+
+    var i;
+    for (i = 0; i < options.lanes; i++) {
+        options.index = i;
+        res.push(lane(desc, options));
+    }
+    return res;
+}
+
+module.exports = render;
+
+},{"tspan":35}],35:[function(require,module,exports){
 'use strict';
 
 var parse = require('./parse'),
@@ -2117,7 +2346,7 @@ module.exports = {
     reparse: reparse
 };
 
-},{"./parse":34,"./reparse":35}],34:[function(require,module,exports){
+},{"./parse":36,"./reparse":37}],36:[function(require,module,exports){
 'use strict';
 
 var token = /<o>|<ins>|<s>|<sub>|<sup>|<b>|<i>|<tt>|<\/o>|<\/ins>|<\/s>|<\/sub>|<\/sup>|<\/b>|<\/i>|<\/tt>/;
@@ -2227,7 +2456,7 @@ function parse (str) {
 module.exports = parse;
 /* eslint no-constant-condition: 0 */
 
-},{}],35:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict';
 
 var parse = require('./parse');
@@ -2267,4 +2496,4 @@ function reparse (React) {
 
 module.exports = reparse;
 
-},{"./parse":34}]},{},[31]);
+},{"./parse":36}]},{},[32]);

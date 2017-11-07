@@ -1,0 +1,38 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>testsuit</title>
+  <script type="text/javascript" src="../skins/default.js"></script>
+  <script type="text/javascript" src="../skins/narrow.js"></script>
+  <script type="text/javascript" src="../wavedrom.min.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Roboto|Droid+Sans+Mono|Varela+Round' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+
+<div class="content">
+
+<script type="WaveDrom">
+{ signal: [{ name: "Alfa", wave: "01.zx=ud.23.45" }] }
+</script>
+
+<script type="WaveDrom">
+{reg: [
+  {name: 'r', bits: 8}
+]}
+</script>
+
+<script type="WaveDrom">
+{reg: [
+  {name: 'a', bits: 8},
+  {name: 'b', bits: 8},
+  {name: 'c', bits: 8}
+]}
+</script>
+
+</div>
+
+<script>(function(){ window.addEventListener("load", WaveDrom.ProcessAll, false); })();</script>
+
+</body>
+</html>
