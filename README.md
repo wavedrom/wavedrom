@@ -41,8 +41,8 @@ There are 3 steps to insert **WaveDrom** diagrams directly into your page:
 or from CDN:
 
 ```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.4.1/skins/default.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.4.1/wavedrom.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.5.0/skins/default.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.5.0/wavedrom.min.js" type="text/javascript"></script>
 ```
 
 2) Set ``onload`` event for HTML body.
@@ -87,17 +87,17 @@ is online real-time editor of digital timing diagrams based on **WaveDrom** engi
 ## Standalone WaveDromEditor
 
 ### Windows
-1. Download latest `wavedrom-editor-v1.4.2-win-{ia32|ia64}.zip` release from here: [releases](https://github.com/wavedrom/wavedrom.github.io/releases)
+1. Download latest `wavedrom-editor-v1.5.0-win-{ia32|ia64}.zip` release from here: [releases](https://github.com/wavedrom/wavedrom.github.io/releases)
 2. Unzip it into working direactory.
 3. run the editor: `WaveDromEditor.exe`
 
 ### Linux
-1. Download latest `wavedrom-editor-v1.4.2-linux-{ia32|x64}.tar.gz` release from here: [releases](https://github.com/wavedrom/wavedrom.github.io/releases)
+1. Download latest `wavedrom-editor-v1.5.0-linux-{ia32|x64}.tar.gz` release from here: [releases](https://github.com/wavedrom/wavedrom.github.io/releases)
 2. unzip-untar the package: `tar -xvzf wavedrom-editor-v1.3.0-linux-x64.tar.gz`
 3. run the editor: `./WaveDromEditor/linux64/WaveDromEditor`
 
 ## OSX
-1. Download latest `wavedrom-editor-v1.4.2-osx-x64.zip` release:
+1. Download latest `wavedrom-editor-v1.5.0-osx-x64.zip` release:
 2. unzip
 3. run
 
