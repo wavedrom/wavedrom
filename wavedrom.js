@@ -1922,7 +1922,6 @@ function renderReg (index, source, parent) {
     while (parent.childNodes.length) {
         parent.removeChild(parent.childNodes[0]);
     }
-    console.log(source);
     var e = render(source.reg);
     var node = jsonmlParse(e);
     parent.insertBefore(node, null);
@@ -2173,30 +2172,30 @@ function vline (len, x, y) {
     return res;
 }
 
-function labelArr (desc, options) {
-    var step = options.hspace / options.mod;
-    var bits  = ['g', {transform: t(step / 2, options.vspace / 5)}];
-    var names = ['g', {transform: t(step / 2, options.vspace / 2 + 4)}];
-    var attrs = ['g', {transform: t(step / 2, options.vspace)}];
-    var blanks = ['g', {transform: t(0, options.vspace / 4)}];
-    var fontsize = options.fontsize;
-    var fontfamily = options.fontfamily;
-    var fontweight = options.fontweight;
+function labelArr (desc, opt) {
+    var step = opt.hspace / opt.mod;
+    var bits  = ['g', {transform: t(step / 2, opt.vspace / 5)}];
+    var names = ['g', {transform: t(step / 2, opt.vspace / 2 + 4)}];
+    var attrs = ['g', {transform: t(step / 2, opt.vspace)}];
+    var blanks = ['g', {transform: t(0, opt.vspace / 4)}];
+    var fontsize = opt.fontsize;
+    var fontfamily = opt.fontfamily;
+    var fontweight = opt.fontweight;
     desc.forEach(function (e) {
         var lText, aText, lsbm, msbm, lsb, msb;
         lsbm = 0;
-        msbm = options.mod - 1;
-        lsb = options.index * options.mod;
-        msb = (options.index + 1) * options.mod - 1;
-        if (((e.lsb / options.mod) >> 0) === options.index) {
+        msbm = opt.mod - 1;
+        lsb = opt.index * opt.mod;
+        msb = (opt.index + 1) * opt.mod - 1;
+        if (((e.lsb / opt.mod) >> 0) === opt.index) {
             lsbm = e.lsbm;
             lsb = e.lsb;
-            if (((e.msb / options.mod) >> 0) === options.index) {
+            if (((e.msb / opt.mod) >> 0) === opt.index) {
                 msb = e.msb;
                 msbm = e.msbm;
             }
         } else {
-            if (((e.msb / options.mod) >> 0) === options.index) {
+            if (((e.msb / opt.mod) >> 0) === opt.index) {
                 msb = e.msb;
                 msbm = e.msbm;
             } else {
@@ -2204,14 +2203,14 @@ function labelArr (desc, options) {
             }
         }
         bits.push(['text', {
-            x: step * (options.mod - lsbm - 1),
+            x: step * (opt.mod - lsbm - 1),
             'font-size': fontsize,
             'font-family': fontfamily,
             'font-weight': fontweight
         }, lsb]);
         if (lsbm !== msbm) {
             bits.push(['text', {
-                x: step * (options.mod - msbm - 1),
+                x: step * (opt.mod - msbm - 1),
                 'font-size': fontsize,
                 'font-family': fontfamily,
                 'font-weight': fontweight
@@ -2220,7 +2219,7 @@ function labelArr (desc, options) {
         if (e.name) {
             lText = tspan.parse(e.name);
             lText.unshift({
-                x: step * (options.mod - ((msbm + lsbm) / 2) - 1),
+                x: step * (opt.mod - ((msbm + lsbm) / 2) - 1),
                 'font-size': fontsize,
                 'font-family': fontfamily,
                 'font-weight': fontweight
@@ -2230,16 +2229,16 @@ function labelArr (desc, options) {
         } else {
             blanks.push(['rect', {
                 style: 'fill-opacity:0.1',
-                x: step * (options.mod - msbm - 1),
+                x: step * (opt.mod - msbm - 1),
                 y: 0,
                 width: step * (msbm - lsbm + 1),
-                height: options.vspace / 2
+                height: opt.vspace / 2
             }]);
         }
         if (e.attr) {
             aText = tspan.parse(e.attr);
             aText.unshift({
-                x: step * (options.mod - ((msbm + lsbm) / 2) - 1),
+                x: step * (opt.mod - ((msbm + lsbm) / 2) - 1),
                 'font-size': fontsize,
                 'font-family': fontfamily,
                 'font-weight': fontweight
@@ -2251,16 +2250,16 @@ function labelArr (desc, options) {
     return ['g', blanks, bits, names, attrs];
 }
 
-function labels (desc, options) {
+function labels (desc, opt) {
     return ['g', {'text-anchor': 'middle'},
-        labelArr(desc, options)
+        labelArr(desc, opt)
     ];
 }
 
-function cage (desc, options) {
-    var hspace = options.hspace;
-    var vspace = options.vspace;
-    var mod = options.mod;
+function cage (desc, opt) {
+    var hspace = opt.hspace;
+    var vspace = opt.vspace;
+    var mod = opt.mod;
     var res = ['g', {
         stroke: 'black',
         'stroke-width': 1,
@@ -2272,9 +2271,9 @@ function cage (desc, options) {
     res.push(vline(vspace / 2));
     res.push(hline(hspace, 0, vspace / 2));
 
-    var i = options.index * options.mod, j = options.mod;
+    var i = opt.index * opt.mod, j = opt.mod;
     do {
-        if ((j === options.mod) || desc.some(function (e) { return (e.lsb === i); })) {
+        if ((j === opt.mod) || desc.some(function (e) { return (e.lsb === i); })) {
             res.push(vline((vspace / 2), j * (hspace / mod)));
         } else {
             res.push(vline((vspace / 16), j * (hspace / mod)));
@@ -2285,38 +2284,41 @@ function cage (desc, options) {
     return res;
 }
 
-function lane (desc, options) {
+function lane (desc, opt) {
     var res = ['g', {
-        transform: t(4.5, (options.lanes - options.index - 1) * options.vspace + 0.5)
+        transform: t(4.5, (opt.lanes - opt.index - 1) * opt.vspace + 0.5)
     }];
-    res.push(cage(desc, options));
-    res.push(labels(desc, options));
+    res.push(cage(desc, opt));
+    res.push(labels(desc, opt));
     return res;
 }
 
-function render (desc, options) {
-    options = options || {
-        vspace: 80,
-        hspace: 640,
-        lanes: 2,
-        bits: 32
-    };
+function render (desc, opt) {
+    opt = opt || {};
+    opt.vspace = opt.vspace || 80;
+    opt.hspace = opt.hspace || 640;
+    opt.lanes = opt.lanes || 2;
+    opt.bits = opt.bits || 32;
+    opt.bigendian = opt.bigendian || false;
+    opt.fontfamily = opt.fontfamily || 'sans-serif';
+    opt.fontweight = opt.fontweight || 'normal';
+    opt.fontsize = opt.fontsize || 14;
 
     var res = ['svg', {
         xmlns: 'http://www.w3.org/2000/svg',
-        width: (options.hspace + 9),
-        height: (options.vspace * options.lanes + 5),
+        width: (opt.hspace + 9),
+        height: (opt.vspace * opt.lanes + 5),
         viewBox: [
             0,
             0,
-            (options.hspace + 9),
-            (options.vspace * options.lanes + 5)
+            (opt.hspace + 9),
+            (opt.vspace * opt.lanes + 5)
         ].join(' ')
     }];
 
     var lsb = 0;
-    var mod = options.bits / options.lanes;
-    options.mod = mod;
+    var mod = opt.bits / opt.lanes;
+    opt.mod = mod;
     desc.forEach(function (e) {
         e.lsb = lsb;
         e.lsbm = lsb % mod;
@@ -2326,9 +2328,9 @@ function render (desc, options) {
     });
 
     var i;
-    for (i = 0; i < options.lanes; i++) {
-        options.index = i;
-        res.push(lane(desc, options));
+    for (i = 0; i < opt.lanes; i++) {
+        opt.index = i;
+        res.push(lane(desc, opt));
     }
     return res;
 }
