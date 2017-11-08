@@ -2207,14 +2207,14 @@ function labelArr (desc, opt) {
             'font-size': fontsize,
             'font-family': fontfamily,
             'font-weight': fontweight
-        }, lsb]);
+        }, lsb.toString()]);
         if (lsbm !== msbm) {
             bits.push(['text', {
                 x: step * (opt.mod - msbm - 1),
                 'font-size': fontsize,
                 'font-family': fontfamily,
                 'font-weight': fontweight
-            }, msb]);
+            }, msb.toString()]);
         }
         if (e.name) {
             lText = tspan.parse(e.name);
