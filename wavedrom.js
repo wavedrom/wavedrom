@@ -1922,7 +1922,7 @@ function renderReg (index, source, parent) {
     while (parent.childNodes.length) {
         parent.removeChild(parent.childNodes[0]);
     }
-    var e = render(source.reg);
+    var e = render(source.reg, source.config);
     var node = jsonmlParse(e);
     parent.insertBefore(node, null);
 }
@@ -2293,16 +2293,22 @@ function lane (desc, opt) {
     return res;
 }
 
+function isIntGTorDefault(val, min, def) {
+    return (typeof val === 'number' && val > min) ? (val |0) : def;
+}
+
 function render (desc, opt) {
-    opt = opt || {};
-    opt.vspace = opt.vspace || 80;
-    opt.hspace = opt.hspace || 640;
-    opt.lanes = opt.lanes || 2;
-    opt.bits = opt.bits || 32;
+    opt = (typeof opt === 'object') ? opt : {};
+
+    opt.vspace = isIntGTorDefault(opt.vspace, 19, 80);
+    opt.hspace = isIntGTorDefault(opt.hspace, 39, 640);
+    opt.lanes = isIntGTorDefault(opt.lanes, 0, 2);
+    opt.bits = isIntGTorDefault(opt.bits, 4, 32);
+    opt.fontsize = isIntGTorDefault(opt.fontsize, 5, 14);
+
     opt.bigendian = opt.bigendian || false;
     opt.fontfamily = opt.fontfamily || 'sans-serif';
     opt.fontweight = opt.fontweight || 'normal';
-    opt.fontsize = opt.fontsize || 14;
 
     var res = ['svg', {
         xmlns: 'http://www.w3.org/2000/svg',
@@ -2318,7 +2324,7 @@ function render (desc, opt) {
 
     var lsb = 0;
     var mod = opt.bits / opt.lanes;
-    opt.mod = mod;
+    opt.mod = mod |0;
     desc.forEach(function (e) {
         e.lsb = lsb;
         e.lsbm = lsb % mod;
