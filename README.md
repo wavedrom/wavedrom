@@ -1,4 +1,7 @@
 [![Build Status](https://travis-ci.org/drom/wavedrom.svg?branch=master)](https://travis-ci.org/drom/wavedrom)
+[![Dependency Status](https://david-dm.org/drom/wavedrom.svg)](https://david-dm.org/drom/wavedrom)
+[![DevDependency Status](https://david-dm.org/drom/wavedrom/dev-status.svg)](https://david-dm.org/drom/wavedrom?type=dev)
+
 [![NPM version](https://img.shields.io/npm/v/wavedrom.svg)](https://www.npmjs.org/package/wavedrom)
 [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 [![Analytics](https://ga-beacon.appspot.com/UA-21660728-4/wavedrom/readme)](http://wavedrom.com)
