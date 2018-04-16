@@ -108,6 +108,10 @@ is an online real-time editor of digital timing diagrams based on the **WaveDrom
 
 Please use the [WaveDrom user group](http://groups.google.com/group/wavedrom) for discussions, questions, ideas, or whatever.
 
+## Contributing
+
+[Contributing](./.github/CONTRIBUTING.md)
+
 ## License
 
 See [LICENSE](https://github.com/drom/wavedrom/blob/master/LICENSE).
