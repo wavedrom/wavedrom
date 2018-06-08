@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 'use strict';
 
 function appendSaveAsDialog (index, output) {
@@ -1469,7 +1469,7 @@ module.exports = renderArcs;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"./w3":31,"tspan":35}],24:[function(require,module,exports){
+},{"./create-element":2,"./w3":31,"tspan":38}],24:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element');
@@ -1776,7 +1776,7 @@ module.exports = renderGroups;
 
 /* eslint-env browser */
 
-},{"tspan":35}],27:[function(require,module,exports){
+},{"tspan":38}],27:[function(require,module,exports){
 'use strict';
 
 var tspan = require('tspan'),
@@ -1907,7 +1907,7 @@ module.exports = renderMarks;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"tspan":35}],28:[function(require,module,exports){
+},{"./create-element":2,"tspan":38}],28:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element'),
@@ -2095,7 +2095,7 @@ module.exports = renderWaveLane;
 
 /* eslint-env browser */
 
-},{"./create-element":2,"./find-lane-markers":5,"./w3":31,"tspan":35}],31:[function(require,module,exports){
+},{"./create-element":2,"./find-lane-markers":5,"./w3":31,"tspan":38}],31:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -2500,4 +2500,55 @@ function reparse (React) {
 
 module.exports = reparse;
 
-},{"./parse":36}]},{},[32]);
+},{"./parse":36}],38:[function(require,module,exports){
+'use strict';
+
+var parse = require('./parse'),
+    reparse = require('./reparse');
+
+exports.parse = parse;
+exports.reparse = reparse;
+
+},{"./parse":39,"./reparse":40}],39:[function(require,module,exports){
+arguments[4][36][0].apply(exports,arguments)
+},{"dup":36}],40:[function(require,module,exports){
+'use strict';
+
+var parse = require('./parse');
+
+function deDash (str) {
+    var m = str.match(/(\w+)-(\w)(\w+)/);
+    if (m === null) {
+        return str;
+    }
+    var newStr = m[1] + m[2].toUpperCase() + m[3];
+    return newStr;
+}
+
+function reparse (React) {
+
+    var $ = React.createElement;
+
+    function reTspan (e, i) {
+        var tag = e[0];
+        var attr = e[1];
+
+        var newAttr = Object.keys(attr).reduce(function (res, key) {
+            var newKey = deDash(key);
+            res[newKey] = attr[key];
+            return res;
+        }, {});
+
+        var body = e[2];
+        newAttr.key = i;
+        return $(tag, newAttr, body);
+    }
+
+    return function (str) {
+        return parse(str).map(reTspan);
+    };
+}
+
+module.exports = reparse;
+
+},{"./parse":39}]},{},[32]);

@@ -38,11 +38,11 @@
     "grunt-eslint": "^20.1.0",
     "js-beautify": "^1.6.3",
     "jsof": "^0.3.1",
-    "yargs": "^10.0.3"
+    "yargs": "^11.0.0"
   },
   "dependencies": {
-    "bit-field": "^0.5.0",
+    "bit-field": "^0.6.0",
     "onml": "^0.4.1",
-    "tspan": "^0.2.1"
+    "tspan": "^0.3.6"
   }
 }
