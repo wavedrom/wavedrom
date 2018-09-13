@@ -82,6 +82,8 @@ The script will find all ``<script type="WaveDrom">`` instances and insert a tim
 
 Blogger integration: (http://wavedrom.blogspot.com/2011/08/wavedrom-digital-timing-diagram-in-your.html)
 
+MediaWiki integration: (https://github.com/Martoni/mediawiki_wavedrom)
+
 ## Editor
 
 [WaveDromEditor](http://wavedrom.com/editor.html)
