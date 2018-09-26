@@ -119,5 +119,4 @@ WaveDrom.appendSaveAsDialog = function (index, output) {
     );
 };
 
-/* eslint-env browser */
 /* global WaveDrom, document */

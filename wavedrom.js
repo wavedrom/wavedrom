@@ -123,8 +123,6 @@ function appendSaveAsDialog (index, output) {
 
 module.exports = appendSaveAsDialog;
 
-/* eslint-env browser */
-
 },{}],2:[function(require,module,exports){
 'use strict';
 
@@ -142,8 +140,6 @@ var // obj2ml = require('./obj2ml'),
 module.exports = jsonmlParse;
 // module.exports = createElement;
 
-/* eslint-env browser */
-
 },{"./jsonml-parse":15}],3:[function(require,module,exports){
 'use strict';
 
@@ -152,11 +148,11 @@ var eva = require('./eva'),
 
 function editorRefresh () {
     // var svg,
-    // 	ser,
-    // 	ssvg,
-    // 	asvg,
-    // 	sjson,
-    // 	ajson;
+    // ser,
+    // ssvg,
+    // asvg,
+    // sjson,
+    // ajson;
 
     renderWaveForm(0, eva('InputJSON_0'), 'WaveDrom_Display_');
 
@@ -179,7 +175,7 @@ function editorRefresh () {
 
 module.exports = editorRefresh;
 
-},{"./eva":4,"./render-wave-form":29}],4:[function(require,module,exports){
+},{"./eva":4,"./render-wave-form":30}],4:[function(require,module,exports){
 'use strict';
 
 function eva (id) {
@@ -219,8 +215,6 @@ function eva (id) {
 }
 
 module.exports = eva;
-
-/* eslint-env browser */
 
 },{}],5:[function(require,module,exports){
 'use strict';
@@ -453,7 +447,7 @@ exports.eva = eva;
 exports.renderWaveForm = renderWaveForm;
 exports.editorRefresh = editorRefresh;
 
-},{"./editor-refresh":3,"./eva":4,"./process-all":21,"./render-wave-form":29}],10:[function(require,module,exports){
+},{"./editor-refresh":3,"./eva":4,"./process-all":21,"./render-wave-form":30}],10:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element'),
@@ -475,9 +469,7 @@ function insertSVGTemplateAssign (index, parent) {
 
 module.exports = insertSVGTemplateAssign;
 
-/* eslint-env browser */
-
-},{"./create-element":2,"./w3":31}],11:[function(require,module,exports){
+},{"./create-element":2,"./w3":32}],11:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element'),
@@ -535,9 +527,7 @@ function insertSVGTemplate (index, parent, source, lane) {
 
 module.exports = insertSVGTemplate;
 
-/* eslint-env browser */
-
-},{"./create-element":2,"./w3":31,"./wave-skin":33}],12:[function(require,module,exports){
+},{"./create-element":2,"./w3":32,"./wave-skin":34}],12:[function(require,module,exports){
 'use strict';
 
 //attribute name mapping
@@ -651,7 +641,6 @@ var ATTRMAP = {
 
 module.exports = addAttributes;
 
-/* eslint-env browser */
 /* eslint no-new-func:0 */
 
 },{}],13:[function(require,module,exports){
@@ -722,8 +711,6 @@ module.exports = addAttributes;
 
 module.exports = appendChild;
 
-/* eslint-env browser */
-
 },{}],14:[function(require,module,exports){
 'use strict';
 
@@ -753,8 +740,6 @@ var trimWhitespace = require('./jsonml-trim-whitespace');
 }
 
 module.exports = hydrate;
-
-/* eslint-env browser */
 
 },{"./jsonml-trim-whitespace":16}],15:[function(require,module,exports){
 'use strict';
@@ -876,10 +861,9 @@ parse = /*DOM*/ function (/*JsonML*/ jml, /*function*/ filter) {
 
 module.exports = parse;
 
-/* eslint-env browser */
 /* eslint yoda:1 */
 
-},{"./jsonml-add-attributes":12,"./jsonml-append-child":13,"./jsonml-hydrate":14,"./jsonml-trim-whitespace":16,"./w3":31}],16:[function(require,module,exports){
+},{"./jsonml-add-attributes":12,"./jsonml-append-child":13,"./jsonml-hydrate":14,"./jsonml-trim-whitespace":16,"./w3":32}],16:[function(require,module,exports){
 'use strict';
 
 /*bool*/ function isWhitespace(/*DOM*/ node) {
@@ -902,8 +886,6 @@ module.exports = parse;
 }
 
 module.exports = trimWhitespace;
-
-/* eslint-env browser */
 
 },{}],17:[function(require,module,exports){
 'use strict';
@@ -1169,7 +1151,7 @@ function processAll () {
             points.item(i).setAttribute('id', 'InputJSON_' + index);
 
             node0 = document.createElement('div');
-            //			node0.className += 'WaveDrom_Display_' + index;
+            // node0.className += 'WaveDrom_Display_' + index;
             node0.id = 'WaveDrom_Display_' + index;
             points.item(i).parentNode.insertBefore(node0, points.item(i));
             // WaveDrom.InsertSVGTemplate(i, node0);
@@ -1187,9 +1169,7 @@ function processAll () {
 
 module.exports = processAll;
 
-/* eslint-env browser */
-
-},{"./append-save-as-dialog":1,"./eva":4,"./render-wave-form":29}],22:[function(require,module,exports){
+},{"./append-save-as-dialog":1,"./eva":4,"./render-wave-form":30}],22:[function(require,module,exports){
 'use strict';
 
 function rec (tmp, state) {
@@ -1465,9 +1445,7 @@ function renderArcs (root, source, index, top, lane) {
 
 module.exports = renderArcs;
 
-/* eslint-env browser */
-
-},{"./create-element":2,"./w3":31,"tspan":35}],24:[function(require,module,exports){
+},{"./create-element":2,"./w3":32,"tspan":36}],24:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element');
@@ -1673,8 +1651,6 @@ function renderAssign (index, source) {
 
 module.exports = renderAssign;
 
-/* eslint-env browser */
-
 },{"./create-element":2}],25:[function(require,module,exports){
 'use strict';
 
@@ -1731,9 +1707,7 @@ function renderGaps (root, source, index, lane) {
 
 module.exports = renderGaps;
 
-/* eslint-env browser */
-
-},{"./w3":31}],26:[function(require,module,exports){
+},{"./w3":32}],26:[function(require,module,exports){
 'use strict';
 
 var tspan = require('tspan');
@@ -1772,9 +1746,7 @@ function renderGroups (groups, index, lane) {
 
 module.exports = renderGroups;
 
-/* eslint-env browser */
-
-},{"tspan":35}],27:[function(require,module,exports){
+},{"tspan":36}],27:[function(require,module,exports){
 'use strict';
 
 var tspan = require('tspan'),
@@ -1903,9 +1875,7 @@ function renderMarks (root, content, index, lane) {
 
 module.exports = renderMarks;
 
-/* eslint-env browser */
-
-},{"./create-element":2,"tspan":35}],28:[function(require,module,exports){
+},{"./create-element":2,"tspan":36}],28:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element'),
@@ -1923,7 +1893,7 @@ function renderReg (index, source, parent) {
 
 module.exports = renderReg;
 
-},{"./create-element":2,"bit-field/lib/render":34}],29:[function(require,module,exports){
+},{"./create-element":2,"bit-field/lib/render":35}],29:[function(require,module,exports){
 'use strict';
 
 var rec = require('./rec'),
@@ -1941,13 +1911,13 @@ var rec = require('./rec'),
     insertSVGTemplate = require('./insert-svg-template'),
     insertSVGTemplateAssign = require('./insert-svg-template-assign');
 
-function renderWaveForm (index, source, output) {
+function renderWaveElement (index, source, outputElement) {
     var ret,
         root, groups, svgcontent, content, width, height,
         glengths, xmax = 0, i;
 
     if (source.signal) {
-        insertSVGTemplate(index, document.getElementById(output + index), source, lane);
+        insertSVGTemplate(index, outputElement, source, lane);
         parseConfig(source, lane);
         ret = rec(source.signal, {'x':0, 'y':0, 'xmax':0, 'width':[], 'lanes':[], 'groups':[]});
         root = document.getElementById('lanes_' + index);
@@ -1973,18 +1943,27 @@ function renderWaveForm (index, source, output) {
         svgcontent.setAttribute('overflow', 'hidden');
         root.setAttribute('transform', 'translate(' + (lane.xg + 0.5) + ', ' + ((lane.yh0 + lane.yh1) + 0.5) + ')');
     } else if (source.assign) {
-        insertSVGTemplateAssign(index, document.getElementById(output + index), source);
+        insertSVGTemplateAssign(index, outputElement, source);
         renderAssign(index, source);
     } else if (source.reg) {
-        renderReg(index, source, document.getElementById(output + index));
+        renderReg(index, source, outputElement);
     }
+}
+
+module.exports = renderWaveElement;
+
+},{"./create-element":2,"./insert-svg-template":11,"./insert-svg-template-assign":10,"./lane":17,"./parse-config":18,"./parse-wave-lanes":20,"./rec":22,"./render-arcs":23,"./render-assign":24,"./render-gaps":25,"./render-groups":26,"./render-marks":27,"./render-reg":28,"./render-wave-lane":31}],30:[function(require,module,exports){
+'use strict';
+
+var renderWaveElement = require('./render-wave-element');
+
+function renderWaveForm (index, source, output) {
+    renderWaveElement(index, source, document.getElementById(output + index));
 }
 
 module.exports = renderWaveForm;
 
-/* eslint-env browser */
-
-},{"./create-element":2,"./insert-svg-template":11,"./insert-svg-template-assign":10,"./lane":17,"./parse-config":18,"./parse-wave-lanes":20,"./rec":22,"./render-arcs":23,"./render-assign":24,"./render-gaps":25,"./render-groups":26,"./render-marks":27,"./render-reg":28,"./render-wave-lane":30}],30:[function(require,module,exports){
+},{"./render-wave-element":29}],31:[function(require,module,exports){
 'use strict';
 
 var tspan = require('tspan'),
@@ -2091,9 +2070,7 @@ function renderWaveLane (root, content, index, lane) {
 
 module.exports = renderWaveLane;
 
-/* eslint-env browser */
-
-},{"./create-element":2,"./find-lane-markers":5,"./w3":31,"tspan":35}],31:[function(require,module,exports){
+},{"./create-element":2,"./find-lane-markers":5,"./w3":32,"tspan":36}],32:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -2102,7 +2079,7 @@ module.exports = {
     xmlns: 'http://www.w3.org/XML/1998/namespace'
 };
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 window.WaveDrom = window.WaveDrom || {};
@@ -2114,16 +2091,12 @@ window.WaveDrom.RenderWaveForm = index.renderWaveForm;
 window.WaveDrom.EditorRefresh = index.editorRefresh;
 window.WaveDrom.eva = index.eva;
 
-/* eslint-env browser */
-
-},{"./":9}],33:[function(require,module,exports){
+},{"./":9}],34:[function(require,module,exports){
 'use strict';
 
 module.exports = window.WaveSkin;
 
-/* eslint-env browser */
-
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 var tspan = require('tspan');
@@ -2337,7 +2310,7 @@ function render (desc, opt) {
 
 module.exports = render;
 
-},{"tspan":35}],35:[function(require,module,exports){
+},{"tspan":36}],36:[function(require,module,exports){
 'use strict';
 
 var parse = require('./parse'),
@@ -2346,7 +2319,7 @@ var parse = require('./parse'),
 exports.parse = parse;
 exports.reparse = reparse;
 
-},{"./parse":36,"./reparse":37}],36:[function(require,module,exports){
+},{"./parse":37,"./reparse":38}],37:[function(require,module,exports){
 'use strict';
 
 var token = /<o>|<ins>|<s>|<sub>|<sup>|<b>|<i>|<tt>|<\/o>|<\/ins>|<\/s>|<\/sub>|<\/sup>|<\/b>|<\/i>|<\/tt>/;
@@ -2456,7 +2429,7 @@ function parse (str) {
 module.exports = parse;
 /* eslint no-constant-condition: 0 */
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 'use strict';
 
 var parse = require('./parse');
@@ -2496,4 +2469,4 @@ function reparse (React) {
 
 module.exports = reparse;
 
-},{"./parse":36}]},{},[32]);
+},{"./parse":37}]},{},[33]);

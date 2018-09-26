@@ -24,6 +24,7 @@
   ],
   "scripts": {
     "test": "grunt",
+    "eslint": "eslint lib/*.js",
     "unpkg": "browserify --standalone wavedrom lib/index.js > wavedrom.unpkg.js",
     "prepublish": "npm run test && npm run unpkg"
   },
@@ -33,6 +34,7 @@
     "RTL"
   ],
   "devDependencies": {
+    "@drom/eslint-config": "^0.7.0",
     "grunt": "^1.0.1",
     "grunt-browserify": "^5.0.0",
     "grunt-cli": "^1.2.0",
@@ -48,5 +50,14 @@
     "bit-field": "^0.6.0",
     "onml": "^0.4.1",
     "tspan": "^0.3.6"
+  },
+  "eslintConfig": {
+    "extends": "@drom/eslint-config/eslint4/node4",
+    "rules": {
+      "camelcase": 0
+    },
+    "env": {
+      "browser": true
+    }
   }
 }
