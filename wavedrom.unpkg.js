@@ -1929,8 +1929,6 @@ function findFirstChildByTagName (parent, name) {
 }
 
 function renderWaveElement (index, source, outputElement, waveSkin) {
-    var width, height, xmax = 0, i;
-
     if (source.signal) {
 
         insertSVGTemplate(index, outputElement, source, lane, waveSkin);
@@ -1946,18 +1944,17 @@ function renderWaveElement (index, source, outputElement, waveSkin) {
         var content  = parseWaveLanes(ret.lanes, lane);
         var glengths = renderWaveLane(lanes, content, index, lane);
 
-        for (i in glengths) {
-            xmax = Math.max(xmax, (glengths[i] + ret.width[i]));
-        }
+        var xmax = glengths.reduce(function (res, len, i) {
+            return Math.max(res, len + ret.width[i]);
+        }, 0);
 
         renderMarks(lanes, content, index, lane);
         renderArcs(lanes, ret.lanes, index, source, lane);
         renderGaps(lanes, ret.lanes, index, lane);
         groups.insertBefore(jsonmlParse(renderGroups(ret.groups, index, lane)), null);
         lane.xg = Math.ceil((xmax - lane.tgo) / lane.xs) * lane.xs;
-        width  = (lane.xg + (lane.xs * (lane.xmax + 1)));
-        height = (content.length * lane.yo +
-        lane.yh0 + lane.yh1 + lane.yf0 + lane.yf1);
+        var width = (lane.xg + (lane.xs * (lane.xmax + 1)));
+        var height = (content.length * lane.yo + lane.yh0 + lane.yh1 + lane.yf0 + lane.yf1);
 
         svgcontent.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
         svgcontent.setAttribute('width', width);
