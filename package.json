@@ -36,7 +36,7 @@
   "devDependencies": {
     "@drom/eslint-config": "^0.7.0",
     "browserify": "^16.2.3",
-    "eslint": "^5.6.0",
+    "eslint": "^4",
     "grunt": "^1.0.1",
     "grunt-browserify": "^5.0.0",
     "grunt-cli": "^1.2.0",
