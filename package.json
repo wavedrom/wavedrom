@@ -13,15 +13,19 @@
     "url": "https://github.com/drom/wavedrom/issues"
   },
   "main": "./lib",
+  "unpkg": "wavedrom.unpkg.js",
   "files": [
     "wavedrom.js",
     "wavedrom.min.js",
+    "wavedrom.unpkg.js",
     "LICENSE",
     "lib/**",
     "skins/**"
   ],
   "scripts": {
-    "test": "grunt"
+    "test": "grunt",
+    "unpkg": "browserify --standalone wavedrom lib/index.js > wavedrom.unpkg.js",
+    "prepublish": "npm run test && npm run unpkg"
   },
   "keywords": [
     "waveform",
