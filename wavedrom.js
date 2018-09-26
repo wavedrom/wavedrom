@@ -440,14 +440,16 @@ module.exports = genWaveBrick;
 var processAll = require('./process-all'),
     eva = require('./eva'),
     renderWaveForm = require('./render-wave-form'),
+    renderWaveElement = require('./render-wave-element'),
     editorRefresh = require('./editor-refresh');
 
 exports.processAll = processAll;
 exports.eva = eva;
 exports.renderWaveForm = renderWaveForm;
+exports.renderWaveElement = renderWaveElement;
 exports.editorRefresh = editorRefresh;
 
-},{"./editor-refresh":3,"./eva":4,"./process-all":21,"./render-wave-form":30}],10:[function(require,module,exports){
+},{"./editor-refresh":3,"./eva":4,"./process-all":21,"./render-wave-element":29,"./render-wave-form":30}],10:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element'),
@@ -1911,37 +1913,53 @@ var rec = require('./rec'),
     insertSVGTemplate = require('./insert-svg-template'),
     insertSVGTemplateAssign = require('./insert-svg-template-assign');
 
+function findFirstChildByTagName (parent, name) {
+    var i;
+    var arr = parent.children;
+    var ilen = arr.length;
+    for (i = 0; i < ilen; i++) {
+        if (arr[i].tagName === name) {
+            return arr[i];
+        }
+    }
+}
+
 function renderWaveElement (index, source, outputElement) {
-    var ret,
-        root, groups, svgcontent, content, width, height,
-        glengths, xmax = 0, i;
+    var width, height, xmax = 0, i;
 
     if (source.signal) {
+
         insertSVGTemplate(index, outputElement, source, lane);
         parseConfig(source, lane);
-        ret = rec(source.signal, {'x':0, 'y':0, 'xmax':0, 'width':[], 'lanes':[], 'groups':[]});
-        root = document.getElementById('lanes_' + index);
-        groups = document.getElementById('groups_' + index);
-        content  = parseWaveLanes(ret.lanes, lane);
-        glengths = renderWaveLane(root, content, index, lane);
+
+        var ret = rec(source.signal, {'x':0, 'y':0, 'xmax':0, 'width':[], 'lanes':[], 'groups':[]});
+
+        var svgcontent  = outputElement.children[0];
+        var waves = findFirstChildByTagName (svgcontent, 'g');
+        var lanes = waves.children[0];
+        var groups = waves.children[1];
+
+        var content  = parseWaveLanes(ret.lanes, lane);
+        var glengths = renderWaveLane(lanes, content, index, lane);
+
         for (i in glengths) {
             xmax = Math.max(xmax, (glengths[i] + ret.width[i]));
         }
-        renderMarks(root, content, index, lane);
-        renderArcs(root, ret.lanes, index, source, lane);
-        renderGaps(root, ret.lanes, index, lane);
+
+        renderMarks(lanes, content, index, lane);
+        renderArcs(lanes, ret.lanes, index, source, lane);
+        renderGaps(lanes, ret.lanes, index, lane);
         groups.insertBefore(jsonmlParse(renderGroups(ret.groups, index, lane)), null);
         lane.xg = Math.ceil((xmax - lane.tgo) / lane.xs) * lane.xs;
         width  = (lane.xg + (lane.xs * (lane.xmax + 1)));
         height = (content.length * lane.yo +
         lane.yh0 + lane.yh1 + lane.yf0 + lane.yf1);
 
-        svgcontent = document.getElementById('svgcontent_' + index);
         svgcontent.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
         svgcontent.setAttribute('width', width);
         svgcontent.setAttribute('height', height);
         svgcontent.setAttribute('overflow', 'hidden');
-        root.setAttribute('transform', 'translate(' + (lane.xg + 0.5) + ', ' + ((lane.yh0 + lane.yh1) + 0.5) + ')');
+        lanes.setAttribute('transform', 'translate(' + (lane.xg + 0.5) + ', ' + ((lane.yh0 + lane.yh1) + 0.5) + ')');
     } else if (source.assign) {
         insertSVGTemplateAssign(index, outputElement, source);
         renderAssign(index, source);
