@@ -140,7 +140,7 @@ var // obj2ml = require('./obj2ml'),
 module.exports = jsonmlParse;
 // module.exports = createElement;
 
-},{"./jsonml-parse":15}],3:[function(require,module,exports){
+},{"./jsonml-parse":14}],3:[function(require,module,exports){
 'use strict';
 
 var eva = require('./eva'),
@@ -175,7 +175,7 @@ function editorRefresh () {
 
 module.exports = editorRefresh;
 
-},{"./eva":4,"./render-wave-form":30}],4:[function(require,module,exports){
+},{"./eva":4,"./render-wave-form":29}],4:[function(require,module,exports){
 'use strict';
 
 function eva (id) {
@@ -437,21 +437,6 @@ module.exports = genWaveBrick;
 },{"./gen-brick":6}],9:[function(require,module,exports){
 'use strict';
 
-var processAll = require('./process-all'),
-    eva = require('./eva'),
-    renderWaveForm = require('./render-wave-form'),
-    renderWaveElement = require('./render-wave-element'),
-    editorRefresh = require('./editor-refresh');
-
-exports.processAll = processAll;
-exports.eva = eva;
-exports.renderWaveForm = renderWaveForm;
-exports.renderWaveElement = renderWaveElement;
-exports.editorRefresh = editorRefresh;
-
-},{"./editor-refresh":3,"./eva":4,"./process-all":21,"./render-wave-element":29,"./render-wave-form":30}],10:[function(require,module,exports){
-'use strict';
-
 var jsonmlParse = require('./create-element'),
     w3 = require('./w3');
 
@@ -471,14 +456,14 @@ function insertSVGTemplateAssign (index, parent) {
 
 module.exports = insertSVGTemplateAssign;
 
-},{"./create-element":2,"./w3":32}],11:[function(require,module,exports){
+},{"./create-element":2,"./w3":31}],10:[function(require,module,exports){
 'use strict';
 
-var jsonmlParse = require('./create-element'),
-    w3 = require('./w3'),
-    waveSkin = require('./wave-skin');
+var jsonmlParse = require('./create-element');
+var w3 = require('./w3');
+// var waveSkin = require('./wave-skin');
 
-function insertSVGTemplate (index, parent, source, lane) {
+function insertSVGTemplate (index, parent, source, lane, waveSkin) {
     var node, first, e;
 
     // cleanup
@@ -529,7 +514,7 @@ function insertSVGTemplate (index, parent, source, lane) {
 
 module.exports = insertSVGTemplate;
 
-},{"./create-element":2,"./w3":32,"./wave-skin":34}],12:[function(require,module,exports){
+},{"./create-element":2,"./w3":31}],11:[function(require,module,exports){
 'use strict';
 
 //attribute name mapping
@@ -645,7 +630,7 @@ module.exports = addAttributes;
 
 /* eslint no-new-func:0 */
 
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 /*void*/ function appendChild(/*DOM*/ elem, /*DOM*/ child) {
@@ -713,7 +698,7 @@ module.exports = addAttributes;
 
 module.exports = appendChild;
 
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 var trimWhitespace = require('./jsonml-trim-whitespace');
@@ -743,7 +728,7 @@ var trimWhitespace = require('./jsonml-trim-whitespace');
 
 module.exports = hydrate;
 
-},{"./jsonml-trim-whitespace":16}],15:[function(require,module,exports){
+},{"./jsonml-trim-whitespace":15}],14:[function(require,module,exports){
 'use strict';
 
 var hydrate = require('./jsonml-hydrate'),
@@ -865,7 +850,7 @@ module.exports = parse;
 
 /* eslint yoda:1 */
 
-},{"./jsonml-add-attributes":12,"./jsonml-append-child":13,"./jsonml-hydrate":14,"./jsonml-trim-whitespace":16,"./w3":32}],16:[function(require,module,exports){
+},{"./jsonml-add-attributes":11,"./jsonml-append-child":12,"./jsonml-hydrate":13,"./jsonml-trim-whitespace":15,"./w3":31}],15:[function(require,module,exports){
 'use strict';
 
 /*bool*/ function isWhitespace(/*DOM*/ node) {
@@ -889,7 +874,7 @@ module.exports = parse;
 
 module.exports = trimWhitespace;
 
-},{}],17:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 var lane = {
@@ -914,7 +899,7 @@ var lane = {
 
 module.exports = lane;
 
-},{}],18:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 function parseConfig (source, lane) {
@@ -1006,7 +991,7 @@ function parseConfig (source, lane) {
 
 module.exports = parseConfig;
 
-},{}],19:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 var genFirstWaveBrick = require('./gen-first-wave-brick'),
@@ -1077,7 +1062,7 @@ function parseWaveLane (text, extra, lane) {
 
 module.exports = parseWaveLane;
 
-},{"./find-lane-markers":5,"./gen-first-wave-brick":7,"./gen-wave-brick":8}],20:[function(require,module,exports){
+},{"./find-lane-markers":5,"./gen-first-wave-brick":7,"./gen-wave-brick":8}],19:[function(require,module,exports){
 'use strict';
 
 var parseWaveLane = require('./parse-wave-lane');
@@ -1131,7 +1116,7 @@ function parseWaveLanes (sig, lane) {
 
 module.exports = parseWaveLanes;
 
-},{"./parse-wave-lane":19}],21:[function(require,module,exports){
+},{"./parse-wave-lane":18}],20:[function(require,module,exports){
 'use strict';
 
 var eva = require('./eva'),
@@ -1171,7 +1156,7 @@ function processAll () {
 
 module.exports = processAll;
 
-},{"./append-save-as-dialog":1,"./eva":4,"./render-wave-form":30}],22:[function(require,module,exports){
+},{"./append-save-as-dialog":1,"./eva":4,"./render-wave-form":29}],21:[function(require,module,exports){
 'use strict';
 
 function rec (tmp, state) {
@@ -1202,7 +1187,7 @@ function rec (tmp, state) {
 
 module.exports = rec;
 
-},{}],23:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 var tspan = require('tspan'),
@@ -1447,7 +1432,7 @@ function renderArcs (root, source, index, top, lane) {
 
 module.exports = renderArcs;
 
-},{"./create-element":2,"./w3":32,"tspan":36}],24:[function(require,module,exports){
+},{"./create-element":2,"./w3":31,"tspan":34}],23:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element');
@@ -1653,7 +1638,7 @@ function renderAssign (index, source) {
 
 module.exports = renderAssign;
 
-},{"./create-element":2}],25:[function(require,module,exports){
+},{"./create-element":2}],24:[function(require,module,exports){
 'use strict';
 
 var w3 = require('./w3');
@@ -1709,7 +1694,7 @@ function renderGaps (root, source, index, lane) {
 
 module.exports = renderGaps;
 
-},{"./w3":32}],26:[function(require,module,exports){
+},{"./w3":31}],25:[function(require,module,exports){
 'use strict';
 
 var tspan = require('tspan');
@@ -1748,7 +1733,7 @@ function renderGroups (groups, index, lane) {
 
 module.exports = renderGroups;
 
-},{"tspan":36}],27:[function(require,module,exports){
+},{"tspan":34}],26:[function(require,module,exports){
 'use strict';
 
 var tspan = require('tspan'),
@@ -1877,7 +1862,7 @@ function renderMarks (root, content, index, lane) {
 
 module.exports = renderMarks;
 
-},{"./create-element":2,"tspan":36}],28:[function(require,module,exports){
+},{"./create-element":2,"tspan":34}],27:[function(require,module,exports){
 'use strict';
 
 var jsonmlParse = require('./create-element'),
@@ -1895,7 +1880,7 @@ function renderReg (index, source, parent) {
 
 module.exports = renderReg;
 
-},{"./create-element":2,"bit-field/lib/render":35}],29:[function(require,module,exports){
+},{"./create-element":2,"bit-field/lib/render":33}],28:[function(require,module,exports){
 'use strict';
 
 var rec = require('./rec'),
@@ -1924,12 +1909,12 @@ function findFirstChildByTagName (parent, name) {
     }
 }
 
-function renderWaveElement (index, source, outputElement) {
+function renderWaveElement (index, source, outputElement, waveSkin) {
     var width, height, xmax = 0, i;
 
     if (source.signal) {
 
-        insertSVGTemplate(index, outputElement, source, lane);
+        insertSVGTemplate(index, outputElement, source, lane, waveSkin);
         parseConfig(source, lane);
 
         var ret = rec(source.signal, {'x':0, 'y':0, 'xmax':0, 'width':[], 'lanes':[], 'groups':[]});
@@ -1970,18 +1955,18 @@ function renderWaveElement (index, source, outputElement) {
 
 module.exports = renderWaveElement;
 
-},{"./create-element":2,"./insert-svg-template":11,"./insert-svg-template-assign":10,"./lane":17,"./parse-config":18,"./parse-wave-lanes":20,"./rec":22,"./render-arcs":23,"./render-assign":24,"./render-gaps":25,"./render-groups":26,"./render-marks":27,"./render-reg":28,"./render-wave-lane":31}],30:[function(require,module,exports){
+},{"./create-element":2,"./insert-svg-template":10,"./insert-svg-template-assign":9,"./lane":16,"./parse-config":17,"./parse-wave-lanes":19,"./rec":21,"./render-arcs":22,"./render-assign":23,"./render-gaps":24,"./render-groups":25,"./render-marks":26,"./render-reg":27,"./render-wave-lane":30}],29:[function(require,module,exports){
 'use strict';
 
 var renderWaveElement = require('./render-wave-element');
 
 function renderWaveForm (index, source, output) {
-    renderWaveElement(index, source, document.getElementById(output + index));
+    renderWaveElement(index, source, document.getElementById(output + index), window.WaveSkin);
 }
 
 module.exports = renderWaveForm;
 
-},{"./render-wave-element":29}],31:[function(require,module,exports){
+},{"./render-wave-element":28}],30:[function(require,module,exports){
 'use strict';
 
 var tspan = require('tspan'),
@@ -2088,7 +2073,7 @@ function renderWaveLane (root, content, index, lane) {
 
 module.exports = renderWaveLane;
 
-},{"./create-element":2,"./find-lane-markers":5,"./w3":32,"tspan":36}],32:[function(require,module,exports){
+},{"./create-element":2,"./find-lane-markers":5,"./w3":31,"tspan":34}],31:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -2097,24 +2082,22 @@ module.exports = {
     xmlns: 'http://www.w3.org/XML/1998/namespace'
 };
 
-},{}],33:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 'use strict';
 
 window.WaveDrom = window.WaveDrom || {};
 
-var index = require('./');
+var processAll = require('./process-all');
+var eva = require('./eva');
+var renderWaveForm = require('./render-wave-form');
+var editorRefresh = require('./editor-refresh');
 
-window.WaveDrom.ProcessAll = index.processAll;
-window.WaveDrom.RenderWaveForm = index.renderWaveForm;
-window.WaveDrom.EditorRefresh = index.editorRefresh;
-window.WaveDrom.eva = index.eva;
+window.WaveDrom.ProcessAll = processAll;
+window.WaveDrom.RenderWaveForm = renderWaveForm;
+window.WaveDrom.EditorRefresh = editorRefresh;
+window.WaveDrom.eva = eva;
 
-},{"./":9}],34:[function(require,module,exports){
-'use strict';
-
-module.exports = window.WaveSkin;
-
-},{}],35:[function(require,module,exports){
+},{"./editor-refresh":3,"./eva":4,"./process-all":20,"./render-wave-form":29}],33:[function(require,module,exports){
 'use strict';
 
 var tspan = require('tspan');
@@ -2328,7 +2311,7 @@ function render (desc, opt) {
 
 module.exports = render;
 
-},{"tspan":36}],36:[function(require,module,exports){
+},{"tspan":34}],34:[function(require,module,exports){
 'use strict';
 
 var parse = require('./parse'),
@@ -2337,7 +2320,7 @@ var parse = require('./parse'),
 exports.parse = parse;
 exports.reparse = reparse;
 
-},{"./parse":37,"./reparse":38}],37:[function(require,module,exports){
+},{"./parse":35,"./reparse":36}],35:[function(require,module,exports){
 'use strict';
 
 var token = /<o>|<ins>|<s>|<sub>|<sup>|<b>|<i>|<tt>|<\/o>|<\/ins>|<\/s>|<\/sub>|<\/sup>|<\/b>|<\/i>|<\/tt>/;
@@ -2447,7 +2430,7 @@ function parse (str) {
 module.exports = parse;
 /* eslint no-constant-condition: 0 */
 
-},{}],38:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 'use strict';
 
 var parse = require('./parse');
@@ -2487,4 +2470,4 @@ function reparse (React) {
 
 module.exports = reparse;
 
-},{"./parse":37}]},{},[33]);
+},{"./parse":35}]},{},[32]);
