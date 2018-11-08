@@ -1,8 +1,8 @@
 {
   "name": "wavedrom",
   "description": "Digital timing diagram in your browser",
-  "version": "0.10.0",
-  "homepage": "https://github.com/drom/wavedrom",
+  "version": "1.8.0",
+  "homepage": "https://github.com/wavedrom/wavedrom",
   "keywords": [
     "waveform",
     "verilog",

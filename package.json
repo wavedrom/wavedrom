@@ -7,10 +7,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/drom/wavedrom.git"
+    "url": "https://github.com/wavedrom/wavedrom.git"
   },
   "bugs": {
-    "url": "https://github.com/drom/wavedrom/issues"
+    "url": "https://github.com/wavedrom/wavedrom/issues"
   },
   "main": "./lib",
   "unpkg": "wavedrom.unpkg.js",
