@@ -45,12 +45,12 @@
     "grunt-contrib-uglify": "^4.0.0",
     "grunt-eslint": "^20.1.0",
     "js-beautify": "^1.6.3",
-    "jsof": "^0.3.1",
+    "jsof": "^0.3.2",
     "yargs": "^12.0.2"
   },
   "dependencies": {
-    "bit-field": "^1.0.1",
-    "onml": "^0.4.1",
+    "bit-field": "^1.0.2",
+    "onml": "^0.4.5",
     "tspan": "^0.3.6"
   },
   "eslintConfig": {
