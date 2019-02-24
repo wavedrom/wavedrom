@@ -1,9 +1,8 @@
-[![Build Status](https://travis-ci.org/drom/wavedrom.svg?branch=master)](https://travis-ci.org/drom/wavedrom)
-[![Dependency Status](https://david-dm.org/drom/wavedrom.svg)](https://david-dm.org/drom/wavedrom)
-[![DevDependency Status](https://david-dm.org/drom/wavedrom/dev-status.svg)](https://david-dm.org/drom/wavedrom?type=dev)
+[![Build Status](https://travis-ci.org/wavedrom/wavedrom.svg?branch=master)](https://travis-ci.org/wavedrom/wavedrom)
+[![Dependency Status](https://david-dm.org/wavedrom/wavedrom.svg)](https://david-dm.org/wavedrom/wavedrom)
+[![DevDependency Status](https://david-dm.org/wavedrom/wavedrom/dev-status.svg)](https://david-dm.org/wavedrom/wavedrom?type=dev)
 
 [![NPM version](https://img.shields.io/npm/v/wavedrom.svg)](https://www.npmjs.org/package/wavedrom)
-[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 [![Analytics](https://ga-beacon.appspot.com/UA-21660728-4/wavedrom/readme)](http://wavedrom.com)
 <span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=J6WR5E7TJGSY2&lc=US&item_name=WaveDrom&item_number=github&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted" title="Donate to this project using Paypal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="PayPal donate button" /></a></span>
 
@@ -13,7 +12,7 @@
 
 **WaveDrom** is a Free and Open Source online digital timing diagram (waveform) rendering engine that uses javascript, HTML5 and SVG to convert a [WaveJSON](https://github.com/drom/wavedrom/wiki/WaveJSON) input text description into SVG vector graphics.
 
-[WaveJSON](https://github.com/drom/wavedrom/wiki/WaveJSON) is an application of the [JSON](http://json.org/) format. The purpose of [WaveJSON](https://github.com/drom/wavedrom/wiki/WaveJSON) is to provide a compact exchange format for digital timing diagrams utilized by digital HW / IC engineers.
+[WaveJSON](https://github.com/drom/wavedrom/wiki/WaveJSON) is an application of the [JSON](http://json.org/) format. The purpose of [WaveJSON](https://github.com/wavedrom/schema/blob/master/WaveJSON.md) is to provide a compact exchange format for digital timing diagrams utilized by digital HW / IC engineers.
 
 The engine is using [WaveDromSkin](unpacked/README.md) skin mechanism to render a complete picture.
 
@@ -44,8 +43,8 @@ There are three steps to insert **WaveDrom** diagrams directly into your page:
 or from a CDN:
 
 ```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.6.2/skins/default.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.6.2/wavedrom.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.8.0/skins/default.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.8.0/wavedrom.min.js" type="text/javascript"></script>
 ```
 
 2) Set the ``onload`` event for the HTML body.
