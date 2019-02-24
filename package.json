@@ -34,7 +34,7 @@
     "RTL"
   ],
   "devDependencies": {
-    "@drom/eslint-config": "^0.7.0",
+    "@drom/eslint-config": "^0.9.0",
     "browserify": "^16.2.3",
     "eslint": "^4",
     "grunt": "^1.0.1",
@@ -49,7 +49,7 @@
     "yargs": "^12.0.2"
   },
   "dependencies": {
-    "bit-field": "^0.6.0",
+    "bit-field": "^1.0.1",
     "onml": "^0.4.1",
     "tspan": "^0.3.6"
   },

@@ -2099,8 +2099,37 @@ window.WaveDrom.eva = eva;
 
 var tspan = require('tspan');
 
+var colors = {
+    2: 0,
+    3: 80,
+    4: 170,
+    5: 45,
+    6: 126,
+    7: 215
+};
+
+function typeStyle (t) {
+    var color = colors[t];
+    return (color !== undefined)
+        ? ';fill:hsl(' + color + ',100%,50%)'
+        : '';
+}
+
 function t (x, y) {
     return 'translate(' + x + ',' + y + ')';
+}
+
+function isIntGTorDefault(val, min, def) {
+    return (typeof val === 'number' && val > min) ? (val |0) : def;
+}
+
+function getSVG (w, h) {
+    return ['svg', {
+        xmlns: 'http://www.w3.org/2000/svg',
+        width: w,
+        height: h,
+        viewBox: [0, 0, w, h].join(' ')
+    }];
 }
 
 function hline (len, x, y) {
@@ -2137,17 +2166,38 @@ function vline (len, x, y) {
     return res;
 }
 
+function getLabel (val, x, y, step, len) {
+    var i, res = ['g', {}];
+    if (typeof val === 'number') {
+        for(i = 0; i < len; i++) {
+            res.push(['text', {x: x + step * (len / 2 - i - 0.5), y: y}, ((val >> i) & 1)]);
+        }
+        return res;
+    }
+    return ['text', {x: x, y: y}].concat(tspan.parse(val.toString()));
+}
+
+function getAttr (e, opt, step, lsbm, msbm) {
+    var x = step * (opt.mod - ((msbm + lsbm) / 2) - 1);
+    if (Array.isArray(e.attr)) {
+        return e.attr.reduce(function (prev, a, i) {
+            if (a === undefined || a === null) {
+                return prev;
+            }
+            return prev.concat([getLabel(a, x, 16 * i, step, e.bits)]);
+        }, ['g', {}]);
+    }
+    return getLabel(e.attr, x, 0, step, e.bits);
+}
+
 function labelArr (desc, opt) {
     var step = opt.hspace / opt.mod;
     var bits  = ['g', {transform: t(step / 2, opt.vspace / 5)}];
     var names = ['g', {transform: t(step / 2, opt.vspace / 2 + 4)}];
     var attrs = ['g', {transform: t(step / 2, opt.vspace)}];
     var blanks = ['g', {transform: t(0, opt.vspace / 4)}];
-    var fontsize = opt.fontsize;
-    var fontfamily = opt.fontfamily;
-    var fontweight = opt.fontweight;
     desc.forEach(function (e) {
-        var lText, aText, lsbm, msbm, lsb, msb;
+        var lsbm, msbm, lsb, msb;
         lsbm = 0;
         msbm = opt.mod - 1;
         lsb = opt.index * opt.mod;
@@ -2168,57 +2218,37 @@ function labelArr (desc, opt) {
             }
         }
         bits.push(['text', {
-            x: step * (opt.mod - lsbm - 1),
-            'font-size': fontsize,
-            'font-family': fontfamily,
-            'font-weight': fontweight
+            x: step * (opt.mod - lsbm - 1)
         }, lsb.toString()]);
         if (lsbm !== msbm) {
             bits.push(['text', {
-                x: step * (opt.mod - msbm - 1),
-                'font-size': fontsize,
-                'font-family': fontfamily,
-                'font-weight': fontweight
+                x: step * (opt.mod - msbm - 1)
             }, msb.toString()]);
         }
         if (e.name) {
-            lText = tspan.parse(e.name);
-            lText.unshift({
-                x: step * (opt.mod - ((msbm + lsbm) / 2) - 1),
-                'font-size': fontsize,
-                'font-family': fontfamily,
-                'font-weight': fontweight
-            });
-            lText.unshift('text');
-            names.push(lText);
-        } else {
+            names.push(getLabel(
+                e.name,
+                step * (opt.mod - ((msbm + lsbm) / 2) - 1),
+                0,
+                step,
+                e.bits
+            ));
+        }
+
+        if ((e.name === undefined) || (e.type !== undefined)) {
             blanks.push(['rect', {
-                style: 'fill-opacity:0.1',
+                style: 'fill-opacity:0.1' + typeStyle(e.type),
                 x: step * (opt.mod - msbm - 1),
                 y: 0,
                 width: step * (msbm - lsbm + 1),
                 height: opt.vspace / 2
             }]);
         }
-        if (e.attr) {
-            aText = tspan.parse(e.attr);
-            aText.unshift({
-                x: step * (opt.mod - ((msbm + lsbm) / 2) - 1),
-                'font-size': fontsize,
-                'font-family': fontfamily,
-                'font-weight': fontweight
-            });
-            aText.unshift('text');
-            attrs.push(aText);
+        if (e.attr !== undefined) {
+            attrs.push(getAttr(e, opt, step, lsbm, msbm));
         }
     });
     return ['g', blanks, bits, names, attrs];
-}
-
-function labels (desc, opt) {
-    return ['g', {'text-anchor': 'middle'},
-        labelArr(desc, opt)
-    ];
 }
 
 function cage (desc, opt) {
@@ -2226,10 +2256,10 @@ function cage (desc, opt) {
     var vspace = opt.vspace;
     var mod = opt.mod;
     var res = ['g', {
+        transform: t(0, vspace / 4),
         stroke: 'black',
         'stroke-width': 1,
-        'stroke-linecap': 'round',
-        transform: t(0, vspace / 4)
+        'stroke-linecap': 'round'
     }];
 
     res.push(hline(hspace));
@@ -2249,17 +2279,17 @@ function cage (desc, opt) {
     return res;
 }
 
-function lane (desc, opt) {
-    var res = ['g', {
-        transform: t(4.5, (opt.lanes - opt.index - 1) * opt.vspace + 0.5)
-    }];
-    res.push(cage(desc, opt));
-    res.push(labels(desc, opt));
-    return res;
-}
 
-function isIntGTorDefault(val, min, def) {
-    return (typeof val === 'number' && val > min) ? (val |0) : def;
+function lane (desc, opt) {
+    return ['g', {
+        transform: t(4.5, (opt.lanes - opt.index - 1) * opt.vspace + 0.5),
+        'text-anchor': 'middle',
+        'font-size': opt.fontsize,
+        'font-family': opt.fontfamily || 'sans-serif',
+        'font-weight': opt.fontweight || 'normal'
+    }]
+        .concat([cage(desc, opt)])
+        .concat([labelArr(desc, opt)]);
 }
 
 function render (desc, opt) {
@@ -2272,24 +2302,16 @@ function render (desc, opt) {
     opt.fontsize = isIntGTorDefault(opt.fontsize, 5, 14);
 
     opt.bigendian = opt.bigendian || false;
-    opt.fontfamily = opt.fontfamily || 'sans-serif';
-    opt.fontweight = opt.fontweight || 'normal';
 
-    var res = ['svg', {
-        xmlns: 'http://www.w3.org/2000/svg',
-        width: (opt.hspace + 9),
-        height: (opt.vspace * opt.lanes + 5),
-        viewBox: [
-            0,
-            0,
-            (opt.hspace + 9),
-            (opt.vspace * opt.lanes + 5)
-        ].join(' ')
-    }];
+    var attributes = desc.reduce(function (prev, cur) {
+        return Math.max(prev, (Array.isArray(cur.attr)) ? cur.attr.length : 0);
+    }, 0) * 16;
+    var res = getSVG(opt.hspace + 9, (opt.vspace + attributes) * opt.lanes + 5);
 
     var lsb = 0;
     var mod = opt.bits / opt.lanes;
     opt.mod = mod |0;
+
     desc.forEach(function (e) {
         e.lsb = lsb;
         e.lsbm = lsb % mod;
