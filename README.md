@@ -10,9 +10,9 @@
 
 ## Introduction
 
-**WaveDrom** is a Free and Open Source online digital timing diagram (waveform) rendering engine that uses javascript, HTML5 and SVG to convert a [WaveJSON](https://github.com/drom/wavedrom/wiki/WaveJSON) input text description into SVG vector graphics.
+**WaveDrom** is a Free and Open Source online digital timing diagram (waveform) rendering engine that uses javascript, HTML5 and SVG to convert a [WaveJSON](https://github.com/wavedrom/schema/blob/master/WaveJSON.md) input text description into SVG vector graphics.
 
-[WaveJSON](https://github.com/drom/wavedrom/wiki/WaveJSON) is an application of the [JSON](http://json.org/) format. The purpose of [WaveJSON](https://github.com/wavedrom/schema/blob/master/WaveJSON.md) is to provide a compact exchange format for digital timing diagrams utilized by digital HW / IC engineers.
+WaveJSON is an application of the [JSON](http://json.org/) format. The purpose of WaveJSON is to provide a compact exchange format for digital timing diagrams utilized by digital HW / IC engineers.
 
 The engine is using [WaveDromSkin](unpacked/README.md) skin mechanism to render a complete picture.
 
