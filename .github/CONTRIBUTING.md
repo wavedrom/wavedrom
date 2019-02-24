@@ -4,7 +4,7 @@ We'd love for you to contribute to our source code and to make WaveDrom even bet
 
 ## Issues
 
-Found a bug? have idea? question? need some feature? => Open an issue here: https://github.com/drom/wavedrom/issues
+Found a bug? have idea? question? need some feature? => Open an issue here: https://github.com/wavedrom/wavedrom/issues
 
 ## Code contributions:
 

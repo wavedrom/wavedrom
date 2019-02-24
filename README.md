@@ -51,7 +51,7 @@ or from a CDN:
 <body onload="WaveDrom.ProcessAll()">
 ```
 
-3) Insert [WaveJSON](https://github.com/drom/wavedrom/wiki/WaveJSON) source inside HTML ``<body>`` wrapped with the ``<script>`` tag:
+3) Insert [WaveJSON](https://github.com/wavedrom/schema/blob/master/WaveJSON.md) source inside HTML ``<body>`` wrapped with the ``<script>`` tag:
 
 ```html
 <script type="WaveDrom">
@@ -99,7 +99,7 @@ is an online real-time editor of digital timing diagrams based on the **WaveDrom
 3. Run the editor: `./WaveDromEditor/linux64/wavedrom-editor`
 
 ## OS X
-1. Download the latest `wavedrom-editor-v1.6.2-osx-x64.zip` release:
+1. Download the latest `wavedrom-editor-v1.6.2-osx-x64.zip` release from here: [releases](https://github.com/wavedrom/wavedrom.github.io/releases)
 2. Unzip
 3. Run
 
@@ -113,4 +113,4 @@ Please use the [WaveDrom user group](http://groups.google.com/group/wavedrom) fo
 
 ## License
 
-See [LICENSE](https://github.com/drom/wavedrom/blob/master/LICENSE).
+See [LICENSE](https://github.com/wavedrom/wavedrom/blob/master/LICENSE).
