@@ -89,7 +89,7 @@ is an online real-time editor of digital timing diagrams based on the **WaveDrom
 ## Standalone WaveDromEditor
 
 ### Windows
-1. Download latest `wavedrom-editor-v1.9.2-win-{ia32|ia64}.zip` release from here: [releases](https://github.com/wavedrom/wavedrom.github.io/releases)
+1. Download latest `wavedrom-editor-v1.9.2-win-{ia32|x64}.zip` release from here: [releases](https://github.com/wavedrom/wavedrom.github.io/releases)
 2. Unzip it into a working directory.
 3. Run the editor: `wavedrom-editor.exe`
 
