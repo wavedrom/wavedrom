@@ -36,7 +36,7 @@
   "devDependencies": {
     "@drom/eslint-config": "^0.9.0",
     "browserify": "^16.2.3",
-    "eslint": "^4",
+    "eslint": "^4.19.1",
     "grunt": "^1.0.1",
     "grunt-browserify": "^5.0.0",
     "grunt-cli": "^1.2.0",
@@ -49,7 +49,7 @@
     "yargs": "^12.0.2"
   },
   "dependencies": {
-    "bit-field": "^1.0.2",
+    "bit-field": "^1.0.3",
     "onml": "^0.4.5",
     "tspan": "^0.3.6"
   },

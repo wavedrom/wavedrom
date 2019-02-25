@@ -2114,13 +2114,18 @@ var colors = {
 
 function typeStyle (t) {
     var color = colors[t];
-    return (color !== undefined)
-        ? ';fill:hsl(' + color + ',100%,50%)'
-        : '';
+    return (color !== undefined) ? ';fill:hsl(' + color + ',100%,50%)' : '';
 }
 
 function t (x, y) {
     return 'translate(' + x + ',' + y + ')';
+}
+
+function text (body, x, y) {
+    var attr = {};
+    if (x) { attr.x = x; }
+    if (y) { attr.y = y; }
+    return ['text', attr].concat(tspan.parse(body));
 }
 
 function isIntGTorDefault(val, min, def) {
@@ -2137,7 +2142,6 @@ function getSVG (w, h) {
 }
 
 function hline (len, x, y) {
-    var res = ['line'];
     var opt = {};
     if (x) {
         opt.x1 = x;
@@ -2149,12 +2153,10 @@ function hline (len, x, y) {
         opt.y1 = y;
         opt.y2 = y;
     }
-    res.push(opt);
-    return res;
+    return ['line', opt];
 }
 
 function vline (len, x, y) {
-    var res = ['line'];
     var opt = {};
     if (x) {
         opt.x1 = x;
@@ -2166,19 +2168,22 @@ function vline (len, x, y) {
     } else {
         opt.y2 = len;
     }
-    res.push(opt);
-    return res;
+    return ['line', opt];
 }
 
 function getLabel (val, x, y, step, len) {
     var i, res = ['g', {}];
     if (typeof val === 'number') {
-        for(i = 0; i < len; i++) {
-            res.push(['text', {x: x + step * (len / 2 - i - 0.5), y: y}, ((val >> i) & 1)]);
+        for (i = 0; i < len; i++) {
+            res.push(text(
+                (val >> i) & 1,
+                x + step * (len / 2 - i - 0.5),
+                y
+            ));
         }
         return res;
     }
-    return ['text', {x: x, y: y}].concat(tspan.parse(val.toString()));
+    return text(val, x, y);
 }
 
 function getAttr (e, opt, step, lsbm, msbm) {
@@ -2221,13 +2226,9 @@ function labelArr (desc, opt) {
                 return;
             }
         }
-        bits.push(['text', {
-            x: step * (opt.mod - lsbm - 1)
-        }, lsb.toString()]);
+        bits.push(text(lsb, step * (opt.mod - lsbm - 1)));
         if (lsbm !== msbm) {
-            bits.push(['text', {
-                x: step * (opt.mod - msbm - 1)
-            }, msb.toString()]);
+            bits.push(text(msb, step * (opt.mod - msbm - 1)));
         }
         if (e.name) {
             names.push(getLabel(
@@ -2291,9 +2292,10 @@ function lane (desc, opt) {
         'font-size': opt.fontsize,
         'font-family': opt.fontfamily || 'sans-serif',
         'font-weight': opt.fontweight || 'normal'
-    }]
-        .concat([cage(desc, opt)])
-        .concat([labelArr(desc, opt)]);
+    },
+    cage(desc, opt),
+    labelArr(desc, opt)
+    ];
 }
 
 function render (desc, opt) {
