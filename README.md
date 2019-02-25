@@ -41,8 +41,8 @@ There are three steps to insert **WaveDrom** diagrams directly into your page:
 or from a CDN:
 
 ```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.8.0/skins/default.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.8.0/wavedrom.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.9.2/skins/default.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wavedrom/1.9.2/wavedrom.min.js" type="text/javascript"></script>
 ```
 
 2) Set the ``onload`` event for the HTML body.
@@ -89,17 +89,17 @@ is an online real-time editor of digital timing diagrams based on the **WaveDrom
 ## Standalone WaveDromEditor
 
 ### Windows
-1. Download latest `wavedrom-editor-v1.5.0-win-{ia32|ia64}.zip` release from here: [releases](https://github.com/wavedrom/wavedrom.github.io/releases)
+1. Download latest `wavedrom-editor-v1.9.2-win-{ia32|ia64}.zip` release from here: [releases](https://github.com/wavedrom/wavedrom.github.io/releases)
 2. Unzip it into a working directory.
 3. Run the editor: `wavedrom-editor.exe`
 
 ### Linux
-1. Download the latest `wavedrom-editor-v1.6.2-linux-{ia32|x64}.tar.gz` release from here: [releases](https://github.com/wavedrom/wavedrom.github.io/releases)
-2. unzip-untar the package: `tar -xvzf wavedrom-editor-v1.6.2-linux-x64.tar.gz`
+1. Download the latest `wavedrom-editor-v1.9.2-linux-{ia32|x64}.tar.gz` release from here: [releases](https://github.com/wavedrom/wavedrom.github.io/releases)
+2. unzip-untar the package: `tar -xvzf wavedrom-editor-v1.9.2-linux-x64.tar.gz`
 3. Run the editor: `./WaveDromEditor/linux64/wavedrom-editor`
 
 ## OS X
-1. Download the latest `wavedrom-editor-v1.6.2-osx-x64.zip` release from here: [releases](https://github.com/wavedrom/wavedrom.github.io/releases)
+1. Download the latest `wavedrom-editor-v1.9.2-osx-x64.zip` release from here: [releases](https://github.com/wavedrom/wavedrom.github.io/releases)
 2. Unzip
 3. Run
 
