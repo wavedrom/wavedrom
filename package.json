@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "bit-field": "^1.0.3",
-    "onml": "^0.4.5",
+    "onml": "^1.0.0",
     "tspan": "^0.3.6"
   },
   "eslintConfig": {
