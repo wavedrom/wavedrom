@@ -581,9 +581,7 @@ exports.renderAny = renderAny;
 exports.renderWaveForm = renderWaveForm;
 exports.renderWaveElement = renderWaveElement;
 exports.editorRefresh = editorRefresh;
-exports.waveSkin = {
-    default: def
-};
+exports.waveSkin = def;
 
 },{"../skins/default.js":40,"./editor-refresh":5,"./eva":6,"./process-all":18,"./render-any.js":20,"./render-wave-element":30,"./render-wave-form":31}],12:[function(require,module,exports){
 'use strict';
