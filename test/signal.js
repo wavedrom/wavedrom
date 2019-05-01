@@ -54,7 +54,7 @@ describe('signal', function () {
                     ],
                     {  name: 'rdata', wave: 'x.....4x', data: 'Q2'}
                 ]
-            ]}
+            ]}, waveSkin
         )).to.be.an('array');
         done();
     });
@@ -70,7 +70,7 @@ describe('signal', function () {
             edge: [
                 'a~b t1', 'c-~a t2', 'c-~>d time 3', 'd~-e',
                 'e~>f', 'f->g', 'g-~>h', 'h~>i some text', 'h~->j'
-            ]}
+            ]}, waveSkin
         )).to.be.an('array');
         done();
     });
@@ -90,7 +90,7 @@ describe('signal', function () {
                     text:'Figure 100',
                     tock: 9
                 }
-            }
+            }, waveSkin
         )).to.be.an('array');
         done();
     });
