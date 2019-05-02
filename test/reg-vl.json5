@@ -1,0 +1,15 @@
+{reg:[
+    {bits: 7,  name: 0x07, attr: [
+      'VLxU,VLE zero-extended',
+      'VLxU,VLE zero-extended, fault-only-first',
+      'VLxU sign-extended',
+      'VLxU sign-extended, fault-only-first',
+    ]},
+    {bits: 5,  name: 'vd', attr: 'destination of load', type: 2},
+    {bits: 3,  name: 'width'},
+    {bits: 5,  name: 'rs1', attr: 'base address', type: 4},
+    {bits: 5,  name: 'lumop', attr: [0, 16, 0, 16]},
+    {bits: 1,  name: 'vm'},
+    {bits: 3,  name: 'mop', attr: [0, 0, 4, 4]},
+    {bits: 3,  name: 'nf'},
+]}
