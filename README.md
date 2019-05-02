@@ -14,9 +14,13 @@ WaveJSON is an application of the [JSON](http://json.org/) format. The purpose o
 
 The engine is using [WaveDromSkin](unpacked/README.md) skin mechanism to render a complete picture.
 
-## Screenshot
+## Server
 
-![Alt text](http://wavedrom.com/images/screenshot.png "screenshot")
+svg.wavedrom.com
+
+![signal step4](https://svg.wavedrom.com/github/wavedrom/wavedrom/master/test/signal-step4.json5)
+
+![reg vl](https://svg.wavedrom.com/github/wavedrom/wavedrom/master/test/reg-vl.json5)
 
 ## Web usage
 
