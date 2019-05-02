@@ -1,0 +1,193 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Hitchhiker's Guide to the WaveDrom (Part 2)</title>
+  <script type="text/javascript" src="../skins/default.js"></script>
+  <script type="text/javascript" src="../skins/narrow.js"></script>
+  <script type="text/javascript" src="../wavedrom.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Roboto|Droid+Sans+Mono|Varela+Round' rel='stylesheet' type='text/css'>
+  <style>body { background-color: #eee; } </style>
+</head>
+
+<body>
+
+<div class="content">
+
+<h1>Hitchhiker's Guide to the WaveDrom (Part 2)</h1>
+
+<h2>Logic Circuit Diagram</h2>
+
+Element <span class="fixed">"assign"</span> is an array of logic circuit diagrams.
+Each diagram by itself is an array, where first element is the name of circuit output,
+and the second element is the tree of logical operators.
+
+<pre class="brush: js">
+{ assign:[
+  ["o0", [Tree0]],
+  ["o1", [Tree1]],
+  ...
+]}
+</pre>
+
+Tree of logical operators has operator string as first element
+and operands for the each next element. Operand by itself can be a tree.
+See some examples below.
+
+<h3>XOR Gate</h3>
+
+<pre class="brush: js">
+{ assign:[
+  ["out",
+    ["|",
+      ["&", ["~", "a"], "b"],
+      ["&", ["~", "b"], "a"]
+    ]
+  ]
+]}
+</pre>
+
+<script type="WaveDrom">
+{ assign:[
+  ["out",
+    ["|",
+      ["&", ["~", "a"], "b"],
+      ["&", ["~", "b"], "a"]
+    ]
+  ]
+]}
+</script>
+
+<h3>Binary to Gray</h3>
+
+<pre class="brush: js">
+{ assign:[
+  ["g0", ["^", "b0", "b1"]],
+  ["g1", ["^", "b1", "b2"]],
+  ["g2", ["^", "b2", "b3"]],
+  ["g3", ["=", "b3"]]
+]}
+</pre>
+
+<script type="WaveDrom">
+{ assign:[
+  ["g0", ["^", "b0", "b1"]],
+  ["g1", ["^", "b1", "b2"]],
+  ["g2", ["^", "b2", "b3"]],
+  ["g3", ["=", "b3"]]
+]}
+</script>
+
+<h3>Gray to Binary</h3>
+
+<pre class="brush: js">
+{ assign:[
+  ["b3", "g3"],
+  ["b2", ["^", "b3", "g2"]],
+  ["b1", ["^", "b2", "g1"]],
+  ["b0", ["^", "b1", "g0"]]
+]}
+</pre>
+
+<script type="WaveDrom">
+{ assign:[
+  ["b3", "g3"],
+  ["b2", ["^", "b3", "g2"]],
+  ["b1", ["^", "b2", "g1"]],
+  ["b0", ["^", "b1", "g0"]]
+]}
+</script>
+
+<h3>74LS688</h3>
+
+<div>
+<div>
+<pre class="brush: js">
+{ assign:[
+  ["z", ["~&",
+    ["~^", ["~", "p0"], ["~", "q0"]],
+    ["~^", ["~", "p1"], ["~", "q1"]],
+    ["~^", ["~", "p2"], ["~", "q2"]],
+    "...",
+    ["~^", ["~", "p7"], ["~", "q7"]],
+    ["~","~en"]
+  ]]
+]}
+</pre>
+</div>
+<div>
+<script type="WaveDrom">
+{ assign:[
+  ["z", ["~&",
+    ["~^", ["~", "p0"], ["~", "q0"]],
+    ["~^", ["~", "p1"], ["~", "q1"]],
+    ["~^", ["~", "p2"], ["~", "q2"]],
+    "...",
+    ["~^", ["~", "p7"], ["~", "q7"]],
+    ["~","~en"]
+  ]]
+]}
+</script>
+</div>
+</div>
+
+<h3>IEC 60617 Symbols</h3>
+
+<div>
+<div>
+<pre class="brush: js">
+{ assign:[
+  ["out",
+    ["XNOR",
+      ["NAND",
+       	["INV", "a"],
+        ["NOR", "b", ["BUF","c"]]
+      ],
+      ["AND",
+       	["XOR", "d", "e", ["OR","f","g"]],
+        "h"
+      ]
+    ]
+  ]
+]}
+</pre>
+</div>
+<div>
+<script type="WaveDrom">
+{ assign:[
+  ["out",
+    ["XNOR",
+      ["NAND",
+       	["INV", "a"],
+        ["NOR", "b", ["BUF","c"]]
+      ],
+      ["AND",
+       	["XOR", "d", "e", ["OR","f","g"]],
+        "h"
+      ]
+    ]
+  ]
+]}
+</script>
+</div>
+</div>
+
+</div>
+
+<a href="https://github.com/drom/wavedrom"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+
+<script>(function(){ window.addEventListener("load", WaveDrom.ProcessAll, false); })();</script>
+<script>SyntaxHighlighter.all()</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-21660728-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

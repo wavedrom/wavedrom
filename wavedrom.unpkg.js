@@ -126,8 +126,127 @@ module.exports = appendSaveAsDialog;
 },{}],2:[function(require,module,exports){
 'use strict';
 
-var // obj2ml = require('./obj2ml'),
-    jsonmlParse = require('./jsonml-parse');
+function arcShape (Edge, from, to) { /* eslint complexity: [warn, 30] */
+    var dx = to.x - from.x;
+    var dy = to.y - from.y;
+    var lx = ((from.x + to.x) / 2);
+    var ly = ((from.y + to.y) / 2);
+    var d;
+    var style;
+    switch (Edge.shape) {
+    case '-'  : {
+        break;
+    }
+    case '~'  : {
+        d = ('M ' + from.x + ',' + from.y + ' c ' + (0.7 * dx) + ', 0 ' + (0.3 * dx) + ', ' + dy + ' ' + dx + ', ' + dy);
+        break;
+    }
+    case '-~' : {
+        d = ('M ' + from.x + ',' + from.y + ' c ' + (0.7 * dx) + ', 0 ' +         dx + ', ' + dy + ' ' + dx + ', ' + dy);
+        if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.75); }
+        break;
+    }
+    case '~-' : {
+        d = ('M ' + from.x + ',' + from.y + ' c ' + 0          + ', 0 ' + (0.3 * dx) + ', ' + dy + ' ' + dx + ', ' + dy);
+        if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.25); }
+        break;
+    }
+    case '-|' : {
+        d = ('m ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
+        if (Edge.label) { lx = to.x; }
+        break;
+    }
+    case '|-' : {
+        d = ('m ' + from.x + ',' + from.y + ' 0,' + dy + ' ' + dx + ',0');
+        if (Edge.label) { lx = from.x; }
+        break;
+    }
+    case '-|-': {
+        d = ('m ' + from.x + ',' + from.y + ' ' + (dx / 2) + ',0 0,' + dy + ' ' + (dx / 2) + ',0');
+        break;
+    }
+    case '->' : {
+        style = ('marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
+        break;
+    }
+    case '~>' : {
+        style = ('marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
+        d = ('M ' + from.x + ',' + from.y + ' ' + 'c ' + (0.7 * dx) + ', 0 ' + 0.3 * dx + ', ' + dy + ' ' + dx + ', ' + dy);
+        break;
+    }
+    case '-~>': {
+        style = ('marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
+        d = ('M ' + from.x + ',' + from.y + ' ' + 'c ' + (0.7 * dx) + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy);
+        if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.75); }
+        break;
+    }
+    case '~->': {
+        style = ('marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
+        d = ('M ' + from.x + ',' + from.y + ' ' + 'c ' + 0      + ', 0 ' + (0.3 * dx) + ', ' + dy + ' ' + dx + ', ' + dy);
+        if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.25); }
+        break;
+    }
+    case '-|>' : {
+        style = ('marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
+        d = ('m ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
+        if (Edge.label) { lx = to.x; }
+        break;
+    }
+    case '|->' : {
+        style = ('marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
+        d = ('m ' + from.x + ',' + from.y + ' 0,' + dy + ' ' + dx + ',0');
+        if (Edge.label) { lx = from.x; }
+        break;
+    }
+    case '-|->': {
+        style = ('marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
+        d = ('m ' + from.x + ',' + from.y + ' ' + (dx / 2) + ',0 0,' + dy + ' ' + (dx / 2) + ',0');
+        break;
+    }
+    case '<->' : {
+        style = ('marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0041c4;stroke-width:1;fill:none');
+        break;
+    }
+    case '<~>' : {
+        style = ('marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0041c4;stroke-width:1;fill:none');
+        d = ('M ' + from.x + ',' + from.y + ' ' + 'c ' + (0.7 * dx) + ', 0 ' + (0.3 * dx) + ', ' + dy + ' ' + dx + ', ' + dy);
+        break;
+    }
+    case '<-~>': {
+        style = ('marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0041c4;stroke-width:1;fill:none');
+        d = ('M ' + from.x + ',' + from.y + ' ' + 'c ' + (0.7 * dx) + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy);
+        if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.75); }
+        break;
+    }
+    case '<-|>' : {
+        style = ('marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0041c4;stroke-width:1;fill:none');
+        d = ('m ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
+        if (Edge.label) { lx = to.x; }
+        break;
+    }
+    case '<-|->': {
+        style = ('marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0041c4;stroke-width:1;fill:none');
+        d = ('m ' + from.x + ',' + from.y + ' ' + (dx / 2) + ',0 0,' + dy + ' ' + (dx / 2) + ',0');
+        break;
+    }
+    default   : { style = ('fill:none;stroke:#F00;stroke-width:1'); }
+    }
+    return {
+        lx: lx,
+        ly: ly,
+        d: d,
+        syle: style
+    };
+}
+
+module.exports = arcShape;
+
+},{}],3:[function(require,module,exports){
+module.exports={"chars":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,47,74,74,118,89,25,44,44,52,78,37,44,37,37,74,74,74,74,74,74,74,74,74,74,37,37,78,78,78,74,135,89,89,96,96,89,81,103,96,37,67,89,74,109,96,103,89,103,96,89,81,96,89,127,89,87,81,37,37,37,61,74,44,74,74,67,74,74,37,74,74,30,30,67,30,112,74,74,74,74,44,67,37,74,67,95,66,65,67,44,34,44,78,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,37,43,74,74,74,74,34,74,44,98,49,74,78,0,98,73,53,73,44,44,44,77,71,37,44,44,49,74,111,111,111,81,89,89,89,89,89,89,133,96,89,89,89,89,37,37,37,37,96,96,103,103,103,103,103,78,103,96,96,96,96,87,89,81,74,74,74,74,74,74,118,67,74,74,74,74,36,36,36,36,74,74,74,74,74,74,74,73,81,74,74,74,74,65,74,65,89,74,89,74,89,74,96,67,96,67,96,67,96,67,96,82,96,74,89,74,89,74,89,74,89,74,89,74,103,74,103,74,103,74,103,74,96,74,96,74,37,36,37,36,37,36,37,30,37,36,98,59,67,30,89,67,67,74,30,74,30,74,39,74,44,74,30,96,74,96,74,96,74,80,96,74,103,74,103,74,103,74,133,126,96,44,96,44,96,44,89,67,89,67,89,67,89,67,81,38,81,50,81,37,96,74,96,74,96,74,96,74,96,74,96,74,127,95,87,65,87,81,67,81,67,81,67,30,84,97,91,84,91,84,94,92,73,104,109,91,84,81,84,100,82,76,74,103,91,131,47,40,99,77,37,79,130,100,84,104,114,87,126,101,87,84,93,84,69,84,46,52,82,52,82,114,89,102,96,100,98,91,70,88,88,77,70,85,89,77,67,84,39,65,61,39,189,173,153,111,105,61,123,123,106,89,74,37,30,103,74,96,74,96,74,96,74,96,74,96,74,81,91,81,91,81,130,131,102,84,103,84,87,78,104,81,104,81,88,76,37,189,173,153,103,84,148,90,100,84,89,74,133,118,103,81],"other":114}
+
+},{}],4:[function(require,module,exports){
+'use strict';
+
 
 // function createElement (obj) {
 //     var el;
@@ -137,10 +256,21 @@ var // obj2ml = require('./obj2ml'),
 //     return el.firstChild;
 // }
 
+// var jsonmlParse = require('./jsonml-parse');
+
+var onmlStringify = require('onml/lib/stringify.js');
+var w3 = require('./w3.js');
+
+function jsonmlParse (arr) {
+    var el = document.createElementNS(w3.svg, 'g');
+    el.innerHTML = onmlStringify(arr);
+    return el.childNodes[0];
+}
+
 module.exports = jsonmlParse;
 // module.exports = createElement;
 
-},{"./jsonml-parse":15}],3:[function(require,module,exports){
+},{"./w3.js":34,"onml/lib/stringify.js":36}],5:[function(require,module,exports){
 'use strict';
 
 var eva = require('./eva'),
@@ -175,7 +305,7 @@ function editorRefresh () {
 
 module.exports = editorRefresh;
 
-},{"./eva":4,"./render-wave-form":30}],4:[function(require,module,exports){
+},{"./eva":6,"./render-wave-form":31}],6:[function(require,module,exports){
 'use strict';
 
 function eva (id) {
@@ -216,7 +346,7 @@ function eva (id) {
 
 module.exports = eva;
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 function findLaneMarkers (lanetext) {
@@ -251,7 +381,7 @@ function findLaneMarkers (lanetext) {
 
 module.exports = findLaneMarkers;
 
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 function genBrick (texts, extra, times) {
@@ -282,7 +412,7 @@ function genBrick (texts, extra, times) {
 
 module.exports = genBrick;
 
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 var genBrick = require('./gen-brick');
@@ -317,7 +447,7 @@ function genFirstWaveBrick (text, extra, times) {
 
 module.exports = genFirstWaveBrick;
 
-},{"./gen-brick":6}],8:[function(require,module,exports){
+},{"./gen-brick":8}],10:[function(require,module,exports){
 'use strict';
 
 var genBrick = require('./gen-brick');
@@ -434,61 +564,41 @@ function genWaveBrick (text, extra, times) {
 
 module.exports = genWaveBrick;
 
-},{"./gen-brick":6}],9:[function(require,module,exports){
+},{"./gen-brick":8}],11:[function(require,module,exports){
 'use strict';
 
 var processAll = require('./process-all');
 var eva = require('./eva');
 var renderWaveForm = require('./render-wave-form');
 var renderWaveElement = require('./render-wave-element');
+var renderAny = require('./render-any.js');
 var editorRefresh = require('./editor-refresh');
 var def = require('../skins/default.js');
 
 exports.processAll = processAll;
 exports.eva = eva;
+exports.renderAny = renderAny;
 exports.renderWaveForm = renderWaveForm;
 exports.renderWaveElement = renderWaveElement;
 exports.editorRefresh = editorRefresh;
-exports.waveSkin = {
-    default: def
-};
+exports.waveSkin = def;
 
-},{"../skins/default.js":37,"./editor-refresh":3,"./eva":4,"./process-all":21,"./render-wave-element":29,"./render-wave-form":30}],10:[function(require,module,exports){
+},{"../skins/default.js":40,"./editor-refresh":5,"./eva":6,"./process-all":18,"./render-any.js":20,"./render-wave-element":30,"./render-wave-form":31}],12:[function(require,module,exports){
 'use strict';
 
-var jsonmlParse = require('./create-element'),
-    w3 = require('./w3');
-
-function insertSVGTemplateAssign (index, parent) {
-    var node, e;
-    // cleanup
-    while (parent.childNodes.length) {
-        parent.removeChild(parent.childNodes[0]);
-    }
-    e =
-    ['svg', {id: 'svgcontent_' + index, xmlns: w3.svg, 'xmlns:xlink': w3.xlink, overflow:'hidden'},
-        ['style', '.pinname {font-size:12px; font-style:normal; font-variant:normal; font-weight:500; font-stretch:normal; text-align:center; text-anchor:end; font-family:Helvetica} .wirename {font-size:12px; font-style:normal; font-variant:normal; font-weight:500; font-stretch:normal; text-align:center; text-anchor:start; font-family:Helvetica} .wirename:hover {fill:blue} .gate {color:#000; fill:#ffc; fill-opacity: 1;stroke:#000; stroke-width:1; stroke-opacity:1} .gate:hover {fill:red !important; } .wire {fill:none; stroke:#000; stroke-width:1; stroke-opacity:1} .grid {fill:#fff; fill-opacity:1; stroke:none}']
-    ];
-    node = jsonmlParse(e);
-    parent.insertBefore(node, null);
+function insertSVGTemplateAssign () {
+    return ['style', '.pinname {font-size:12px; font-style:normal; font-variant:normal; font-weight:500; font-stretch:normal; text-align:center; text-anchor:end; font-family:Helvetica} .wirename {font-size:12px; font-style:normal; font-variant:normal; font-weight:500; font-stretch:normal; text-align:center; text-anchor:start; font-family:Helvetica} .wirename:hover {fill:blue} .gate {color:#000; fill:#ffc; fill-opacity: 1;stroke:#000; stroke-width:1; stroke-opacity:1} .gate:hover {fill:red !important; } .wire {fill:none; stroke:#000; stroke-width:1; stroke-opacity:1} .grid {fill:#fff; fill-opacity:1; stroke:none}'];
 }
 
 module.exports = insertSVGTemplateAssign;
 
-},{"./create-element":2,"./w3":32}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
-var jsonmlParse = require('./create-element');
 var w3 = require('./w3');
-// var waveSkin = require('./wave-skin');
 
-function insertSVGTemplate (index, parent, source, lane, waveSkin) {
-    var node, first, e;
-
-    // cleanup
-    while (parent.childNodes.length) {
-        parent.removeChild(parent.childNodes[0]);
-    }
+function insertSVGTemplate (index, source, lane, waveSkin, content, lanes, groups) {
+    var first, e;
 
     for (first in waveSkin) { break; }
 
@@ -508,392 +618,39 @@ function insertSVGTemplate (index, parent, source, lane, waveSkin) {
             {
                 id: 'svg',
                 xmlns: w3.svg,
-                'xmlns:xlink': w3.xlink,
-                height: '0'
+                'xmlns:xlink': w3.xlink
             },
-            ['g',
-                {
-                    id: 'waves'
-                },
+            ['g', {id: 'waves'},
                 ['g', {id: 'lanes'}],
                 ['g', {id: 'groups'}]
             ]
         ];
     }
 
-    e[e.length - 1][1].id    = 'waves_'  + index;
-    e[e.length - 1][2][1].id = 'lanes_'  + index;
-    e[e.length - 1][3][1].id = 'groups_' + index;
-    e[1].id = 'svgcontent_' + index;
-    e[1].height = 0;
+    var width = (lane.xg + (lane.xs * (lane.xmax + 1)));
+    var height = (content.length * lane.yo + lane.yh0 + lane.yh1 + lane.yf0 + lane.yf1);
 
-    node = jsonmlParse(e);
-    parent.insertBefore(node, null);
+    e[e.length - 1][1].id    = 'waves_'  + index;
+
+    e[e.length - 1][2][1].id = 'lanes_'  + index;
+    e[e.length - 1][2][1].transform = 'translate(' + (lane.xg + 0.5) + ', ' + ((lane.yh0 + lane.yh1) + 0.5) + ')';
+    e[e.length - 1][2] = e[e.length - 1][2].concat(lanes);
+
+    e[e.length - 1][3][1].id = 'groups_' + index;
+    e[e.length - 1][3].push(groups);
+
+    e[1].id = 'svgcontent_' + index;
+    e[1].height = height;
+    e[1].width = width;
+    e[1].viewBox = '0 0 ' + width + ' ' + height;
+    e[1].overflow = 'hidden';
+
+    return e;
 }
 
 module.exports = insertSVGTemplate;
 
-},{"./create-element":2,"./w3":32}],12:[function(require,module,exports){
-'use strict';
-
-//attribute name mapping
-var ATTRMAP = {
-        rowspan : 'rowSpan',
-        colspan : 'colSpan',
-        cellpadding : 'cellPadding',
-        cellspacing : 'cellSpacing',
-        tabindex : 'tabIndex',
-        accesskey : 'accessKey',
-        hidefocus : 'hideFocus',
-        usemap : 'useMap',
-        maxlength : 'maxLength',
-        readonly : 'readOnly',
-        contenteditable : 'contentEditable'
-        // can add more attributes here as needed
-    },
-    // attribute duplicates
-    ATTRDUP = {
-        enctype : 'encoding',
-        onscroll : 'DOMMouseScroll'
-        // can add more attributes here as needed
-    },
-    // event names
-    EVTS = (function (/*string[]*/ names) {
-        var evts = {}, evt;
-        while (names.length) {
-            evt = names.shift();
-            evts['on' + evt.toLowerCase()] = evt;
-        }
-        return evts;
-    })('blur,change,click,dblclick,error,focus,keydown,keypress,keyup,load,mousedown,mouseenter,mouseleave,mousemove,mouseout,mouseover,mouseup,resize,scroll,select,submit,unload'.split(','));
-
-/*void*/ function addHandler(/*DOM*/ elem, /*string*/ name, /*function*/ handler) {
-    if (typeof handler === 'string') {
-        handler = new Function('event', handler);
-    }
-
-    if (typeof handler !== 'function') {
-        return;
-    }
-
-    elem[name] = handler;
-}
-
-/*DOM*/ function addAttributes(/*DOM*/ elem, /*object*/ attr) {
-    if (attr.name && document.attachEvent) {
-        // IE fix for not being able to programatically change the name attribute
-        var alt = document.createElement('<' + elem.tagName + ' name=\'' + attr.name + '\'>');
-        // fix for Opera 8.5 and Netscape 7.1 creating malformed elements
-        if (elem.tagName === alt.tagName) {
-            elem = alt;
-        }
-    }
-
-    // for each attributeName
-    for (var name in attr) {
-        if (attr.hasOwnProperty(name)) {
-            // attributeValue
-            var value = attr[name];
-            if (
-                name &&
-                value !== null &&
-                typeof value !== 'undefined'
-            ) {
-                name = ATTRMAP[name.toLowerCase()] || name;
-                if (name === 'style') {
-                    if (typeof elem.style.cssText !== 'undefined') {
-                        elem.style.cssText = value;
-                    } else {
-                        elem.style = value;
-                    }
-                    //                    } else if (name === 'class') {
-                    //                        elem.className = value;
-                    //                        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    //                        elem.setAttribute(name, value);
-                    //                        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                } else if (EVTS[name]) {
-                    addHandler(elem, name, value);
-
-                    // also set duplicated events
-                    if (ATTRDUP[name]) {
-                        addHandler(elem, ATTRDUP[name], value);
-                    }
-                } else if (
-                    typeof value === 'string' ||
-                     typeof value === 'number' ||
-                     typeof value === 'boolean'
-                ) {
-                    elem.setAttribute(name, value);
-
-                    // also set duplicated attributes
-                    if (ATTRDUP[name]) {
-                        elem.setAttribute(ATTRDUP[name], value);
-                    }
-                } else {
-
-                    // allow direct setting of complex properties
-                    elem[name] = value;
-
-                    // also set duplicated attributes
-                    if (ATTRDUP[name]) {
-                        elem[ATTRDUP[name]] = value;
-                    }
-                }
-            }
-        }
-    }
-    return elem;
-}
-
-module.exports = addAttributes;
-
-/* eslint no-new-func:0 */
-
-},{}],13:[function(require,module,exports){
-'use strict';
-
-/*void*/ function appendChild(/*DOM*/ elem, /*DOM*/ child) {
-    if (child) {
-        // if (
-        //     elem.tagName &&
-        //     elem.tagName.toLowerCase() === 'table' &&
-        //     elem.tBodies
-        // ) {
-        //     if (!child.tagName) {
-        //         // must unwrap documentFragment for tables
-        //         if (child.nodeType === 11) {
-        //             while (child.firstChild) {
-        //                 appendChild(elem, child.removeChild(child.firstChild));
-        //             }
-        //         }
-        //         return;
-        //     }
-        //     // in IE must explicitly nest TRs in TBODY
-        //     var childTag = child.tagName.toLowerCase();// child tagName
-        //     if (childTag && childTag !== "tbody" && childTag !== "thead") {
-        //         // insert in last tbody
-        //         var tBody = elem.tBodies.length > 0 ? elem.tBodies[elem.tBodies.length - 1] : null;
-        //         if (!tBody) {
-        //             tBody = document.createElement(childTag === "th" ? "thead" : "tbody");
-        //             elem.appendChild(tBody);
-        //         }
-        //         tBody.appendChild(child);
-        //     } else if (elem.canHaveChildren !== false) {
-        //         elem.appendChild(child);
-        //     }
-        // } else
-        if (
-            elem.tagName &&
-            elem.tagName.toLowerCase() === 'style' &&
-            document.createStyleSheet
-        ) {
-            // IE requires this interface for styles
-            elem.cssText = child;
-        } else
-
-        if (elem.canHaveChildren !== false) {
-            elem.appendChild(child);
-        }
-        // else if (
-        //     elem.tagName &&
-        //     elem.tagName.toLowerCase() === 'object' &&
-        //     child.tagName &&
-        //     child.tagName.toLowerCase() === 'param'
-        // ) {
-        //         // IE-only path
-        //     try {
-        //         elem.appendChild(child);
-        //     } catch (ex1) {
-        //
-        //     }
-        //     try {
-        //         if (elem.object) {
-        //             elem.object[child.name] = child.value;
-        //         }
-        //     } catch (ex2) {}
-        // }
-    }
-}
-
-module.exports = appendChild;
-
-},{}],14:[function(require,module,exports){
-'use strict';
-
-var trimWhitespace = require('./jsonml-trim-whitespace');
-
-/*DOM*/ function hydrate(/*string*/ value) {
-    var wrapper = document.createElement('div');
-    wrapper.innerHTML = value;
-
-    // trim extraneous whitespace
-    trimWhitespace(wrapper);
-
-    // eliminate wrapper for single nodes
-    if (wrapper.childNodes.length === 1) {
-        return wrapper.firstChild;
-    }
-
-    // create a document fragment to hold elements
-    var frag = document.createDocumentFragment ?
-        document.createDocumentFragment() :
-        document.createElement('');
-
-    while (wrapper.firstChild) {
-        frag.appendChild(wrapper.firstChild);
-    }
-    return frag;
-}
-
-module.exports = hydrate;
-
-},{"./jsonml-trim-whitespace":16}],15:[function(require,module,exports){
-'use strict';
-
-var hydrate = require('./jsonml-hydrate'),
-    w3 = require('./w3'),
-    appendChild = require('./jsonml-append-child'),
-    addAttributes = require('./jsonml-add-attributes'),
-    trimWhitespace = require('./jsonml-trim-whitespace');
-
-var patch,
-    parse,
-    onerror = null;
-
-/*bool*/ function isElement (/*JsonML*/ jml) {
-    return (jml instanceof Array) && (typeof jml[0] === 'string');
-}
-
-/*DOM*/ function onError (/*Error*/ ex, /*JsonML*/ jml, /*function*/ filter) {
-    return document.createTextNode('[' + ex + '-' + filter + ']');
-}
-
-patch = /*DOM*/ function (/*DOM*/ elem, /*JsonML*/ jml, /*function*/ filter) {
-    for (var i = 1; i < jml.length; i++) {
-
-        if (
-            (jml[i] instanceof Array) ||
-            (typeof jml[i] === 'string')
-        ) {
-            // append children
-            appendChild(elem, parse(jml[i], filter));
-        // } else if (jml[i] instanceof Unparsed) {
-        } else if (
-            jml[i] &&
-            jml[i].value
-        ) {
-            appendChild(elem, hydrate(jml[i].value));
-        } else if (
-            (typeof jml[i] === 'object') &&
-            (jml[i] !== null) &&
-            elem.nodeType === 1
-        ) {
-            // add attributes
-            elem = addAttributes(elem, jml[i]);
-        }
-    }
-
-    return elem;
-};
-
-parse = /*DOM*/ function (/*JsonML*/ jml, /*function*/ filter) {
-    var elem;
-
-    try {
-        if (!jml) {
-            return null;
-        }
-
-        if (typeof jml === 'string') {
-            return document.createTextNode(jml);
-        }
-
-        // if (jml instanceof Unparsed) {
-        if (jml && jml.value) {
-            return hydrate(jml.value);
-        }
-
-        if (!isElement(jml)) {
-            throw new SyntaxError('invalid JsonML');
-        }
-
-        var tagName = jml[0]; // tagName
-        if (!tagName) {
-            // correctly handle a list of JsonML trees
-            // create a document fragment to hold elements
-            var frag = document.createDocumentFragment ?
-                document.createDocumentFragment() :
-                document.createElement('');
-            for (var i = 2; i < jml.length; i++) {
-                appendChild(frag, parse(jml[i], filter));
-            }
-
-            // trim extraneous whitespace
-            trimWhitespace(frag);
-
-            // eliminate wrapper for single nodes
-            if (frag.childNodes.length === 1) {
-                return frag.firstChild;
-            }
-            return frag;
-        }
-
-        if (
-            tagName.toLowerCase() === 'style' &&
-            document.createStyleSheet
-        ) {
-            // IE requires this interface for styles
-            patch(document.createStyleSheet(), jml, filter);
-            // in IE styles are effective immediately
-            return null;
-        }
-
-        elem = patch(document.createElementNS(w3.svg, tagName), jml, filter);
-
-        // trim extraneous whitespace
-        trimWhitespace(elem);
-        // return (elem && (typeof filter === 'function')) ? filter(elem) : elem;
-        return elem;
-    } catch (ex) {
-        try {
-            // handle error with complete context
-            var err = (typeof onerror === 'function') ? onerror : onError;
-            return err(ex, jml, filter);
-        } catch (ex2) {
-            return document.createTextNode('[' + ex2 + ']');
-        }
-    }
-};
-
-module.exports = parse;
-
-/* eslint yoda:1 */
-
-},{"./jsonml-add-attributes":12,"./jsonml-append-child":13,"./jsonml-hydrate":14,"./jsonml-trim-whitespace":16,"./w3":32}],16:[function(require,module,exports){
-'use strict';
-
-/*bool*/ function isWhitespace(/*DOM*/ node) {
-    return node &&
-        (node.nodeType === 3) &&
-        (!node.nodeValue || !/\S/.exec(node.nodeValue));
-}
-
-/*void*/ function trimWhitespace(/*DOM*/ elem) {
-    if (elem) {
-        while (isWhitespace(elem.firstChild)) {
-            // trim leading whitespace text nodes
-            elem.removeChild(elem.firstChild);
-        }
-        while (isWhitespace(elem.lastChild)) {
-            // trim trailing whitespace text nodes
-            elem.removeChild(elem.lastChild);
-        }
-    }
-}
-
-module.exports = trimWhitespace;
-
-},{}],17:[function(require,module,exports){
+},{"./w3":34}],14:[function(require,module,exports){
 'use strict';
 
 var lane = {
@@ -918,7 +675,7 @@ var lane = {
 
 module.exports = lane;
 
-},{}],18:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 function parseConfig (source, lane) {
@@ -1010,7 +767,7 @@ function parseConfig (source, lane) {
 
 module.exports = parseConfig;
 
-},{}],19:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 var genFirstWaveBrick = require('./gen-first-wave-brick'),
@@ -1081,7 +838,7 @@ function parseWaveLane (text, extra, lane) {
 
 module.exports = parseWaveLane;
 
-},{"./find-lane-markers":5,"./gen-first-wave-brick":7,"./gen-wave-brick":8}],20:[function(require,module,exports){
+},{"./find-lane-markers":7,"./gen-first-wave-brick":9,"./gen-wave-brick":10}],17:[function(require,module,exports){
 'use strict';
 
 var parseWaveLane = require('./parse-wave-lane');
@@ -1135,7 +892,7 @@ function parseWaveLanes (sig, lane) {
 
 module.exports = parseWaveLanes;
 
-},{"./parse-wave-lane":19}],21:[function(require,module,exports){
+},{"./parse-wave-lane":16}],18:[function(require,module,exports){
 'use strict';
 
 var eva = require('./eva'),
@@ -1175,7 +932,7 @@ function processAll () {
 
 module.exports = processAll;
 
-},{"./append-save-as-dialog":1,"./eva":4,"./render-wave-form":30}],22:[function(require,module,exports){
+},{"./append-save-as-dialog":1,"./eva":6,"./render-wave-form":31}],19:[function(require,module,exports){
 'use strict';
 
 function rec (tmp, state) {
@@ -1206,46 +963,57 @@ function rec (tmp, state) {
 
 module.exports = rec;
 
-},{}],23:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
-var tspan = require('tspan'),
-    jsonmlParse = require('./create-element'),
-    w3 = require('./w3');
+var renderAssign = require('./render-assign.js');
+var renderReg = require('./render-reg.js');
+var renderSignal = require('./render-signal.js');
 
-function renderArcs (root, source, index, top, lane) {
-    var gg,
-        i,
-        k,
-        text,
+function renderAny (index, source, waveSkin) {
+    if (source.signal) {
+        return renderSignal(index, source, waveSkin);
+    }
+    if (source.assign) {
+        return renderAssign(index, source);
+    }
+    if (source.reg) {
+        return  renderReg(index, source);
+    }
+    return ['div'];
+}
+
+module.exports = renderAny;
+
+},{"./render-assign.js":22,"./render-reg.js":28,"./render-signal.js":29}],21:[function(require,module,exports){
+'use strict';
+
+var arcShape = require('./arc-shape.js');
+var renderLabel = require('./render-label.js');
+
+function renderArc (Edge, from, to, shapeProps) {
+    return ['path', {
+        id: 'gmark_' + Edge.from + '_' + Edge.to,
+        d: shapeProps.d || 'M ' + from.x + ',' + from.y + ' ' + to.x   + ',' + to.y,
+        style: shapeProps.style || 'fill:none;stroke:#00F;stroke-width:1'
+    }];
+}
+
+function renderArcs (source, index, top, lane) {
+    var i, k, text,
         Stack = [],
         Edge = {words: [], from: 0, shape: '', to: 0, label: ''},
         Events = {},
         pos,
         eventname,
-        // labeltext,
-        label,
-        underlabel,
+        shapeProps,
         from,
-        to,
-        dx,
-        dy,
-        lx,
-        ly,
-        gmark,
-        lwidth;
+        to;
 
-    function t1 () {
-        if (from && to) {
-            gmark = document.createElementNS(w3.svg, 'path');
-            gmark.id = ('gmark_' + Edge.from + '_' + Edge.to);
-            gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + to.x   + ',' + to.y);
-            gmark.setAttribute('style', 'fill:none;stroke:#00F;stroke-width:1');
-            gg.insertBefore(gmark, null);
-        }
-    }
+    var res = ['g', {id: 'wavearcs_' + index}];
 
     if (source) {
+
         for (i in source) {
             lane.period = source[i].period ? source[i].period    : 1;
             lane.phase  = (source[i].phase  ? source[i].phase * 2 : 0) + lane.xmin_cfg;
@@ -1265,153 +1033,28 @@ function renderArcs (root, source, index, top, lane) {
                 }
             }
         }
-        gg = document.createElementNS(w3.svg, 'g');
-        gg.id = 'wavearcs_' + index;
-        root.insertBefore(gg, null);
+
         if (top.edge) {
             for (i in top.edge) {
+
                 Edge.words = top.edge[i].split(' ');
                 Edge.label = top.edge[i].substring(Edge.words[0].length);
                 Edge.label = Edge.label.substring(1);
                 Edge.from  = Edge.words[0].substr(0, 1);
                 Edge.to    = Edge.words[0].substr(-1, 1);
                 Edge.shape = Edge.words[0].slice(1, -1);
+
                 from  = Events[Edge.from];
                 to    = Events[Edge.to];
-                t1();
+
                 if (from && to) {
+                    shapeProps = arcShape(Edge, from, to);
+                    var lx = shapeProps.lx;
+                    var ly = shapeProps.ly;
+                    res = res.concat([renderArc(Edge, from, to, shapeProps)]);
+
                     if (Edge.label) {
-                        label = tspan.parse(Edge.label);
-                        label.unshift(
-                            'text',
-                            {
-                                style: 'font-size:10px;',
-                                'text-anchor': 'middle',
-                                'xml:space': 'preserve'
-                            }
-                        );
-                        label = jsonmlParse(label);
-                        underlabel = jsonmlParse(['rect',
-                            {
-                                height: 9,
-                                style: 'fill:#FFF;'
-                            }
-                        ]);
-                        gg.insertBefore(underlabel, null);
-                        gg.insertBefore(label, null);
-
-                        lwidth = label.getBBox().width;
-
-                        underlabel.setAttribute('width', lwidth);
-                    }
-                    dx = to.x - from.x;
-                    dy = to.y - from.y;
-                    lx = ((from.x + to.x) / 2);
-                    ly = ((from.y + to.y) / 2);
-
-                    switch (Edge.shape) {
-                    case '-'  : {
-                        break;
-                    }
-                    case '~'  : {
-                        gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' c ' + (0.7 * dx) + ', 0 ' + (0.3 * dx) + ', ' + dy + ' ' + dx + ', ' + dy);
-                        break;
-                    }
-                    case '-~' : {
-                        gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' c ' + (0.7 * dx) + ', 0 ' +         dx + ', ' + dy + ' ' + dx + ', ' + dy);
-                        if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.75); }
-                        break;
-                    }
-                    case '~-' : {
-                        gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' c ' + 0          + ', 0 ' + (0.3 * dx) + ', ' + dy + ' ' + dx + ', ' + dy);
-                        if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.25); }
-                        break;
-                    }
-                    case '-|' : {
-                        gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
-                        if (Edge.label) { lx = to.x; }
-                        break;
-                    }
-                    case '|-' : {
-                        gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' 0,' + dy + ' ' + dx + ',0');
-                        if (Edge.label) { lx = from.x; }
-                        break;
-                    }
-                    case '-|-': {
-                        gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + (dx / 2) + ',0 0,' + dy + ' ' + (dx / 2) + ',0');
-                        break;
-                    }
-                    case '->' : {
-                        gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
-                        break;
-                    }
-                    case '~>' : {
-                        gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
-                        gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + (0.7 * dx) + ', 0 ' + 0.3 * dx + ', ' + dy + ' ' + dx + ', ' + dy);
-                        break;
-                    }
-                    case '-~>': {
-                        gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
-                        gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + (0.7 * dx) + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy);
-                        if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.75); }
-                        break;
-                    }
-                    case '~->': {
-                        gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
-                        gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0      + ', 0 ' + (0.3 * dx) + ', ' + dy + ' ' + dx + ', ' + dy);
-                        if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.25); }
-                        break;
-                    }
-                    case '-|>' : {
-                        gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
-                        gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
-                        if (Edge.label) { lx = to.x; }
-                        break;
-                    }
-                    case '|->' : {
-                        gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
-                        gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' 0,' + dy + ' ' + dx + ',0');
-                        if (Edge.label) { lx = from.x; }
-                        break;
-                    }
-                    case '-|->': {
-                        gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
-                        gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + (dx / 2) + ',0 0,' + dy + ' ' + (dx / 2) + ',0');
-                        break;
-                    }
-                    case '<->' : {
-                        gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0041c4;stroke-width:1;fill:none');
-                        break;
-                    }
-                    case '<~>' : {
-                        gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0041c4;stroke-width:1;fill:none');
-                        gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + (0.7 * dx) + ', 0 ' + (0.3 * dx) + ', ' + dy + ' ' + dx + ', ' + dy);
-                        break;
-                    }
-                    case '<-~>': {
-                        gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0041c4;stroke-width:1;fill:none');
-                        gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + (0.7 * dx) + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy);
-                        if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.75); }
-                        break;
-                    }
-                    case '<-|>' : {
-                        gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0041c4;stroke-width:1;fill:none');
-                        gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
-                        if (Edge.label) { lx = to.x; }
-                        break;
-                    }
-                    case '<-|->': {
-                        gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0041c4;stroke-width:1;fill:none');
-                        gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + (dx / 2) + ',0 0,' + dy + ' ' + (dx / 2) + ',0');
-                        break;
-                    }
-                    default   : { gmark.setAttribute('style', 'fill:none;stroke:#F00;stroke-width:1'); }
-                    }
-                    if (Edge.label) {
-                        label.setAttribute('x', lx);
-                        label.setAttribute('y', ly + 3);
-                        underlabel.setAttribute('x', lx - lwidth / 2);
-                        underlabel.setAttribute('y', ly - 5);
+                        res = res.concat([renderLabel({x: lx, y: ly}, Edge.label)]);
                     }
                 }
             }
@@ -1419,42 +1062,20 @@ function renderArcs (root, source, index, top, lane) {
         for (k in Events) {
             if (k === k.toLowerCase()) {
                 if (Events[k].x > 0) {
-                    underlabel = jsonmlParse(['rect',
-                        {
-                            y: Events[k].y - 4,
-                            height: 8,
-                            style: 'fill:#FFF;'
-                        }
-                    ]);
-                    label = jsonmlParse(['text',
-                        {
-                            style: 'font-size:8px;',
-                            x: Events[k].x,
-                            y: Events[k].y + 2,
-                            'text-anchor': 'middle'
-                        },
-                        (k + '')
-                    ]);
-
-                    gg.insertBefore(underlabel, null);
-                    gg.insertBefore(label, null);
-
-                    lwidth = label.getBBox().width + 2;
-
-                    underlabel.setAttribute('x', Events[k].x - lwidth / 2);
-                    underlabel.setAttribute('width', lwidth);
+                    res = res.concat([renderLabel({x: Events[k].x, y: Events[k].y}, k + '')]);
                 }
             }
         }
     }
+    return res;
 }
 
 module.exports = renderArcs;
 
-},{"./create-element":2,"./w3":32,"tspan":34}],24:[function(require,module,exports){
+},{"./arc-shape.js":2,"./render-label.js":25}],22:[function(require,module,exports){
 'use strict';
 
-var jsonmlParse = require('./create-element');
+var insertSVGTemplateAssign = require('./insert-svg-template-assign');
 
 function render (tree, state) {
     var y, i, ilen;
@@ -1613,7 +1234,7 @@ function renderAssign (index, source) {
         xmax,
         svg = ['g'],
         grid = ['g'],
-        svgcontent,
+        // svgcontent,
         width,
         height,
         i,
@@ -1648,72 +1269,75 @@ function renderAssign (index, source) {
             }]);
         }
     }
-    svgcontent = document.getElementById('svgcontent_' + index);
-    svgcontent.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
-    svgcontent.setAttribute('width', width);
-    svgcontent.setAttribute('height', height);
-    svgcontent.insertBefore(jsonmlParse(['g', {transform:'translate(0.5, 0.5)'}, grid, svg]), null);
+    return ['svg', {
+        id: 'svgcontent_' + index,
+        viewBox: '0 0 ' + width + ' ' + height,
+        width: width,
+        height: height
+    },
+    insertSVGTemplateAssign(),
+    ['g', {transform:'translate(0.5, 0.5)'}, grid, svg]
+    ];
 }
 
 module.exports = renderAssign;
 
-},{"./create-element":2}],25:[function(require,module,exports){
+},{"./insert-svg-template-assign":12}],23:[function(require,module,exports){
 'use strict';
 
-var w3 = require('./w3');
-
-function renderGaps (root, source, index, lane) {
-    var i, gg, g, b, pos, Stack = [], text, subCycle, next;
-
-    if (source) {
-
-        gg = document.createElementNS(w3.svg, 'g');
-        gg.id = 'wavegaps_' + index;
-        root.insertBefore(gg, null);
-        subCycle = false;
-        for (i in source) {
-            lane.period = source[i].period ? source[i].period    : 1;
-            lane.phase  = (source[i].phase  ? source[i].phase * 2 : 0) + lane.xmin_cfg;
-            g = document.createElementNS(w3.svg, 'g');
-            g.id = 'wavegap_' + i + '_' + index;
-            g.setAttribute('transform', 'translate(0,' + (lane.y0 + i * lane.yo) + ')');
-            gg.insertBefore(g, null);
-
-            text = source[i].wave;
-            if (text) {
-                Stack = text.split('');
-                pos = 0;
-                while (Stack.length) {
-                    next = Stack.shift();
-                    if (next === '<') { // sub-cycles on
-                        subCycle = true;
-                        next = Stack.shift();
-                    }
-                    if (next === '>') { // sub-cycles off
-                        subCycle = false;
-                        next = Stack.shift();
-                    }
-                    if (subCycle) {
-                        pos += 1;
-                    } else {
-                        pos += (2 * lane.period);
-                    }
-                    if (next === '|') {
-                        b    = document.createElementNS(w3.svg, 'use');
-                        // b.id = 'guse_' + pos + '_' + i + '_' + index;
-                        b.setAttributeNS(w3.xlink, 'xlink:href', '#gap');
-                        b.setAttribute('transform', 'translate(' + (lane.xs * ((pos - (subCycle ? 0 : lane.period)) * lane.hscale - lane.phase)) + ')');
-                        g.insertBefore(b, null);
-                    }
-                }
-            }
+function renderGapUses (text, lane) {
+    var res = [];
+    var Stack = (text || '').split('');
+    var pos = 0;
+    var next;
+    var subCycle = false;
+    while (Stack.length) {
+        next = Stack.shift();
+        if (next === '<') { // sub-cycles on
+            subCycle = true;
+            next = Stack.shift();
+        }
+        if (next === '>') { // sub-cycles off
+            subCycle = false;
+            next = Stack.shift();
+        }
+        if (subCycle) {
+            pos += 1;
+        } else {
+            pos += (2 * lane.period);
+        }
+        if (next === '|') {
+            res.push(['use', {
+                'xlink:href': '#gap',
+                transform: 'translate(' + (lane.xs * ((pos - (subCycle ? 0 : lane.period)) * lane.hscale - lane.phase)) + ')'
+            }]);
         }
     }
+    return res;
+}
+
+function renderGaps (source, index, lane) {
+    var i, gaps;
+
+    var res = [];
+    if (source) {
+        for (i in source) {
+            lane.period = source[i].period ? source[i].period : 1;
+            lane.phase  = (source[i].phase  ? source[i].phase * 2 : 0) + lane.xmin_cfg;
+
+            gaps = renderGapUses(source[i].wave, lane);
+            res = res.concat([['g', {
+                id: 'wavegap_' + i + '_' + index,
+                transform: 'translate(0,' + (lane.y0 + i * lane.yo) + ')'
+            }].concat(gaps)]);
+        }
+    }
+    return ['g', {id: 'wavegaps_' + index}].concat(res);
 }
 
 module.exports = renderGaps;
 
-},{"./w3":32}],26:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 var tspan = require('tspan');
@@ -1752,226 +1376,235 @@ function renderGroups (groups, index, lane) {
 
 module.exports = renderGroups;
 
-},{"tspan":34}],27:[function(require,module,exports){
+},{"tspan":37}],25:[function(require,module,exports){
 'use strict';
 
-var tspan = require('tspan'),
-    jsonmlParse = require('./create-element');
-    // w3 = require('./w3');
+var tspan = require('tspan');
+var textWidth = require('./text-width.js');
 
-function renderMarks (root, content, index, lane) {
-    var i, g, marks, mstep, mmstep, gy; // svgns
+function renderLabel (p, text) {
+    var w = textWidth(text, 8) + 2;
+    return ['g', {
+        transform:'translate(' + p.x + ',' + p.y + ')'
+    },
+    ['rect', {
+        x: -(w >> 1),
+        y: -5,
+        width: w,
+        height: 10,
+        style: 'fill:#FFF;'
+    }],
+    ['text', {
+        'text-anchor': 'middle',
+        y: 3,
+        style: 'font-size:8px;'
+    }].concat(tspan.parse(text))
+    ];
+}
 
-    function captext (cxt, anchor, y) {
-        var tmark;
+module.exports = renderLabel;
 
-        if (cxt[anchor] && cxt[anchor].text) {
-            tmark = tspan.parse(cxt[anchor].text);
-            tmark.unshift(
-                'text',
-                {
-                    x: cxt.xmax * cxt.xs / 2,
-                    y: y,
-                    'text-anchor': 'middle',
-                    fill: '#000',
-                    'xml:space': 'preserve'
-                }
-            );
-            tmark = jsonmlParse(tmark);
-            g.insertBefore(tmark, null);
+},{"./text-width.js":33,"tspan":37}],26:[function(require,module,exports){
+'use strict';
+
+var renderMarks = require('./render-marks');
+var renderArcs = require('./render-arcs');
+var renderGaps = require('./render-gaps');
+
+function renderLanes (index, content, waveLanes, ret, source, lane) {
+    return [renderMarks(content, index, lane)]
+        .concat(waveLanes.res)
+        .concat([renderArcs(ret.lanes, index, source, lane)])
+        .concat([renderGaps(ret.lanes, index, lane)]);
+}
+
+module.exports = renderLanes;
+
+},{"./render-arcs":21,"./render-gaps":23,"./render-marks":27}],27:[function(require,module,exports){
+'use strict';
+
+var tspan = require('tspan');
+
+function captext (cxt, anchor, y) {
+    if (cxt[anchor] && cxt[anchor].text) {
+        return [
+            ['text', {
+                x: cxt.xmax * cxt.xs / 2,
+                y: y,
+                fill: '#000',
+                'text-anchor': 'middle',
+                'xml:space': 'preserve'
+            }].concat(tspan.parse(cxt[anchor].text))
+        ];
+    }
+    return [];
+}
+
+function ticktock (cxt, ref1, ref2, x, dx, y, len) {
+    var step = 1;
+    var offset;
+    var dp = 0;
+    var val;
+    var L = [];
+    var tmp;
+    var i;
+
+    if (cxt[ref1] === undefined || cxt[ref1][ref2] === undefined) { return []; }
+    val = cxt[ref1][ref2];
+    if (typeof val === 'string') {
+        val = val.split(' ');
+    } else if (typeof val === 'number' || typeof val === 'boolean') {
+        offset = Number(val);
+        val = [];
+        for (i = 0; i < len; i += 1) {
+            val.push(i + offset);
         }
     }
-
-    function ticktock (cxt, ref1, ref2, x, dx, y, len) {
-        var tmark, step = 1, offset, dp = 0, val, L = [], tmp;
-
-        if (cxt[ref1] === undefined || cxt[ref1][ref2] === undefined) { return; }
-        val = cxt[ref1][ref2];
-        if (typeof val === 'string') {
-            val = val.split(' ');
-        } else if (typeof val === 'number' || typeof val === 'boolean') {
-            offset = Number(val);
-            val = [];
-            for (i = 0; i < len; i += 1) {
-                val.push(i + offset);
-            }
-        }
-        if (Object.prototype.toString.call(val) === '[object Array]') {
-            if (val.length === 0) {
-                return;
-            } else if (val.length === 1) {
-                offset = Number(val[0]);
-                if (isNaN(offset)) {
-                    L = val;
-                } else {
-                    for (i = 0; i < len; i += 1) {
-                        L[i] = i + offset;
-                    }
-                }
-            } else if (val.length === 2) {
-                offset = Number(val[0]);
-                step   = Number(val[1]);
-                tmp = val[1].split('.');
-                if ( tmp.length === 2 ) {
-                    dp = tmp[1].length;
-                }
-                if (isNaN(offset) || isNaN(step)) {
-                    L = val;
-                } else {
-                    offset = step * offset;
-                    for (i = 0; i < len; i += 1) {
-                        L[i] = (step * i + offset).toFixed(dp);
-                    }
-                }
-            } else {
+    if (Object.prototype.toString.call(val) === '[object Array]') {
+        if (val.length === 0) {
+            return [];
+        } else if (val.length === 1) {
+            offset = Number(val[0]);
+            if (isNaN(offset)) {
                 L = val;
+            } else {
+                for (i = 0; i < len; i += 1) {
+                    L[i] = i + offset;
+                }
+            }
+        } else if (val.length === 2) {
+            offset = Number(val[0]);
+            step   = Number(val[1]);
+            tmp = val[1].split('.');
+            if ( tmp.length === 2 ) {
+                dp = tmp[1].length;
+            }
+            if (isNaN(offset) || isNaN(step)) {
+                L = val;
+            } else {
+                offset = step * offset;
+                for (i = 0; i < len; i += 1) {
+                    L[i] = (step * i + offset).toFixed(dp);
+                }
             }
         } else {
-            return;
+            L = val;
         }
-        for (i = 0; i < len; i += 1) {
-            tmp = L[i];
-            //  if (typeof tmp === 'number') { tmp += ''; }
-            tmark = tspan.parse(tmp);
-            tmark.unshift(
-                'text',
-                {
-                    x: i * dx + x,
-                    y: y,
-                    'text-anchor': 'middle',
-                    class: 'muted',
-                    'xml:space': 'preserve'
-                }
-            );
-            tmark = jsonmlParse(tmark);
-            g.insertBefore(tmark, null);
-        }
+    } else {
+        return [];
     }
 
-    mstep  = 2 * (lane.hscale);
-    mmstep = mstep * lane.xs;
-    marks  = lane.xmax / mstep;
-    gy     = content.length * lane.yo;
+    var res = [];
+    for (i = 0; i < len; i += 1) {
+        res = res.concat([
+            ['text', {
+                x: i * dx + x,
+                y: y,
+                class: 'muted',
+                'text-anchor': 'middle',
+                'xml:space': 'preserve'
+            }].concat(tspan.parse(L[i]))
+        ]);
+    }
+    return res;
+}
 
-    g = jsonmlParse(['g', {id: ('gmarks_' + index)}]);
-    root.insertBefore(g, root.firstChild);
+function renderMarks (content, index, lane) {
+    var mstep  = 2 * (lane.hscale);
+    var mmstep = mstep * lane.xs;
+    var marks  = lane.xmax / mstep;
+    var gy     = content.length * lane.yo;
 
+    var res = ['g', {id: ('gmarks_' + index)}];
+    var i;
     for (i = 0; i < (marks + 1); i += 1) {
-        g.insertBefore(
-            jsonmlParse([
-                'path',
-                {
-                    id:    'gmark_' + i + '_' + index,
-                    d:     'm ' + (i * mmstep) + ',' + 0 + ' 0,' + gy,
-                    style: 'stroke:#888;stroke-width:0.5;stroke-dasharray:1,3'
-                }
-            ]),
-            null
-        );
+        res = res.concat([['path', {
+            id:    'gmark_' + i + '_' + index,
+            d:     'm ' + (i * mmstep) + ',' + 0 + ' 0,' + gy,
+            style: 'stroke:#888;stroke-width:0.5;stroke-dasharray:1,3'
+        }]]);
     }
-
-    captext(lane, 'head', (lane.yh0 ? -33 : -13));
-    captext(lane, 'foot', gy + (lane.yf0 ? 45 : 25));
-
-    ticktock(lane, 'head', 'tick',          0, mmstep,      -5, marks + 1);
-    ticktock(lane, 'head', 'tock', mmstep / 2, mmstep,      -5, marks);
-    ticktock(lane, 'foot', 'tick',          0, mmstep, gy + 15, marks + 1);
-    ticktock(lane, 'foot', 'tock', mmstep / 2, mmstep, gy + 15, marks);
+    return res
+        .concat(captext(lane, 'head', (lane.yh0 ? -33 : -13)))
+        .concat(captext(lane, 'foot', gy + (lane.yf0 ? 45 : 25)))
+        .concat(ticktock(lane, 'head', 'tick',          0, mmstep,      -5, marks + 1))
+        .concat(ticktock(lane, 'head', 'tock', mmstep / 2, mmstep,      -5, marks))
+        .concat(ticktock(lane, 'foot', 'tick',          0, mmstep, gy + 15, marks + 1))
+        .concat(ticktock(lane, 'foot', 'tock', mmstep / 2, mmstep, gy + 15, marks));
 }
 
 module.exports = renderMarks;
 
-},{"./create-element":2,"tspan":34}],28:[function(require,module,exports){
+},{"tspan":37}],28:[function(require,module,exports){
 'use strict';
 
-var jsonmlParse = require('./create-element'),
-    render = require('bit-field/lib/render');
+var render = require('bit-field/lib/render');
 
-function renderReg (index, source, parent) {
-    // cleanup
-    while (parent.childNodes.length) {
-        parent.removeChild(parent.childNodes[0]);
-    }
-    var e = render(source.reg, source.config);
-    var node = jsonmlParse(e);
-    parent.insertBefore(node, null);
+function renderReg (index, source) {
+    return render(source.reg, source.config);
 }
 
 module.exports = renderReg;
 
-},{"./create-element":2,"bit-field/lib/render":33}],29:[function(require,module,exports){
+},{"bit-field/lib/render":35}],29:[function(require,module,exports){
 'use strict';
 
-var rec = require('./rec'),
-    lane = require('./lane'),
-    jsonmlParse = require('./create-element'),
-    parseConfig = require('./parse-config'),
-    parseWaveLanes = require('./parse-wave-lanes'),
-    renderMarks = require('./render-marks'),
-    renderGaps = require('./render-gaps'),
-    renderGroups = require('./render-groups'),
-    renderWaveLane = require('./render-wave-lane'),
-    renderAssign = require('./render-assign'),
-    renderReg = require('./render-reg'),
-    renderArcs = require('./render-arcs'),
-    insertSVGTemplate = require('./insert-svg-template'),
-    insertSVGTemplateAssign = require('./insert-svg-template-assign');
+var rec = require('./rec');
+var lane = require('./lane');
+var parseConfig = require('./parse-config');
+var parseWaveLanes = require('./parse-wave-lanes');
+var renderGroups = require('./render-groups');
+var renderLanes = require('./render-lanes');
+var renderWaveLane = require('./render-wave-lane');
 
-function findFirstChildByTagName (parent, name) {
-    var i;
-    var arr = parent.children;
-    var ilen = arr.length;
-    for (i = 0; i < ilen; i++) {
-        if (arr[i].tagName === name) {
-            return arr[i];
-        }
-    }
+var insertSVGTemplate = require('./insert-svg-template');
+
+function renderSignal (index, source, waveSkin) {
+
+    parseConfig(source, lane);
+    var ret = rec(source.signal, {'x':0, 'y':0, 'xmax':0, 'width':[], 'lanes':[], 'groups':[]});
+    var content = parseWaveLanes(ret.lanes, lane);
+
+    var waveLanes = renderWaveLane(content, index, lane);
+    var waveGroups = renderGroups(ret.groups, index, lane);
+
+    var xmax = waveLanes.glengths.reduce(function (res, len, i) {
+        return Math.max(res, len + ret.width[i]);
+    }, 0);
+
+    lane.xg = Math.ceil((xmax - lane.tgo) / lane.xs) * lane.xs;
+
+    return insertSVGTemplate(
+        index, source, lane, waveSkin, content,
+        renderLanes(index, content, waveLanes, ret, source, lane),
+        waveGroups
+    );
+
 }
 
+module.exports = renderSignal;
+
+},{"./insert-svg-template":13,"./lane":14,"./parse-config":15,"./parse-wave-lanes":17,"./rec":19,"./render-groups":24,"./render-lanes":26,"./render-wave-lane":32}],30:[function(require,module,exports){
+'use strict';
+
+var renderAny = require('./render-any.js');
+var jsonmlParse = require('./create-element');
+
 function renderWaveElement (index, source, outputElement, waveSkin) {
-    if (source.signal) {
 
-        insertSVGTemplate(index, outputElement, source, lane, waveSkin);
-        parseConfig(source, lane);
-
-        var ret = rec(source.signal, {'x':0, 'y':0, 'xmax':0, 'width':[], 'lanes':[], 'groups':[]});
-
-        var svgcontent  = outputElement.children[0];
-        var waves = findFirstChildByTagName (svgcontent, 'g');
-        var lanes = waves.children[0];
-        var groups = waves.children[1];
-
-        var content  = parseWaveLanes(ret.lanes, lane);
-        var glengths = renderWaveLane(lanes, content, index, lane);
-
-        var xmax = glengths.reduce(function (res, len, i) {
-            return Math.max(res, len + ret.width[i]);
-        }, 0);
-
-        renderMarks(lanes, content, index, lane);
-        renderArcs(lanes, ret.lanes, index, source, lane);
-        renderGaps(lanes, ret.lanes, index, lane);
-        groups.insertBefore(jsonmlParse(renderGroups(ret.groups, index, lane)), null);
-        lane.xg = Math.ceil((xmax - lane.tgo) / lane.xs) * lane.xs;
-        var width = (lane.xg + (lane.xs * (lane.xmax + 1)));
-        var height = (content.length * lane.yo + lane.yh0 + lane.yh1 + lane.yf0 + lane.yf1);
-
-        svgcontent.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
-        svgcontent.setAttribute('width', width);
-        svgcontent.setAttribute('height', height);
-        svgcontent.setAttribute('overflow', 'hidden');
-        lanes.setAttribute('transform', 'translate(' + (lane.xg + 0.5) + ', ' + ((lane.yh0 + lane.yh1) + 0.5) + ')');
-    } else if (source.assign) {
-        insertSVGTemplateAssign(index, outputElement, source);
-        renderAssign(index, source);
-    } else if (source.reg) {
-        renderReg(index, source, outputElement);
+    // cleanup
+    while (outputElement.childNodes.length) {
+        outputElement.removeChild(outputElement.childNodes[0]);
     }
+
+    outputElement.insertBefore(jsonmlParse(
+        renderAny(index, source, waveSkin)
+    ), null);
 }
 
 module.exports = renderWaveElement;
 
-},{"./create-element":2,"./insert-svg-template":11,"./insert-svg-template-assign":10,"./lane":17,"./parse-config":18,"./parse-wave-lanes":20,"./rec":22,"./render-arcs":23,"./render-assign":24,"./render-gaps":25,"./render-groups":26,"./render-marks":27,"./render-reg":28,"./render-wave-lane":31}],30:[function(require,module,exports){
+},{"./create-element":4,"./render-any.js":20}],31:[function(require,module,exports){
 'use strict';
 
 var renderWaveElement = require('./render-wave-element');
@@ -1982,114 +1615,122 @@ function renderWaveForm (index, source, output) {
 
 module.exports = renderWaveForm;
 
-},{"./render-wave-element":29}],31:[function(require,module,exports){
+},{"./render-wave-element":30}],32:[function(require,module,exports){
 'use strict';
 
-var tspan = require('tspan'),
-    jsonmlParse = require('./create-element'),
-    w3 = require('./w3'),
-    findLaneMarkers = require('./find-lane-markers');
+var tspan = require('tspan');
+var textWidth = require('./text-width.js');
+var findLaneMarkers = require('./find-lane-markers');
 
-function renderWaveLane (root, content, index, lane) {
-    var i,
+function renderLaneUses (cont, lane) {
+    var i, k;
+    var res = [];
+    var labels = [];
+    if (cont[1]) {
+        for (i = 0; i < cont[1].length; i += 1) {
+            res.push(['use', {
+                'xlink:href': '#' + cont[1][i],
+                transform: 'translate(' + (i * lane.xs) + ')'
+            }]);
+        }
+        if (cont[2] && cont[2].length) {
+            labels = findLaneMarkers(cont[1]);
+            if (labels.length) {
+                for (k in labels) {
+                    if (cont[2] && (cont[2][k] !== undefined)) {
+                        res.push(['text', {
+                            x: labels[k] * lane.xs + lane.xlabel,
+                            y: lane.ym,
+                            'text-anchor': 'middle',
+                            'xml:space': 'preserve'
+                        }].concat(tspan.parse(cont[2][k])));
+                    }
+                }
+            }
+        }
+    }
+    return res;
+}
+
+function renderWaveLane (content, index, lane) {
+    var // i,
         j,
-        k,
-        g,
-        gg,
-        title,
-        b,
-        labels = [1],
         name,
         xoffset,
         xmax     = 0,
         xgmax    = 0,
         glengths = [];
 
+    var res = [];
+
     for (j = 0; j < content.length; j += 1) {
         name = content[j][0][0];
         if (name) { // check name
-            g = jsonmlParse(['g',
-                {
-                    id: 'wavelane_' + j + '_' + index,
-                    transform: 'translate(0,' + ((lane.y0) + j * lane.yo) + ')'
-                }
-            ]);
-            root.insertBefore(g, null);
-            title = tspan.parse(name);
-            title.unshift(
-                'text',
-                {
-                    x: lane.tgo,
-                    y: lane.ym,
-                    class: 'info',
-                    'text-anchor': 'end',
-                    'xml:space': 'preserve'
-                }
-            );
-            title = jsonmlParse(title);
-            g.insertBefore(title, null);
-
-            // scale = lane.xs * (lane.hscale) * 2;
-
-            glengths.push(title.getBBox().width);
 
             xoffset = content[j][0][1];
-            xoffset = (xoffset > 0) ? (Math.ceil(2 * xoffset) - 2 * xoffset) :
-                (-2 * xoffset);
-            gg = jsonmlParse(['g',
-                {
-                    id: 'wavelane_draw_' + j + '_' + index,
-                    transform: 'translate(' + (xoffset * lane.xs) + ', 0)'
-                }
+            xoffset = (xoffset > 0)
+                ? (Math.ceil(2 * xoffset) - 2 * xoffset)
+                : (-2 * xoffset);
+
+            res.push(['g', {
+                id: 'wavelane_' + j + '_' + index,
+                transform: 'translate(0,' + ((lane.y0) + j * lane.yo) + ')'
+            },
+            ['text', {
+                x: lane.tgo,
+                y: lane.ym,
+                class: 'info',
+                'text-anchor': 'end',
+                'xml:space': 'preserve'
+            }].concat(tspan.parse(name)),
+            ['g', {
+                id: 'wavelane_draw_' + j + '_' + index,
+                transform: 'translate(' + (xoffset * lane.xs) + ', 0)'
+            }].concat(renderLaneUses(content[j], lane))
             ]);
-            g.insertBefore(gg, null);
 
-            if (content[j][1]) {
-                for (i = 0; i < content[j][1].length; i += 1) {
-                    b = document.createElementNS(w3.svg, 'use');
-                    // b.id = 'use_' + i + '_' + j + '_' + index;
-                    b.setAttributeNS(w3.xlink, 'xlink:href', '#' + content[j][1][i]);
-                    // b.setAttribute('transform', 'translate(' + (i * lane.xs) + ')');
-                    b.setAttribute('transform', 'translate(' + (i * lane.xs) + ')');
-                    gg.insertBefore(b, null);
-                }
-                if (content[j][2] && content[j][2].length) {
-                    labels = findLaneMarkers(content[j][1]);
-
-                    if (labels.length !== 0) {
-                        for (k in labels) {
-                            if (content[j][2] && (typeof content[j][2][k] !== 'undefined')) {
-                                title = tspan.parse(content[j][2][k]);
-                                title.unshift(
-                                    'text',
-                                    {
-                                        x: labels[k] * lane.xs + lane.xlabel,
-                                        y: lane.ym,
-                                        'text-anchor': 'middle',
-                                        'xml:space': 'preserve'
-                                    }
-                                );
-                                title = jsonmlParse(title);
-                                gg.insertBefore(title, null);
-                            }
-                        }
-                    }
-                }
-                if (content[j][1].length > xmax) {
-                    xmax = content[j][1].length;
-                }
-            }
+            xmax = Math.max(xmax, (content[j][1] || []).length);
+            glengths.push(textWidth(name, 11));
         }
     }
     // xmax if no xmax_cfg,xmin_cfg, else set to config
     lane.xmax = Math.min(xmax, lane.xmax_cfg - lane.xmin_cfg);
     lane.xg = xgmax + 20;
-    return glengths;
+    return {glengths: glengths, res: res};
 }
 
 module.exports = renderWaveLane;
 
-},{"./create-element":2,"./find-lane-markers":5,"./w3":32,"tspan":34}],32:[function(require,module,exports){
+},{"./find-lane-markers":7,"./text-width.js":33,"tspan":37}],33:[function(require,module,exports){
+'use strict';
+
+var charWidth = require('./char-width');
+
+/**
+    Calculates text string width in pixels.
+
+    @param {String} str text string to be measured
+    @param {Number} size font size used
+    @return {Number} text string width
+*/
+
+module.exports = function (str, size) {
+    var i, len, c, w, width;
+    size = size || 11; // default size 11pt
+    len = str.length;
+    width = 0;
+    for (i = 0; i < len; i++) {
+        c = str.charCodeAt(i);
+        w = charWidth.chars[c];
+        if (w === undefined) {
+            w = charWidth.other;
+        }
+        width += w;
+    }
+    return (width * size) / 100; // normalize
+};
+
+},{"./char-width":3}],34:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -2098,7 +1739,7 @@ module.exports = {
     xmlns: 'http://www.w3.org/XML/1998/namespace'
 };
 
-},{}],33:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 var tspan = require('tspan');
@@ -2302,8 +1943,8 @@ function render (desc, opt) {
     opt = (typeof opt === 'object') ? opt : {};
 
     opt.vspace = isIntGTorDefault(opt.vspace, 19, 80);
-    opt.hspace = isIntGTorDefault(opt.hspace, 39, 640);
-    opt.lanes = isIntGTorDefault(opt.lanes, 0, 2);
+    opt.hspace = isIntGTorDefault(opt.hspace, 39, 800);
+    opt.lanes = isIntGTorDefault(opt.lanes, 0, 1);
     opt.bits = isIntGTorDefault(opt.bits, 4, 32);
     opt.fontsize = isIntGTorDefault(opt.fontsize, 5, 14);
 
@@ -2336,7 +1977,120 @@ function render (desc, opt) {
 
 module.exports = render;
 
-},{"tspan":34}],34:[function(require,module,exports){
+},{"tspan":37}],36:[function(require,module,exports){
+'use strict';
+
+function isObject (o) {
+    return o && Object.prototype.toString.call(o) === '[object Object]';
+}
+
+function indenter (indentation) {
+    var space = ' '.repeat(indentation);
+    return function (txt) {
+        var arr, res = [];
+
+        if (typeof txt !== 'string') {
+            return txt;
+        }
+
+        arr = txt.split('\n');
+
+        if (arr.length === 1) {
+            return space + txt;
+        }
+
+        arr.forEach(function (e) {
+            if (e.trim() === '') {
+                res.push(e);
+                return;
+            }
+            res.push(space + e);
+        });
+
+        return res.join('\n');
+    };
+}
+
+function clean (txt) {
+    var arr = txt.split('\n');
+    var res = [];
+    arr.forEach(function (e) {
+        if (e.trim() === '') {
+            return;
+        }
+        res.push(e);
+    });
+    return res.join('\n');
+}
+
+function stringify (a, indentation) {
+
+    var cr = '';
+    var indent = function (t) { return t; };
+
+    if (indentation > 0) {
+        cr = '\n';
+        indent = indenter(indentation);
+    }
+
+    function rec (a) {
+        var res, body, isEmpty, isFlat;
+
+        body = '';
+        isFlat = true;
+        isEmpty = a.some(function (e, i, arr) {
+            if (i === 0) {
+                res = '<' + e;
+                if (arr.length === 1) {
+                    return true;
+                }
+                return;
+            }
+
+            if (i === 1) {
+                if (isObject(e)) {
+                    Object.keys(e).forEach(function (key) {
+                        res += ' ' + key + '="' + e[key] + '"';
+                    });
+                    if (arr.length === 2) {
+                        return true;
+                    }
+                    res += '>';
+                    return;
+                } else {
+                    res += '>';
+                }
+            }
+
+            switch (typeof e) {
+            case 'string':
+            case 'number':
+            case 'boolean':
+                body += e + cr;
+                return;
+            }
+
+            isFlat = false;
+            body += rec(e);
+        });
+
+        if (isEmpty) {
+            return res + '/>' + cr; // short form
+        } else {
+            if (isFlat) {
+                return res + clean(body) + '</' + a[0] + '>' + cr;
+            } else {
+                return res + cr + indent(body) + '</' + a[0] + '>' + cr;
+            }
+        }
+    }
+
+    return rec(a);
+}
+
+module.exports = stringify;
+
+},{}],37:[function(require,module,exports){
 'use strict';
 
 var parse = require('./parse'),
@@ -2345,7 +2099,7 @@ var parse = require('./parse'),
 exports.parse = parse;
 exports.reparse = reparse;
 
-},{"./parse":35,"./reparse":36}],35:[function(require,module,exports){
+},{"./parse":38,"./reparse":39}],38:[function(require,module,exports){
 'use strict';
 
 var token = /<o>|<ins>|<s>|<sub>|<sup>|<b>|<i>|<tt>|<\/o>|<\/ins>|<\/s>|<\/sub>|<\/sup>|<\/b>|<\/i>|<\/tt>/;
@@ -2455,7 +2209,7 @@ function parse (str) {
 module.exports = parse;
 /* eslint no-constant-condition: 0 */
 
-},{}],36:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 'use strict';
 
 var parse = require('./parse');
@@ -2495,9 +2249,9 @@ function reparse (React) {
 
 module.exports = reparse;
 
-},{"./parse":35}],37:[function(require,module,exports){
+},{"./parse":38}],40:[function(require,module,exports){
 var WaveSkin=WaveSkin||{};WaveSkin.default=["svg",{"id":"svg","xmlns":"http://www.w3.org/2000/svg","xmlns:xlink":"http://www.w3.org/1999/xlink","height":"0"},["style",{"type":"text/css"},"text{font-size:11pt;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;fill-opacity:1;font-family:Helvetica}.muted{fill:#aaa}.warning{fill:#f6b900}.error{fill:#f60000}.info{fill:#0041c4}.success{fill:#00ab00}.h1{font-size:33pt;font-weight:bold}.h2{font-size:27pt;font-weight:bold}.h3{font-size:20pt;font-weight:bold}.h4{font-size:14pt;font-weight:bold}.h5{font-size:11pt;font-weight:bold}.h6{font-size:8pt;font-weight:bold}.s1{fill:none;stroke:#000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none}.s2{fill:none;stroke:#000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none}.s3{color:#000;fill:none;stroke:#000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:1, 3;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate}.s4{color:#000;fill:none;stroke:#000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible}.s5{fill:#fff;stroke:none}.s6{color:#000;fill:#ffffb4;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate}.s7{color:#000;fill:#ffe0b9;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate}.s8{color:#000;fill:#b9e0ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate}.s9{fill:#000;fill-opacity:1;stroke:none}.s10{color:#000;fill:#fff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate}.s11{fill:#0041c4;fill-opacity:1;stroke:none}.s12{fill:none;stroke:#0041c4;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none}"],["defs",["g",{"id":"socket"},["rect",{"y":"15","x":"6","height":"20","width":"20"}]],["g",{"id":"pclk"},["path",{"d":"M0,20 0,0 20,0","class":"s1"}]],["g",{"id":"nclk"},["path",{"d":"m0,0 0,20 20,0","class":"s1"}]],["g",{"id":"000"},["path",{"d":"m0,20 20,0","class":"s1"}]],["g",{"id":"0m0"},["path",{"d":"m0,20 3,0 3,-10 3,10 11,0","class":"s1"}]],["g",{"id":"0m1"},["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}]],["g",{"id":"0mx"},["path",{"d":"M3,20 9,0 20,0","class":"s1"}],["path",{"d":"m20,15 -5,5","class":"s2"}],["path",{"d":"M20,10 10,20","class":"s2"}],["path",{"d":"M20,5 5,20","class":"s2"}],["path",{"d":"M20,0 4,16","class":"s2"}],["path",{"d":"M15,0 6,9","class":"s2"}],["path",{"d":"M10,0 9,1","class":"s2"}],["path",{"d":"m0,20 20,0","class":"s1"}]],["g",{"id":"0md"},["path",{"d":"m8,20 10,0","class":"s3"}],["path",{"d":"m0,20 5,0","class":"s1"}]],["g",{"id":"0mu"},["path",{"d":"m0,20 3,0 C 7,10 10.107603,0 20,0","class":"s1"}]],["g",{"id":"0mz"},["path",{"d":"m0,20 3,0 C 10,10 15,10 20,10","class":"s1"}]],["g",{"id":"111"},["path",{"d":"M0,0 20,0","class":"s1"}]],["g",{"id":"1m0"},["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}]],["g",{"id":"1m1"},["path",{"d":"M0,0 3,0 6,10 9,0 20,0","class":"s1"}]],["g",{"id":"1mx"},["path",{"d":"m3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,0 20,0","class":"s1"}],["path",{"d":"m20,15 -5,5","class":"s2"}],["path",{"d":"M20,10 10,20","class":"s2"}],["path",{"d":"M20,5 8,17","class":"s2"}],["path",{"d":"M20,0 7,13","class":"s2"}],["path",{"d":"M15,0 6,9","class":"s2"}],["path",{"d":"M10,0 5,5","class":"s2"}],["path",{"d":"M3.5,1.5 5,0","class":"s2"}]],["g",{"id":"1md"},["path",{"d":"m0,0 3,0 c 4,10 7,20 17,20","class":"s1"}]],["g",{"id":"1mu"},["path",{"d":"M0,0 5,0","class":"s1"}],["path",{"d":"M8,0 18,0","class":"s3"}]],["g",{"id":"1mz"},["path",{"d":"m0,0 3,0 c 7,10 12,10 17,10","class":"s1"}]],["g",{"id":"xxx"},["path",{"d":"m0,20 20,0","class":"s1"}],["path",{"d":"M0,0 20,0","class":"s1"}],["path",{"d":"M0,5 5,0","class":"s2"}],["path",{"d":"M0,10 10,0","class":"s2"}],["path",{"d":"M0,15 15,0","class":"s2"}],["path",{"d":"M0,20 20,0","class":"s2"}],["path",{"d":"M5,20 20,5","class":"s2"}],["path",{"d":"M10,20 20,10","class":"s2"}],["path",{"d":"m15,20 5,-5","class":"s2"}]],["g",{"id":"xm0"},["path",{"d":"M0,0 4,0 9,20","class":"s1"}],["path",{"d":"m0,20 20,0","class":"s1"}],["path",{"d":"M0,5 4,1","class":"s2"}],["path",{"d":"M0,10 5,5","class":"s2"}],["path",{"d":"M0,15 6,9","class":"s2"}],["path",{"d":"M0,20 7,13","class":"s2"}],["path",{"d":"M5,20 8,17","class":"s2"}]],["g",{"id":"xm1"},["path",{"d":"M0,0 20,0","class":"s1"}],["path",{"d":"M0,20 4,20 9,0","class":"s1"}],["path",{"d":"M0,5 5,0","class":"s2"}],["path",{"d":"M0,10 9,1","class":"s2"}],["path",{"d":"M0,15 7,8","class":"s2"}],["path",{"d":"M0,20 5,15","class":"s2"}]],["g",{"id":"xmx"},["path",{"d":"m0,20 20,0","class":"s1"}],["path",{"d":"M0,0 20,0","class":"s1"}],["path",{"d":"M0,5 5,0","class":"s2"}],["path",{"d":"M0,10 10,0","class":"s2"}],["path",{"d":"M0,15 15,0","class":"s2"}],["path",{"d":"M0,20 20,0","class":"s2"}],["path",{"d":"M5,20 20,5","class":"s2"}],["path",{"d":"M10,20 20,10","class":"s2"}],["path",{"d":"m15,20 5,-5","class":"s2"}]],["g",{"id":"xmd"},["path",{"d":"m0,0 4,0 c 3,10 6,20 16,20","class":"s1"}],["path",{"d":"m0,20 20,0","class":"s1"}],["path",{"d":"M0,5 4,1","class":"s2"}],["path",{"d":"M0,10 5.5,4.5","class":"s2"}],["path",{"d":"M0,15 6.5,8.5","class":"s2"}],["path",{"d":"M0,20 8,12","class":"s2"}],["path",{"d":"m5,20 5,-5","class":"s2"}],["path",{"d":"m10,20 2.5,-2.5","class":"s2"}]],["g",{"id":"xmu"},["path",{"d":"M0,0 20,0","class":"s1"}],["path",{"d":"m0,20 4,0 C 7,10 10,0 20,0","class":"s1"}],["path",{"d":"M0,5 5,0","class":"s2"}],["path",{"d":"M0,10 10,0","class":"s2"}],["path",{"d":"M0,15 10,5","class":"s2"}],["path",{"d":"M0,20 6,14","class":"s2"}]],["g",{"id":"xmz"},["path",{"d":"m0,0 4,0 c 6,10 11,10 16,10","class":"s1"}],["path",{"d":"m0,20 4,0 C 10,10 15,10 20,10","class":"s1"}],["path",{"d":"M0,5 4.5,0.5","class":"s2"}],["path",{"d":"M0,10 6.5,3.5","class":"s2"}],["path",{"d":"M0,15 8.5,6.5","class":"s2"}],["path",{"d":"M0,20 11.5,8.5","class":"s2"}]],["g",{"id":"ddd"},["path",{"d":"m0,20 20,0","class":"s3"}]],["g",{"id":"dm0"},["path",{"d":"m0,20 10,0","class":"s3"}],["path",{"d":"m12,20 8,0","class":"s1"}]],["g",{"id":"dm1"},["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}]],["g",{"id":"dmx"},["path",{"d":"M3,20 9,0 20,0","class":"s1"}],["path",{"d":"m20,15 -5,5","class":"s2"}],["path",{"d":"M20,10 10,20","class":"s2"}],["path",{"d":"M20,5 5,20","class":"s2"}],["path",{"d":"M20,0 4,16","class":"s2"}],["path",{"d":"M15,0 6,9","class":"s2"}],["path",{"d":"M10,0 9,1","class":"s2"}],["path",{"d":"m0,20 20,0","class":"s1"}]],["g",{"id":"dmd"},["path",{"d":"m0,20 20,0","class":"s3"}]],["g",{"id":"dmu"},["path",{"d":"m0,20 3,0 C 7,10 10.107603,0 20,0","class":"s1"}]],["g",{"id":"dmz"},["path",{"d":"m0,20 3,0 C 10,10 15,10 20,10","class":"s1"}]],["g",{"id":"uuu"},["path",{"d":"M0,0 20,0","class":"s3"}]],["g",{"id":"um0"},["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}]],["g",{"id":"um1"},["path",{"d":"M0,0 10,0","class":"s3"}],["path",{"d":"m12,0 8,0","class":"s1"}]],["g",{"id":"umx"},["path",{"d":"m3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,0 20,0","class":"s1"}],["path",{"d":"m20,15 -5,5","class":"s2"}],["path",{"d":"M20,10 10,20","class":"s2"}],["path",{"d":"M20,5 8,17","class":"s2"}],["path",{"d":"M20,0 7,13","class":"s2"}],["path",{"d":"M15,0 6,9","class":"s2"}],["path",{"d":"M10,0 5,5","class":"s2"}],["path",{"d":"M3.5,1.5 5,0","class":"s2"}]],["g",{"id":"umd"},["path",{"d":"m0,0 3,0 c 4,10 7,20 17,20","class":"s1"}]],["g",{"id":"umu"},["path",{"d":"M0,0 20,0","class":"s3"}]],["g",{"id":"umz"},["path",{"d":"m0,0 3,0 c 7,10 12,10 17,10","class":"s4"}]],["g",{"id":"zzz"},["path",{"d":"m0,10 20,0","class":"s1"}]],["g",{"id":"zm0"},["path",{"d":"m0,10 6,0 3,10 11,0","class":"s1"}]],["g",{"id":"zm1"},["path",{"d":"M0,10 6,10 9,0 20,0","class":"s1"}]],["g",{"id":"zmx"},["path",{"d":"m6,10 3,10 11,0","class":"s1"}],["path",{"d":"M0,10 6,10 9,0 20,0","class":"s1"}],["path",{"d":"m20,15 -5,5","class":"s2"}],["path",{"d":"M20,10 10,20","class":"s2"}],["path",{"d":"M20,5 8,17","class":"s2"}],["path",{"d":"M20,0 7,13","class":"s2"}],["path",{"d":"M15,0 6.5,8.5","class":"s2"}],["path",{"d":"M10,0 9,1","class":"s2"}]],["g",{"id":"zmd"},["path",{"d":"m0,10 7,0 c 3,5 8,10 13,10","class":"s1"}]],["g",{"id":"zmu"},["path",{"d":"m0,10 7,0 C 10,5 15,0 20,0","class":"s1"}]],["g",{"id":"zmz"},["path",{"d":"m0,10 20,0","class":"s1"}]],["g",{"id":"gap"},["path",{"d":"m7,-2 -4,0 c -5,0 -5,24 -10,24 l 4,0 C 2,22 2,-2 7,-2 z","class":"s5"}],["path",{"d":"M-7,22 C -2,22 -2,-2 3,-2","class":"s1"}],["path",{"d":"M-3,22 C 2,22 2,-2 7,-2","class":"s1"}]],["g",{"id":"0mv-3"},["path",{"d":"M9,0 20,0 20,20 3,20 z","class":"s6"}],["path",{"d":"M3,20 9,0 20,0","class":"s1"}],["path",{"d":"m0,20 20,0","class":"s1"}]],["g",{"id":"1mv-3"},["path",{"d":"M2.875,0 20,0 20,20 9,20 z","class":"s6"}],["path",{"d":"m3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,0 20,0","class":"s1"}]],["g",{"id":"xmv-3"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s6"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,5 3.5,1.5","class":"s2"}],["path",{"d":"M0,10 4.5,5.5","class":"s2"}],["path",{"d":"M0,15 6,9","class":"s2"}],["path",{"d":"M0,20 4,16","class":"s2"}]],["g",{"id":"dmv-3"},["path",{"d":"M9,0 20,0 20,20 3,20 z","class":"s6"}],["path",{"d":"M3,20 9,0 20,0","class":"s1"}],["path",{"d":"m0,20 20,0","class":"s1"}]],["g",{"id":"umv-3"},["path",{"d":"M3,0 20,0 20,20 9,20 z","class":"s6"}],["path",{"d":"m3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,0 20,0","class":"s1"}]],["g",{"id":"zmv-3"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s6"}],["path",{"d":"m6,10 3,10 11,0","class":"s1"}],["path",{"d":"M0,10 6,10 9,0 20,0","class":"s1"}]],["g",{"id":"vvv-3"},["path",{"d":"M20,20 0,20 0,0 20,0","class":"s6"}],["path",{"d":"m0,20 20,0","class":"s1"}],["path",{"d":"M0,0 20,0","class":"s1"}]],["g",{"id":"vm0-3"},["path",{"d":"M0,20 0,0 3,0 9,20","class":"s6"}],["path",{"d":"M0,0 3,0 9,20","class":"s1"}],["path",{"d":"m0,20 20,0","class":"s1"}]],["g",{"id":"vm1-3"},["path",{"d":"M0,0 0,20 3,20 9,0","class":"s6"}],["path",{"d":"M0,0 20,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0","class":"s1"}]],["g",{"id":"vmx-3"},["path",{"d":"M0,0 0,20 3,20 6,10 3,0","class":"s6"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}],["path",{"d":"m20,15 -5,5","class":"s2"}],["path",{"d":"M20,10 10,20","class":"s2"}],["path",{"d":"M20,5 8,17","class":"s2"}],["path",{"d":"M20,0 7,13","class":"s2"}],["path",{"d":"M15,0 7,8","class":"s2"}],["path",{"d":"M10,0 9,1","class":"s2"}]],["g",{"id":"vmd-3"},["path",{"d":"m0,0 0,20 20,0 C 10,20 7,10 3,0","class":"s6"}],["path",{"d":"m0,0 3,0 c 4,10 7,20 17,20","class":"s1"}],["path",{"d":"m0,20 20,0","class":"s1"}]],["g",{"id":"vmu-3"},["path",{"d":"m0,0 0,20 3,0 C 7,10 10,0 20,0","class":"s6"}],["path",{"d":"m0,20 3,0 C 7,10 10,0 20,0","class":"s1"}],["path",{"d":"M0,0 20,0","class":"s1"}]],["g",{"id":"vmz-3"},["path",{"d":"M0,0 3,0 C 10,10 15,10 20,10 15,10 10,10 3,20 L 0,20","class":"s6"}],["path",{"d":"m0,0 3,0 c 7,10 12,10 17,10","class":"s1"}],["path",{"d":"m0,20 3,0 C 10,10 15,10 20,10","class":"s1"}]],["g",{"id":"vmv-3-3"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s6"}],["path",{"d":"M3,0 0,0 0,20 3,20 6,10 z","class":"s6"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}]],["g",{"id":"vmv-3-4"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s7"}],["path",{"d":"M3,0 0,0 0,20 3,20 6,10 z","class":"s6"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}]],["g",{"id":"vmv-3-5"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s8"}],["path",{"d":"M3,0 0,0 0,20 3,20 6,10 z","class":"s6"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}]],["g",{"id":"vmv-4-3"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s6"}],["path",{"d":"M3,0 0,0 0,20 3,20 6,10 z","class":"s7"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}]],["g",{"id":"vmv-4-4"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s7"}],["path",{"d":"M3,0 0,0 0,20 3,20 6,10 z","class":"s7"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}]],["g",{"id":"vmv-4-5"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s8"}],["path",{"d":"M3,0 0,0 0,20 3,20 6,10 z","class":"s7"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}]],["g",{"id":"vmv-5-3"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s6"}],["path",{"d":"M3,0 0,0 0,20 3,20 6,10 z","class":"s8"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}]],["g",{"id":"vmv-5-4"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s7"}],["path",{"d":"M3,0 0,0 0,20 3,20 6,10 z","class":"s8"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}]],["g",{"id":"vmv-5-5"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s8"}],["path",{"d":"M3,0 0,0 0,20 3,20 6,10 z","class":"s8"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}]],["g",{"id":"0mv-4"},["path",{"d":"M9,0 20,0 20,20 3,20 z","class":"s7"}],["path",{"d":"M3,20 9,0 20,0","class":"s1"}],["path",{"d":"m0,20 20,0","class":"s1"}]],["g",{"id":"1mv-4"},["path",{"d":"M2.875,0 20,0 20,20 9,20 z","class":"s7"}],["path",{"d":"m3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,0 20,0","class":"s1"}]],["g",{"id":"xmv-4"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s7"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,5 3.5,1.5","class":"s2"}],["path",{"d":"M0,10 4.5,5.5","class":"s2"}],["path",{"d":"M0,15 6,9","class":"s2"}],["path",{"d":"M0,20 4,16","class":"s2"}]],["g",{"id":"dmv-4"},["path",{"d":"M9,0 20,0 20,20 3,20 z","class":"s7"}],["path",{"d":"M3,20 9,0 20,0","class":"s1"}],["path",{"d":"m0,20 20,0","class":"s1"}]],["g",{"id":"umv-4"},["path",{"d":"M3,0 20,0 20,20 9,20 z","class":"s7"}],["path",{"d":"m3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,0 20,0","class":"s1"}]],["g",{"id":"zmv-4"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s7"}],["path",{"d":"m6,10 3,10 11,0","class":"s1"}],["path",{"d":"M0,10 6,10 9,0 20,0","class":"s1"}]],["g",{"id":"0mv-5"},["path",{"d":"M9,0 20,0 20,20 3,20 z","class":"s8"}],["path",{"d":"M3,20 9,0 20,0","class":"s1"}],["path",{"d":"m0,20 20,0","class":"s1"}]],["g",{"id":"1mv-5"},["path",{"d":"M2.875,0 20,0 20,20 9,20 z","class":"s8"}],["path",{"d":"m3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,0 20,0","class":"s1"}]],["g",{"id":"xmv-5"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s8"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,5 3.5,1.5","class":"s2"}],["path",{"d":"M0,10 4.5,5.5","class":"s2"}],["path",{"d":"M0,15 6,9","class":"s2"}],["path",{"d":"M0,20 4,16","class":"s2"}]],["g",{"id":"dmv-5"},["path",{"d":"M9,0 20,0 20,20 3,20 z","class":"s8"}],["path",{"d":"M3,20 9,0 20,0","class":"s1"}],["path",{"d":"m0,20 20,0","class":"s1"}]],["g",{"id":"umv-5"},["path",{"d":"M3,0 20,0 20,20 9,20 z","class":"s8"}],["path",{"d":"m3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,0 20,0","class":"s1"}]],["g",{"id":"zmv-5"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s8"}],["path",{"d":"m6,10 3,10 11,0","class":"s1"}],["path",{"d":"M0,10 6,10 9,0 20,0","class":"s1"}]],["g",{"id":"vvv-4"},["path",{"d":"M20,20 0,20 0,0 20,0","class":"s7"}],["path",{"d":"m0,20 20,0","class":"s1"}],["path",{"d":"M0,0 20,0","class":"s1"}]],["g",{"id":"vm0-4"},["path",{"d":"M0,20 0,0 3,0 9,20","class":"s7"}],["path",{"d":"M0,0 3,0 9,20","class":"s1"}],["path",{"d":"m0,20 20,0","class":"s1"}]],["g",{"id":"vm1-4"},["path",{"d":"M0,0 0,20 3,20 9,0","class":"s7"}],["path",{"d":"M0,0 20,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0","class":"s1"}]],["g",{"id":"vmx-4"},["path",{"d":"M0,0 0,20 3,20 6,10 3,0","class":"s7"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}],["path",{"d":"m20,15 -5,5","class":"s2"}],["path",{"d":"M20,10 10,20","class":"s2"}],["path",{"d":"M20,5 8,17","class":"s2"}],["path",{"d":"M20,0 7,13","class":"s2"}],["path",{"d":"M15,0 7,8","class":"s2"}],["path",{"d":"M10,0 9,1","class":"s2"}]],["g",{"id":"vmd-4"},["path",{"d":"m0,0 0,20 20,0 C 10,20 7,10 3,0","class":"s7"}],["path",{"d":"m0,0 3,0 c 4,10 7,20 17,20","class":"s1"}],["path",{"d":"m0,20 20,0","class":"s1"}]],["g",{"id":"vmu-4"},["path",{"d":"m0,0 0,20 3,0 C 7,10 10,0 20,0","class":"s7"}],["path",{"d":"m0,20 3,0 C 7,10 10,0 20,0","class":"s1"}],["path",{"d":"M0,0 20,0","class":"s1"}]],["g",{"id":"vmz-4"},["path",{"d":"M0,0 3,0 C 10,10 15,10 20,10 15,10 10,10 3,20 L 0,20","class":"s7"}],["path",{"d":"m0,0 3,0 c 7,10 12,10 17,10","class":"s1"}],["path",{"d":"m0,20 3,0 C 10,10 15,10 20,10","class":"s1"}]],["g",{"id":"vvv-5"},["path",{"d":"M20,20 0,20 0,0 20,0","class":"s8"}],["path",{"d":"m0,20 20,0","class":"s1"}],["path",{"d":"M0,0 20,0","class":"s1"}]],["g",{"id":"vm0-5"},["path",{"d":"M0,20 0,0 3,0 9,20","class":"s8"}],["path",{"d":"M0,0 3,0 9,20","class":"s1"}],["path",{"d":"m0,20 20,0","class":"s1"}]],["g",{"id":"vm1-5"},["path",{"d":"M0,0 0,20 3,20 9,0","class":"s8"}],["path",{"d":"M0,0 20,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0","class":"s1"}]],["g",{"id":"vmx-5"},["path",{"d":"M0,0 0,20 3,20 6,10 3,0","class":"s8"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}],["path",{"d":"m20,15 -5,5","class":"s2"}],["path",{"d":"M20,10 10,20","class":"s2"}],["path",{"d":"M20,5 8,17","class":"s2"}],["path",{"d":"M20,0 7,13","class":"s2"}],["path",{"d":"M15,0 7,8","class":"s2"}],["path",{"d":"M10,0 9,1","class":"s2"}]],["g",{"id":"vmd-5"},["path",{"d":"m0,0 0,20 20,0 C 10,20 7,10 3,0","class":"s8"}],["path",{"d":"m0,0 3,0 c 4,10 7,20 17,20","class":"s1"}],["path",{"d":"m0,20 20,0","class":"s1"}]],["g",{"id":"vmu-5"},["path",{"d":"m0,0 0,20 3,0 C 7,10 10,0 20,0","class":"s8"}],["path",{"d":"m0,20 3,0 C 7,10 10,0 20,0","class":"s1"}],["path",{"d":"M0,0 20,0","class":"s1"}]],["g",{"id":"vmz-5"},["path",{"d":"M0,0 3,0 C 10,10 15,10 20,10 15,10 10,10 3,20 L 0,20","class":"s8"}],["path",{"d":"m0,0 3,0 c 7,10 12,10 17,10","class":"s1"}],["path",{"d":"m0,20 3,0 C 10,10 15,10 20,10","class":"s1"}]],["g",{"id":"Pclk"},["path",{"d":"M-3,12 0,3 3,12 C 1,11 -1,11 -3,12 z","class":"s9"}],["path",{"d":"M0,20 0,0 20,0","class":"s1"}]],["g",{"id":"Nclk"},["path",{"d":"M-3,8 0,17 3,8 C 1,9 -1,9 -3,8 z","class":"s9"}],["path",{"d":"m0,0 0,20 20,0","class":"s1"}]],["g",{"id":"vvv-2"},["path",{"d":"M20,20 0,20 0,0 20,0","class":"s10"}],["path",{"d":"m0,20 20,0","class":"s1"}],["path",{"d":"M0,0 20,0","class":"s1"}]],["g",{"id":"vm0-2"},["path",{"d":"M0,20 0,0 3,0 9,20","class":"s10"}],["path",{"d":"M0,0 3,0 9,20","class":"s1"}],["path",{"d":"m0,20 20,0","class":"s1"}]],["g",{"id":"vm1-2"},["path",{"d":"M0,0 0,20 3,20 9,0","class":"s10"}],["path",{"d":"M0,0 20,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0","class":"s1"}]],["g",{"id":"vmx-2"},["path",{"d":"M0,0 0,20 3,20 6,10 3,0","class":"s10"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}],["path",{"d":"m20,15 -5,5","class":"s2"}],["path",{"d":"M20,10 10,20","class":"s2"}],["path",{"d":"M20,5 8,17","class":"s2"}],["path",{"d":"M20,0 7,13","class":"s2"}],["path",{"d":"M15,0 7,8","class":"s2"}],["path",{"d":"M10,0 9,1","class":"s2"}]],["g",{"id":"vmd-2"},["path",{"d":"m0,0 0,20 20,0 C 10,20 7,10 3,0","class":"s10"}],["path",{"d":"m0,0 3,0 c 4,10 7,20 17,20","class":"s1"}],["path",{"d":"m0,20 20,0","class":"s1"}]],["g",{"id":"vmu-2"},["path",{"d":"m0,0 0,20 3,0 C 7,10 10,0 20,0","class":"s10"}],["path",{"d":"m0,20 3,0 C 7,10 10,0 20,0","class":"s1"}],["path",{"d":"M0,0 20,0","class":"s1"}]],["g",{"id":"vmz-2"},["path",{"d":"M0,0 3,0 C 10,10 15,10 20,10 15,10 10,10 3,20 L 0,20","class":"s10"}],["path",{"d":"m0,0 3,0 c 7,10 12,10 17,10","class":"s1"}],["path",{"d":"m0,20 3,0 C 10,10 15,10 20,10","class":"s1"}]],["g",{"id":"0mv-2"},["path",{"d":"M9,0 20,0 20,20 3,20 z","class":"s10"}],["path",{"d":"M3,20 9,0 20,0","class":"s1"}],["path",{"d":"m0,20 20,0","class":"s1"}]],["g",{"id":"1mv-2"},["path",{"d":"M2.875,0 20,0 20,20 9,20 z","class":"s10"}],["path",{"d":"m3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,0 20,0","class":"s1"}]],["g",{"id":"xmv-2"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s10"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,5 3.5,1.5","class":"s2"}],["path",{"d":"M0,10 4.5,5.5","class":"s2"}],["path",{"d":"M0,15 6,9","class":"s2"}],["path",{"d":"M0,20 4,16","class":"s2"}]],["g",{"id":"dmv-2"},["path",{"d":"M9,0 20,0 20,20 3,20 z","class":"s10"}],["path",{"d":"M3,20 9,0 20,0","class":"s1"}],["path",{"d":"m0,20 20,0","class":"s1"}]],["g",{"id":"umv-2"},["path",{"d":"M3,0 20,0 20,20 9,20 z","class":"s10"}],["path",{"d":"m3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,0 20,0","class":"s1"}]],["g",{"id":"zmv-2"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s10"}],["path",{"d":"m6,10 3,10 11,0","class":"s1"}],["path",{"d":"M0,10 6,10 9,0 20,0","class":"s1"}]],["g",{"id":"vmv-3-2"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s10"}],["path",{"d":"M3,0 0,0 0,20 3,20 6,10 z","class":"s6"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}]],["g",{"id":"vmv-4-2"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s10"}],["path",{"d":"M3,0 0,0 0,20 3,20 6,10 z","class":"s7"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}]],["g",{"id":"vmv-5-2"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s10"}],["path",{"d":"M3,0 0,0 0,20 3,20 6,10 z","class":"s8"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}]],["g",{"id":"vmv-2-3"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s6"}],["path",{"d":"M3,0 0,0 0,20 3,20 6,10 z","class":"s10"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}]],["g",{"id":"vmv-2-4"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s7"}],["path",{"d":"M3,0 0,0 0,20 3,20 6,10 z","class":"s10"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}]],["g",{"id":"vmv-2-5"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s8"}],["path",{"d":"M3,0 0,0 0,20 3,20 6,10 z","class":"s10"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}]],["g",{"id":"vmv-2-2"},["path",{"d":"M9,0 20,0 20,20 9,20 6,10 z","class":"s10"}],["path",{"d":"M3,0 0,0 0,20 3,20 6,10 z","class":"s10"}],["path",{"d":"m0,0 3,0 6,20 11,0","class":"s1"}],["path",{"d":"M0,20 3,20 9,0 20,0","class":"s1"}]],["g",{"id":"arrow0"},["path",{"d":"m-12,-3 9,3 -9,3 c 1,-2 1,-4 0,-6 z","class":"s11"}],["path",{"d":"M0,0 -15,0","class":"s12"}]],["marker",{"id":"arrowhead","style":"fill:#0041c4","markerHeight":"7","markerWidth":"10","markerUnits":"strokeWidth","viewBox":"0 -4 11 8","refX":"15","refY":"0","orient":"auto"},["path",{"d":"M0 -4 11 0 0 4z"}]],["marker",{"id":"arrowtail","style":"fill:#0041c4","markerHeight":"7","markerWidth":"10","markerUnits":"strokeWidth","viewBox":"-11 -4 11 8","refX":"-15","refY":"0","orient":"auto"},["path",{"d":"M0 -4 -11 0 0 4z"}]]],["g",{"id":"waves"},["g",{"id":"lanes"}],["g",{"id":"groups"}]]];
 try { module.exports = WaveSkin; } catch(err) {}
 
-},{}]},{},[9])(9)
+},{}]},{},[11])(11)
 });

@@ -1,6 +1,6 @@
 {
   "name": "wavedrom",
-  "version": "1.9.2",
+  "version": "2.0.1",
   "description": "Digital timing diagram in your browser",
   "homepage": "http://wavedrom.com",
   "author": "alex.drom@gmail.com",
@@ -26,7 +26,8 @@
     "test": "grunt",
     "eslint": "eslint lib/*.js",
     "unpkg": "browserify --standalone wavedrom lib/index.js > wavedrom.unpkg.js",
-    "prepublish": "npm run test && npm run unpkg"
+    "prepublish": "npm run test && npm run unpkg",
+    "cover": "nyc -r=text -r=lcov mocha"
   },
   "keywords": [
     "waveform",
@@ -36,6 +37,7 @@
   "devDependencies": {
     "@drom/eslint-config": "^0.9.0",
     "browserify": "^16.2.3",
+    "chai": "^4.2.0",
     "eslint": "^4.19.1",
     "grunt": "^1.0.1",
     "grunt-browserify": "^5.0.0",
@@ -46,11 +48,13 @@
     "grunt-eslint": "^20.1.0",
     "js-beautify": "^1.6.3",
     "jsof": "^0.3.2",
+    "mocha": "^6.1.4",
+    "nyc": "^14.0.0",
     "yargs": "^12.0.2"
   },
   "dependencies": {
     "bit-field": "^1.0.3",
-    "onml": "^0.4.5",
+    "onml": "^1.0.0",
     "tspan": "^0.3.6"
   },
   "eslintConfig": {
