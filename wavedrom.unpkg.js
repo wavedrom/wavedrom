@@ -574,6 +574,7 @@ var renderWaveElement = require('./render-wave-element');
 var renderAny = require('./render-any.js');
 var editorRefresh = require('./editor-refresh');
 var def = require('../skins/default.js');
+var onmlStringify = require('onml/lib/stringify.js');
 
 exports.processAll = processAll;
 exports.eva = eva;
@@ -582,8 +583,11 @@ exports.renderWaveForm = renderWaveForm;
 exports.renderWaveElement = renderWaveElement;
 exports.editorRefresh = editorRefresh;
 exports.waveSkin = def;
+exports.onml = {
+    stringify: onmlStringify
+};
 
-},{"../skins/default.js":40,"./editor-refresh":5,"./eva":6,"./process-all":18,"./render-any.js":20,"./render-wave-element":30,"./render-wave-form":31}],12:[function(require,module,exports){
+},{"../skins/default.js":40,"./editor-refresh":5,"./eva":6,"./process-all":18,"./render-any.js":20,"./render-wave-element":30,"./render-wave-form":31,"onml/lib/stringify.js":36}],12:[function(require,module,exports){
 'use strict';
 
 function insertSVGTemplateAssign () {
