@@ -58,13 +58,13 @@ function f2o (name, cb) {
                     delete node.attr['sodipodi:nodetypes'];
                     delete node.attr['inkscape:connector-curvature'];
                     break;
-                };
+                }
             }
         });
         defs.push(marker1);
         defs.push(marker2);
         Object.keys(styles).forEach(function (key) {
-          defStyle += '.' + styles[key] + '{' + key + '}';
+            defStyle += '.' + styles[key] + '{' + key + '}';
         });
         style.push(defStyle);
         // cb('module.exports = ' + jsof.stringify(res) + ';');
@@ -75,3 +75,5 @@ function f2o (name, cb) {
 if (typeof argv.i === 'string') {
     f2o(argv.i, console.log);
 }
+
+/* eslint no-console: 0 */
