@@ -579,52 +579,45 @@ module.exports = insertSVGTemplateAssign;
 var w3 = require('./w3');
 
 function insertSVGTemplate (index, source, lane, waveSkin, content, lanes, groups) {
-    var first, e;
+    var first, skin, e;
 
     for (first in waveSkin) { break; }
 
-    e = waveSkin.default || waveSkin[first];
+    skin = waveSkin.default || waveSkin[first];
 
     if (source && source.config && source.config.skin && waveSkin[source.config.skin]) {
-        e = waveSkin[source.config.skin];
+        skin = waveSkin[source.config.skin];
     }
 
     if (index === 0) {
-        lane.xs     = Number(e[3][1][2][1].width);
-        lane.ys     = Number(e[3][1][2][1].height);
-        lane.xlabel = Number(e[3][1][2][1].x);
-        lane.ym     = Number(e[3][1][2][1].y);
+        e = skin;
     } else {
-        e = ['svg',
-            {
-                id: 'svg',
-                xmlns: w3.svg,
-                'xmlns:xlink': w3.xlink
-            },
-            ['g', {id: 'waves'},
-                ['g', {id: 'lanes'}],
-                ['g', {id: 'groups'}]
-            ]
-        ];
+        e = ['svg', {id: 'svg', xmlns: w3.svg, 'xmlns:xlink': w3.xlink}, ['g']];
     }
 
     var width = (lane.xg + (lane.xs * (lane.xmax + 1)));
     var height = (content.length * lane.yo + lane.yh0 + lane.yh1 + lane.yf0 + lane.yf1);
 
-    e[e.length - 1][1].id    = 'waves_'  + index;
+    var body = e[e.length - 1];
 
-    e[e.length - 1][2][1].id = 'lanes_'  + index;
-    e[e.length - 1][2][1].transform = 'translate(' + (lane.xg + 0.5) + ', ' + ((lane.yh0 + lane.yh1) + 0.5) + ')';
-    e[e.length - 1][2] = e[e.length - 1][2].concat(lanes);
+    body[1] = {id: 'waves_'  + index};
 
-    e[e.length - 1][3][1].id = 'groups_' + index;
-    e[e.length - 1][3].push(groups);
+    body[2] = ['g', {
+        id: 'lanes_'  + index,
+        transform: 'translate(' + (lane.xg + 0.5) + ', ' + ((lane.yh0 + lane.yh1) + 0.5) + ')'
+    }].concat(lanes);
 
-    e[1].id = 'svgcontent_' + index;
-    e[1].height = height;
-    e[1].width = width;
-    e[1].viewBox = '0 0 ' + width + ' ' + height;
-    e[1].overflow = 'hidden';
+    body[3] = ['g', {
+        id: 'groups_' + index
+    }].concat(groups);
+
+    var head = e[1];
+
+    head.id = 'svgcontent_' + index;
+    head.height = height;
+    head.width = width;
+    head.viewBox = '0 0 ' + width + ' ' + height;
+    head.overflow = 'hidden';
 
     return e;
 }
@@ -1540,7 +1533,32 @@ var renderWaveLane = require('./render-wave-lane');
 
 var insertSVGTemplate = require('./insert-svg-template');
 
+function laneParamsFromSkin (index, source, lane, waveSkin) {
+
+    if (index !== 0) { return; }
+
+    var first, skin, socket;
+
+    for (first in waveSkin) { break; }
+
+    skin = waveSkin.default || waveSkin[first];
+
+    if (source && source.config && source.config.skin && waveSkin[source.config.skin]) {
+        skin = waveSkin[source.config.skin];
+    }
+
+    socket = skin[3][1][2][1];
+
+    lane.xs     = Number(socket.width);
+    lane.ys     = Number(socket.height);
+    lane.xlabel = Number(socket.x);
+    lane.ym     = Number(socket.y);
+    console.log(lane.xs); /* eslint no-console: 0 */
+}
+
 function renderSignal (index, source, waveSkin) {
+
+    laneParamsFromSkin (index, source, lane, waveSkin);
 
     parseConfig(source, lane);
     var ret = rec(source.signal, {'x':0, 'y':0, 'xmax':0, 'width':[], 'lanes':[], 'groups':[]});
