@@ -209,6 +209,18 @@ foot: {text:
 })(5, 16)
 </script>
 
+No <code>gmarks</code>
+
+<script type="WaveDrom">
+{ signal: [
+  { name: "clk",         wave: "p.....|..." },
+  { name: "Data",        wave: "x.345x|=.x", data: ["head", "body", "tail", "data"] },
+  { name: "Request",     wave: "0.1..0|1.0" },
+  {},
+  { name: "Acknowledge", wave: "1.....|01." }
+], config: {marks: false}}
+</script>
+
 </div>
 
 <script>(function(){ window.addEventListener("load", WaveDrom.ProcessAll, false); })();</script>
