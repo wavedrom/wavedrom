@@ -1409,7 +1409,7 @@ var renderArcs = require('./render-arcs');
 var renderGaps = require('./render-gaps');
 
 function renderLanes (index, content, waveLanes, ret, source, lane) {
-    return [renderMarks(content, index, lane)]
+    return [renderMarks(content, index, lane, source)]
         .concat(waveLanes.res)
         .concat([renderArcs(ret.lanes, index, source, lane)])
         .concat([renderGaps(ret.lanes, index, lane)]);
@@ -1506,20 +1506,22 @@ function ticktock (cxt, ref1, ref2, x, dx, y, len) {
     return res;
 }
 
-function renderMarks (content, index, lane) {
+function renderMarks (content, index, lane, source) {
     var mstep  = 2 * (lane.hscale);
     var mmstep = mstep * lane.xs;
     var marks  = lane.xmax / mstep;
     var gy     = content.length * lane.yo;
 
-    var res = ['g', {id: ('gmarks_' + index)}];
     var i;
-    for (i = 0; i < (marks + 1); i += 1) {
-        res = res.concat([['path', {
-            id:    'gmark_' + i + '_' + index,
-            d:     'm ' + (i * mmstep) + ',' + 0 + ' 0,' + gy,
-            style: 'stroke:#888;stroke-width:0.5;stroke-dasharray:1,3'
-        }]]);
+    var res = ['g', {id: ('gmarks_' + index)}];
+    if (!(source && source.config && source.config.marks === false)) {
+        for (i = 0; i < (marks + 1); i += 1) {
+            res = res.concat([['path', {
+                id:    'gmark_' + i + '_' + index,
+                d:     'm ' + (i * mmstep) + ',' + 0 + ' 0,' + gy,
+                style: 'stroke:#888;stroke-width:0.5;stroke-dasharray:1,3'
+            }]]);
+        }
     }
     return res
         .concat(captext(lane, 'head', (lane.yh0 ? -33 : -13)))
