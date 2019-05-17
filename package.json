@@ -26,7 +26,7 @@
     "test": "grunt",
     "eslint": "eslint lib/*.js",
     "unpkg": "browserify --standalone wavedrom lib/index.js > wavedrom.unpkg.js",
-    "prepublish": "npm run test && npm run unpkg",
+    "prepare": "npm run test && npm run unpkg",
     "cover": "nyc -r=text -r=lcov mocha"
   },
   "keywords": [
@@ -35,22 +35,22 @@
     "RTL"
   ],
   "devDependencies": {
-    "@drom/eslint-config": "^0.9.0",
+    "@drom/eslint-config": "^0.10.0",
     "browserify": "^16.2.3",
     "chai": "^4.2.0",
-    "eslint": "^4.19.1",
-    "grunt": "^1.0.1",
+    "eslint": "^5.16.0",
+    "grunt": "^1.0.4",
     "grunt-browserify": "^5.0.0",
     "grunt-cli": "^1.2.0",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-uglify": "^4.0.0",
-    "grunt-eslint": "^20.1.0",
+    "grunt-contrib-uglify": "^4.0.1",
+    "grunt-eslint": "^21.0.0",
     "js-beautify": "^1.6.3",
     "jsof": "^0.3.2",
     "mocha": "^6.1.4",
     "nyc": "^14.0.0",
-    "yargs": "^12.0.2"
+    "yargs": "^13.2.4"
   },
   "dependencies": {
     "bit-field": "^1.0.3",
