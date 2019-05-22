@@ -68,7 +68,7 @@ function f2o (name, cb) {
         });
         style.push(defStyle);
         // cb('module.exports = ' + jsof.stringify(res) + ';');
-        cb('var WaveSkin=WaveSkin||{};WaveSkin.' + path.basename(name, '.svg') + '=' + JSON.stringify(res) + ';');
+        cb('var WaveSkin=WaveSkin||{};WaveSkin.' + path.basename(name, '.svg') + '=' + JSON.stringify(res) + ';\ntry { module.exports = WaveSkin; } catch(err) {}\n');
     });
 }
 
