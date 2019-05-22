@@ -235,7 +235,7 @@ function arcShape (Edge, from, to) { /* eslint complexity: [warn, 30] */
         lx: lx,
         ly: ly,
         d: d,
-        syle: style
+        style: style
     };
 }
 
@@ -1555,7 +1555,6 @@ function laneParamsFromSkin (index, source, lane, waveSkin) {
     lane.ys     = Number(socket.height);
     lane.xlabel = Number(socket.x);
     lane.ym     = Number(socket.y);
-    console.log(lane.xs); /* eslint no-console: 0 */
 }
 
 function renderSignal (index, source, waveSkin) {
