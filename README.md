@@ -85,6 +85,8 @@ The script will find all ``<script type="WaveDrom">`` instances and insert a tim
 
 ### Blogs & Wikis
 
+ObservableHQ examples: (https://observablehq.com/collection/@drom/wavedrom)
+
 Blogger integration: (http://wavedrom.blogspot.com/2011/08/wavedrom-digital-timing-diagram-in-your.html)
 
 MediaWiki integration: (https://github.com/Martoni/mediawiki_wavedrom)
