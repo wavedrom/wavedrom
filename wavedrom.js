@@ -945,16 +945,16 @@ var renderReg = require('./render-reg.js');
 var renderSignal = require('./render-signal.js');
 
 function renderAny (index, source, waveSkin) {
-    if (source.signal) {
-        return renderSignal(index, source, waveSkin);
-    }
-    if (source.assign) {
-        return renderAssign(index, source);
-    }
-    if (source.reg) {
-        return  renderReg(index, source);
-    }
-    return ['div'];
+    var res = source.signal ?
+        renderSignal(index, source, waveSkin) :
+        source.assign ?
+            renderAssign(index, source) :
+            source.reg ?
+                renderReg(index, source) :
+                ['div', {}];
+
+    res[1].class = 'WaveDrom';
+    return res;
 }
 
 module.exports = renderAny;
