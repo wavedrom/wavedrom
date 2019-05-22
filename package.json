@@ -39,6 +39,7 @@
     "browserify": "^16.2.3",
     "chai": "^4.2.0",
     "eslint": "^5.16.0",
+    "fs-extra": "^8.0.1",
     "grunt": "^1.0.4",
     "grunt-browserify": "^5.0.0",
     "grunt-cli": "^1.2.0",
@@ -48,6 +49,7 @@
     "grunt-eslint": "^21.0.0",
     "js-beautify": "^1.6.3",
     "jsof": "^0.3.2",
+    "json5": "^2.1.0",
     "mocha": "^6.1.4",
     "nyc": "^14.0.0",
     "yargs": "^13.2.4"
