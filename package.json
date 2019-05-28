@@ -26,6 +26,7 @@
     "test": "grunt",
     "eslint": "eslint lib/*.js",
     "unpkg": "browserify --standalone wavedrom lib/index.js > wavedrom.unpkg.js",
+    "cli": "{ echo '#!/usr/bin/env node' ; browserify --node bin/cli.js ; } > bin/wavedrom.js ; chmod +x bin/wavedrom.js",
     "prepare": "npm run test && npm run unpkg",
     "cover": "nyc -r=text -r=lcov mocha"
   },
