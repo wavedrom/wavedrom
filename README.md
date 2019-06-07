@@ -26,6 +26,12 @@ svg.wavedrom.com
 
 ![reg vl](https://svg.wavedrom.com/github/wavedrom/wavedrom/master/test/reg-vl.json5)
 
+```html
+<img src="https://svg.wavedrom.com/{signal:[{name:'clk',wave:'p......'},{name:'bus',wave:'x.34.5x',data:'head body tail'},{name:'wire',wave:'0.1..0.'}]}"/>
+```
+
+<img src="https://svg.wavedrom.com/{signal:[{name:'clk',wave:'p......'},{name:'bus',wave:'x.34.5x',data:'head body tail'},{name:'wire',wave:'0.1..0.'}]}"/>
+
 ## Web usage
 
 **WaveDrom** timing diagrams can be embedded into the web pages, blogs, and wikis to be rendered by the most of modern browsers:
