@@ -861,6 +861,9 @@ function parseWaveLanes (sig, lane) {
         tmp0 = [];
 
     for (x in sig) {
+        if (!sig.hasOwnProperty(x)) {
+            continue;
+        }
         // sigx is each signal in the array of signals being iterated over
         sigx = sig[x];
         lane.period = sigx.period ? sigx.period    : 1;
@@ -1012,6 +1015,9 @@ function renderArcs (source, index, top, lane) {
     if (source) {
 
         for (i in source) {
+            if (!source.hasOwnProperty(i)) {
+                continue;
+            }
             lane.period = source[i].period ? source[i].period    : 1;
             lane.phase  = (source[i].phase  ? source[i].phase * 2 : 0) + lane.xmin_cfg;
             text = source[i].node;
@@ -1033,7 +1039,9 @@ function renderArcs (source, index, top, lane) {
 
         if (top.edge) {
             for (i in top.edge) {
-
+                if (!top.edge.hasOwnProperty(i)) {
+                    continue;
+                }
                 Edge.words = top.edge[i].split(' ');
                 Edge.label = top.edge[i].substring(Edge.words[0].length);
                 Edge.label = Edge.label.substring(1);
@@ -1057,7 +1065,7 @@ function renderArcs (source, index, top, lane) {
             }
         }
         for (k in Events) {
-            if (k === k.toLowerCase()) {
+            if (Events.hasOwnProperty(k) && k === k.toLowerCase()) {
                 if (Events[k].x > 0) {
                     res = res.concat([renderLabel({x: Events[k].x, y: Events[k].y}, k + '')]);
                 }
@@ -1319,6 +1327,9 @@ function renderGaps (source, index, lane) {
     var res = [];
     if (source) {
         for (i in source) {
+            if (!source.hasOwnProperty(i)) {
+                continue;
+            }
             lane.period = source[i].period ? source[i].period : 1;
             lane.phase  = (source[i].phase  ? source[i].phase * 2 : 0) + lane.xmin_cfg;
 
@@ -1660,7 +1671,7 @@ function renderLaneUses (cont, lane) {
             labels = findLaneMarkers(cont[1]);
             if (labels.length) {
                 for (k in labels) {
-                    if (cont[2] && (cont[2][k] !== undefined)) {
+                    if (labels.hasOwnProperty(k) && cont[2] && (cont[2][k] !== undefined)) {
                         res.push(['text', {
                             x: labels[k] * lane.xs + lane.xlabel,
                             y: lane.ym,

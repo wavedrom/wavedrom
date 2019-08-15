@@ -189,6 +189,9 @@ function parseWaveLanes (sig) {
     var x, sigx, content = [], tmp0 = [];
 
     for (x in sig) {
+        if (!sig.hasOwnProperty(x)) {
+            continue;
+        }
         sigx = sig[x];
         lane.period = sigx.period ? sigx.period    : 1;
         lane.phase  = sigx.phase  ? sigx.phase * 2 : 0;
@@ -206,6 +209,9 @@ function findLaneMarkers (lanetext) {
     var i, gcount = 0, lcount = 0, ret = [];
 
     for (i in lanetext) {
+        if (!lanetext.hasOwnProperty(i)) {
+            continue;
+        }
         if (lanetext[i] === 'vvv-2' | lanetext[i] === 'vvv-3' | lanetext[i] === 'vvv-4' | lanetext[i] === 'vvv-5') {
             lcount += 1;
         } else {
@@ -289,7 +295,7 @@ function renderWaveLane (root, content, index) {
 
                     if (labels.length !== 0) {
                         for (k in labels) {
-                            if (content[j][2] && (typeof content[j][2][k] !== 'undefined')) {
+                            if (labels.hasOwnProperty(k) && content[j][2] && (typeof content[j][2][k] !== 'undefined')) {
                                 title = parse([
                                     'text',
                                     {
@@ -442,6 +448,9 @@ function renderGroups (root, groups, index) {
         xmlns = 'http://www.w3.org/XML/1998/namespace';
 
     for (i in groups) {
+        if (!groups.hasOwnProperty(i)) {
+            continue;
+        }
         group = document.createElementNS(svgns, 'path');
         group.id = ('group_' + i + '_' + index);
         group.setAttribute('d', 'm ' + (groups[i].x + 0.5) + ',' + (groups[i].y * lane.yo + 3.5 + lane.yh0 + lane.yh1) + ' c -3,0 -5,2 -5,5 l 0,' + (groups[i].height * lane.yo - 16) + ' c 0,3 2,5 5,5');
@@ -484,6 +493,9 @@ function renderGaps (root, source, index) {
         root.insertBefore(gg, null);
 
         for (i in source) {
+            if (!source.hasOwnProperty(i)) {
+                continue;
+            }
             lane.period = source[i].period ? source[i].period    : 1;
             lane.phase  = source[i].phase  ? source[i].phase * 2 : 0;
             g = document.createElementNS(svgns, 'g');
@@ -540,6 +552,9 @@ function renderArcs (root, source, index, top) {
 
     if (source) {
         for (i in source) {
+            if (!source.hasOwnProperty(i)) {
+                continue;
+            }
             lane.period = source[i].period ? source[i].period    : 1;
             lane.phase  = source[i].phase  ? source[i].phase * 2 : 0;
             text = source[i].node;
@@ -563,6 +578,9 @@ function renderArcs (root, source, index, top) {
         root.insertBefore(gg, null);
         if (top.edge) {
             for (i in top.edge) {
+                if (!top.edge.hasOwnProperty(i)) {
+                    continue;
+                }
                 Edge.words = top.edge[i].split(' ');
                 Edge.label = top.edge[i].substring(Edge.words[0].length);
                 Edge.label = Edge.label.substring(1);
@@ -705,7 +723,7 @@ function renderArcs (root, source, index, top) {
             }
         }
         for (k in Events) {
-            if (k === k.toLowerCase()) {
+            if (Events.hasOwnProperty(k) && k === k.toLowerCase()) {
                 if (Events[k].x > 0) {
                     underlabel = parse([
                         'rect',
@@ -1092,7 +1110,9 @@ function renderWaveForm (index, source, output) {
         content  = parseWaveLanes(ret.lanes, lane);
         glengths = renderWaveLane(root, content, index);
         for (i in glengths) {
-            xmax = Math.max(xmax, (glengths[i] + ret.width[i]));
+            if (glengths.hasOwnProperty(i)) {
+                xmax = Math.max(xmax, (glengths[i] + ret.width[i]));
+            }
         }
         renderMarks(root, content, index);
         renderArcs(root, ret.lanes, index, source);
