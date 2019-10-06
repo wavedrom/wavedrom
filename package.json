@@ -37,7 +37,7 @@
   ],
   "devDependencies": {
     "@drom/eslint-config": "^0.10.0",
-    "browserify": "^16.2.3",
+    "browserify": "^16.5.0",
     "chai": "^4.2.0",
     "eslint": "^5.16.0",
     "fs-extra": "^8.0.1",
@@ -48,16 +48,16 @@
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-uglify": "^4.0.1",
     "grunt-eslint": "^21.0.0",
-    "js-beautify": "^1.6.3",
+    "js-beautify": "^1.10.2",
     "jsof": "^0.3.2",
-    "json5": "^2.1.0",
-    "mocha": "^6.1.4",
+    "json5": "^2.1.1",
+    "mocha": "^6.2.1",
     "nyc": "^14.0.0",
-    "yargs": "^13.2.4"
+    "yargs": "^14.0.0"
   },
   "dependencies": {
     "bit-field": "^1.0.3",
-    "onml": "^1.0.0",
+    "onml": "^1.1.0",
     "tspan": "^0.3.6"
   },
   "eslintConfig": {
