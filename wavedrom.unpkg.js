@@ -845,7 +845,9 @@ function data_extract (e, num_unseen_markers) {
 
     ret_data = e.data;
     if (ret_data === undefined) { return null; }
-    if (typeof (ret_data) === 'string') { ret_data= ret_data.split(' '); }
+    if (typeof (ret_data) === 'string') {
+        ret_data = ret_data.trim().split(/\s+/);
+    }
     // slice data array after unseen markers
     ret_data = ret_data.slice( num_unseen_markers );
     return ret_data;
@@ -991,78 +993,78 @@ var renderLabel = require('./render-label.js');
 function renderArc (Edge, from, to, shapeProps) {
     return ['path', {
         id: 'gmark_' + Edge.from + '_' + Edge.to,
-        d: shapeProps.d || 'M ' + from.x + ',' + from.y + ' ' + to.x   + ',' + to.y,
+        d: shapeProps.d || 'M ' + from.x + ',' + from.y + ' ' + to.x + ',' + to.y,
         style: shapeProps.style || 'fill:none;stroke:#00F;stroke-width:1'
     }];
 }
 
 function renderArcs (source, index, top, lane) {
-    var i, k, text,
-        Stack = [],
-        Edge = {words: [], from: 0, shape: '', to: 0, label: ''},
-        Events = {},
-        pos,
-        eventname,
-        shapeProps,
-        from,
-        to;
-
     var res = ['g', {id: 'wavearcs_' + index}];
+    var Events = {};
 
-    if (source) {
-
-        for (i in source) {
-            lane.period = source[i].period ? source[i].period    : 1;
-            lane.phase  = (source[i].phase  ? source[i].phase * 2 : 0) + lane.xmin_cfg;
-            text = source[i].node;
-            if (text) {
-                Stack = text.split('');
-                pos = 0;
-                while (Stack.length) {
-                    eventname = Stack.shift();
-                    if (eventname !== '.') {
-                        Events[eventname] = {
-                            'x' : lane.xs * (2 * pos * lane.period * lane.hscale - lane.phase) + lane.xlabel,
-                            'y' : i * lane.yo + lane.y0 + lane.ys * 0.5
-                        };
-                    }
-                    pos += 1;
+    function labeler (element, i) {
+        var pos, eventname, stack;
+        var text = element.node;
+        lane.period = element.period ? element.period : 1;
+        lane.phase  = (element.phase ? element.phase * 2 : 0) + lane.xmin_cfg;
+        if (text) {
+            stack = text.split('');
+            pos = 0;
+            while (stack.length) {
+                eventname = stack.shift();
+                if (eventname !== '.') {
+                    Events[eventname] = {
+                        x: lane.xs *
+                          (2 * pos * lane.period * lane.hscale - lane.phase) +
+                          lane.xlabel,
+                        y: i * lane.yo + lane.y0 + lane.ys * 0.5
+                    };
                 }
+                pos += 1;
             }
         }
+    }
 
-        if (top.edge) {
-            for (i in top.edge) {
+    function archer (element) {
+        var words = element.trim().split(/\s+/);
+        var Edge = {
+            words: words,
+            label: element.substring(words[0].length).substring(1),
+            from:  words[0].substr(0, 1),
+            to:    words[0].substr(-1, 1),
+            shape: words[0].slice(1, -1)
+        };
+        var from = Events[Edge.from];
+        var to = Events[Edge.to];
 
-                Edge.words = top.edge[i].split(' ');
-                Edge.label = top.edge[i].substring(Edge.words[0].length);
-                Edge.label = Edge.label.substring(1);
-                Edge.from  = Edge.words[0].substr(0, 1);
-                Edge.to    = Edge.words[0].substr(-1, 1);
-                Edge.shape = Edge.words[0].slice(1, -1);
+        var shapeProps, lx, ly;
+        if (from && to) {
+            shapeProps = arcShape(Edge, from, to);
+            lx = shapeProps.lx;
+            ly = shapeProps.ly;
+            res = res.concat([renderArc(Edge, from, to, shapeProps)]);
 
-                from  = Events[Edge.from];
-                to    = Events[Edge.to];
-
-                if (from && to) {
-                    shapeProps = arcShape(Edge, from, to);
-                    var lx = shapeProps.lx;
-                    var ly = shapeProps.ly;
-                    res = res.concat([renderArc(Edge, from, to, shapeProps)]);
-
-                    if (Edge.label) {
-                        res = res.concat([renderLabel({x: lx, y: ly}, Edge.label)]);
-                    }
-                }
+            if (Edge.label) {
+                res = res.concat([renderLabel({x: lx, y: ly}, Edge.label)]);
             }
         }
-        for (k in Events) {
+    }
+
+    if (Array.isArray(source)) {
+        source.map(labeler);
+        if (Array.isArray(top.edge)) {
+            top.edge.map(archer);
+        }
+        Object.keys(Events).map(function (k) {
             if (k === k.toLowerCase()) {
                 if (Events[k].x > 0) {
-                    res = res.concat([renderLabel({x: Events[k].x, y: Events[k].y}, k + '')]);
+                    res = res.concat([renderLabel({
+                        x: Events[k].x,
+                        y: Events[k].y
+                    }, k + '')]);
                 }
             }
-        }
+        });
     }
     return res;
 }
@@ -1449,7 +1451,7 @@ function ticktock (cxt, ref1, ref2, x, dx, y, len) {
     if (cxt[ref1] === undefined || cxt[ref1][ref2] === undefined) { return []; }
     val = cxt[ref1][ref2];
     if (typeof val === 'string') {
-        val = val.split(' ');
+        val = val.trim().split(/\s+/);
     } else if (typeof val === 'number' || typeof val === 'boolean') {
         offset = Number(val);
         val = [];
@@ -2089,6 +2091,7 @@ function stringify (a, indentation) {
             case 'string':
             case 'number':
             case 'boolean':
+            case 'undefined':
                 body += e + cr;
                 return;
             }
