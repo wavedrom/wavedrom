@@ -12,7 +12,7 @@
    height="520"
    units="mm"
    id="svg"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
    sodipodi:docname="default.svg">
   <g
      id="socket"
@@ -47,17 +47,17 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1600"
-     inkscape:window-height="878"
+     inkscape:window-width="3840"
+     inkscape:window-height="2119"
      id="namedview1852"
      showgrid="true"
      inkscape:document-units="px"
      units="px"
-     inkscape:zoom="1.7275"
-     inkscape:cx="292.61939"
-     inkscape:cy="200"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:zoom="3.6730769"
+     inkscape:cx="260"
+     inkscape:cy="260"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg">
     <inkscape:grid
@@ -68,8 +68,10 @@
        enabled="true"
        snapvisiblegridlinesonly="true"
        units="px"
-       spacingx="1px"
-       spacingy="1px" />
+       spacingx="1"
+       spacingy="1"
+       originx="0"
+       originy="0" />
   </sodipodi:namedview>
   <g
      id="pclk"
