@@ -94,6 +94,37 @@
 ]}
 </script>
 
+<h3>Sub-Cycles in Arcs (node member of a signal object)</h3>
+
+<script type="WaveDrom">
+{
+  signal: [
+    {             node: '..A.......B.' },
+    {name: 'EN',  wave: '1.0.......1.' },
+    {             node: '...C.D......'},
+    {name: 'SCK', wave: '0..10<1|.>010..',
+                  node: '...EF<...>GH..'},
+    {},
+    {name: 'SCK_M', wave: '0..<1..0..><1|.><0..1..>0.',
+                  node: '...<I..j.....><k.....>L'},
+    {             node: '...<M..n.....><o.....>P'},
+    {name: 'SCK_M2', wave: '0<1..0..><1|.><0..1..>0',
+                  node: '.<Q..r.....><s.....>T',
+                  period: 2},
+    {             node: '.<U..v.....><w.....>X', period: 2},
+  ],
+    edge:[
+    'C<->D T',
+    'G<->H tES',
+    'H<->L T0',
+    'A<~>k T1','j<~>B T2',
+    'M->I','M-P T3','P->L',
+    'U->Q','U-X T4','X->T'
+  ],
+}
+</script>
+
+
 </div>
 
 <script>(function(){ window.addEventListener("load", WaveDrom.ProcessAll, false); })();</script>
