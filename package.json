@@ -12,6 +12,9 @@
   "bugs": {
     "url": "https://github.com/wavedrom/wavedrom/issues"
   },
+  "bin": {
+    "wavedrom": "./bin/cli.js"
+  },
   "main": "./lib",
   "unpkg": "wavedrom.unpkg.js",
   "files": [
