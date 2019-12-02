@@ -18,6 +18,7 @@
   "main": "./lib",
   "unpkg": "wavedrom.unpkg.js",
   "files": [
+    "bin/cli.js",
     "wavedrom.js",
     "wavedrom.min.js",
     "wavedrom.unpkg.js",
