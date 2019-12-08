@@ -57,7 +57,7 @@
     "nyc": "^14.0.0"
   },
   "dependencies": {
-    "bit-field": "^1.0.3",
+    "bit-field": "^1.2.0",
     "fs-extra": "^8.0.1",
     "json5": "^2.1.1",
     "onml": "^1.1.0",
