@@ -68,9 +68,6 @@
     "extends": "@drom/eslint-config/eslint4/node4",
     "rules": {
       "camelcase": 0
-    },
-    "env": {
-      "browser": true
     }
   }
 }
