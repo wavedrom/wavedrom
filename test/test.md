@@ -1,6 +1,6 @@
 Tests
 
-Timing Diagram
+## Timing Diagram
 
 ```wavedrom
 { signal: [
@@ -12,7 +12,7 @@ Timing Diagram
 ]}
 ```
 
-Bit-Field diagram
+## Bit-Field diagram
 
 ```wavedrom
 {reg: [
@@ -24,6 +24,16 @@ Bit-Field diagram
 ], config: {hspace: 900}}
 ```
 
-```js
-// some code
+## Logic Circuit
+
+```wavedrom
+{ assign:[
+  ["z", ["~&",
+    ["~^", ["~", "p0"], ["~", "q0"]],
+    ["~^", ["~", "p1"], ["~", "q1"]],
+    "...",
+    ["~^", ["~", "p7"], ["~", "q7"]],
+    ["~","~en"]
+  ]]
+]}
 ```
