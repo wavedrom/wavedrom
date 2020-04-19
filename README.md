@@ -48,13 +48,7 @@ svg.wavedrom.com
 
 ## Web usage
 
-**WaveDrom** timing diagrams can be embedded into the web pages, blogs, and wikis to be rendered by the most of modern browsers:
-
-![alt text](http://wavedrom.com/images/firefox_22.gif "firefox") 4+
-![alt text](http://wavedrom.com/images/chrome_22.gif "chrome") 10+
-![alt text](http://wavedrom.com/images/safari_22.gif "safari") 5.1+
-![alt text](http://wavedrom.com/images/opera_22.gif "opera") 12+
-![alt text](http://wavedrom.com/images/ie_22.gif "ie") 11
+**WaveDrom** timing diagrams can be embedded into the web pages, blogs, and wikis to be rendered by the most of modern browsers.
 
 ### HTML pages
 
