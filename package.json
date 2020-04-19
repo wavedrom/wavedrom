@@ -30,12 +30,13 @@
     "test": "npm-run-all eslint",
     "eslint": "eslint lib/*.js",
     "dist": "browserify ./lib/wave-drom.js > wavedrom.js",
-    "dist.min": "{ node ./bin/header.js ; terser --compress --mengle -- wavedrom.js; } > wavedrom.min.js",
+    "dist.min": "terser --compress --mengle -- wavedrom.js | node ./bin/header.js > wavedrom.min.js",
     "unpkg": "browserify --standalone wavedrom lib/index.js > wavedrom.unpkg.js",
-    "unpkg.min": "terser --compress --mengle -- wavedrom.unpkg.js > wavedrom.unpkg.min.js",
+    "unpkg.min": "terser --compress --mengle -- wavedrom.unpkg.js | node ./bin/header.js > wavedrom.unpkg.min.js",
     "cli": "{ echo '#!/usr/bin/env node' ; browserify --node bin/cli.js ; } > bin/wavedrom.js ; chmod +x bin/wavedrom.js",
-    "prepare": "npm-run-all test  dist dist.min unpkg unpkg.min",
-    "coverage": "nyc report -r=text-lcov | coveralls"
+    "prepare": "npm-run-all test dist dist.min unpkg unpkg.min",
+    "coverage": "nyc report -r=text-lcov | coveralls",
+    "clean": "rm wavedrom.js wavedrom.*.js"
   },
   "keywords": [
     "waveform",
