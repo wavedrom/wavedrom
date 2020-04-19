@@ -27,8 +27,9 @@
     "skins/**"
   ],
   "scripts": {
-    "test": "npm-run-all eslint",
+    "test": "npm-run-all eslint nyc",
     "eslint": "eslint lib/*.js",
+    "nyc": "nyc -r=lcov -r=text mocha test",
     "dist": "browserify ./lib/wave-drom.js > wavedrom.js",
     "dist.min": "terser --compress --mengle -- wavedrom.js | node ./bin/header.js > wavedrom.min.js",
     "unpkg": "browserify --standalone wavedrom lib/index.js > wavedrom.unpkg.js",
@@ -36,7 +37,7 @@
     "cli": "{ echo '#!/usr/bin/env node' ; browserify --node bin/cli.js ; } > bin/wavedrom.js ; chmod +x bin/wavedrom.js",
     "prepare": "npm-run-all test dist dist.min unpkg unpkg.min",
     "coverage": "nyc report -r=text-lcov | coveralls",
-    "clean": "rm wavedrom.js wavedrom.*.js"
+    "clean": "rm -rf wavedrom.js wavedrom.*.js coverage .nyc_output"
   },
   "keywords": [
     "waveform",
