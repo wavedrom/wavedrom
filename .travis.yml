@@ -1,16 +1,18 @@
+language: node_js
+node_js:
+  - "13"
+  - "12"
+  - "10"
+  - "8"
 os:
   - linux
   - osx
+  - windows
 sudo: false
-env:
-  matrix:
-    - TRAVIS_NODE_VERSION="12"
-    - TRAVIS_NODE_VERSION="11"
-    - TRAVIS_NODE_VERSION="10"
-    - TRAVIS_NODE_VERSION="8"
-    - TRAVIS_NODE_VERSION="6"
 install:
-  - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
   - npm --version
   - npm install
-script: npm test
+script:
+  - npm test
+after_success:
+  - npm run coverage
