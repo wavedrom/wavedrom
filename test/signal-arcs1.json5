@@ -1,0 +1,20 @@
+{ signal: [
+  { name: 'Reset',
+   wave:  '01|...=...|01u', data: ['a < b'],
+
+   node: '...........E...' },
+  {},
+  { name: 'Input',
+      wave: 'x0|.1x....|.0d',
+      node: '....A.F.......' },
+  {},
+  { name: 'Output',
+      wave: '0.|......1|0.d',
+      node: '.........C.F..' },
+
+  {   node: '....B....D.....' },
+  ],
+  edge: [
+    'A-B', 'C-D', 'A~>C', 'B<->D T > 45s', 'E->F'
+  ]
+}
