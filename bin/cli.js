@@ -14,7 +14,8 @@ var lowkey = require('../skins/lowkey.js');
 var skins = Object.assign({}, def, narrow, lowkey);
 
 var argv = yargs
-    .option('input', {describe: 'path to the source', alias: 'i'})
+    .option('input',  {describe: 'path to the source', alias: 'i'})
+    .option('indent', {describe: 'text indent in output SVG', alias: 't'})
     .demandOption(['input'])
     .help()
     .argv;
@@ -25,7 +26,7 @@ fileName = argv.input;
 fs.readFile(fileName, function (err, body) {
     var source = json5.parse(body);
     var res = lib.renderAny(0, source, skins);
-    var svg = onml.s(res);
+    var svg = onml.s(res, argv.indent);
     console.log(svg);
 });
 
