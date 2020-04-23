@@ -10,9 +10,9 @@ process.stdin.setEncoding('utf8');
 process.stdout.write([
     '/*!',
     pkg.name, pkg.version,
-    ['FullYear', 'Month', 'Date']
-        .map(e => t['get' + e]())
+    [t.getFullYear(), t.getMonth() + 1, t.getDate()]
         .join('-'),
+    'PDT',
     '*/\n'
 ].join(' '));
 
