@@ -315,32 +315,24 @@ No <code>gmarks</code>
 <script type="WaveDrom">
 {signal: [
   {name: 'clk',   wave: 'p.PpPPPPp.P.'},
+
   {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10'},
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10', phase: .5},
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10', phase: 1},
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10', phase: 1.7},
+
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10', period: 2},
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10', period: 2, phase: .5},
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10', period: 2, phase: 1},
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10', period: 2, phase: 1.7},
+
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10', period: 0.5},
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10', period: 0.5, phase: .5},
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10', period: 0.5, phase: 1},
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10', period: 0.5, phase: 1.7},
+
   {name: 'FF',    wave: 'x....3.4...5', data: 'D1 D2 D3'},
 ], head:{tick: 1}}
-</script>
-
-<script type="WaveDrom">
-{ signal: [
-  { name: 'Reset',
-   wave:  '01|...=...|01u', data: ['a < b'],
-
-   node: '...........E...' },
-  {},
-  { name: 'Input',
-      wave: 'x0|.1x....|.0d',
-      node: '....A.F.......' },
-  {},
-  { name: 'Output',
-      wave: '0.|......1|0.d',
-      node: '.........C.F..' },
-
-  {   node: '....B....D.....' },
-  ],
-  edge: [
-    'A-B', 'C-D', 'A~>C', 'B<->D T > 45s', 'E->F'
-  ]
-}
 </script>
 
 </div>
