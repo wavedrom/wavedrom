@@ -89,11 +89,10 @@ function getFill (fillClasses, node) {
 }
 
 function f2o (name, cb) {
-    var full, ml;
-    full = path.resolve(process.cwd(), name);
+    const full = path.resolve(process.cwd(), name);
     fs.readFile(full, { encoding: 'utf8'}, function (err, dat) {
         if (err) { throw err; }
-        ml = onml.parse(dat);
+        const ml = onml.parse(dat);
         const fillClasses = {
             '.muted': '#aaa',
             '.warning': '#f6b900',
