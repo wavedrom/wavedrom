@@ -1,1 +1,0 @@
-uglifyjs unpacked/WaveDrom.js -o WaveDrom.js -m -c
