@@ -47,20 +47,20 @@
   ],
   "devDependencies": {
     "@drom/eslint-config": "^0.10.0",
-    "browserify": "^16.5.0",
+    "browserify": "^16.5.1",
     "chai": "^4.2.0",
-    "coveralls": "^3.0.11",
+    "coveralls": "^3.1.0",
     "eslint": "^6.8.0",
     "jsof": "^0.3.2",
-    "mocha": "^7.1.1",
+    "mocha": "^7.1.2",
     "npm-run-all": "^4.1.5",
     "nyc": "^15.0.1",
-    "terser": "^4.6.11"
+    "terser": "^4.6.13"
   },
   "dependencies": {
     "bit-field": "^1.3.3",
     "fs-extra": "^8.1.0",
-    "json5": "^2.1.1",
+    "json5": "^2.1.3",
     "logidrom": "^0.2.1",
     "onml": "^1.2.0",
     "tspan": "^0.4.0",
