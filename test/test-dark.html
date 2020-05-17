@@ -1,0 +1,344 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>testsuit</title>
+  <script type="text/javascript" src="../skins/dark.js"></script>
+  <script type="text/javascript" src="../wavedrom.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Roboto|Droid+Sans+Mono|Varela+Round' rel='stylesheet' type='text/css'>
+  <style>
+    body { background-color: #222; color: #eee; }
+  </style>
+</head>
+
+<body>
+
+<div class="content">
+
+<h2>Test 1</h2>
+
+<script type="WaveDrom">
+{ signal: [{ name: "Alfa", wave: "01.zx=ud.23.4567890" }] }
+</script>
+
+<h2>Test 2</h2>
+
+<script type="WaveDrom">
+{ signal: [
+  { name: "pclk", wave: 'p.......' },
+  { name: "Pclk", wave: 'P.......' },
+  { name: "nclk", wave: 'n.......' },
+  { name: "Nclk", wave: 'N.......' },
+  {},
+  { name: 'clk0', wave: 'phnlPHNL' },
+  { name: 'clk1', wave: 'xhlhLHl.' },
+  { name: 'clk2', wave: 'hpHplnLn' },
+  { name: 'clk3', wave: 'nhNhplPl' },
+  { name: 'clk4', wave: 'xlh.L.Hx' },
+]}
+</script>
+
+<h2>Test 3</h2>
+
+<script type="WaveDrom">
+{ signal: [
+  { name: "clk",  wave: "P......" },
+  { name: "bus",  wave: "x.==.=x", data: ["head", "body", "tail", "data"] },
+  { name: "wire", wave: "0.1..0." }
+]}
+</script>
+
+<h2>Test 4</h2>
+
+<script type="WaveDrom">
+{ signal: [
+  { name: "clk",         wave: "p.....|..." },
+  { name: "Data",        wave: "x.345x|=.x", data: ["head", "body", "tail", "data"] },
+  { name: "Request",     wave: "0.1..0|1.0" },
+  {},
+  { name: "Acknowledge", wave: "1.....|01." }
+]}
+</script>
+
+<h2>Test 5</h2>
+
+<script type="WaveDrom">
+{ signal: [
+  {    name: 'clk',   wave: 'p..Pp..P'},
+  ['Master',
+    ['ctrl',
+      {name: 'write', wave: '01.0....'},
+      {name: 'read',  wave: '0...1..0'}
+    ],
+    {  name: 'addr',  wave: 'x3.x4..x', data: 'A1 A2'},
+    {  name: 'wdata', wave: 'x3.x....', data: 'D1'   },
+  ],
+  {},
+  ['Slave',
+    ['ctrl',
+      {name: 'ack',   wave: 'x01x0.1x'},
+    ],
+    {  name: 'rdata', wave: 'x.....4x', data: 'Q2'},
+  ]
+]}
+</script>
+
+<h2>Test 6</h2>
+
+<script type="WaveDrom">
+{ signal: [
+  { name: "CK",   wave: "P.......",                                              period: 2  },
+  { name: "CMD",  wave: "x.3x=x4x=x=x=x=x", data: "RAS NOP CAS NOP NOP NOP NOP", phase: 0.5 },
+  { name: "ADDR", wave: "x.=x..=x........", data: "ROW COL",                     phase: 0.5 },
+  { name: "DQS",  wave: "z.......0.1010z." },
+  { name: "DQ",   wave: "z.........5555z.", data: "D0 D1 D2 D3" }
+]}
+</script>
+
+<h2>Test 7</h2>
+
+<script type="WaveDrom">
+{ signal: [
+  { name: "clk",     wave: "p...." },
+  { name: "Data",    wave: "x345x",  data: ["head", "body", "tail"] },
+  { name: "Request", wave: "01..0" }
+  ],
+  config: { hscale: 1 }
+}
+</script>
+
+<h2>Test 8</h2>
+
+<script type="WaveDrom">
+{ "signal" : [
+  { "name": "clk",         "wave": "p...." },
+  { "name": "Data",        "wave": "x345x", "data": ["head", "body", "tail"] },
+  { "name": "Request",     "wave": "01..0" }
+],
+  "config" : { "hscale" : 2 }
+}
+</script>
+
+<h2>Test 9</h2>
+
+<script type="WaveDrom">
+{ "signal" : [
+  { "name": "clk",         "wave": "p...." },
+  { "name": "Data",        "wave": "x345x", "data": ["head", "body", "tail"] },
+  { "name": "Request",     "wave": "01..0" }
+],
+  "config" : { "hscale" : 3 }
+}
+</script>
+
+<h2>Test 10</h2>
+
+<script type="WaveDrom">
+{signal: [
+  {name:'clk',         wave: 'p....' },
+  {name:'Data',        wave: 'x345x', data: 'a b c' },
+  {name:'Request',     wave: '01..0' }
+],
+ head:{
+   text:'WaveDrom example',
+   tick:0,
+ },
+ foot:{
+   text:'Figure 100',
+   tock:9
+ },
+}
+</script>
+
+<h2>Test 11</h2>
+
+<script type="WaveDrom">
+{signal: [
+  {name:'clk', wave: 'p.....PPPPp....' },
+  {name:'dat', wave: 'x....2345x.....', data: 'a b c d' },
+  {name:'req', wave: '0....1...0.....' }
+],
+head: {text:
+  ['tspan',
+    ['tspan', {class:'error h1'}, 'error '],
+    ['tspan', {class:'warning h2'}, 'warning '],
+    ['tspan', {class:'info h3'}, 'info '],
+    ['tspan', {class:'success h4'}, 'success '],
+    ['tspan', {class:'muted h5'}, 'muted '],
+    ['tspan', {class:'h6'}, 'h6 '],
+    'default ',
+    ['tspan', {fill:'pink', 'font-weight':'bold', 'font-style':'italic'}, 'pink-bold-italic']
+  ]
+},
+foot: {text:
+  ['tspan', 'E=mc',
+    ['tspan', {dy:'-5'}, '2'],
+    ['tspan', {dy: '5'}, '. '],
+    ['tspan', {'font-size':'25'}, 'B '],
+    ['tspan', {'text-decoration':'overline'},'over '],
+    ['tspan', {'text-decoration':'underline'},'under '],
+    ['tspan', {'baseline-shift':'sub'}, 'sub '],
+    ['tspan', {'baseline-shift':'super'}, 'super ']
+  ],tock:-5
+}
+}
+</script>
+
+<h2>Test 12</h2>
+
+<script type="WaveDrom">
+{ signal: [
+  { name: 'A', wave: '01........0....',  node: '.a........j' },
+  { name: 'B', wave: '0.1.......0.1..',  node: '..b.......i' },
+  { name: 'C', wave: '0..1....0...1..',  node: '...c....h..' },
+  { name: 'D', wave: '0...1..0.....1.',  node: '....d..g...' },
+  { name: 'E', wave: '0....10.......1',  node: '.....ef....' }
+  ],
+  edge: [
+    'a~b t1', 'c-~a t2', 'c-~>d time 3', 'd~-e',
+    'e~>f', 'f->g', 'g-~>h', 'h~>i some text', 'h~->j'
+  ]
+}
+</script>
+
+<h2>Test 13</h2>
+
+<script type="WaveDrom">
+{ signal: [
+  { name: 'A', wave: '01..0..',  node: '.a..e..' },
+  { name: 'B', wave: '0.1..0.',  node: '..b..d.', phase:0.5 },
+  { name: 'C', wave: '0..1..0',  node: '...c..f' },
+  {                              node: '...g..h' }
+  ],
+  edge: [
+    'b-|a t1', 'a-|c t2', 'b-|-c t3', 'c-|->e t4', 'e-|>f more text',
+    'e|->d t6', 'c-g', 'f-h', 'g<->h 3 ms'
+  ]
+}
+</script>
+
+<h2>Test 14</h2>
+
+<script type="WaveDrom">
+(function (bits, ticks) {
+  var i, t, gray, state, data = [], arr = [];
+  for (i = 0; i < bits; i++) {
+    arr.push({name: i + '', wave: ''});
+    state = 1;
+    for (t = 0; t < ticks; t++) {
+      data.push(t + '');
+      gray = (((t >> 1) ^ t) >> i) & 1;
+      arr[i].wave += (gray === state) ? '.' : gray + '';
+      state = gray;
+    }
+  }
+  arr.unshift('gray');
+  return {signal: [
+    {name: 'bin', wave: '='.repeat(ticks), data: data}, arr
+  ]};
+})(5, 16)
+</script>
+
+<h2>Test 15</h2>
+
+No <code>gmarks</code>
+
+<script type="WaveDrom">
+{ signal: [
+  { name: "clk",         wave: "p.....|..." },
+  { name: "Data",        wave: "x.345x|=.x", data: ["head", "body", "tail", "data"] },
+  { name: "Request",     wave: "0.1..0|1.0" },
+  {},
+  { name: "Acknowledge", wave: "1.....|01." }
+], config: {marks: false}}
+</script>
+
+
+<h1>Over / Under</h1>
+
+<h2>Test 16</h2>
+
+<script type="WaveDrom">
+{signal: [
+  {name: 'clk',   wave: 'p.PpPpPP'},
+  {name: 'dat →', wave: 'x.3.....', data: 'D'},
+  {name: 'req →', wave: '0...1..0'},
+  {name: 'ack ←', wave: '0.....1.'},
+  {name: 'FF',    wave: 'x......3', data: 'D'},
+], head:{tick: 1}}
+</script>
+
+<h3>over-under</h3>
+
+<script type="WaveDrom">
+{signal: [
+  {name: 'clk',   wave: 'p.PpPpPP'},
+  {name: 'dat →', wave: 'x.3.....', data: 'D', over: '0...1..0', under: '0.....1.'},
+  {name: 'FF',    wave: 'x......3', data: 'D'},
+], head:{tick: 1}}
+</script>
+
+<h2>Test 17</h2>
+
+<script type="WaveDrom">
+{signal: [
+  {name: 'clk',   wave: 'p.PpPpPP'},
+  {name: 'dat →', wave: 'x...3...', data: 'D'},
+  {name: 'req →', wave: '0.....10'},
+  {name: 'ack ←', wave: '0.1.....'},
+  {name: 'FF',    wave: 'x......3', data: 'D'},
+], head:{tick: 1}}
+</script>
+
+<h3>over-under</h3>
+
+<script type="WaveDrom">
+{signal: [
+  {name: 'clk',   wave: 'p.PpPpPP'},
+  {name: 'dat →', wave: 'x...3...', data: 'D', over: '0.....10', under: '0.1.....'},
+  {name: 'FF',    wave: 'x......3', data: 'D'},
+], head:{tick: 1}}
+</script>
+
+<h2>Test 18</h2>
+
+<script type="WaveDrom">
+{signal: [
+  {name: 'clk',   wave: 'p.PpPPPPp.P.'},
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3'},
+  {name: 'req →', wave: '0.1..1.1...1'},
+  {name: 'ack ←', wave: '0...1010..10'},
+  {name: 'FF',    wave: 'x....3.4...5', data: 'D1 D2 D3'},
+], head:{tick: 1}}
+</script>
+
+<h3>over-under</h3>
+
+<script type="WaveDrom">
+{signal: [
+  {name: 'clk',   wave: 'p.PpPPPPp.P.'},
+
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10'},
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10', phase: .5},
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10', phase: 1},
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10', phase: 1.7},
+
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10', period: 2},
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10', period: 2, phase: .5},
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10', period: 2, phase: 1},
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10', period: 2, phase: 1.7},
+
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..2.3...4', under: '0...1010..10', period: 0.5},
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..5.6...7', under: '0...1010..10', period: 0.5, phase: .5},
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..8.1...1', under: '0...1010..10', period: 0.5, phase: 1},
+  {name: 'dat →', wave: 'x.3..4.5...6', data: 'D1 D2 D3', over: '0.1..1.1...1', under: '0...1010..10', period: 0.5, phase: 1.7},
+
+  {name: 'FF',    wave: 'x....3.4...5', data: 'D1 D2 D3'},
+], head:{tick: 1}}
+</script>
+
+</div>
+
+<script>(function(){ window.addEventListener("load", WaveDrom.ProcessAll, false); })();</script>
+
+</body>
+</html>
