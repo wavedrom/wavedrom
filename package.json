@@ -58,7 +58,7 @@
     "yargs": "^15.3.1"
   },
   "dependencies": {
-    "bit-field": "^1.3.5",
+    "bit-field": "^1.3.6",
     "logidrom": "^0.2.1",
     "onml": "^1.2.0",
     "tspan": "^0.4.0"
