@@ -2,7 +2,7 @@ Tests
 
 ## Timing Diagram
 
-```wavedrom
+```js
 { signal: [
   { name: "clk",         wave: "p.....|..." },
   { name: "Data",        wave: "x.345x|=.x", data: ["head", "body", "tail", "data"] },
@@ -14,7 +14,7 @@ Tests
 
 ## Bit-Field diagram
 
-```wavedrom
+```js
 {reg: [
     {bits: 7,  name: 'opcode',    attr: 'OP-IMM'},
     {bits: 5,  name: 'rd',        attr: 'dest'},
@@ -26,7 +26,7 @@ Tests
 
 ## Logic Circuit
 
-```wavedrom
+```js
 { assign:[
   ["z", ["~&",
     ["~^", ["~", "p0"], ["~", "q0"]],
