@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/wavedrom/wavedrom.svg?branch=master)](https://travis-ci.org/wavedrom/wavedrom)
+[![Linux](https://github.com/wavedrom/wavedrom/actions/workflows/linux.yml/badge.svg)](https://github.com/wavedrom/wavedrom/actions/workflows/linux.yml)
+[![MacOS](https://github.com/wavedrom/wavedrom/actions/workflows/macos.yml/badge.svg)](https://github.com/wavedrom/wavedrom/actions/workflows/macos.yml)
+[![Windows](https://github.com/wavedrom/wavedrom/actions/workflows/windows.yml/badge.svg)](https://github.com/wavedrom/wavedrom/actions/workflows/windows.yml)
 [![Dependency Status](https://david-dm.org/wavedrom/wavedrom.svg)](https://david-dm.org/wavedrom/wavedrom)
 [![NPM version](https://img.shields.io/npm/v/wavedrom.svg)](https://www.npmjs.org/package/wavedrom)
 [![Analytics](https://ga-beacon.appspot.com/UA-21660728-4/wavedrom/readme)](http://wavedrom.com)
