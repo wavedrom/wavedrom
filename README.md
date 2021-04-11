@@ -5,13 +5,13 @@
 [![NPM version](https://img.shields.io/npm/v/wavedrom.svg)](https://www.npmjs.org/package/wavedrom)
 [![Analytics](https://ga-beacon.appspot.com/UA-21660728-4/wavedrom/readme)](http://wavedrom.com)
 <span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=J6WR5E7TJGSY2&lc=US&item_name=WaveDrom&item_number=github&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted" title="Donate to this project using Paypal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="PayPal donate button" /></a></span>
-[![Coverage Status](https://coveralls.io/repos/github/wavedrom/wavedrom/badge.svg?branch=master)](https://coveralls.io/github/wavedrom/wavedrom?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/wavedrom/wavedrom/badge.svg?branch=trunk)](https://coveralls.io/github/wavedrom/wavedrom?branch=trunk)
 
 [EDITOR](http://wavedrom.com/editor.html) | [TUTORIAL](http://wavedrom.com/tutorial.html)
 
 ## Introduction
 
-**WaveDrom** is a Free and Open Source online digital timing diagram (waveform) rendering engine that uses javascript, HTML5 and SVG to convert a [WaveJSON](https://github.com/wavedrom/schema/blob/master/WaveJSON.md) input text description into SVG vector graphics.
+**WaveDrom** is a Free and Open Source online digital timing diagram (waveform) rendering engine that uses javascript, HTML5 and SVG to convert a [WaveJSON](https://github.com/wavedrom/schema/blob/trunk/WaveJSON.md) input text description into SVG vector graphics.
 
 WaveJSON is an application of the [JSON](http://json.org/) format. The purpose of WaveJSON is to provide a compact exchange format for digital timing diagrams utilized by digital HW / IC engineers.
 
@@ -22,21 +22,21 @@ The engine is using [WaveDromSkin](unpacked/README.md) skin mechanism to render 
 svg.wavedrom.com
 
 ```
-![Alt](https://svg.wavedrom.com/github/<USER>/<REPO>/master/<PATH>/<FILENAME>.json5)
+![Alt](https://svg.wavedrom.com/github/<USER>/<REPO>/trunk/<PATH>/<FILENAME>.json5)
 ```
 
 ```md
-![signal step4](https://svg.wavedrom.com/github/wavedrom/wavedrom/master/test/signal-step4.json5)
+![signal step4](https://svg.wavedrom.com/github/wavedrom/wavedrom/trunk/test/signal-step4.json5)
 ```
 
-![signal step4](https://svg.wavedrom.com/github/wavedrom/wavedrom/master/test/signal-step4.json5)
+![signal step4](https://svg.wavedrom.com/github/wavedrom/wavedrom/trunk/test/signal-step4.json5)
 
 
 ```md
-![reg vl](https://svg.wavedrom.com/github/wavedrom/wavedrom/master/test/reg-vl.json5)
+![reg vl](https://svg.wavedrom.com/github/wavedrom/wavedrom/trunk/test/reg-vl.json5)
 ```
 
-![reg vl](https://svg.wavedrom.com/github/wavedrom/wavedrom/master/test/reg-vl.json5)
+![reg vl](https://svg.wavedrom.com/github/wavedrom/wavedrom/trunk/test/reg-vl.json5)
 
 ```
 <img src="https://svg.wavedrom.com/{WAVEDROM SOURCE}/>
@@ -71,7 +71,7 @@ From a CDN:
 <body onload="WaveDrom.ProcessAll()">
 ```
 
-3) Insert [WaveJSON](https://github.com/wavedrom/schema/blob/master/WaveJSON.md) source inside HTML ``<body>`` wrapped with the ``<script>`` tag:
+3) Insert [WaveJSON](https://github.com/wavedrom/schema/blob/trunk/WaveJSON.md) source inside HTML ``<body>`` wrapped with the ``<script>`` tag:
 
 ```html
 <script type="WaveDrom">
@@ -135,4 +135,4 @@ Please use the [WaveDrom user group](http://groups.google.com/group/wavedrom) fo
 
 ## License
 
-See [LICENSE](https://github.com/wavedrom/wavedrom/blob/master/LICENSE).
+See [LICENSE](https://github.com/wavedrom/wavedrom/blob/trunk/LICENSE).
