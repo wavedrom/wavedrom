@@ -12,6 +12,8 @@
 
 <div class="content">
 
+<h3>Regular Sub-Cycles</h3>
+
 <script type="WaveDrom">
 { signal: [
   {
@@ -36,11 +38,35 @@
       wave: '=2<10zuzd1x.1>2',
       data: '0 1 2 a b c 3 4 5 d e f 6 7 8',
       period: 4
-  }
+  },
+  {
+      name: 'pulse0', 
+      wave: '0.h<.>l.'
+  },
+  {
+      name: 'pulse1', 
+      wave: '0.<h>.l.'
+  },
+  {
+      name: 'pulse2', 
+      wave: '0.<h..>l.'
+  },
+  {
+      name: 'pulse02', 
+      wave: '0.h<...>l.', 
+  },
+  {
+      name: 'pulse22', 
+      wave: '0.<h...>l.', 
+  },
+  {name: "sig0", "wave": "<10>10" },
+  {name: "sig1", "wave": "<x0>1x" },
+  {name: "sig2", "wave": "<01>" },
+  {name: "sig3", "wave": "x.<01...0>x" },
 ]}
 </script>
 
-Gaps
+<h3>Gaps</h3>
 
 <script type="WaveDrom">
 { signal: [
@@ -49,12 +75,59 @@ Gaps
   { name: 'A2', wave: 'x=x|=x|=.', data: 'a2 b2', period: 2 },
   { name: 'A3', wave: 'x=x|=x|=.', data: 'a3 b3', period: 3 },
   { name: 'A4', wave: 'x=x|=x|=.', data: 'a4 b4', period: 4 },
+]}
+</script>
+
+<h3>Gaps in Sub-Cycles</h3>
+
+<script type="WaveDrom">
+{ signal: [
   { name: 'B1', wave: 'x=<x|>=<x|>=.', data: 'a1 b1' },
   { name: 'B2', wave: 'x=<x|..>=<x|..>=.', data: 'a2 b2', period: 2 },
   { name: 'B3', wave: 'x=<x|....>=<x|....>=.', data: 'a3 b3', period: 3 },
-  { name: 'B4', wave: 'x=<x|......>=<x|......>=.', data: 'a4 b4', period: 4 }
+  { name: 'B4', wave: 'x=<x|......>=<x|......>=.', data: 'a4 b4', period: 4 },
+  {name: "sig4", "wave": "<=|>.x" },
+  {name: "sig5", "wave": "x<=|>.x" },
+  {name: "sig6", "wave": "x<.|>0x" },
+  {name: "sig7", "wave": "x<|=>.x" },
+  {name: "sig8", "wave": "x<|.>0x" },
 ]}
 </script>
+
+<h3>Sub-Cycles in Arcs (node member of a signal object)</h3>
+
+<script type="WaveDrom">
+{
+  signal: [
+    {             node: '..A.......B.' },
+    {name: 'EN',  wave: '1.0.......1.' },
+    {             node: '...C.D......'},
+    {name: 'SCK', wave: '0..10<1|.>010..',
+                  node: '...EF<...>GH..'},
+    {},
+    {name: 'SCK_M0', wave: '0..<1..0..><1|.><0..1..>0<1.0>.',
+                  node: '...<.........><......>.<abc>',
+                  phase: -0.5},
+    {             node: '...<.........><......>.', phase: -0.5},
+    {name: 'SCK_M1', wave: '0..<1..0..><1|.><0..1..>0.',
+                  node: '...<I..j.....><k.....>L'},
+    {             node: '...<M..n.....><o.....>P'},
+    {name: 'SCK_M2', wave: '0<1..0..><1|.><0..1..>0',
+                  node: '.<Q..r.....><s.....>T',
+                  period: 2},
+    {             node: '.<U..v.....><w.....>X', period: 2},
+  ],
+    edge:[
+    'C<->D T',
+    'G<->H tES',
+    'H<->L T0',
+    'A<~>k T1','j<~>B T2',
+    'M->I','M-P T3','P->L',
+    'U->Q','U-X T4','X->T'
+  ],
+}
+</script>
+
 
 </div>
 
