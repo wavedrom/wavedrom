@@ -39,6 +39,21 @@ const marker2 = ['marker',
     ['path', {'d':'M0 -4 -11 0 0 4z'}]
 ];
 
+const marker3 = ['marker',
+    {
+        id: 'tee',
+        style: 'fill:#0041c4',
+        markerHeight: 6,
+        markerWidth: 1,
+        markerUnits: 'strokeWidth',
+        viewBox: '0 0 1 6',
+        refX: 0,
+        refY: 3,
+        orient: 'auto'
+    },
+    ['path', {'d':'M 0 0 L 0 6', 'style': 'stroke:#0041c4;stroke-width:2'}]
+];
+
 const defs = ['defs'];
 
 const style = ['style', {type: 'text/css'}];
@@ -128,6 +143,7 @@ function f2o (name, cb) {
         });
         defs.push(marker1);
         defs.push(marker2);
+        defs.push(marker3);
 
         const fills = Object.keys(fillClasses).map(key =>
             key + '{fill:' + fillClasses[key] + '}');
