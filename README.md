@@ -1,11 +1,12 @@
 [![Linux](https://github.com/wavedrom/wavedrom/actions/workflows/linux.yml/badge.svg)](https://github.com/wavedrom/wavedrom/actions/workflows/linux.yml)
 [![MacOS](https://github.com/wavedrom/wavedrom/actions/workflows/macos.yml/badge.svg)](https://github.com/wavedrom/wavedrom/actions/workflows/macos.yml)
 [![Windows](https://github.com/wavedrom/wavedrom/actions/workflows/windows.yml/badge.svg)](https://github.com/wavedrom/wavedrom/actions/workflows/windows.yml)
-[![Dependency Status](https://david-dm.org/wavedrom/wavedrom.svg)](https://david-dm.org/wavedrom/wavedrom)
 [![NPM version](https://img.shields.io/npm/v/wavedrom.svg)](https://www.npmjs.org/package/wavedrom)
-[![Analytics](https://ga-beacon.appspot.com/UA-21660728-4/wavedrom/readme)](http://wavedrom.com)
 <span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=J6WR5E7TJGSY2&lc=US&item_name=WaveDrom&item_number=github&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted" title="Donate to this project using Paypal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="PayPal donate button" /></a></span>
 [![Coverage Status](https://coveralls.io/repos/github/wavedrom/wavedrom/badge.svg?branch=trunk)](https://coveralls.io/github/wavedrom/wavedrom?branch=trunk)
+
+<!-- [![Dependency Status](https://david-dm.org/wavedrom/wavedrom.svg)](https://david-dm.org/wavedrom/wavedrom) -->
+<!-- [![Analytics](https://ga-beacon.appspot.com/UA-21660728-4/wavedrom/readme)](http://wavedrom.com) -->
 
 [EDITOR](http://wavedrom.com/editor.html) | [TUTORIAL](http://wavedrom.com/tutorial.html)
 
