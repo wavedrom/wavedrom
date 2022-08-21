@@ -49,15 +49,15 @@
     "browserify": "^17.0.0",
     "chai": "^4.3",
     "coveralls": "^3.1.1",
-    "eslint": "^8.9",
-    "fs-extra": "^10",
-    "json5": "^2.2.0",
-    "mocha": "^9.2",
+    "eslint": "^8.22",
+    "fs-extra": "^10.1",
+    "json5": "^2.2.1",
+    "mocha": "^10",
     "npm-run-all": "^4.1.5",
     "nyc": "^15.1.0",
-    "terser": "^5.10",
+    "terser": "^5.14.2",
     "watchify": "^4.0.0",
-    "yargs": "^17.3"
+    "yargs": "^17.5.1"
   },
   "dependencies": {
     "bit-field": "^1.5.3",
