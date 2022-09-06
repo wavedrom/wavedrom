@@ -23,7 +23,7 @@ The engine is using [WaveDromSkin](unpacked/README.md) skin mechanism to render 
 svg.wavedrom.com
 
 ```
-![Alt](https://svg.wavedrom.com/github/<USER>/<REPO>/trunk/<PATH>/<FILENAME>.json5)
+![Alt](https://svg.wavedrom.com/github/<USER>/<REPO>/<BRANCH>/<PATH>/<FILENAME>.json5)
 ```
 
 ```md
