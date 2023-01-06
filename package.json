@@ -49,18 +49,18 @@
     "browserify": "^17.0.0",
     "chai": "^4.3",
     "coveralls": "^3.1.1",
-    "eslint": "^8.22",
-    "fs-extra": "^10.1",
-    "json5": "^2.2.1",
+    "eslint": "^8.31",
+    "fs-extra": "^11.1",
+    "json5": "^2.2.3",
     "mocha": "^10",
     "npm-run-all": "^4.1.5",
     "nyc": "^15.1.0",
-    "terser": "^5.14.2",
+    "terser": "^5.16",
     "watchify": "^4.0.0",
-    "yargs": "^17.5.1"
+    "yargs": "^17.6"
   },
   "dependencies": {
-    "bit-field": "^1.5.3",
+    "bit-field": "^1.7.0",
     "logidrom": "^0.3.1",
     "onml": "^2.1.0",
     "tspan": "^0.4.0"
