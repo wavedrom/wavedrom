@@ -49,7 +49,7 @@
     "browserify": "^17.0.0",
     "chai": "^4.3",
     "coveralls": "^3.1.1",
-    "eslint": "^8.31",
+    "eslint": "^8.32",
     "fs-extra": "^11.1",
     "json5": "^2.2.3",
     "mocha": "^10",
