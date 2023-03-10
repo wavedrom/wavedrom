@@ -72,7 +72,7 @@ From a CDN:
 <body onload="WaveDrom.ProcessAll()">
 ```
 
-3) Insert [WaveJSON](https://github.com/wavedrom/schema/blob/trunk/WaveJSON.md) source inside HTML ``<body>`` wrapped with the ``<script>`` tag:
+3) Insert [WaveJSON](https://github.com/wavedrom/schema/blob/master/WaveJSON.md) source inside HTML ``<body>`` wrapped with the ``<script>`` tag:
 
 ```html
 <script type="WaveDrom">
