@@ -37,7 +37,7 @@
     "prepare": "npm-run-all test dist dist.min unpkg unpkg.min",
     "coverage": "nyc report -r=text-lcov | coveralls",
     "clean": "rm -rf wavedrom.js wavedrom.*.js coverage .nyc_output",
-    "skins": "for S in default narrow dark lowkey ; do node bin/svg2js.js -i unpacked/skins/$S.svg > skins/$S.js ; done"
+    "skins": "for S in default narrow dark lowkey narrower narrowerer; do node bin/svg2js.js -i unpacked/skins/$S.svg > skins/$S.js ; done"
   },
   "keywords": [
     "waveform",
