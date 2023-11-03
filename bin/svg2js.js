@@ -75,6 +75,17 @@ const getDefStyle = () => `
   .h4 { font-size: 14pt; font-weight: bold }
   .h5 { font-size: 11pt; font-weight: bold }
   .h6 { font-size: 8pt;  font-weight: bold }
+
+  .background { stroke:none;fill:white }
+  .arc_arrow { marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none }
+  .arc_arrow_twosided { marker-start:url(#arrowtail) }
+  .arc_bracket { marker-end:url(#tee);marker-start:url(#tee);fill:none;stroke:#00F;stroke-width:1 }
+  .arc_error { fill:none;stroke:#F00;stroke-width:1 }
+  .arc_default { fill:none;stroke:#00F;stroke-width:1 }
+  .arc_label_bg { fill:#FFF }
+
+  .group_path { stroke:#0041c4;stroke-width:1;fill:none }
+  .gmarks { stroke:#888;stroke-width:0.5;stroke-dasharray:1,3 }
 `.replace(/\s+/g, '');
 
 const res = ['svg',
