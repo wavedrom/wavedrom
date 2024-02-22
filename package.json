@@ -35,7 +35,6 @@
     "unpkg.min": "terser --compress --mengle -- wavedrom.unpkg.js | node ./bin/header.js > wavedrom.unpkg.min.js",
     "cli": "{ echo '#!/usr/bin/env node' ; browserify --node bin/cli.js ; } > bin/wavedrom.js ; chmod +x bin/wavedrom.js",
     "prepare": "npm-run-all test dist dist.min unpkg unpkg.min",
-    "coverage": "nyc report -r=text-lcov | coveralls",
     "clean": "rm -rf wavedrom.js wavedrom.*.js coverage .nyc_output",
     "skins": "for S in default narrow dark lowkey narrower narrowerer; do node bin/svg2js.js -i unpacked/skins/$S.svg > skins/$S.js ; done"
   },
@@ -48,19 +47,18 @@
     "@drom/eslint-config": "^0.12.0",
     "browserify": "^17.0.0",
     "chai": "^4.4",
-    "coveralls": "^3.1.1",
     "eslint": "^8.56",
     "fs-extra": "^11.2",
     "json5": "^2.2.3",
-    "mocha": "^10",
+    "mocha": "^10.3",
     "npm-run-all": "^4.1.5",
     "nyc": "^15.1.0",
-    "terser": "^5.26",
+    "terser": "^5.27",
     "watchify": "^4.0.0",
     "yargs": "^17.7"
   },
   "dependencies": {
-    "bit-field": "^1.8.0",
+    "bit-field": "^1.9.0",
     "logidrom": "^0.3.1",
     "onml": "^2.1.0",
     "tspan": "^0.4.0"
