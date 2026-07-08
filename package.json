@@ -57,7 +57,7 @@
   "devDependencies": {
     "@drom/eslint-config": "1.0.0",
     "chai": "6.2.2",
-    "esbuild": "0.28.0",
+    "esbuild": "0.28.1",
     "eslint": "9.39.4",
     "mocha": "11.7.5",
     "npm-run-all": "^4.1.5",
