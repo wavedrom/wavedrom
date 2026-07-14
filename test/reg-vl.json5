@@ -12,4 +12,6 @@
     {bits: 1,  name: 'vm'},
     {bits: 3,  name: 'mop', attr: [0, 0, 4, 4]},
     {bits: 3,  name: 'nf'},
-]}
+],
+  config:{skin:'bw'}
+}

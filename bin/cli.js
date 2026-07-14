@@ -13,7 +13,7 @@ const narrower = require('../skins/narrower.js');
 const narrowerer = require('../skins/narrowerer.js');
 const lowkey = require('../skins/lowkey.js');
 const dark = require('../skins/dark.js');
-const bw = require('../skins/b-w.js');//TODO: Add skins here
+const bw = require('../skins/bw.js');//TODO: Add skins here
 
 const skins = Object.assign({}, def, narrow, narrower, narrowerer, lowkey, dark, bw);
 

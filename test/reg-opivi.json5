@@ -6,4 +6,6 @@
     {bits: 5,  name: 'vs2', type: 2},
     {bits: 1,  name: 'vm'},
     {bits: 6,  name: 'funct6'},
-]}
+],
+  config:{skin:'bw'}
+}
