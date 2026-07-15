@@ -5,5 +5,5 @@
   {},
   { name: "Acknowledge", wave: "1.....|01." }
 ],
-  config:{skin:'bw'}
+  config:{skin:'default'}
   }

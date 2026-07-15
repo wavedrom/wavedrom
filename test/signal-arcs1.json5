@@ -17,6 +17,6 @@
   edge: [
     'A-B', 'C-D', 'A~>C', 'B<->D T > 45s', 'E->F'
   ],
-  config:{skin:'bw'}
+  config:{skin:'default'}
 }
 
