@@ -35,7 +35,6 @@ You can also add text to your text elements using the data atribute, this allows
 
 #### Adding title and Caption:
 
-
  head:{
    text:'WaveDrom example',
    tick:0,
