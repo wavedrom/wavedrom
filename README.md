@@ -171,3 +171,7 @@ Please use the [WaveDrom user group](http://groups.google.com/group/wavedrom) fo
 ## License
 
 See [LICENSE](https://github.com/wavedrom/wavedrom/blob/trunk/LICENSE).
+
+
+## AI USAGE:
+AI was used to understand the porgramms structure, but every change in th code was done by a human (as far as it belongs to my work on this fork).
