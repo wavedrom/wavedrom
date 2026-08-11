@@ -1,6 +1,6 @@
-[![Linux](https://github.com/wavedrom/wavedrom/actions/workflows/linux.yml/badge.svg)](https://github.com/wavedrom/wavedrom/actions/workflows/linux.yml)
-[![MacOS](https://github.com/wavedrom/wavedrom/actions/workflows/macos.yml/badge.svg)](https://github.com/wavedrom/wavedrom/actions/workflows/macos.yml)
-[![Windows](https://github.com/wavedrom/wavedrom/actions/workflows/windows.yml/badge.svg)](https://github.com/wavedrom/wavedrom/actions/workflows/windows.yml)
+[![Linux](https://github.com/Filu31/wavedrom/wavedrom/actions/workflows/linux.yml/badge.svg)](https://github.com/wavedrom/wavedrom/actions/workflows/linux.yml)
+[![MacOS](https://github.com/Filu31/wavedrom/wavedrom/actions/workflows/macos.yml/badge.svg)](https://github.com/wavedrom/wavedrom/actions/workflows/macos.yml)
+[![Windows](https://github.com/Filu31/wavedrom/wavedrom/actions/workflows/windows.yml/badge.svg)](https://github.com/wavedrom/wavedrom/actions/workflows/windows.yml)
 [![NPM version](https://img.shields.io/npm/v/wavedrom.svg)](https://www.npmjs.org/package/wavedrom)
 <span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=J6WR5E7TJGSY2&lc=US&item_name=WaveDrom&item_number=github&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted" title="Donate to this project using Paypal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="PayPal donate button" /></a></span>
 [![Coverage Status](https://coveralls.io/repos/github/wavedrom/wavedrom/badge.svg?branch=trunk)](https://coveralls.io/github/wavedrom/wavedrom?branch=trunk)
@@ -12,7 +12,7 @@
 
 ## Introduction
 
-**WaveDrom** is a Free and Open Source online digital timing diagram (waveform) rendering engine that uses javascript, HTML5 and SVG to convert a [WaveJSON](https://github.com/wavedrom/schema/blob/master/WaveJSON.md) input text description into SVG vector graphics.
+**WaveDrom** is a Free and Open Source online digital timing diagram (waveform) rendering engine that uses javascript, HTML5 and SVG to convert a [WaveJSON](https://github.com/wavedrom/Filu31//schema/blob/master/WaveJSON.md) input text description into SVG vector graphics.
 
 WaveJSON is an application of the [JSON](http://json.org/) format. The purpose of WaveJSON is to provide a compact exchange format for digital timing diagrams utilized by digital HW / IC engineers.
 
