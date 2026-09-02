@@ -1,0 +1,85 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>testsuite</title>
+  <script type="text/javascript" src="../skins/default.js"></script>
+  <script type="text/javascript" src="../skins/narrow.js"></script>
+  <script type="text/javascript" src="../wavedrom.min.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Roboto|Droid+Sans+Mono|Varela+Round' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+
+<div class="content">
+
+<script type="WaveDrom">
+{ signal: [
+  {
+      name: 'r_and_R_followed_by_dots',
+      wave: 'r...R...',
+  },
+  {
+      name: 'R_and_r_followed_by_dots',
+      wave: 'R...r...',
+  },
+  {
+      name: 'f_and_F_followed_by_dots',
+      wave: 'f...F...',
+  },
+  {
+      name: 'F_and_f_followed_by_dots',
+      wave: 'F...f...',
+  },
+  { 
+      name: 'r_and_R_followed_by_spacers',
+      wave: 'r|||R|||',
+  },
+  {
+      name: 'r_and_R_followed_by_more_r_and_R',
+      wave: 'rrrrRRRR',
+  },
+  { 
+      name: 'f_and_F_followed_by_spacers',
+      wave: 'f|||F|||',
+  },
+  {
+      name: 'f_and_F_followed_by_more_f_and_F',
+      wave: 'ffffFFFF',
+  },
+  {
+      name: 'transition_exclusions (high)',
+      wave: 'hrhrxHrHrxfhfhxFhFh',
+  },
+  {
+      name: 'transition_exclusions (low)',
+      wave: 'lflfxLfLfxrlrlxRlRl',
+  },
+  {
+      name: 'all_r_R_f_F_combinations',
+      wave: 'rrRRFFffrfFRrFr',
+  },
+  {
+      name: 'r_alternating_with_all_other_values',
+      wave: 'rprPrnrNr0r1rlrLrhrHrxrdrurzr=r2r3r4r5r6r7r8r9r.r|',
+  },
+  {
+      name: 'R_alternating_with_all_other_values',
+      wave: 'RpRPRnRNR0R1RlRLRhRHRxRdRuRzR=R2R3R4R5R6R7R8R9R.R|',
+  },
+  {
+      name: 'f_alternating_with_all_other_values',
+      wave: 'fpfPfnfNf0f1flfLfhfHfxfdfufzf=f2f3f4f5f6f7f8f9f.f|',
+  },
+  {
+      name: 'F_alternating_with_all_other_values',
+      wave: 'FpFPFnFNF0F1FlFLFhFHFxFdFuFzF=F2F3F4F5F6F7F8F9F.F|',
+  },
+]}
+</script>
+
+</div>
+
+<script>(function(){ window.addEventListener("load", WaveDrom.ProcessAll, false); })();</script>
+
+</body>
+</html>
