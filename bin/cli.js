@@ -9,9 +9,14 @@ const pkg = require('../package.json');
 const lib = require('../lib');
 const def = require('../skins/default.js');
 const narrow = require('../skins/narrow.js');
+const narrower = require('../skins/narrower.js');
+const narrowerer = require('../skins/narrowerer.js');
 const lowkey = require('../skins/lowkey.js');
+const dark = require('../skins/dark.js');
+const bw = require('../skins/bw.js');
+const bw_narrow = require('../skins/bw_narrow.js');//TODO: Add skins here
 
-const skins = Object.assign({}, def, narrow, lowkey);
+const skins = Object.assign({}, def, narrow, narrower, narrowerer, lowkey, dark, bw, bw_narrow);
 
 const argv = {
     input: undefined,

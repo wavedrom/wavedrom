@@ -48,17 +48,11 @@ function getFill (fillClasses, node) {
     }
 }
 
-function getArrowColor (dat) {
-    const m = dat.match(/id="arrow0"[\s\S]{0,300}?style="fill:(#[0-9a-fA-F]+)/);
-    return m ? m[1] : '#0041c4';
-}
-
 function f2o (name, cb) {
     const full = path.resolve(process.cwd(), name);
     fs.readFile(full, { encoding: 'utf8'}, function (err, dat) {
         if (err) { throw err; }
         const ml = onml.parse(dat);
-        const arrowColor = getArrowColor(dat);
 
         const styles = {};
         const defs = ['defs'];
@@ -72,7 +66,7 @@ function f2o (name, cb) {
         const marker1 = ['marker',
             {
                 id: 'arrowhead',
-                style: 'fill:' + arrowColor,
+                style: 'fill:#0041c4',
                 markerHeight: 7,
                 markerWidth: 10,
                 markerUnits: 'strokeWidth',
@@ -87,7 +81,7 @@ function f2o (name, cb) {
         const marker2 = ['marker',
             {
                 id: 'arrowtail',
-                style: 'fill:' + arrowColor,
+                style: 'fill:#0041c4',
                 markerHeight: 7,
                 markerWidth: 10,
                 markerUnits: 'strokeWidth',
@@ -102,7 +96,7 @@ function f2o (name, cb) {
         const marker3 = ['marker',
             {
                 id: 'tee',
-                style: 'fill:' + arrowColor,
+                style: 'fill:#0041c4',
                 markerHeight: 6,
                 markerWidth: 1,
                 markerUnits: 'strokeWidth',
@@ -111,7 +105,7 @@ function f2o (name, cb) {
                 refY: 3,
                 orient: 'auto'
             },
-            ['path', {'d':'M 0 0 L 0 6', 'style': 'stroke:' + arrowColor + ';stroke-width:2'}]
+            ['path', {'d':'M 0 0 L 0 6', 'style': 'stroke:#0041c4;stroke-width:2'}]
         ];
 
         const fillClasses = {
