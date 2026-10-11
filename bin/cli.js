@@ -15,7 +15,8 @@ const skins = Object.assign({}, def, narrow, lowkey);
 
 const argv = {
     input: undefined,
-    indent: undefined
+    indent: undefined,
+    embedded: false
 };
 
 const args = process.argv.slice(2);
@@ -25,8 +26,12 @@ for (let i = 0; i < args.length; i++) {
         argv.input = args[++i];
     } else if (arg === '-t' || arg === '--indent') {
         argv.indent = args[++i];
+    } else if (arg === '-e' || arg === '--embedded') {
+        argv.embedded = true;
     } else if (arg === '-h' || arg === '--help') {
-        console.log('Usage: wavedrom --input <path> [--indent <indent>]');
+        console.log('Usage: wavedrom --input <path> [--indent <indent>] [--embedded]');
+        console.log('  <path>      WaveJSON source, or an SVG / PNG with embedded WaveJSON source');
+        console.log('  --embedded  embed the WaveJSON source into the generated SVG');
         process.exit(0);
     } else if (arg === '-v' || arg === '--version') {
         console.log(pkg.version);
@@ -43,9 +48,21 @@ if (!argv.input) {
 const fileName = argv.input;
 fs.readFile(fileName, (err, body) => {
 if (err) { throw err; }
-const source = json5.parse(body);
+const text = lib.embedSource.extract(body);
+if (text === undefined) {
+    console.error('Error: no embedded WaveJSON source found in ' + fileName);
+    process.exit(1);
+}
+const source = json5.parse(text);
 const res = lib.renderAny(0, source, skins);
-const svg = onml.stringify(res, argv.indent);
+let svg = onml.stringify(res, argv.indent);
+if (argv.embedded) {
+    if (res[0] !== 'svg') {
+        console.error('Error: nothing to embed, the source did not render an SVG');
+        process.exit(1);
+    }
+    svg = lib.embedSource.embedSvg(svg, text);
+}
 console.log(svg);
 });
 /* eslint no-console: 0 */
