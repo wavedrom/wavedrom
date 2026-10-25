@@ -57,16 +57,16 @@
   "devDependencies": {
     "@drom/eslint-config": "1.0.0",
     "c8": "12.0.0",
-    "chai": "6.2.2",
+    "chai": "6.3.0",
     "esbuild": "0.28.2",
     "eslint": "9.39.4",
-    "mocha": "12.0.0"
+    "mocha": "12.0.3"
   },
   "dependencies": {
-    "bit-field": "^1.9.0",
+    "bit-field": "^1.11.0",
     "json5": "^2.2.3",
-    "logidrom": "^1.0.0",
-    "onml": "^2.1.0",
+    "logidrom": "^1.2.1",
+    "onml": "^2.3.0",
     "tspan": "^0.4.0"
   }
 }
