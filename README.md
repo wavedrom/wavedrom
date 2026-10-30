@@ -66,9 +66,22 @@ wavedrom --input source.json5 --indent 2 > output.svg
 
 ### Options
 
-*   `-i`, `--input <path>`: (Required) Path to the WaveJSON source file.
+*   `-i`, `--input <path>`: (Required) Path to the WaveJSON source file, or to an SVG / PNG with embedded source (see below).
 *   `-t`, `--indent <number>`: Text indent in the output SVG.
+*   `-e`, `--embedded`: Embed the WaveJSON source into the output SVG.
 *   `-h`, `--help`: Show help message.
+
+### Embedded source
+
+With `--embedded` the WaveJSON source is stored verbatim inside the SVG (in a `<metadata id="wavedrom-source">` element), so the image can be turned back into an editable source.
+An SVG or PNG with embedded source can be used directly as `--input`:
+
+```bash
+wavedrom -i source.json5 --embedded > output.svg
+wavedrom -i output.svg > output2.svg
+```
+
+PNG files can carry the source in an `iTXt` chunk; see `embedSource.embedPng()` / `embedSource.extract()` in the library.
 
 ### Export to PNG
 
