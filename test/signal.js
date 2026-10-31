@@ -94,5 +94,18 @@ describe('signal', function () {
         )).to.be.an('array');
         done();
     });
+    it('colors', function (done) {
+        expect(renderAny(3,
+            {
+                signal: [
+                    {name:'clk',         wave: 'p....' },
+                    {name:'Data',        wave: 'x345x', data: 'a b c' },
+                    {name:'Request',     wave: '01..0' }
+                ],
+                color: { 3: '#39C5BB' }
+            }, waveSkin
+        )).to.be.an('array');
+        done();
+    });
 });
 /* eslint-env mocha */
